@@ -1,4 +1,4 @@
-//declared dependancies and acend to variables
+//declared dependancies and ascend to variables
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -35,10 +35,9 @@ connection.once("open", () => {
 });
 
 /* Add your part here */
-//const studentRouter = require("./routes/students.js");
-//app.use("/student", studentRouter);
+const paymentRouter = require("./routes/paymentCRUD.js");
+app.use("/payment", paymentRouter);
 
-//call back function - () =>
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
 });
