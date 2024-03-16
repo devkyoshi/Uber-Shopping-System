@@ -1,44 +1,29 @@
 /*
-    Payment: By Ashan
+    Payment: By Prasad H.G.A.T
 */
 
 const router = require("express").Router();
 let Payment = require("../models/payment");
 
 //Create Payment
-router.route("/create-payment").post((req,res)=>{
-    const customerID = req.body.customerID;
-    const paymentID = req.body.paymentID;
-    const paymentStatus = req.body.paymentStatus;
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const username = req.body.username;
-    const email = req.body.email;
-    const DeliveryAddress = req.body.DeliveryAddress;
-    const paymentType = req.body.paymentType;
-    const nameOnCard = req.body.nameOnCard;
-    const creditCardNumber = req.body.creditCardNumber;
-    const expDate = req.body.expDate;
-    const cvv = req.body.cvv;
-    const total = Number(req.body.total);
-    const paymentTimeStamp = new Date(req.body.paymentTimeStamp);
-
+router.route("/payment-create").post((req,res)=>{
+    const Payment_Amount = Number(req.body.Payment_Amount);
+    const CVV = req.body.CVV;
+    const Payment_Method = req.body.Payment_Method;
+    const Paid_Time = new Date(req.body.Paid_Time);
+    const Account_Number = req.body.Account_Number;
+    const Account_Holder = req.body.Account_Holder;;
+    const Payment_Status = req.body.Payment_Status;
+    
     const newPayment = new Payment({
-        customerID,
-        paymentID,
-        paymentStatus,
-        firstName,
-        lastName,
-        username,
-        email,
-        DeliveryAddress,
-        paymentType,
-        nameOnCard,
-        creditCardNumber,
-        expDate,
-        cvv,
-        total,
-        paymentTimeStamp
+        Payment_Amount,
+        CVV,
+        Date,
+        Payment_Method,
+        Paid_Time,
+        Account_Number,
+        Account_Holder,
+        Payment_Status
     })
 
     newPayment.save().then(()=>{
@@ -49,7 +34,7 @@ router.route("/create-payment").post((req,res)=>{
 })
 
 //Selecting All Payment
-router.route("/").get((req,res)=>{
+router.route("/payment-all-payments").get((req,res)=>{
     Payment.find().then((payment)=>{
         res.json(payment)
     }).catch((err)=>{
@@ -58,42 +43,28 @@ router.route("/").get((req,res)=>{
 })
 
 //Update Payment
-router.route("/update-payment/:id").put(async(req,res)=>{
+router.route("/payment-update/:id").put(async(req,res)=>{
     let payID = req.params.id;
     const {
-        customerID,
-        paymentID,
-        paymentStatus,
-        firstName,
-        lastName,
-        username,
-        email,
-        DeliveryAddress,
-        paymentType,
-        nameOnCard,
-        creditCardNumber,
-        expDate,
-        cvv,
-        total,
-        paymentTimeStamp
+        Payment_Amount,
+        CVV,
+        Date,
+        Payment_Method,
+        Paid_Time,
+        Account_Number,
+        Account_Holder,
+        Payment_Status
     } = req.body;
 
     const updatePayment = {
-        customerID,
-        paymentID,
-        paymentStatus,
-        firstName,
-        lastName,
-        username,
-        email,
-        DeliveryAddress,
-        paymentType,
-        nameOnCard,
-        creditCardNumber,
-        expDate,
-        cvv,
-        total,
-        paymentTimeStamp
+        Payment_Amount,
+        CVV,
+        Date,
+        Payment_Method,
+        Paid_Time,
+        Account_Number,
+        Account_Holder,
+        Payment_Status
     }
 
     const update = await Payment.findByIdAndUpdate(payID,updatePayment).then(()=>{
@@ -104,7 +75,7 @@ router.route("/update-payment/:id").put(async(req,res)=>{
     })
 })
 
-router.route("/delete-payment/:id").delete(async(req,res)=>{
+router.route("/payment-delete/:id").delete(async(req,res)=>{
     let payID = req.params.id;
 
     await Payment.findByIdAndDelete(payID).then(()=>{
@@ -115,14 +86,14 @@ router.route("/delete-payment/:id").delete(async(req,res)=>{
     })
 })
 
-router.route("/select-payment/:id").get(async(req,res)=>{
+router.route("/payment-select/:id").get(async(req,res)=>{
     let payID = req.params.id;
 
     const payment = await Payment.findById(payID).then((payment)=>{
         res.status(200).send({status: "Payment Details Fetched!", payment});
     }).catch((err)=>{
         console.log(err.message);
-        res.status(500).send({status: "Error with get user", error: err.message});
+        res.status(500).send({status: "Error with retrieving Payment Details", error: err.message});
     })
 })
 
