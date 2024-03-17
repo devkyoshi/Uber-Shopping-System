@@ -3,7 +3,7 @@
 */
 
 const router = require("express").Router();
-let Payment = require("../models/payment");
+let Payment = require("../models/Payment_Schema");
 
 //Create Payment
 router.route("/payment-create").post((req,res)=>{
