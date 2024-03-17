@@ -18,7 +18,6 @@ router.route("/payment-create").post((req,res)=>{
     const newPayment = new Payment({
         Payment_Amount,
         CVV,
-        Date,
         Payment_Method,
         Paid_Time,
         Account_Number,
@@ -48,9 +47,7 @@ router.route("/payment-update/:id").put(async(req,res)=>{
     const {
         Payment_Amount,
         CVV,
-        Date,
         Payment_Method,
-        Paid_Time,
         Account_Number,
         Account_Holder,
         Payment_Status
@@ -59,9 +56,7 @@ router.route("/payment-update/:id").put(async(req,res)=>{
     const updatePayment = {
         Payment_Amount,
         CVV,
-        Date,
         Payment_Method,
-        Paid_Time,
         Account_Number,
         Account_Holder,
         Payment_Status
