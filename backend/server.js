@@ -37,6 +37,8 @@ connection.once("open", () => {
 /* Add your part here */
 const paymentRouter = require("./routes/paymentCRUD.js");
 app.use("/payment", paymentRouter);
+const branchRouter = require("./routes/branchCRUD.js");
+app.use("/branch", branchRouter);
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
