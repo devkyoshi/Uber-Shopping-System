@@ -35,6 +35,8 @@ connection.once("open", () => {
 });
 
 /* Add your part here */
+const orderRouter = require('./routes/orderCRUD'); 
+app.use("/order", orderRouter);
 const paymentRouter = require("./routes/paymentCRUD.js");
 app.use("/payment", paymentRouter);
 
