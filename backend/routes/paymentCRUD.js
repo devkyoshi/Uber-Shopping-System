@@ -70,6 +70,7 @@ router.route("/payment-update/:id").put(async(req,res)=>{
     })
 })
 
+//delete payment
 router.route("/payment-delete/:id").delete(async(req,res)=>{
     let payID = req.params.id;
 
@@ -81,6 +82,7 @@ router.route("/payment-delete/:id").delete(async(req,res)=>{
     })
 })
 
+//select a payment by id
 router.route("/payment-select/:id").get(async(req,res)=>{
     let payID = req.params.id;
 
