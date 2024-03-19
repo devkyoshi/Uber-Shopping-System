@@ -13,7 +13,7 @@ router.route('/').get((req, res) => {
 });
 
 // Create a new order
-router.route('/add').post((req, res) => {
+router.route('/order-add').post((req, res) => {
   // Parse request body
   const {
     totalAmount,
@@ -47,7 +47,7 @@ router.route('/add').post((req, res) => {
 });
 
 // Get a single order by ID
-router.route('/get/:id').get(async (req, res) => {
+router.route('/order-get/:id').get(async (req, res) => {
   const order_ID = req.params.id;
   try {
     const order = await Order.findById(order_ID);
@@ -62,7 +62,7 @@ router.route('/get/:id').get(async (req, res) => {
 });
 
 // Delete an order by ID within allowed time period
-router.route('/delete/:id').delete(async (req, res) => {
+router.route('/order-delete/:id').delete(async (req, res) => {
   const order_ID = req.params.id;
   try {
     const order = await Order.findById(order_ID);
@@ -88,7 +88,7 @@ router.route('/delete/:id').delete(async (req, res) => {
 });
 
 // Update an order by ID within allowed time period
-router.route('/update/:id').put(async (req, res) => {
+router.route('/order-update/:id').put(async (req, res) => {
   const order_ID = req.params.id;
   const { Delivery_DateTime, quantity, Additional_Notes } = req.body;
 
