@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-
 const ComplaintSchema = new mongoose.Schema({
     complaint_ID:{
         type:String,
