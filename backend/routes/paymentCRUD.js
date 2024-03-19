@@ -12,7 +12,7 @@ router.route("/payment-create").post((req,res)=>{
     const Payment_Method = req.body.Payment_Method;
     const Paid_Time = new Date(req.body.Paid_Time);
     const Account_Number = req.body.Account_Number;
-    const Account_Holder = req.body.Account_Holder;;
+    const Account_Holder = req.body.Account_Holder;
     const Payment_Status = req.body.Payment_Status;
     
     const newPayment = new Payment({
@@ -70,6 +70,7 @@ router.route("/payment-update/:id").put(async(req,res)=>{
     })
 })
 
+//delete payment
 router.route("/payment-delete/:id").delete(async(req,res)=>{
     let payID = req.params.id;
 
@@ -81,6 +82,7 @@ router.route("/payment-delete/:id").delete(async(req,res)=>{
     })
 })
 
+//select a payment by id
 router.route("/payment-select/:id").get(async(req,res)=>{
     let payID = req.params.id;
 
