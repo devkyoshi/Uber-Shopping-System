@@ -3,7 +3,7 @@ const router = require('express').Router()
 let ComplaintSchema = require("../models/ComplaintSchema");
 
 /*
-             IT22107978 => PEIRIS T.C.L
+             IT22107978 => PEIRIS T.C.L [Quality Assurance management]
 */
 
 
