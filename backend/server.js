@@ -46,6 +46,13 @@ app.use("/branch", branchRouter);
 const customerRouter = require('./routes/customerCRUD.js');
 app.use("/customer", customerRouter);
 
+const superMarketRouter = require("./routes/supermarketCRUD.js");
+app.use("/supermarket",superMarketRouter)
+const ItemRouter = require("./routes/itemCRUD.js");
+app.use("/item",ItemRouter)
+const PromotionRouter = require("./routes/promotionCRUD.js");
+app.use("/promotion",PromotionRouter)
+
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
 });
