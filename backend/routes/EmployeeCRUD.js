@@ -7,7 +7,7 @@ let Employee = require("../models/employee_schema.js");
 
 
                                                 //create
-http://localhost:8070/employee/register
+http://localhost:8070/employee/employee-register
 
 router.route("/employee-register").post((req,res)=>{
 
@@ -34,6 +34,8 @@ router.route("/employee-register").post((req,res)=>{
 })
 
 //LOgin
+
+http://localhost:8070/employee/employee-login
 router.route("/employee-login").post((req, res) => {
     const { Emp_Username, Emp_Password } = req.body;
 
@@ -71,6 +73,7 @@ router.route("/employee-getallempdata").get((req,res)=>{
 })
 
 //Update Profile
+http://localhost:8070/employee/employee-update/:employeeid
 router.route("/employee-update/:employeeid").put(async(req,res)=>{
 
     let userId = req.params.employeeid;
