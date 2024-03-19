@@ -2,12 +2,6 @@ const mongoose = require('mongoose')
 
 
 const ComplaintSchema = new mongoose.Schema({
-    complaint_ID:{
-        type:String,
-        required:true,
-        trim:true,
-        maxLength:10
-    },
     complaint_type:{
         type:String,
         required:true,
@@ -41,7 +35,7 @@ const ComplaintSchema = new mongoose.Schema({
         required:true,
         trim:true
     },
-    Comlaint_Status:{
+    Complaint_Status:{
         type:String,
         required:true,
         trim:true,

@@ -15,8 +15,13 @@ const PORT = process.env.PORT || 8070;
 app.use(cors());
 app.use(bodyParser.json());
 
+app.get('/',(req,res) => {
+    res.send('Hello world')
+})
+
 //get url
 const URL = process.env.MONGODB_URL;
+
 
 //connect mongoDB
 mongoose.connect(URL, {
@@ -34,6 +39,8 @@ connection.once("open", () => {
     console.log("Mongodb Connection Success!");
 });
 
+
+
 /* Add your part here */
 const employeeRouter = require("./routes/EmployeeCRUD.js");
 app.use("/employee",employeeRouter);  
@@ -45,6 +52,8 @@ const branchRouter = require("./routes/branchCRUD.js");
 app.use("/branch", branchRouter);
 const customerRouter = require('./routes/customerCRUD.js');
 app.use("/customer", customerRouter);
+const QualityRouter = require('./routes/Complaint.js');
+app.use("/quality", QualityRouter);
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
