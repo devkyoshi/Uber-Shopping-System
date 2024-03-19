@@ -44,16 +44,33 @@ connection.once("open", () => {
 /* Add your part here */
 const employeeRouter = require("./routes/EmployeeCRUD.js");
 app.use("/employee",employeeRouter);  
+
 const orderRouter = require('./routes/orderCRUD'); 
 app.use("/order", orderRouter);
+
 const paymentRouter = require("./routes/paymentCRUD.js");
 app.use("/payment", paymentRouter);
+
 const branchRouter = require("./routes/branchCRUD.js");
 app.use("/branch", branchRouter);
+
 const customerRouter = require('./routes/customerCRUD.js');
 app.use("/customer", customerRouter);
 const QualityRouter = require('./routes/Complaint.js');
 app.use("/quality", QualityRouter);
+
+const superMarketRouter = require("./routes/supermarketCRUD.js");
+app.use("/supermarket",superMarketRouter);
+const ItemRouter = require("./routes/itemCRUD.js");
+app.use("/item",ItemRouter);
+const PromotionRouter = require("./routes/promotionCRUD.js");
+app.use("/promotion",PromotionRouter);
+
+
+const driverRouter = require("./routes/driverCRUD.js");
+app.use("/driver", driverRouter);
+const TaskRouter = require("./routes/taskCRUD.js");
+app.use("/task", TaskRouter);
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
