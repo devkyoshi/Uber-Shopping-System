@@ -46,12 +46,21 @@ app.use("/branch", branchRouter);
 const customerRouter = require('./routes/customerCRUD.js');
 app.use("/customer", customerRouter);
 
+<<<<<<< Updated upstream
 const superMarketRouter = require("./routes/supermarketCRUD.js");
 app.use("/supermarket",superMarketRouter)
 const ItemRouter = require("./routes/itemCRUD.js");
 app.use("/item",ItemRouter)
 const PromotionRouter = require("./routes/promotionCRUD.js");
 app.use("/promotion",PromotionRouter)
+=======
+
+const driverRouter = require("./routes/driverCRUD.js");
+app.use("/driver", driverRouter)
+
+const TaskRouter = require("./routes/taskCRUD.js");
+app.use("/task", TaskRouter)
+>>>>>>> Stashed changes
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
