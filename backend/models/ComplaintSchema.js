@@ -1,40 +1,46 @@
 const mongoose = require('mongoose')
 
 const ComplaintSchema = new mongoose.Schema({
+    cus_id:{
+        type:String,
+        required:true,
+        trim:true,
+        maxLength:10
+    },
     complaint_type:{
         type:String,
         required:true,
         trim:true,
         maxLength:50
     },
-    Order_ID:{
+    order_id:{
         type:String,
         required:true,
         trim:true,
-        maxLength:10
+        maxLength:100
     },
-    Resolving_option:{
+    resolving_option:{
         type:String,
         required:true,
         trim:true,
         maxLength:20
     },
-     Payment_ID:{
+     payment_id:{
         type:String,
         required:true,
         trim:true,
         maxLength:10
     },
-    /*Complaint_image:{
+    /*complaint_img:{
         type:Buffer,  
         required:true, 
     },*/
-    Quantity:{
+    quantity:{
         type:Number,
         required:true,
         trim:true
     },
-    Complaint_Status:{
+    complaint_status:{
         type:String,
         required:true,
         trim:true,

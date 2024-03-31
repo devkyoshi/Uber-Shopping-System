@@ -2,36 +2,42 @@ const mongoose = require('mongoose')
 
 
 const RefundSchema = new mongoose.Schema({
-    Refund_ID:{
+    cus_id:{
         type:String,
         required:true,
         trim:true,
         maxLength:10
     },
-    Order_ID:{
+    complaint_id:{
         type:String,
         required:true,
         trim:true,
         maxLength:10
     },
-    Account_Holder:{
+    order_id:{
+        type:String,
+        required:true,
+        trim:true,
+        maxLength:10
+    },
+    account_holder:{
         type:String,
         required:true,
         trim:true,
         maxLength:50
     },
-    Account_Sort_Code:{
+    account_sort_code:{
         type:Number,
         required:true,
         trim:true,
     },
-     Account_Number:{
+     account_number:{
         type:String,
         required:true,
         trim:true,
         maxLength:50
     },
-    Amount:{
+    amount:{
         type:Number,  
         required:true, 
     }
