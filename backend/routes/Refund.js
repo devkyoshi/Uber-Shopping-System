@@ -1,6 +1,8 @@
 
 const router = require('express').Router()
 let RefundSchema = require("../models/RefundSchema");
+let orderSchema = require("../models/order_schema");
+let ComplaintSchema = require("../models/ComplaintSchema");
 
 /*
              IT22107978 => PEIRIS T.C.L [Quality Assurance management]
@@ -25,9 +27,18 @@ router.post("/quality-refund-create", async (req, res) => {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-       
+        const existingOrder = await orderSchema.findById(order_id);
+        if(!existingOrder){
+            return res.status(400).json({error:"Order ID not found"})
+        }
+
+        const existingComplaint = await ComplaintSchema.findById(complaint_id);
+        if(!existingComplaint){
+            return res.status(400).json({error:"complaint ID not found"})
+        }
+
         // Save refund to the database
-        const refund = new ComplaintSchema({
+        const refund = new RefundSchema({
             cus_id,
             complaint_id,
             order_id,
@@ -60,32 +71,28 @@ router.put("/quality-refund-update/:id", async (req, res) => {
           }
   
   
-          //Checking if Quantity is a positive number
-          if (quantity <= 0 || !Number.isInteger(quantity)) {
-              return res.status(400).json({ message: 'Quantity must be a positive integer' });
-          }
   
           // Find the complaint by id
-          const complaint = await ComplaintSchema.findById(id);
+          const refund = await ComplaintSchema.findById(id);
   
-          if (!complaint) {
+          if (!refund) {
               return res.status(404).json({ message: 'Complaint not found' });
           }
   
           // Update complaint fields
-          complaint.cus_id = cus_id;
-          complaint.complaint_type = complaint_type;
-          complaint.order_id = order_id;
-          complaint.resolving_option = resolving_option;
-          complaint.payment_id = payment_id;
-          complaint.quantity = quantity;
-          complaint.complaint_status = complaint_status;
+          refund.cus_id = cus_id;
+          refund.complaint_id = complaint_id;
+          refund.order_id = order_id;
+          refund.account_holder = account_holder;
+          refund.account_sort_code = account_sort_code;
+          refund.account_number = account_number;
+          refund.amount = amount;
   
           // Save the updated complaint
-          await complaint.save();
+          await refund.save();
   
           // Send success response
-          res.status(200).json({ message: 'Complaint updated', complaint });
+          res.status(200).json({ message: 'Complaint updated', refund });
       } catch (error) {
           // Log the error for debugging
           console.error(error);
@@ -96,8 +103,8 @@ router.put("/quality-refund-update/:id", async (req, res) => {
 
 router.get("/quality-refund-read", async (req,res) =>{
     try {
-        const complaint = await ComplaintSchema.find().sort({createdAt: -1})
-        res.status(200).json(complaint)
+        const refund = await RefundSchema.find().sort({createdAt: -1})
+        res.status(200).json(refund)
     } catch (error) {
         res.status(500).json({message: 'Server Error'})
     }
@@ -106,7 +113,7 @@ router.get("/quality-refund-read", async (req,res) =>{
 
 router.delete("/quality-refund-delete/:id", async (req,res) =>{
   const {id} = req.params;
-  ComplaintSchema.findByIdAndDelete(id)
+  RefundSchema.findByIdAndDelete(id)
   .then((complaint) => {
     res.status(200).json({message: 'Complaint deleted'})
   })

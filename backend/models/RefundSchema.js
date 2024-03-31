@@ -6,19 +6,19 @@ const RefundSchema = new mongoose.Schema({
         type:String,
         required:true,
         trim:true,
-        maxLength:10
+        maxLength:100
     },
     complaint_id:{
         type:String,
         required:true,
         trim:true,
-        maxLength:10
+        maxLength:100
     },
     order_id:{
         type:String,
         required:true,
         trim:true,
-        maxLength:10
+        maxLength:100
     },
     account_holder:{
         type:String,
