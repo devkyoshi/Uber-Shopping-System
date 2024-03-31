@@ -70,13 +70,11 @@ router.put("/quality-refund-update/:id", async (req, res) => {
               return res.status(400).json({ message: 'All fields are required' });
           }
   
-  
-  
           // Find the complaint by id
-          const refund = await ComplaintSchema.findById(id);
+          const refund = await RefundSchema.findById(id);
   
           if (!refund) {
-              return res.status(404).json({ message: 'Complaint not found' });
+              return res.status(404).json({ message: 'Refund not found' });
           }
   
           // Update complaint fields
@@ -92,7 +90,7 @@ router.put("/quality-refund-update/:id", async (req, res) => {
           await refund.save();
   
           // Send success response
-          res.status(200).json({ message: 'Complaint updated', refund });
+          res.status(200).json({ message: 'Refund updated', refund });
       } catch (error) {
           // Log the error for debugging
           console.error(error);
@@ -115,7 +113,7 @@ router.delete("/quality-refund-delete/:id", async (req,res) =>{
   const {id} = req.params;
   RefundSchema.findByIdAndDelete(id)
   .then((complaint) => {
-    res.status(200).json({message: 'Complaint deleted'})
+    res.status(200).json({message: 'Refund deleted'})
   })
   .catch((error) => {
     res.status(500).json({message: 'Server Error'})
