@@ -73,7 +73,7 @@ router.put("/quality-refund-update/:id", async (req, res) => {
           }
   
           // Update complaint fields
-          complaint.cus_id = cusid;
+          complaint.cus_id = cus_id;
           complaint.complaint_type = complaint_type;
           complaint.order_id = order_id;
           complaint.resolving_option = resolving_option;
