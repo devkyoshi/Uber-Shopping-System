@@ -7,6 +7,14 @@ let orderSchema = require("../models/order_schema");
              IT22107978 => PEIRIS T.C.L [Quality Assurance management]
 */
 
+/**
+ "driver_id":"DA1010",
+        "market_name":"Keells",
+        "district":"colombo",
+        "branch":"Rathmalana",
+        "issue_type":"gvuhhijads",
+        "description":"dtfytfyng"
+ */
 
 // Create complaint
 router.post("/quality-complaint-create", async (req, res) => {

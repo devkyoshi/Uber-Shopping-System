@@ -112,7 +112,7 @@ router.get("/quality-refund-read", async (req,res) =>{
 router.delete("/quality-refund-delete/:id", async (req,res) =>{
   const {id} = req.params;
   RefundSchema.findByIdAndDelete(id)
-  .then((complaint) => {
+  .then((refund) => {
     res.status(200).json({message: 'Refund deleted'})
   })
   .catch((error) => {

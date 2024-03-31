@@ -61,6 +61,9 @@ const QualityRouter = require('./routes/Complaint.js');
 app.use("/quality", QualityRouter);
 const RefundRouter = require('./routes/Refund.js');
 app.use("/refund", RefundRouter);
+const ReportRouter = require('./routes/Report.js');
+app.use("/report", ReportRouter);
+
 
 const superMarketRouter = require("./routes/supermarketCRUD.js");
 app.use("/supermarket",superMarketRouter);
