@@ -50,7 +50,8 @@ app.use("/refund", RefundRouter);
 const ReportRouter = require('./routes/Report.js');
 app.use("/report", ReportRouter);
 
-
+const Order = require("./routes/orderCRUD.js");
+app.use("/Order", Order);
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
