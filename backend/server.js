@@ -48,7 +48,8 @@ app.use("/report", ReportRouter);
 
 const Order = require("./routes/orderCRUD.js");
 app.use("/Order", Order);
-
+const Customer = require("./routes/customerCRUD.js");
+app.use("/Customer", Customer);
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
