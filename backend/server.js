@@ -15,10 +15,6 @@ const PORT = process.env.PORT || 8070;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/',(req,res) => {
-    res.send('Hello world')
-})
-
 //get url
 const URL = process.env.MONGODB_URL;
 
@@ -52,6 +48,7 @@ app.use("/report", ReportRouter);
 
 const Order = require("./routes/orderCRUD.js");
 app.use("/Order", Order);
+
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
