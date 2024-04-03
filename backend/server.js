@@ -42,9 +42,8 @@ connection.once("open", () => {
 
 
 /* Add your part here */
-const employeeRouter = require("./routes/EmployeeCRUD.js");
-app.use("/employee",employeeRouter);  
 
+<<<<<<< Updated upstream
 const orderRouter = require('./routes/orderCRUD'); 
 app.use("/order", orderRouter);
 
@@ -57,6 +56,8 @@ app.use("/branch", branchRouter);
 const customerRouter = require('./routes/customerCRUD.js');
 app.use("/customer", customerRouter);
 
+=======
+>>>>>>> Stashed changes
 const QualityRouter = require('./routes/Complaint.js');
 app.use("/quality", QualityRouter);
 const RefundRouter = require('./routes/Refund.js');
@@ -65,18 +66,6 @@ const ReportRouter = require('./routes/Report.js');
 app.use("/report", ReportRouter);
 
 
-const superMarketRouter = require("./routes/supermarketCRUD.js");
-app.use("/supermarket",superMarketRouter);
-const ItemRouter = require("./routes/itemCRUD.js");
-app.use("/item",ItemRouter);
-const PromotionRouter = require("./routes/promotionCRUD.js");
-app.use("/promotion",PromotionRouter);
-
-
-const driverRouter = require("./routes/driverCRUD.js");
-app.use("/driver", driverRouter);
-const TaskRouter = require("./routes/taskCRUD.js");
-app.use("/task", TaskRouter);
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
