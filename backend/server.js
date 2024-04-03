@@ -43,21 +43,6 @@ connection.once("open", () => {
 
 /* Add your part here */
 
-<<<<<<< Updated upstream
-const orderRouter = require('./routes/orderCRUD'); 
-app.use("/order", orderRouter);
-
-const paymentRouter = require("./routes/paymentCRUD.js");
-app.use("/payment", paymentRouter);
-
-const branchRouter = require("./routes/branchCRUD.js");
-app.use("/branch", branchRouter);
-
-const customerRouter = require('./routes/customerCRUD.js');
-app.use("/customer", customerRouter);
-
-=======
->>>>>>> Stashed changes
 const QualityRouter = require('./routes/Complaint.js');
 app.use("/quality", QualityRouter);
 const RefundRouter = require('./routes/Refund.js');
