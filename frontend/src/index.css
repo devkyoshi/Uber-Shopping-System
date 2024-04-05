@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities{
+
+  .bg{
+    background: #F9F9F9;
+  }
+  .nav-component{
+    padding: 2rem 1.5rem;
+    width: 374px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.78);
+    border: 3px solid #FFDAB9;
+    backdrop-filter: blur(4.5px);
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .main-component{
+      flex:1;
+      background: rgba(245, 245, 245, 1);
+      border: 3px solid #ECECEC;
+      backdrop-filter: blur(4.5px);
+      border-radius: 10px;
+      overflow: auto;
+      overflow-x: hidden;
+      &::-webkit-scrollbar{
+        width: 0;
+      }
+
+  }
+
+  .main-layout{
+    padding:2rem;
+    height:100%;
+    display:flex;
+    gap:2rem; 
+  }
+
+  .inner-layout{
+    background-color: #ffffff;
+    padding:2rem 1.5rem;
+    width:100%;
+    border-radius: .5rem;
+    box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.1);
+  }
+
+  .global-style{
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      list-style:none;
+   }
+
+   /***************************************************/
+   :root{
+      --primary-color: #222260;
+      --primary-color2: 'color:rgba(34, 34, 96, .6)';
+      --primary-color3: 'color:rgba(34, 34, 96, .4)';
+      --color-green: #42AD00;
+      --color-grey: #aaa;
+      --color-accent: #F56692
+      --color-delete: #FF0000
+   }
+   body{
+      font-family: 'Nunito Sans', sans-serif;
+      font-size:clamp(1rem, 1.5vw, 1.2rem);
+      overflow:hidden;
+      color: rgba(34,34,96,.6);
+   }
+  }
+
+  .back-ground{
+    height:100vh;
+    background-color: yellowgreen ;
+    position:relative;
+    main{
+      flex:1;
+      background: rgba(255, 255, 255, 1);
+      border: 3px solid #FFDAB9;
+      backdrop-filter: blur(4.5px);
+      border-radius: 32px;
+      overflow: auto;
+      overflow-x: hidden;
+      &::-webkit-scrollbar{
+        width: 0;
+      }
+
+    }
+  }
+
+  .logo-span1{
+    color: #353b26;
+  }
+
+  .logo-span2{
+    color: #f8f8f8;
+  }
+
+  .text-main{
+    color: #353b26;
+  }
+
+  .header-bg{
+    background-color: #a0ac87;
+  }
+
+
+  .nav{
+    padding: 2rem 1.5rem;
+    width: 374px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.78);
+    border: 3px solid #FFDAB9;
+    backdrop-filter: blur(4.5px);
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    .user-con{
+        height: 100px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        img{
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #707EA0 ;
+            border: 2px solid #FFFFFF;
+            padding: .2rem;
+            box-shadow: 0px 1px 17px rgba(0, 0, 0, 0.06);
+        }
+        h2{
+            color: rgba(34, 34, 96, 1);
+        }
+        p{
+            color: rgba(34, 34, 96, .6);
+        }
+    }
+    .menu-items{
+        flex:1;
+        display: flex;
+        flex-direction: column;
+        li{
+            display: grid;
+            grid-template-columns: 40px auto;
+            text-align: center;
+            margin: .6rem 0;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.4s ease-in-out;
+            color: rgba(34, 34, 96, .6);
+            padding-left: 1rem;
+            position: relative; 
+            i{
+                color: rgba(34, 34, 96, .6);
+                font-size:1.4rem;
+                transition:all .4s ease-in-out;
+
+            }
+
+        }
+    }
+    .active{
+        color:rgba(34, 34, 96, 1) !important;
+        i{
+            color:rgba(34, 34, 96, 1) !important;
+        }
+        &::before{
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: #222260;
+            border-radius:0 10px 10px 0;
+        }
+    }
+  }
+}
