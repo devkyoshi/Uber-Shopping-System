@@ -53,6 +53,10 @@ const Payment = require("./routes/paymentCRUD.js");
 app.use("/Payment", Payment);
 const Revenue = require("./routes/revenueCRUD.js");
 app.use("/Revenue", Revenue);
+const Task = require("./routes/taskCRUD.js");
+app.use("/Task", Task);
+const Driver = require("./routes/driverCRUD.js");
+app.use("/Driver", Driver);
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
