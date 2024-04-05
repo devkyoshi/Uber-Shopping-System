@@ -57,6 +57,12 @@ const Task = require("./routes/taskCRUD.js");
 app.use("/Task", Task);
 const Driver = require("./routes/driverCRUD.js");
 app.use("/Driver", Driver);
+const Supermarket = require("./routes/supermarketCRUD.js");
+app.use("/Supermarket", Supermarket);
+const Items = require("./routes/itemsCRUD.js");
+app.use("/Items", Items);
+const Promotion = require("./routes/promotionCRUD.js");
+app.use("/Promotion", Promotion);
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
