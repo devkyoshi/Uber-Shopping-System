@@ -45,11 +45,14 @@ const RefundRouter = require('./routes/Refund.js');
 app.use("/refund", RefundRouter);
 const ReportRouter = require('./routes/Report.js');
 app.use("/report", ReportRouter);
-
 const Order = require("./routes/orderCRUD.js");
 app.use("/Order", Order);
 const Customer = require("./routes/customerCRUD.js");
 app.use("/Customer", Customer);
+const Payment = require("./routes/paymentCRUD.js");
+app.use("/Payment", Payment);
+const Revenue = require("./routes/revenueCRUD.js");
+app.use("/Revenue", Revenue);
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
