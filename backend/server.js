@@ -63,6 +63,8 @@ const Items = require("./routes/itemsCRUD.js");
 app.use("/Items", Items);
 const Promotion = require("./routes/promotionCRUD.js");
 app.use("/Promotion", Promotion);
+const Branch = require("./routes/branchCRUD.js");
+app.use("/Branch", Branch);
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
