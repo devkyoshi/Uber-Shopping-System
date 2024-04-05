@@ -63,12 +63,6 @@ const Items = require("./routes/itemsCRUD.js");
 app.use("/Items", Items);
 const Promotion = require("./routes/promotionCRUD.js");
 app.use("/Promotion", Promotion);
-const Complaint = require("./routes/complaintCRUD.js");
-app.use("/Complaint", Complaint);
-const Refund = require("./routes/refundCRUD.js");
-app.use("/Refund", Refund);
-const Report = require("./routes/reportCRUD.js");
-app.use("/Report", Report);
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
