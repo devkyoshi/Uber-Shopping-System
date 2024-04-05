@@ -1,52 +1,36 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const ComplaintSchema = new mongoose.Schema({
-    cus_id:{
-        type:String,
-        required:true,
-        trim:true,
-        maxLength:10
+const complaintSchema = new Schema({
+    order_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Order'
     },
-    complaint_type:{
-        type:String,
-        required:true,
-        trim:true,
-        maxLength:50
+    payment_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Order'
     },
-    order_id:{
-        type:String,
-        required:true,
-        trim:true,
-        maxLength:100
+    complaint_type: {
+        type: Number,
+        required: true
     },
-    resolving_option:{
-        type:String,
-        required:true,
-        trim:true,
-        maxLength:20
+    resolving_option: {
+        type: String,
+        required: true
     },
-     payment_id:{
-        type:String,
-        required:true,
-        trim:true,
-        maxLength:10
+    complaint_img: {
+        type: Buffer,
+        required: true
     },
-    /*complaint_img:{
-        type:Buffer,  
-        required:true, 
-    },*/
-    quantity:{
-        type:Number,
-        required:true,
-        trim:true
+    quantity: {
+        type: String,
+        required: true
     },
-    complaint_status:{
-        type:String,
-        required:true,
-        trim:true,
-        maxLength:10
+    complaint_status: {
+        type: String,
+        required: true
     }
+});
 
-},{timestamps:true})
-
-module.exports = mongoose.model('Complaint',ComplaintSchema)
+const Complaint = mongoose.model("Complaint", complaintSchema);
+module.exports = Complaint;
