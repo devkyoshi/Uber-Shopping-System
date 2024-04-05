@@ -1,11 +1,11 @@
 
 const router = require('express').Router()
 let RefundSchema = require("../models/RefundSchema");
-let orderSchema = require("../models/order_schema");
+let orderSchema = require("../models/order");
 let ComplaintSchema = require("../models/ComplaintSchema");
 
 /*
-             IT22107978 => PEIRIS T.C.L [Quality Assurance management]
+    IT22107978 => PEIRIS T.C.L [Quality Assurance management]
 */
 
 

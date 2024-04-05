@@ -1,7 +1,7 @@
 
 const router = require('express').Router()
 let ReportSchema = require("../models/ReportSchema");
-let employeeSchema = require("../models/employee_schema")
+let employeeSchema = require("../models/employee")
 
 /*
              IT22107978 => PEIRIS T.C.L [Quality Assurance management]

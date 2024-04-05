@@ -1,7 +1,7 @@
 
 const router = require('express').Router()
 let ComplaintSchema = require("../models/ComplaintSchema");
-let orderSchema = require("../models/order_schema");
+let orderSchema = require("../models/order");
 
 /*
              IT22107978 => PEIRIS T.C.L [Quality Assurance management]

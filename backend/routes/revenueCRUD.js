@@ -5,7 +5,7 @@ const Order = require('../models/order');
 
 // Calculate daily revenue
 router.get('/calculate-daily-revenue', async (req, res) => {
-    try {
+    try { 
         const date = new Date(); // Use current date
         const startOfDay = new Date(date.setHours(0, 0, 0));
         const endOfDay = new Date(date.setHours(23, 59, 59));
