@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
-
 require("dotenv").config();
 
 //created a port
@@ -39,6 +38,7 @@ connection.once("open", () => {
 
 /* Add your part here */
 
+
 const QualityRouter = require('./routes/complaintCRUD.js');
 app.use("/quality", QualityRouter);
 // const RefundRouter = require('./routes/refundCRUDjs');
@@ -71,6 +71,11 @@ app.use("/Refund", Refund);
 // app.use("/Report", Report);
 const Branch = require("./routes/branchCRUD.js");
 app.use("/Branch", Branch);
+
+  //register authentication                                                             error check 
+  const authroutes= require('./routes/Employee_authentication.route.js');
+  app.use('/Employee', authroutes);
+
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)

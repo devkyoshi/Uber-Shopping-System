@@ -9,11 +9,13 @@ import HomeUnregistered from "./pages/HomeUnregistered";
 import { NavigationBar } from "./components/NavigationBar";
 import { Footer } from "./components/Footer";
 import Payment from "./pages/Payment";
-
+import Employee_Registration from "./pages/Employee_Registration";
+import Header from "./components/Header";
 export default function App() {
   return (
     <BrowserRouter>
-      <NavigationBar />
+    <Header/>
+      {/* <NavigationBar /> */}
       <Routes>
         <Route path="/unregiHome" element={<HomeUnregistered />} />
         <Route path="/home" element={<Home />} />
@@ -23,6 +25,7 @@ export default function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/orderForm" element={<OrderForm />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/Employee_Registration" element={<Employee_Registration/>}/>
       </Routes>
       <Footer />
     </BrowserRouter>
