@@ -70,9 +70,9 @@ function NavListMenu() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const renderItems = navListMenuItems.map(
     ({ icon, title, description }, key) => (
-      <a href="#" key={key}>
+      <a href="#"  key={key}>
         <MenuItem className="flex items-center gap-3 rounded-lg">
-          <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2 ">
+          <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2">
             {" "}
             {React.createElement(icon, {
               strokeWidth: 2,
@@ -183,7 +183,8 @@ export function NavigationBar() {
   }, []);
  
   return (
-    <Navbar className="mx-auto max-w-screen-xl px-4 py-2">
+    <div className="pt-5">
+      <Navbar className="mx-auto max-w-screen-xl px-4 py-2 ">
       <div className="flex items-center justify-between text-blue-gray-900">
         <Typography
           as="a"
@@ -229,5 +230,6 @@ export function NavigationBar() {
         </div>
       </Collapse>
     </Navbar>
+    </div>
   );
 }
