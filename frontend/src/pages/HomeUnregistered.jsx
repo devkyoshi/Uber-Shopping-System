@@ -25,7 +25,7 @@ export default function HomeUnregistered() {
             </div>
         </section>
         
-            <Footer/>
+          
         
     </div>
 
