@@ -1,5 +1,4 @@
 import React from "react";
-import { useCountries } from "use-react-countries";
 import {
   Card,
   CardHeader,
@@ -76,14 +75,13 @@ function formatExpires(value) {
 }
 
 export default function PaymentForm() {
-  const { countries } = useCountries();
   const [type, setType] = React.useState("card");
   const [cardNumber, setCardNumber] = React.useState("");
   const [cardExpires, setCardExpires] = React.useState("");
 
   return (
-    <div className="pt-10 pl-20 ">
-      <Card className="w-full max-w-[30rem]">
+    <div className="pt-10 pl-20 " style={{ width: "35rem" }}>
+      <Card className="w-full h-full max-w-[30rem] ">
         <CardHeader
           color="gray"
           floated={false}
