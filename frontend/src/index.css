@@ -7,6 +7,15 @@
 
 @layer utilities{
 
+  .service-img{
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    top:10px;
+    right: 30px;
+    border-radius: 50%;
+  }
+
   .delivery-img{
     border-radius: 400px 500px 500px 400px;
     width: 400px;
