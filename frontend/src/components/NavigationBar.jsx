@@ -1,4 +1,6 @@
 import React from "react";
+
+
 import {
   Navbar,
   Collapse,
@@ -27,23 +29,19 @@ import {
   SunIcon,
   TagIcon,
   UserGroupIcon,
+  ShoppingCartIcon
 } from "@heroicons/react/24/solid";
  
 const navListMenuItems = [
   {
     title: "Products",
-    description: "Find the perfect solution for your needs.",
+    description: "Find the perfect items for your needs.",
     icon: SquaresPlusIcon,
   },
   {
     title: "About Us",
     description: "Meet and learn about our dedication",
     icon: UserGroupIcon,
-  },
-  {
-    title: "Blog",
-    description: "Find the perfect solution for your needs.",
-    icon: Bars4Icon,
   },
   {
     title: "Services",
@@ -56,19 +54,9 @@ const navListMenuItems = [
     icon: GlobeAmericasIcon,
   },
   {
-    title: "Contact",
-    description: "Find the perfect solution for your needs.",
-    icon: PhoneIcon,
-  },
-  {
-    title: "News",
-    description: "Read insightful articles, tips, and expert opinions.",
-    icon: NewspaperIcon,
-  },
-  {
-    title: "Products",
-    description: "Find the perfect solution for your needs.",
-    icon: RectangleGroupIcon,
+    title: "My Cart",
+    description: "Process Your Order",
+    icon: ShoppingCartIcon,
   },
   {
     title: "Special Offers",
