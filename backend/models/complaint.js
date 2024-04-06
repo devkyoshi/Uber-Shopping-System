@@ -4,15 +4,22 @@ const Schema = mongoose.Schema;
 const complaintSchema = new Schema({
     order_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Order'
+        ref: 'Order',
+        required:true
     },
     payment_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Order'
+        ref: 'Order',
+        required:true
     },
     complaint_type: {
         type: Number,
         required: true
+    },
+    item_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Order',
+        required:true
     },
     resolving_option: {
         type: String,
@@ -28,7 +35,7 @@ const complaintSchema = new Schema({
     },
     complaint_status: {
         type: String,
-        required: true
+        default: "pending"
     }
 });
 

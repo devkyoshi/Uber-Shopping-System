@@ -9,13 +9,14 @@ const mongoose = require('mongoose');
 // Create a new complaint
 router.post("/complaint-add", async (req, res) => {
     try {
-        const { complaint_type, order_id, resolving_option, payment_id, complaint_img, quantity, complaint_status} = req.body;
+        const { order_id, payment_id ,complaint_type ,item_id ,resolving_option , complaint_img, quantity, complaint_status} = req.body;
 
         const newComplaint = new Complaint({
-            complaint_type,
             order_id,
-            resolving_option,
             payment_id,
+            complaint_type,
+            item_id,
+            resolving_option,
             complaint_img,
             quantity, 
             complaint_status
@@ -33,13 +34,14 @@ router.post("/complaint-add", async (req, res) => {
 router.put("/complaint-update/:complaintID", async (req, res) => {
     try {
         const { complaintID } = req.params;
-        const { complaint_type, order_id, resolving_option, payment_id, complaint_img, quantity, complaint_status} = req.body;
+        const {  order_id, payment_id ,complaint_type ,item_id ,resolving_option , complaint_img, quantity, complaint_status} = req.body;
 
         const updatedComplaint = await Complaint.findByIdAndUpdate(complaintID, {
-            complaint_type,
             order_id,
-            resolving_option,
             payment_id,
+            complaint_type,
+            item_id,
+            resolving_option,
             complaint_img,
             quantity, 
             complaint_status
