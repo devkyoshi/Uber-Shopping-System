@@ -2,10 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+
 @layer utilities{
+ 
+  :root{
+    --logo-green1: #114232;
+    --logo-green2: #87A922;
+    --background: #F9F9F9;
+ }
+
+/* Navigation Bar Starts*/
+ .logo-span1 {
+  color: var(--logo-green1);
+  font-family: "Nunito", sans-serif;
+  font-size: large;
+}
+
+.logo-span2 {
+  color: var(--logo-green2);
+  font-family: "Nunito", sans-serif;
+  font-size: large;
+}
+
+.nav-pages{
+  font-size:medium;
+}
+/* Navigation Bar Ends*/
+
 
   .bg{
-    background: #F9F9F9;
+    background: var(--background);
   }
   .nav-component{
     padding: 2rem 1.5rem;
@@ -50,35 +78,9 @@
     box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.1);
   }
 
-  .global-style{
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      list-style:none;
-   }
-
-   /***************************************************/
-   :root{
-      --primary-color: #222260;
-      --primary-color2: 'color:rgba(34, 34, 96, .6)';
-      --primary-color3: 'color:rgba(34, 34, 96, .4)';
-      --color-green: #42AD00;
-      --color-grey: #aaa;
-      --color-accent: #F56692
-      --color-delete: #FF0000
-   }
-   body{
-      font-family: 'Nunito Sans', sans-serif;
-      font-size:clamp(1rem, 1.5vw, 1.2rem);
-      overflow:hidden;
-      color: rgba(34,34,96,.6);
-   }
-  }
-
   .back-ground{
     height:100vh;
-    background-color: yellowgreen ;
+    background-color: #F9F9F9 ;
     position:relative;
     main{
       flex:1;
@@ -95,21 +97,6 @@
     }
   }
 
-  .logo-span1{
-    color: #353b26;
-  }
-
-  .logo-span2{
-    color: #f8f8f8;
-  }
-
-  .text-main{
-    color: #353b26;
-  }
-
-  .header-bg{
-    background-color: #a0ac87;
-  }
 
 
   .nav{
