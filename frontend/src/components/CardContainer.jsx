@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Card,
   CardHeader,
   CardBody,
   CardFooter,
   Typography,
-  Button,
   IconButton,
 } from "@material-tailwind/react";
-import { PopOver } from './PopOver';
+import { PopOver } from "./PopOver";
 
 export function CardContainer() {
   const [isPopOverOpen, setIsPopOverOpen] = useState(false);
@@ -43,7 +42,11 @@ export function CardContainer() {
       </CardHeader>
       <CardBody>
         <div className="mb-3 flex items-center justify-between">
-          <Typography variant="h5" color="blue-gray" className="font-bold items-center justify-center">
+          <Typography
+            variant="h5"
+            color="blue-gray"
+            className="font-bold items-center justify-center"
+          >
             Wooden House, Florida
           </Typography>
         </div>
@@ -53,7 +56,12 @@ export function CardContainer() {
         </Typography>
       </CardBody>
       <CardFooter className="pt-3  px-18 text-center">
-        <PopOver size="lg" fullWidth={true} isOpen={isPopOverOpen} togglePopover={togglePopOver}/>
+        <PopOver
+          size="lg"
+          fullWidth={true}
+          isOpen={isPopOverOpen}
+          togglePopover={togglePopOver}
+        />
       </CardFooter>
     </Card>
   );
