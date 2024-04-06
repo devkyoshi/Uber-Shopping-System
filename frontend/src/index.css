@@ -7,6 +7,16 @@
 
 @layer utilities{
 
+  .delivery-img{
+    border-radius: 400px 500px 500px 400px;
+    width: 400px;
+    height:400px;
+    margin: 10px;
+    left:-10px;
+    position: absolute;
+    bottom: -10px;
+  }
+
   .solid-color-pic{
     background-color: #373737;
     padding: 300px;
@@ -24,6 +34,24 @@
     background-color:#C5C6D0;
     border-radius: 0 1px 500px 0;
   }
+
+  .text-middle{
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .text-middle h2{
+    font-size: 34px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .text-middle p{
+    font-size: 20px;
+    line-height: 1.5;
+  }
+
+
  
   :root{
     --logo-green1: #114232;
