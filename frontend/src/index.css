@@ -7,6 +7,39 @@
 
 @layer utilities{
 
+  .veg-img{
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    bottom:30px;
+    right: 210px;
+    border-radius: 50%;
+    border: 7px dashed #FFFFFF;
+
+  }
+
+  .salad-img{
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    bottom:220px;
+    right: 90px;
+    border-radius: 50%;
+    border: 5px solid #FFFFFF;
+
+  }
+
+  .carrot-img{
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    bottom:50px;
+    right: 40px;
+    border-radius: 50%;
+    border: 7px dashed #FFFFFF;
+
+  }
+
   .service-img{
     width: 400px;
     height: 400px;
