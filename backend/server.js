@@ -39,20 +39,20 @@ connection.once("open", () => {
 
 /* Add your part here */
 
-const QualityRouter = require('./routes/Complaint.js');
+const QualityRouter = require('./routes/complaintCRUD.js');
 app.use("/quality", QualityRouter);
-const RefundRouter = require('./routes/Refund.js');
-app.use("/refund", RefundRouter);
-const ReportRouter = require('./routes/Report.js');
-app.use("/report", ReportRouter);
+// const RefundRouter = require('./routes/refundCRUDjs');
+// app.use("/refund", RefundRouter);
+// const ReportRouter = require('./routes/reportCRUD.js');
+// app.use("/report", ReportRouter);
 const Order = require("./routes/orderCRUD.js");
 app.use("/Order", Order);
 const Customer = require("./routes/customerCRUD.js");
 app.use("/Customer", Customer);
 const Payment = require("./routes/paymentCRUD.js");
 app.use("/Payment", Payment);
-const Revenue = require("./routes/revenueCRUD.js");
-app.use("/Revenue", Revenue);
+// const Revenue = require("./routes/revenueCRUD.js");
+// app.use("/Revenue", Revenue);
 const Task = require("./routes/taskCRUD.js");
 app.use("/Task", Task);
 const Driver = require("./routes/driverCRUD.js");
@@ -67,8 +67,10 @@ const Complaint = require("./routes/complaintCRUD.js");
 app.use("/Complaint", Complaint);
 const Refund = require("./routes/refundCRUD.js");
 app.use("/Refund", Refund);
-const Report = require("./routes/reportCRUD.js");
-app.use("/Report", Report);
+// const Report = require("./routes/reportCRUD.js");
+// app.use("/Report", Report);
+const Branch = require("./routes/branchCRUD.js");
+app.use("/Branch", Branch);
 
 app.listen(PORT, () =>{
     console.log(`Server is up and running no port:  ${PORT}`)
