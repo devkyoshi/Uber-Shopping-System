@@ -7,6 +7,22 @@
 
 @layer utilities{
 
+  .share{
+    text-align: center;
+    font-size: 20px;
+  }
+
+  .ourM{
+    color: #373737;
+    font-size: 34px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    
+  }
+
   .veg-img{
     width: 250px;
     height: 250px;
