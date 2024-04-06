@@ -17,6 +17,11 @@ export default function About() {
       You can expect exceptional service from start to finish.
       Our dedicated team is here to assist you with any questions or special request you may have.
       We're here to make you shopping experience a breeze by helping you to pick groceries effectively and wisely.</p>
+      <h3 className='ourM'>Join us on Our Journey</h3>
+      <p className='share'>We invite you to join us on our mission to share love through grocery delivery.
+      Whether you're busy parent,a working professional, or simply someone who appreciate the convenience of having
+      fresh groceries delivered to you door ,we're here to save you.Thank you for choosing Uber.Shopping as your 
+      trusted partner in nourising your family and spread love, one delivery at a time.</p>
     </div>
   )
 }
