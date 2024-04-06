@@ -7,7 +7,7 @@ const SITEMAP = [
   },
   {
     title: "Help Center",
-    links: ["Discord", "Twitter", "GitHub", "Contact Us"],
+    links: ["Instagram", "Facebook", "Whatsapp", "Contact Us"],
   },
   {
     title: "Resources",
@@ -15,7 +15,7 @@ const SITEMAP = [
   },
   {
     title: "Products",
-    links: ["Templates", "UI Kits", "Icons", "Mockups"],
+    links: ["Groceries", "Electronics", "Kids", "Ceremics"],
   },
 ];
  
@@ -55,7 +55,7 @@ export function Footer() {
             variant="small"
             className="mb-4 text-center font-normal text-blue-gray-900 md:mb-0"
           >
-            &copy; {currentYear} <a href="https://material-tailwind.com/">Material Tailwind</a>. All
+            &copy; {currentYear} <a href="https://material-tailwind.com/">Group ITP_B4_12</a>. All
             Rights Reserved.
           </Typography>
           <div className="flex gap-4 text-blue-gray-900 sm:justify-center">

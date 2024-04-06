@@ -10,7 +10,7 @@ export default function HomeUnregistered() {
         <section class="routes" id="reservations">
         
             <h1 class="heading">
-                Popular <span>Destinations</span>
+                Shop Items
             </h1>
 
             <div class="box-container">
