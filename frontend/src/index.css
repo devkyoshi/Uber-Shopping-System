@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 
 @layer utilities{
@@ -13,23 +13,50 @@
     --background: #F9F9F9;
  }
 
+ *{
+    font-family: "Nunito", sans-serif;
+ }
+
 /* Navigation Bar Starts*/
  .logo-span1 {
   color: var(--logo-green1);
-  font-family: "Nunito", sans-serif;
   font-size: large;
+  font-weight: 800;
 }
 
 .logo-span2 {
   color: var(--logo-green2);
-  font-family: "Nunito", sans-serif;
   font-size: large;
+  font-weight: 800;
 }
 
 .nav-pages{
   font-size:medium;
+  font-family: "Nunito", sans-serif;
 }
 /* Navigation Bar Ends*/
+
+
+section{
+  padding: 1rem 3%;  
+}
+
+.heading{
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.heading span{
+  color:var(--brown);
+}
+
+.box-container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
 
 
   .bg{
