@@ -24,11 +24,8 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/orderForm" element={<OrderForm />} />
         <Route path="/payment" element={<Payment />} />
-<<<<<<< Updated upstream
         <Route path="/complaint" element={<Complaint />} />
-=======
         <Route path="/customer_register" element={<Register/>}/>
->>>>>>> Stashed changes
         <Route path="/Employee_Registration" element={<Employee_Registration/>}/>
       </Routes>
       <Footer />
