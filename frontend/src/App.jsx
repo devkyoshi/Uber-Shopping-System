@@ -7,6 +7,7 @@ import About from "./pages/About";
 import OrderForm from "./pages/OrderForm";
 import HomeUnregistered from "./pages/HomeUnregistered";
 import { NavigationBar } from "./components/NavigationBar";
+import { Footer } from "./components/Footer";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
       <Route path="/orderForm" element = {<OrderForm/>}/>
     </Routes>
     {/* <Footer/> */}
+    <Footer/>
   </BrowserRouter>
   );
 }
