@@ -10,6 +10,7 @@ import { NavigationBar } from "./components/NavigationBar";
 import { Footer } from "./components/Footer";
 import Payment from "./pages/Payment";
 import Employee_Registration from "./pages/Employee_Registration";
+import Complaint from "./pages/Complaint"
 import Header from "./components/Header";
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/orderForm" element={<OrderForm />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/complaint" element={<Complaint />} />
         <Route path="/Employee_Registration" element={<Employee_Registration/>}/>
       </Routes>
       <Footer />
