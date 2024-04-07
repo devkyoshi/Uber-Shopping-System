@@ -1,5 +1,82 @@
 const mongoose = require("mongoose");
 
+const cashPaymentSchema = new mongoose.Schema({
+  payment_method: {
+    type: String,
+    default: "cash",
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  payment_amount: {
+    type: Number,
+    required: true,
+  },
+  district: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  postal_code: {
+    type: Number,
+  },
+  paid_time: {
+    type: Date,
+    default: Date.now,
+  },
+  payment_status: {
+    type: String,
+    default: "Pending",
+  },
+  updated_time: {
+    type: Date,
+  },
+});
+
+const cardPaymentSchema = new mongoose.Schema({
+  payment_method: {
+    type: String,
+    default: "card",
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  account_number: {
+    type: String,
+    required: true,
+  },
+  exp: {
+    type: String,
+    required: true,
+  },
+  cvc: {
+    type: Number,
+    required: true,
+  },
+  account_holder: {
+    type: String,
+    required: true,
+  },
+  payment_amount: {
+    type: Number,
+    required: true,
+  },
+  paid_time: {
+    type: Date,
+    default: Date.now,
+  },
+  payment_status: {
+    type: String,
+    default: "Paid",
+  },
+  updated_time: {
+    type: Date,
+  },
+});
+
 const orderSchema = new mongoose.Schema({
   customer_id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -36,33 +113,8 @@ const orderSchema = new mongoose.Schema({
       default: Date.now,
     },
   },
-  items: [
-    {
-      item_id: {
-        type: mongoose.Schema.Types.ObjectId,
-      },
-      quantity: {
-        type: Number,
-      },
-    },
-  ],
-  payment: {
-    _id: {
-      type: mongoose.Schema.Types.ObjectId,
-    },
-    payment_method: {
-      type: String,
-    },
-    payment_amount: {
-      type: Number,
-    },
-    paid_time: {
-      type: Date,
-    },
-    payment_status: {
-      type: String,
-    },
-  },
+  cash_payment: cashPaymentSchema,
+  card_payment: cardPaymentSchema,
 });
 
 const Order = mongoose.model("Order", orderSchema);
