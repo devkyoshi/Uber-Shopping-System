@@ -80,7 +80,7 @@ router.delete("/complaint-delete/:complaintID", async (req, res) => {
 // Read all complaint
 router.get("/complaint-all", async (req, res) => {
     try {
-        const complaint = await Complaint.find({order_id,complaint_status,item_id,quantity});
+        const complaint = await Complaint.find({},'order_id complaint_status item_id quantity');
         res.json(complaint);
     } catch (error) {
         console.error(error);
