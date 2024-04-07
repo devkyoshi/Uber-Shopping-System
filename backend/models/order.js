@@ -112,6 +112,17 @@ const orderSchema = new mongoose.Schema({
       type: Date,
       default: Date.now,
     },
+
+    items: [
+      {
+        item_id: {
+          type: mongoose.Schema.Types.ObjectId,
+        },
+        quantity: {
+          type: Number,
+        },
+      },
+    ],
   },
   cash_payment: cashPaymentSchema,
   card_payment: cardPaymentSchema,
