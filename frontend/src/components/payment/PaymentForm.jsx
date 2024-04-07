@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Card,
   CardHeader,
@@ -92,43 +93,24 @@ export default function PaymentForm() {
   const [alertMessage, setAlertMessage] = useState(""); // State for alert message
   const [showAlert, setShowAlert] = useState(false); // State for controlling alert visibility
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleCardSubmit = async (event) => {
-    event.preventDefault();
+  const orderId = ""; //TODO:This should be changed!!!!!
 
+  const handleCardSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await fetch(
-        //TODO:order ID should be come here
-        "http://localhost:8070/Payment/pay-card/66120fc9f7b97eacbe3cb331/add-payment",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
+      await axios.post(
+        `http://localhost:8070/Payment/pay-card/66120fc9f7b97eacbe3cb331/add-payment`,
+        formData
       );
-
-      if (!response.ok) {
-        throw new Error("Failed to submit payment form data");
-      } else {
-        console.log("Payment Success!!");
-        setAlertMessage("Payment Successful! Thank You!");
-      }
+      // Handle success
+      console.log("Payment details added successfully");
     } catch (error) {
-      console.error("Error:", error);
-      setAlertMessage(
-        "An error occurred while adding card payment details to the order"
-      );
-    } finally {
-      setShowAlert(true); // Show the alert after handling the submission
+      // Handle error
+      console.error("Error adding payment details:", error);
     }
   };
 
@@ -199,7 +181,8 @@ export default function PaymentForm() {
                       id="email"
                       name="email"
                       value={formData.email}
-                      onChange={handleInputChange}
+                      onChange={handleChange}
+                      required
                       placeholder="name@mail.com"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{
@@ -222,7 +205,8 @@ export default function PaymentForm() {
                       name="account_number"
                       maxLength={19}
                       value={formatCardNumber(formData.account_number)}
-                      onChange={handleInputChange}
+                      onChange={handleChange}
+                      required
                       icon={
                         <CreditCardIcon className="absolute left-0 h-4 w-4 text-blue-gray-300" />
                       }
@@ -244,8 +228,9 @@ export default function PaymentForm() {
                         <Input
                           maxLength={5}
                           name="exp"
+                          required
                           value={formatExpires(formData.exp)}
-                          onChange={handleInputChange}
+                          onChange={handleChange}
                           containerProps={{ className: "min-w-[72px]" }}
                           placeholder="00/00"
                           className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -265,8 +250,9 @@ export default function PaymentForm() {
                         <Input
                           maxLength={4}
                           name="cvc"
+                          required
                           value={formData.cvc}
-                          onChange={handleInputChange}
+                          onChange={handleChange}
                           containerProps={{ className: "min-w-[72px]" }}
                           placeholder="000"
                           className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -287,7 +273,7 @@ export default function PaymentForm() {
                       type="text"
                       name="account_holder"
                       value={formData.account_holder}
-                      onChange={handleInputChange}
+                      onChange={handleChange}
                       placeholder="Your Name"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{

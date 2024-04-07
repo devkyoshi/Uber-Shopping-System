@@ -231,4 +231,54 @@ router.get("/payments/:orderId", async (req, res) => {
   }
 });
 
+// backend/routes/payments.js
+
+// Route to read payments for a specific order ID
+router.get("/:orderId", async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+
+    // Fetch cash payments
+    const cashPayments = await CashPayment.find({ orderId });
+
+    // Fetch card payments
+    const cardPayments = await CardPayment.find({ orderId });
+
+    res.json({ cashPayments, cardPayments });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching payments" });
+  }
+});
+
+// Route method to get all cash payments for a certain customer
+router.get("/cash/:customerId", async (req, res) => {
+  const { customerId } = req.params;
+  try {
+    const cashPayments = await Order.find({
+      customer_id: customerId,
+      cash_payment: { $exists: true },
+    }).select("_id cash_payment");
+    res.json(cashPayments);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving cash payments" });
+  }
+});
+
+// Route method to get all card payments for a certain customer
+router.get("/card/:customerId", async (req, res) => {
+  const { customerId } = req.params;
+  try {
+    const cardPayments = await Order.find({
+      customer_id: customerId,
+      card_payment: { $exists: true },
+    }).select("_id card_payment");
+    res.json(cardPayments);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving card payments" });
+  }
+});
+
 module.exports = router;

@@ -12,7 +12,9 @@ export function PopOver() {
   return (
     <Popover placement="bottom">
       <PopoverHandler>
-        <Button>View Product</Button>
+        <Button className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100">
+          View Product
+        </Button>
       </PopoverHandler>
       <PopoverContent className="w-96 shadow-lg">
         <Typography variant="h6" color="blue-gray" className="mb-5 ml-20 px-12">
