@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardHeader,
@@ -19,6 +19,7 @@ import {
   CreditCardIcon,
   LockClosedIcon,
 } from "@heroicons/react/24/solid";
+import { AlertBox } from "./AlertBox";
 
 const districts = [
   "Ampara",
@@ -48,7 +49,7 @@ const districts = [
   "Vavuniya",
 ];
 
-function formatCardNumber(value) {
+const formatCardNumber = (value) => {
   const val = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
   const matches = val.match(/\d{4,16}/g);
   const match = (matches && matches[0]) || "";
@@ -63,7 +64,7 @@ function formatCardNumber(value) {
   } else {
     return value;
   }
-}
+};
 
 function formatExpires(value) {
   return value
@@ -78,6 +79,58 @@ export default function PaymentForm() {
   const [type, setType] = React.useState("card");
   const [cardNumber, setCardNumber] = React.useState("");
   const [cardExpires, setCardExpires] = React.useState("");
+
+  const [formData, setFormData] = useState({
+    email: "",
+    account_number: "",
+    exp: "",
+    cvc: "",
+    account_holder: "",
+    payment_amount: "",
+  });
+
+  const [alertMessage, setAlertMessage] = useState(""); // State for alert message
+  const [showAlert, setShowAlert] = useState(false); // State for controlling alert visibility
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleCardSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(
+        //TODO:order ID should be come here
+        "http://localhost:8070/Payment/pay-card/66120fc9f7b97eacbe3cb331/add-payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to submit payment form data");
+      } else {
+        console.log("Payment Success!!");
+        setAlertMessage("Payment Successful! Thank You!");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setAlertMessage(
+        "An error occurred while adding card payment details to the order"
+      );
+    } finally {
+      setShowAlert(true); // Show the alert after handling the submission
+    }
+  };
 
   return (
     <div className="pt-10 pl-20 " style={{ width: "35rem" }}>
@@ -128,7 +181,10 @@ export default function PaymentForm() {
               }}
             >
               <TabPanel value="card" className="p-0">
-                <form className="mt-12 flex flex-col gap-4 pr-5">
+                <form
+                  className="mt-12 flex flex-col gap-4 pr-5"
+                  onSubmit={handleCardSubmit}
+                >
                   <div>
                     <Typography
                       variant="small"
@@ -137,8 +193,13 @@ export default function PaymentForm() {
                     >
                       Your Email
                     </Typography>
+
                     <Input
                       type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
                       placeholder="name@mail.com"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{
@@ -157,9 +218,11 @@ export default function PaymentForm() {
                     </Typography>
 
                     <Input
+                      id="account_number"
+                      name="account_number"
                       maxLength={19}
-                      value={formatCardNumber(cardNumber)}
-                      onChange={(event) => setCardNumber(event.target.value)}
+                      value={formatCardNumber(formData.account_number)}
+                      onChange={handleInputChange}
                       icon={
                         <CreditCardIcon className="absolute left-0 h-4 w-4 text-blue-gray-300" />
                       }
@@ -180,10 +243,9 @@ export default function PaymentForm() {
                         </Typography>
                         <Input
                           maxLength={5}
-                          value={formatExpires(cardExpires)}
-                          onChange={(event) =>
-                            setCardExpires(event.target.value)
-                          }
+                          name="exp"
+                          value={formatExpires(formData.exp)}
+                          onChange={handleInputChange}
                           containerProps={{ className: "min-w-[72px]" }}
                           placeholder="00/00"
                           className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -202,6 +264,9 @@ export default function PaymentForm() {
                         </Typography>
                         <Input
                           maxLength={4}
+                          name="cvc"
+                          value={formData.cvc}
+                          onChange={handleInputChange}
                           containerProps={{ className: "min-w-[72px]" }}
                           placeholder="000"
                           className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -220,6 +285,9 @@ export default function PaymentForm() {
                     </Typography>
                     <Input
                       type="text"
+                      name="account_holder"
+                      value={formData.account_holder}
+                      onChange={handleInputChange}
                       placeholder="Your Name"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{
@@ -227,7 +295,9 @@ export default function PaymentForm() {
                       }}
                     />
                   </div>
-                  <Button size="lg">Pay Now</Button>
+                  <Button size="lg" type="submit">
+                    Pay Now
+                  </Button>
                   <Typography
                     variant="small"
                     color="gray"
@@ -344,6 +414,8 @@ export default function PaymentForm() {
           </Tabs>
         </CardBody>
       </Card>
+
+      {showAlert && <AlertBox message={alertMessage} />}
     </div>
   );
 }
