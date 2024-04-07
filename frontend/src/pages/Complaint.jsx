@@ -8,9 +8,9 @@ export default function Complaint(){
     const [complaints,setComplaints] = useState([]);
 
     const previousComplaints = [
-        {id:1,order_id:'666789898989asdf',complaint_status:'Pending',item_id:'666789898989asdf'},
-        {id:2,order_id:'666789898989asdf',complaint_status:'Pending',item_id:'666789898989asdf'},
-        {id:3,order_id:'666789898989asdf',complaint_status:'Pending',item_id:'666789898989asdf'}
+        {id:1,order_id:'666789898989asdf',complaint_status:'Pending',item_id:'666789898989asdfe',quantity:'1.2kg'},
+        {id:2,order_id:'666789898989asdf',complaint_status:'Pending',item_id:'666789898989asdfe',quantity:'2'},
+        {id:3,order_id:'666789898989asdf',complaint_status:'Pending',item_id:'666789898989asdfe',quantity:'2.3g'}
     ]
 
     
@@ -26,8 +26,8 @@ export default function Complaint(){
             <ul>
                 {previousComplaints.map((Complaint) => (
                     <li key={Complaint.id} className='mb-2'>
-                        <div className='bg-gray-300 text-gray py-3 px-6 rounded-lg shadow-md'>
-                           <div className='flex'>
+                        <div className='border border-gray-400 bg-gray-300 p-4 rounded-lg items-center justify-between'>
+                            <div className='flex'>
                                <strong className='mr-2'>Order ID : </strong>{Complaint.order_id}
                                <strong className='ml-10 mr-2'>Complaint Status : </strong>
                                <strong><div className='text-red-800'>{Complaint.complaint_status}</div></strong>
@@ -36,7 +36,10 @@ export default function Complaint(){
                                <Button color='red' ripple='light' className='w-30' size='regular'>Delete</Button>
                                </div>
                            </div>
-                           <strong className='mr-2'>Item ID : </strong>{Complaint.item_id}
+                           <div className='flex'>
+                               <div className='mr-3'>Item ID : </div>{Complaint.item_id}
+                               <div className='ml-10 mr-3'>Quantity : </div>{Complaint.quantity}
+                           </div>
                         </div>
                     </li>
                 ))}
