@@ -31,7 +31,7 @@ const complaintSchema = new Schema({
         required: true
     },
     complaint_img: {
-        type: String,
+        type: Buffer,
         required: true
     },
     quantity: {
