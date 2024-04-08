@@ -40,45 +40,6 @@ router.post("/pay-cash/:orderId/add-payment", async (req, res) => {
   }
 });
 
-// Update payment details for a certain order document(cash)
-router.put("/pay-cash/:orderId/update-payment/:paymentId", async (req, res) => {
-  try {
-    const orderId = req.params.orderId;
-    const paymentId = req.params.paymentId;
-
-    const {
-      email,
-      payment_amount,
-      district,
-      address,
-      postal_code,
-      payment_status,
-    } = req.body;
-
-    // Update the payment details within the order document
-    await Order.findOneAndUpdate(
-      { _id: orderId, "cash_payment._id": paymentId },
-      {
-        $set: {
-          "cash_payment.email": email,
-          "cash_payment.payment_amount": payment_amount,
-          "cash_payment.district": district,
-          "cash_payment.address": address,
-          "cash_payment.postal_code": postal_code,
-          "cash_payment.payment_status": payment_status,
-          "cash_payment.updated_time": new Date(),
-        },
-      }
-    );
-
-    res.json("Payment details updated successfully");
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      error: "An error occurred while updating payment details",
-    });
-  }
-});
 
 // Delete payment details from a certain order document(cash)
 router.delete(
@@ -135,6 +96,46 @@ router.post("/pay-card/:orderId/add-payment", async (req, res) => {
     console.error(error);
     res.status(500).json({
       error: "An error occurred while adding card payment details to the order",
+    });
+  }
+});
+
+// Update payment details for a certain order document(cash)
+router.put("/pay-cash/:orderId/update-payment/:paymentId", async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+    const paymentId = req.params.paymentId;
+
+    const {
+      email,
+      payment_amount,
+      district,
+      address,
+      postal_code,
+      payment_status,
+    } = req.body;
+
+    // Update the payment details within the order document
+    await Order.findOneAndUpdate(
+      { _id: orderId, "cash_payment._id": paymentId },
+      {
+        $set: {
+          "cash_payment.email": email,
+          "cash_payment.payment_amount": payment_amount,
+          "cash_payment.district": district,
+          "cash_payment.address": address,
+          "cash_payment.postal_code": postal_code,
+          "cash_payment.payment_status": payment_status,
+          "cash_payment.updated_time": new Date(),
+        },
+      }
+    );
+
+    res.json("Payment details updated successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "An error occurred while updating payment details",
     });
   }
 });
@@ -205,46 +206,23 @@ router.delete(
   }
 );
 
-// Read all payment details for a certain order document(card)
-router.get("/payments/:orderId", async (req, res) => {
+// Route to read payments for a specific order ID
+router.get("/payment/:orderId", async (req, res) => {
   try {
     const orderId = req.params.orderId;
 
-    // Find the order document
+    // Fetch the order first
     const order = await Order.findById(orderId);
+
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
 
-    // Combine cash and card payments and send them as response
-    const payments = {
-      cash_payment: order.cash_payment || null,
-      card_payment: order.card_payment || null,
-    };
+    // Extract payment details from the order
+    const cashPayment = order.cash_payment;
+    const cardPayment = order.card_payment;
 
-    res.json(payments);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      error: "An error occurred while fetching payment details",
-    });
-  }
-});
-
-// backend/routes/payments.js
-
-// Route to read payments for a specific order ID
-router.get("/:orderId", async (req, res) => {
-  try {
-    const orderId = req.params.orderId;
-
-    // Fetch cash payments
-    const cashPayments = await CashPayment.find({ orderId });
-
-    // Fetch card payments
-    const cardPayments = await CardPayment.find({ orderId });
-
-    res.json({ cashPayments, cardPayments });
+    res.json({ cashPayment, cardPayment });
   } catch (error) {
     console.error(error);
     res

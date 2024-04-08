@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Card,
@@ -15,11 +15,7 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
-import {
-  BanknotesIcon,
-  CreditCardIcon,
-  LockClosedIcon,
-} from "@heroicons/react/24/solid";
+import { CreditCardIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 import { AlertBox } from "./AlertBox";
 
 const districts = [
@@ -76,10 +72,9 @@ function formatExpires(value) {
     .replace(/^([0-1]{1}[0-9]{1})([0-9]{1,2}).*/g, "$1/$2");
 }
 
-export default function PaymentForm() {
+//export function
+export default function PaymentForm({ orderId, mode }) {
   const [type, setType] = React.useState("card");
-  const [cardNumber, setCardNumber] = React.useState("");
-  const [cardExpires, setCardExpires] = React.useState("");
 
   const [formData, setFormData] = useState({
     email: "",
@@ -88,34 +83,170 @@ export default function PaymentForm() {
     cvc: "",
     account_holder: "",
     payment_amount: "",
+    district: "",
+    address: "",
+    postal_code: "",
   });
 
+  const [currentMode, setCurrentMode] = useState(mode);
+  const [formTopic, setFormTopic] = useState("");
+  const [buttonName, setButtonName] = useState("");
+  const [cashPaymentDetails, setCashPaymentDetails] = useState(null);
+  const [cardPaymentDetails, setCardPaymentDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("");
   const [alertMessage, setAlertMessage] = useState(""); // State for alert message
   const [showAlert, setShowAlert] = useState(false); // State for controlling alert visibility
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleSetPaymentMethodCash = () => {
+    setPaymentMethod("cash");
+  };
+  const handleSetPaymentMethodCard = () => {
+    setPaymentMethod("card");
   };
 
-  const orderId = ""; //TODO:This should be changed!!!!!
+  const handleSetFormTopic = () => {
+    if (currentMode === "create") {
+      setButtonName("Make Payment");
+      setFormTopic("Add Payment Section");
+    } else if (currentMode === "update") {
+      setButtonName("Update Payment");
+      setFormTopic("Update Payment Section");
+    } else if (currentMode === "delete") {
+      setButtonName("Delete Payment");
+      setFormTopic("Delete Payment Section");
+    }
+  };
 
-  const handleCardSubmit = async (e) => {
+  //SELECT OPTION THINGY
+  const handleChangeSelect = (value, name) => {
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleDeletePayment = () => {
+    setCurrentMode("delete");
+  };
+
+  useEffect(() => {
+    handleSetFormTopic();
+
+    if (currentMode === "update") {
+      const fetchPaymentDetails = async () => {
+        console.log("currentMode: ", currentMode);
+        try {
+          setLoading(true);
+          const response = await axios.get(
+            `http://localhost:8070/Payment/payment/${orderId}`
+          );
+          const paymentData = response.data;
+
+          if (paymentData.cardPayment) {
+            setCardPaymentDetails(paymentData.cardPayment);
+            setFormData({
+              ...formData,
+              email: paymentData.cardPayment.email,
+              account_number: paymentData.cardPayment.account_number,
+              exp: paymentData.cardPayment.exp,
+              cvc: paymentData.cardPayment.cvc,
+              account_holder: paymentData.cardPayment.account_holder,
+              payment_amount: paymentData.cardPayment.payment_amount,
+            });
+          }
+          if (paymentData.cashPayment) {
+            setCashPaymentDetails(paymentData.cashPayment);
+            setFormData({
+              ...formData,
+              email: paymentData.cashPayment.email,
+              payment_amount: paymentData.cashPayment.payment_amount,
+              district: paymentData.cashPayment.district,
+              address: paymentData.cashPayment.address,
+              postal_code: paymentData.cashPayment.postal_code,
+            });
+          }
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching payment details:", error);
+          setError("An error occurred while fetching payment details.");
+          setLoading(false);
+        }
+      };
+      fetchPaymentDetails();
+    }
+  }, [currentMode, orderId]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        `http://localhost:8070/Payment/pay-card/66120fc9f7b97eacbe3cb331/add-payment`,
-        formData
-      );
+      setLoading(true);
+
+      let successMessage = "";
+      if (currentMode === "create") {
+        // Make a POST request to create a new payment
+        if (paymentMethod == "card") {
+          await axios.post(
+            `http://localhost:8070/Payment/pay-card/${orderId}/add-payment`,
+            formData
+          );
+        }
+
+        if (paymentMethod == "cash") {
+          await axios.post(
+            `http://localhost:8070/Payment/pay-cash/${orderId}/add-payment`,
+            formData
+          );
+        }
+
+        successMessage = "Payment Added SuccessFully!";
+      } else if (currentMode === "update") {
+        // Make a PUT request to update the existing payment
+        if (cardPaymentDetails) {
+          await axios.put(
+            `http://localhost:8070/Payment/pay-card/${orderId}/update-payment/${cardPaymentDetails._id}`,
+            formData
+          );
+        } else if (cashPaymentDetails) {
+          await axios.put(
+            `http://localhost:8070/Payment/pay-cash/${orderId}/update-payment/${cashPaymentDetails._id}`,
+            formData
+          );
+        }
+        successMessage = "Payment Updated SuccessFully!";
+      } else if (currentMode == "delete") {
+        if (cardPaymentDetails) {
+          await axios.delete(
+            `http://localhost:8070/Payment/pay-card/${orderId}/delete-payment/${cardPaymentDetails._id}`
+          );
+        } else if (cashPaymentDetails) {
+          await axios.delete(
+            `http://localhost:8070/Payment/pay-cash/${orderId}/delete-payment/${cashPaymentDetails._id}`
+          );
+        }
+        successMessage = "Payment Removed!";
+      }
+
       // Handle success
-      console.log("Payment details added successfully");
+      console.log(successMessage);
+      setLoading(false);
+      setAlertMessage(successMessage);
+      setShowAlert(true);
     } catch (error) {
       // Handle error
-      console.error("Error adding payment details:", error);
+      console.error("Error updating payment details:", error);
+      setError("An error occurred while updating payment details.");
+      setLoading(false);
+      setAlertMessage("An error occurred while updating payment details.");
+      setShowAlert(true);
     }
   };
 
   return (
-    <div className="pt-10 pl-20 " style={{ width: "35rem" }}>
+    <div className="pt-5 pl-20 " style={{ width: "35rem" }}>
       <Card className="w-full h-full max-w-[30rem] ">
         <CardHeader
           color="gray"
@@ -134,8 +265,9 @@ export default function PaymentForm() {
               />
             )}
           </div>
+
           <Typography variant="h5" color="white">
-            Payment Section
+            {formTopic}
           </Typography>
         </CardHeader>
         <CardBody>
@@ -165,7 +297,7 @@ export default function PaymentForm() {
               <TabPanel value="card" className="p-0">
                 <form
                   className="mt-12 flex flex-col gap-4 pr-5"
-                  onSubmit={handleCardSubmit}
+                  onSubmit={handleSubmit}
                 >
                   <div>
                     <Typography
@@ -281,9 +413,24 @@ export default function PaymentForm() {
                       }}
                     />
                   </div>
-                  <Button size="lg" type="submit">
-                    Pay Now
+                  <Button
+                    size="lg"
+                    type="submit"
+                    className="hover:bg-black"
+                    onClick={handleSetPaymentMethodCard}
+                  >
+                    {buttonName}
                   </Button>
+                  {currentMode === "update" && (
+                    <Button
+                      size="lg"
+                      type="button"
+                      className="bg-red-600 hover:bg-red-800"
+                      onClick={handleDeletePayment}
+                    >
+                      Delete Payment
+                    </Button>
+                  )}
                   <Typography
                     variant="small"
                     color="gray"
@@ -295,7 +442,10 @@ export default function PaymentForm() {
                 </form>
               </TabPanel>
               <TabPanel value="paypal" className="p-0">
-                <form className="mt-12 flex flex-col gap-4  pr-5">
+                <form
+                  className="mt-12 flex flex-col gap-4  pr-5"
+                  onSubmit={handleSubmit}
+                >
                   <div>
                     <Typography
                       variant="paragraph"
@@ -313,6 +463,11 @@ export default function PaymentForm() {
                     </Typography>
                     <Input
                       type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
                       placeholder="name@mail.com"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{
@@ -337,6 +492,13 @@ export default function PaymentForm() {
                       District
                     </Typography>
                     <Select
+                      id="district"
+                      name="district"
+                      value={formData.district}
+                      onChange={(value) =>
+                        handleChangeSelect(value, "district")
+                      }
+                      required
                       placeholder="Select a district"
                       className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{
@@ -345,7 +507,7 @@ export default function PaymentForm() {
                       menuProps={{ className: "h-48" }}
                     >
                       {districts.map((district, index) => (
-                        <Option key={index}>
+                        <Option key={index} value={district}>
                           <div className="flex items-center gap-x-2">
                             {district}
                           </div>
@@ -362,6 +524,11 @@ export default function PaymentForm() {
                     </Typography>
                     <Input
                       type="text"
+                      id="address"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleChange}
+                      required
                       placeholder="Enter Your Address"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{
@@ -377,6 +544,11 @@ export default function PaymentForm() {
                       Postal Code
                     </Typography>
                     <Input
+                      id="postal_code"
+                      name="postal_code"
+                      value={formData.postal_code}
+                      onChange={handleChange}
+                      required
                       placeholder="00000"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{
@@ -385,7 +557,23 @@ export default function PaymentForm() {
                       containerProps={{ className: "mt-4" }}
                     />
                   </div>
-                  <Button size="lg">Cash On Delivery</Button>
+                  <Button
+                    size="lg"
+                    onClick={handleSetPaymentMethodCash}
+                    type="submit"
+                  >
+                    {buttonName}
+                  </Button>
+                  {currentMode === "update" && (
+                    <Button
+                      size="lg"
+                      type="button"
+                      className="bg-red-600 hover:bg-red-800"
+                      onClick={handleDeletePayment}
+                    >
+                      Delete Payment
+                    </Button>
+                  )}
                   <Typography
                     variant="small"
                     color="gray"
