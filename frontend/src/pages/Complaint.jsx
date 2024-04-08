@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import axios  from 'axios'
+import axios  from 'axios'//Import axios for making HTTP request
 import {useSelector} from 'react-redux'
 import {Button} from '@material-tailwind/react'
 
@@ -7,6 +7,8 @@ export default function Complaint(){
     const cusId = useSelector((state) => state.cusId);
     const [complaints,setComplaints] = useState([]);
 
+
+     //Display Previous Complaints 
     useEffect(() => {
         axios.get(`http://localhost:8070/Complaint/complaint-all`)
         .then(response => {
@@ -18,12 +20,25 @@ export default function Complaint(){
     },[]);
 
     const deleteComplaint = async (id) =>{
-        try{
-            await axios.delete(`http://localhost:8070/Complaint/complaint-delete/${id}`);
-            setComplaints(complaints.filter(complaint => complaint._id !== id));
-        }catch(error){
-            console.error('Error deleting complaint:',error);
+        //Display a confirmation dialog
+        const confirmDelete = window.confirm("Are you sure you want delete this complaint?");
+
+        //Check if the user confirmed the deletion
+        if(confirmDelete){
+            try{
+                //send DELETE request to the backend 
+                await axios.delete(`http://localhost:8070/Complaint/complaint-delete/${id}`);
+
+                //After successful deletion ,update the comlaints list
+                setComplaints(complaints.filter(complaint => complaint._id !== id));
+            }catch(error){
+                console.error('Error deleting complaint:',error);
+            }
+        }else{
+            //User canceled the deletion
+            console.error('Deletion canceled')
         }
+        
     }
 
     
@@ -56,6 +71,7 @@ export default function Complaint(){
                            </div>
                         </div>
                     </li>
+                    
                 ))}
             </ul>
         </div>
