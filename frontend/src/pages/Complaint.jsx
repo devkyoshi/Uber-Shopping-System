@@ -30,7 +30,7 @@ export default function Complaint(){
                             <div className='flex'>
                                <strong className='mr-2'>Order ID : </strong>{Complaint.order_id}
                                <strong className='ml-10 mr-2'>Complaint Status : </strong>
-                               <strong><div className='text-red-800'>{Complaint.complaint_status}</div></strong>
+                               <strong><div className='border border-gray-300 text-red-800 bg-white px-4 rounded-lg shadow-md'>{Complaint.complaint_status}</div></strong>
                                <div className='ml-auto flex'>
                                <Button color='blue' ripple='light' className='w-30 mr-3 ' size='regular'>Edit</Button>
                                <Button color='red' ripple='light' className='w-30' size='regular'>Delete</Button>
