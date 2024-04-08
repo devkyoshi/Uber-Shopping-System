@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const complaintSchema = new Schema({
+    customer_id:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Customer',
+        required: true,
+    },
     order_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Order',
@@ -13,7 +18,7 @@ const complaintSchema = new Schema({
         required:true
     },
     complaint_type: {
-        type: Number,
+        type: String,
         required: true
     },
     item_id:{

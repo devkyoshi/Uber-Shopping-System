@@ -9,9 +9,10 @@ const mongoose = require('mongoose');
 // Create a new complaint
 router.post("/complaint-add", async (req, res) => {
     try {
-        const { order_id, payment_id ,complaint_type ,item_id ,resolving_option , complaint_img, quantity, complaint_status} = req.body;
+        const {customer_id,order_id, payment_id ,complaint_type ,item_id ,resolving_option , complaint_img, quantity, complaint_status} = req.body;
 
         const newComplaint = new Complaint({
+            customer_id,
             order_id,
             payment_id,
             complaint_type,
@@ -79,7 +80,7 @@ router.delete("/complaint-delete/:complaintID", async (req, res) => {
 // Read all complaint
 router.get("/complaint-all", async (req, res) => {
     try {
-        const complaint = await Complaint.find();
+        const complaint = await Complaint.find({},'order_id complaint_status item_id quantity');
         res.json(complaint);
     } catch (error) {
         console.error(error);

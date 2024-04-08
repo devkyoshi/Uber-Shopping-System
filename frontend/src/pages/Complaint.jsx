@@ -1,17 +1,30 @@
 import React,{useEffect, useState} from 'react'
-import {useSelector} from 'react-redux'
 import axios  from 'axios'
+import {useSelector} from 'react-redux'
 import {Button} from '@material-tailwind/react'
 
 export default function Complaint(){
-    const userId = useSelector((state) => state.userId);
+    const cusId = useSelector((state) => state.cusId);
     const [complaints,setComplaints] = useState([]);
 
-    const previousComplaints = [
-        {id:1,order_id:'666789898989asdf',complaint_status:'Pending',item_id:'666789898989asdf'},
-        {id:2,order_id:'666789898989asdf',complaint_status:'Pending',item_id:'666789898989asdf'},
-        {id:3,order_id:'666789898989asdf',complaint_status:'Pending',item_id:'666789898989asdf'}
-    ]
+    useEffect(() => {
+        axios.get(`http://localhost:8070/Complaint/complaint-all`)
+        .then(response => {
+            setComplaints(response.data);
+        })
+        .catch(error => {
+            console.error('Error fetching data:',error)
+        })
+    },[]);
+
+    const deleteComplaint = async (id) =>{
+        try{
+            await axios.delete(`http://localhost:8070/Complaint/complaint-delete/${id}`);
+            setComplaints(complaints.filter(complaint => complaint._id !== id));
+        }catch(error){
+            console.error('Error deleting complaint:',error);
+        }
+    }
 
     
     return(
@@ -24,19 +37,23 @@ export default function Complaint(){
             </div>
             <br/>
             <ul>
-                {previousComplaints.map((Complaint) => (
-                    <li key={Complaint.id} className='mb-2'>
-                        <div className='bg-gray-300 text-gray py-3 px-6 rounded-lg shadow-md'>
-                           <div className='flex'>
-                               <strong className='mr-2'>Order ID : </strong>{Complaint.order_id}
+                {complaints.map((Complaints) => (
+                    <li key={Complaints._id} className='mb-2'>
+                        <div className='border border-gray-400 bg-gray-300 p-4 rounded-lg items-center justify-between'>
+                            <div className='flex'>
+                               <strong className='mr-2'>Order ID : </strong>{Complaints.order_id}
                                <strong className='ml-10 mr-2'>Complaint Status : </strong>
-                               <strong><div className='text-red-800'>{Complaint.complaint_status}</div></strong>
+                               <strong><div className='border border-gray-300 text-red-800 bg-white px-4 rounded-lg shadow-md'>
+                                {Complaints.complaint_status}</div></strong>
                                <div className='ml-auto flex'>
                                <Button color='blue' ripple='light' className='w-30 mr-3 ' size='regular'>Edit</Button>
-                               <Button color='red' ripple='light' className='w-30' size='regular'>Delete</Button>
+                               <Button onClick={() => deleteComplaint(Complaints._id)} color='red' ripple='light' className='w-30' size='regular'>Delete</Button>
                                </div>
                            </div>
-                           <strong className='mr-2'>Item ID : </strong>{Complaint.item_id}
+                           <div className='flex'>
+                               <div className='mr-5'>Item ID :  </div>{Complaints.item_id}
+                               <div className='ml-10 mr-3'>Quantity : </div>{Complaints.quantity}
+                           </div>
                         </div>
                     </li>
                 ))}
