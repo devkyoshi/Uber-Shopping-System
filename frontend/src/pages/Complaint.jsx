@@ -1,9 +1,10 @@
 import React,{useEffect, useState} from 'react'
 import axios  from 'axios'
+import {useSelector} from 'react-redux'
 import {Button} from '@material-tailwind/react'
 
 export default function Complaint(){
-    
+    const cusId = useSelector((state) => state.cusId);
     const [complaints,setComplaints] = useState([]);
 
     useEffect(() => {
@@ -15,6 +16,15 @@ export default function Complaint(){
             console.error('Error fetching data:',error)
         })
     },[]);
+
+    const deleteComplaint = async (id) =>{
+        try{
+            await axios.delete('http://localhost:8070/Complaint/complaint-delete/${id}');
+            setComplaints(complaints.filter(complaint => complaint._id !== id));
+        }catch(error){
+            console.error('Error deleting complaint:',error);
+        }
+    }
 
     
     return(
@@ -37,7 +47,7 @@ export default function Complaint(){
                                 {Complaints.complaint_status}</div></strong>
                                <div className='ml-auto flex'>
                                <Button color='blue' ripple='light' className='w-30 mr-3 ' size='regular'>Edit</Button>
-                               <Button color='red' ripple='light' className='w-30' size='regular'>Delete</Button>
+                               <Button onClick={() => deleteComplaint(Complaints._id)} color='red' ripple='light' className='w-30' size='regular'>Delete</Button>
                                </div>
                            </div>
                            <div className='flex'>
