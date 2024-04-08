@@ -8,7 +8,7 @@ export default function Complaint(){
     const [complaints,setComplaints] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8070/Complaint/complaint-all')
+        axios.get(`http://localhost:8070/Complaint/complaint-all`)
         .then(response => {
             setComplaints(response.data);
         })
@@ -18,8 +18,13 @@ export default function Complaint(){
     },[]);
 
     const deleteComplaint = async (id) =>{
+        console.log('ID:',id);
+        if(typeof id !== 'string'){
+            console.error('Invalid ID:',id);
+            return;
+        }
         try{
-            await axios.delete('http://localhost:8070/Complaint/complaint-delete/${id}');
+            await axios.delete(`http://localhost:8070/Complaint/complaint-delete/${id}`);
             setComplaints(complaints.filter(complaint => complaint._id !== id));
         }catch(error){
             console.error('Error deleting complaint:',error);
