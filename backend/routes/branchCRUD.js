@@ -87,7 +87,7 @@ router.get("/branch-all", async (req, res) => {
         const branch = await Branch.find();
         res.json(branch);
     } catch (error) {
-        console.error(error);
+        console.error(error); 
         res.status(500).json({ error: "An error occurred while fetching Branchs" });
     }
 });

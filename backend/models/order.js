@@ -113,17 +113,20 @@ const orderSchema = new mongoose.Schema({
   additional_notes: {
     type: String,
   },
-  delivery: {
-    charges: {
-      type: Number,
+  delivery: [
+    {
+      charges: {
+        type: Number,
+      },
+      distance: {
+        type: Number,
+      },
+      datetime: {
+        type: Date,
+        default: Date.now,
+      },
     },
-    distance: {
-      type: Number,
-    },
-    datetime: {
-      type: Date,
-      default: Date.now,
-    },
+  ],
 
     items: [
       {
@@ -135,7 +138,6 @@ const orderSchema = new mongoose.Schema({
         },
       },
     ],
-  },
   cash_payment: cashPaymentSchema,
   card_payment: cardPaymentSchema,
 });
