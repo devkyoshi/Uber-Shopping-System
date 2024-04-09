@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 
 import {
   Navbar,
@@ -18,30 +18,28 @@ import {
   ChevronDownIcon,
   Bars3Icon,
   XMarkIcon,
-} from "@heroicons/react/24/outline";
-import {
-  Bars4Icon,
-  GlobeAmericasIcon,
-  NewspaperIcon,
-  PhoneIcon,
-  RectangleGroupIcon,
   SquaresPlusIcon,
   SunIcon,
   TagIcon,
+} from "@heroicons/react/24/outline";
+import {
+  GlobeAmericasIcon,
   UserGroupIcon,
-  ShoppingCartIcon
+  ShoppingCartIcon,
 } from "@heroicons/react/24/solid";
- 
+
 const navListMenuItems = [
   {
     title: "Products",
     description: "Find the perfect items for your needs.",
     icon: SquaresPlusIcon,
+    path: "/products",
   },
   {
     title: "About Us",
     description: "Meet and learn about our dedication",
     icon: UserGroupIcon,
+    path: "/about",
   },
   {
     title: "Services",
@@ -64,13 +62,13 @@ const navListMenuItems = [
     icon: TagIcon,
   },
 ];
- 
+
 function NavListMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const renderItems = navListMenuItems.map(
-    ({ icon, title, description }, key) => (
-      <a href="#"  key={key}>
+    ({ icon, title, description, path }, key) => (
+      <Link to={path} key={key}>
         <MenuItem className="flex items-center gap-3 rounded-lg ">
           <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2 ">
             {" "}
@@ -95,10 +93,10 @@ function NavListMenu() {
             </Typography>
           </div>
         </MenuItem>
-      </a>
-    ),
+      </Link>
+    )
   );
- 
+
   return (
     <React.Fragment>
       <Menu
@@ -143,7 +141,7 @@ function NavListMenu() {
     </React.Fragment>
   );
 }
- 
+
 function NavList() {
   return (
     <List className="mt-4 mb-6 p-0 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1">
@@ -154,7 +152,9 @@ function NavList() {
         color="blue-gray"
         className="font-medium"
       >
-        <ListItem className="flex items-center gap-2 py-2 pr-4 nav-pages">Home</ListItem>
+        <ListItem className="flex items-center gap-2 py-2 pr-4 nav-pages">
+          Home
+        </ListItem>
       </Typography>
       <NavListMenu />
       <Typography
@@ -171,65 +171,66 @@ function NavList() {
     </List>
   );
 }
- 
+
 export function NavigationBar() {
   const [openNav, setOpenNav] = React.useState(false);
- 
+
   React.useEffect(() => {
     window.addEventListener(
       "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false),
+      () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
- 
+
   return (
     <div className="pt-5">
       <Navbar className="mx-auto max-w-screen-xl px-4 py-2 ">
-      <div className="flex items-center justify-between text-blue-gray-900">
-        <Typography
-          as="a"
-          href="#"
-          variant="h6"
-          className="mr-4 cursor-pointer py-1.5 lg:ml-2"
-        >
-         <span className="logo-span1">Uber </span><span className="logo-span2">Shopping</span>
-        </Typography>
-        <div className="hidden lg:block">
+        <div className="flex items-center justify-between text-blue-gray-900">
+          <Typography
+            as="a"
+            href="#"
+            variant="h6"
+            className="mr-4 cursor-pointer py-1.5 lg:ml-2"
+          >
+            <span className="logo-span1">Uber </span>
+            <span className="logo-span2">Shopping</span>
+          </Typography>
+          <div className="hidden lg:block">
+            <NavList />
+          </div>
+          <div className="hidden gap-2 lg:flex">
+            <Button variant="text" size="sm" color="blue-gray">
+              Log In
+            </Button>
+            <Button variant="gradient" size="sm">
+              Sign In
+            </Button>
+          </div>
+          <IconButton
+            variant="text"
+            color="blue-gray"
+            className="lg:hidden"
+            onClick={() => setOpenNav(!openNav)}
+          >
+            {openNav ? (
+              <XMarkIcon className="h-6 w-6" strokeWidth={2} />
+            ) : (
+              <Bars3Icon className="h-6 w-6" strokeWidth={2} />
+            )}
+          </IconButton>
+        </div>
+        <Collapse open={openNav}>
           <NavList />
-        </div>
-        <div className="hidden gap-2 lg:flex">
-          <Button variant="text" size="sm" color="blue-gray">
-            Log In
-          </Button>
-          <Button variant="gradient" size="sm">
-            Sign In
-          </Button>
-        </div>
-        <IconButton
-          variant="text"
-          color="blue-gray"
-          className="lg:hidden"
-          onClick={() => setOpenNav(!openNav)}
-        >
-          {openNav ? (
-            <XMarkIcon className="h-6 w-6" strokeWidth={2} />
-          ) : (
-            <Bars3Icon className="h-6 w-6" strokeWidth={2} />
-          )}
-        </IconButton>
-      </div>
-      <Collapse open={openNav}>
-        <NavList />
-        <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
-          <Button variant="outlined" size="sm" color="blue-gray" fullWidth>
-            Log In
-          </Button>
-          <Button variant="gradient" size="sm" fullWidth>
-            Sign In
-          </Button>
-        </div>
-      </Collapse>
-    </Navbar>
+          <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
+            <Button variant="outlined" size="sm" color="blue-gray" fullWidth>
+              Log In
+            </Button>
+            <Button variant="gradient" size="sm" fullWidth>
+              Sign In
+            </Button>
+          </div>
+        </Collapse>
+      </Navbar>
     </div>
   );
 }

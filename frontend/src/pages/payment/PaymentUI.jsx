@@ -4,7 +4,7 @@ import { PaymentTab } from "../../components/paymentComponent/PaymentTab";
 
 export default function PaymentUI() {
   return (
-    <div className="main-layout">
+    <div className="main-layout bg">
       <SideBar />
       <div className="inner-layout">
         <div>
