@@ -48,7 +48,11 @@ export default function Complaint(){
                 <h3 className='text-xl font-semibold'>Complaints</h3>
             </div>
             <div className='flex justify-end mt-4'>
-            <Button color='gray' ripple="light">New Complaint</Button>
+            <Button color='gray' 
+                    ripple="light" 
+                    className='w-30 mt-3 font-medium leading-6 text-base py-2 px-4 border border-transparent'>
+                        New Complaint
+            </Button>
             </div>
             <br/>
             <ul>
@@ -56,18 +60,33 @@ export default function Complaint(){
                     <li key={Complaints._id} className='mb-2'>
                         <div className='border border-gray-400 bg-gray-300 p-4 rounded-lg items-center justify-between'>
                             <div className='flex'>
-                               <strong className='mr-2'>Order ID : </strong>{Complaints.order_id}
+                               <strong className='mr-2'>Order ID : </strong>
+                               {Complaints.order_id}
                                <strong className='ml-10 mr-2'>Complaint Status : </strong>
-                               <strong><div className='border border-gray-300 text-red-800 bg-white px-4 rounded-lg shadow-md'>
-                                {Complaints.complaint_status}</div></strong>
+                               <strong>
+                                  <div className='border border-gray-300 text-red-800 bg-white px-4 rounded-lg shadow-md'>
+                                     {Complaints.complaint_status}
+                                  </div>
+                               </strong>
                                <div className='ml-auto flex'>
-                               <Button color='blue' ripple='light' className='w-30 mr-3 ' size='regular'>Edit</Button>
-                               <Button onClick={() => deleteComplaint(Complaints._id)} color='red' ripple='light' className='w-30' size='regular'>Delete</Button>
+                                    <Button color='blue' 
+                                            ripple='light' 
+                                            className='w-30 mr-3 mt-3 font-medium leading-6 text-base py-2 border border-transparent' 
+                                            size='regular'>Edit
+                                    </Button>
+                                    <Button onClick={() => deleteComplaint(Complaints._id)} color='red' 
+                                                                                       ripple='light' 
+                                                                                       className='w-30 mt-3 font-medium leading-6 text-base py-2 px-4 border border-transparent' 
+                                                                                       size='regular'>
+                                                                                        Delete
+                                    </Button>
                                </div>
                            </div>
                            <div className='flex'>
-                               <div className='mr-5'>Item ID :  </div>{Complaints.item_id}
-                               <div className='ml-10 mr-3'>Quantity : </div>{Complaints.quantity}
+                               <div className='mr-5'>Item ID :  </div>
+                                   {Complaints.item_id}
+                               <div className='ml-10 mr-3'>Quantity : </div>
+                                   {Complaints.quantity}
                            </div>
                         </div>
                     </li>
