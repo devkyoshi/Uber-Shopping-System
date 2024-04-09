@@ -25,7 +25,7 @@ export default function App() {
           path="/Employee_Registration"
           element={<Employee_Registration />}
         />
-        <Route path="/paymentUI" element={<PaymentUI />} />
+        <Route path="/payment" element={<PaymentUI />} />
       </Routes>
       <Footer />
     </BrowserRouter>

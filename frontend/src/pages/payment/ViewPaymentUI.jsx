@@ -56,7 +56,11 @@ export default function ViewPaymentUI({ orderId }) {
   }
 
   if (!cashPaymentDetails && !cardPaymentDetails) {
-    return <div>No payment details available for this order.</div>;
+    return (
+      <div className="pl-16 ml-24">
+        No payment details available for this order.
+      </div>
+    );
   }
 
   return (
@@ -90,7 +94,11 @@ export default function ViewPaymentUI({ orderId }) {
             {cashPaymentDetails && (
               <div style={{ marginBottom: "20px" }}>
                 <h3>Cash Payment Details:</h3>
-                <ul style={{ listStyleType: "none", padding: "0" }}>
+              </div>
+            )}
+            <ul style={{ listStyleType: "none", padding: "0" }}>
+              {cashPaymentDetails && (
+                <>
                   <li style={{ marginBottom: "5px" }}>
                     <strong>Payment Method:</strong> Cash Payment
                   </li>
@@ -98,7 +106,8 @@ export default function ViewPaymentUI({ orderId }) {
                     <strong>Email:</strong> {cashPaymentDetails.email}
                   </li>
                   <li style={{ marginBottom: "5px" }}>
-                    <strong>Amount:</strong> {cashPaymentDetails.payment_amount}
+                    <strong>Amount: Rs. </strong>{" "}
+                    {cashPaymentDetails.payment_amount}
                   </li>
                   <li style={{ marginBottom: "5px" }}>
                     <strong>District:</strong> {cashPaymentDetails.district}
@@ -117,12 +126,17 @@ export default function ViewPaymentUI({ orderId }) {
                     <strong>Payment Status:</strong>{" "}
                     {cashPaymentDetails.payment_status}
                   </li>
-                </ul>
-              </div>
-            )}
+                </>
+              )}
+            </ul>
             {cardPaymentDetails && (
               <div style={{ marginBottom: "20px" }}>
-                <ul style={{ listStyleType: "none", padding: "0" }}>
+                <h3>Card Payment Details:</h3>
+              </div>
+            )}
+            <ul style={{ listStyleType: "none", padding: "0" }}>
+              {cardPaymentDetails && (
+                <>
                   <li style={{ marginBottom: "5px" }}>
                     <strong>Payment Method:</strong> Card Payment
                   </li>
@@ -143,9 +157,9 @@ export default function ViewPaymentUI({ orderId }) {
                   <li style={{ marginBottom: "5px" }}>
                     <strong>Paid Time:</strong> {cardPaymentDetails.paid_time}
                   </li>
-                </ul>
-              </div>
-            )}
+                </>
+              )}
+            </ul>
           </Typography>
         </CardBody>
         <CardFooter className="pt-3">

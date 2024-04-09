@@ -11,23 +11,29 @@ const ObjectId = mongoose.Types.ObjectId;
 router.post("/pay-cash/:orderId/add-payment", async (req, res) => {
   try {
     const orderId = req.params.orderId;
-    const { email, payment_amount, district, address, postal_code } = req.body;
 
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+    const { email, address, postal_code, district, nearest_town } = req.body;
+
+    const payment_amount = order.total_amount;
     const paymentId = new ObjectId(); // Generate new ObjectId for payment
 
     // Update the order document with the provided payment details
     await Order.findByIdAndUpdate(orderId, {
       cash_payment: {
-        // Update cash_payment field specifically
         _id: paymentId,
         payment_method: "cash",
         email,
         payment_amount,
-        district,
         address,
         postal_code,
         paid_time: new Date(),
         payment_status: "Pending",
+        district,
+        nearest_town,
       },
     });
     // Send response
@@ -39,7 +45,6 @@ router.post("/pay-cash/:orderId/add-payment", async (req, res) => {
     });
   }
 });
-
 
 // Delete payment details from a certain order document(cash)
 router.delete(
@@ -69,10 +74,22 @@ router.delete(
 router.post("/pay-card/:orderId/add-payment", async (req, res) => {
   try {
     const orderId = req.params.orderId;
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
 
-    const { email, account_number, exp, cvc, account_holder, payment_amount } =
-      req.body;
+    const {
+      email,
+      account_number,
+      exp,
+      cvc,
+      account_holder,
+      district,
+      nearest_town,
+    } = req.body;
 
+    const payment_amount = order.total_amount;
     const paymentId = new ObjectId(); // Generate new ObjectId for payment
 
     // Update the order document with the provided payment details
@@ -87,7 +104,9 @@ router.post("/pay-card/:orderId/add-payment", async (req, res) => {
         account_holder,
         payment_amount,
         paid_time: new Date(),
-        payment_status: "Pending",
+        payment_status: "Paid",
+        district,
+        nearest_town,
       },
     });
 
@@ -109,11 +128,13 @@ router.put("/pay-cash/:orderId/update-payment/:paymentId", async (req, res) => {
     const {
       email,
       payment_amount,
-      district,
       address,
       postal_code,
-      payment_status,
+      district,
+      nearest_town,
     } = req.body;
+
+    const payment_status = "Paid (Updated)";
 
     // Update the payment details within the order document
     await Order.findOneAndUpdate(
@@ -122,11 +143,12 @@ router.put("/pay-cash/:orderId/update-payment/:paymentId", async (req, res) => {
         $set: {
           "cash_payment.email": email,
           "cash_payment.payment_amount": payment_amount,
-          "cash_payment.district": district,
           "cash_payment.address": address,
           "cash_payment.postal_code": postal_code,
           "cash_payment.payment_status": payment_status,
           "cash_payment.updated_time": new Date(),
+          "cash_payment.district": district,
+          "cash_payment.nearest_town": nearest_town,
         },
       }
     );
@@ -153,9 +175,10 @@ router.put("/pay-card/:orderId/update-payment/:paymentId", async (req, res) => {
       cvc,
       account_holder,
       payment_amount,
-      payment_status,
+      district,
+      nearest_town,
     } = req.body;
-
+    const payment_status = "Pending(Updated)";
     // Update the payment details within the order document
     await Order.findOneAndUpdate(
       { _id: orderId, "card_payment._id": paymentId },
@@ -169,6 +192,8 @@ router.put("/pay-card/:orderId/update-payment/:paymentId", async (req, res) => {
           "card_payment.payment_amount": payment_amount,
           "card_payment.payment_status": payment_status,
           "card_payment.updated_time": new Date(),
+          "card_payment.district": district,
+          "card_payment.nearest_town": nearest_town,
         },
       }
     );
@@ -221,8 +246,9 @@ router.get("/payment/:orderId", async (req, res) => {
     // Extract payment details from the order
     const cashPayment = order.cash_payment;
     const cardPayment = order.card_payment;
+    const totalAmount = order.total_amount;
 
-    res.json({ cashPayment, cardPayment });
+    res.json({ cashPayment, cardPayment, totalAmount });
   } catch (error) {
     console.error(error);
     res

@@ -13,9 +13,6 @@ const cashPaymentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  district: {
-    type: String,
-  },
   address: {
     type: String,
   },
@@ -32,6 +29,14 @@ const cashPaymentSchema = new mongoose.Schema({
   },
   updated_time: {
     type: Date,
+  },
+
+  district: {
+    type: String,
+  },
+
+  nearest_town: {
+    type: String,
   },
 });
 
@@ -62,7 +67,6 @@ const cardPaymentSchema = new mongoose.Schema({
   },
   payment_amount: {
     type: Number,
-    required: true,
   },
   paid_time: {
     type: Date,
@@ -74,6 +78,14 @@ const cardPaymentSchema = new mongoose.Schema({
   },
   updated_time: {
     type: Date,
+  },
+
+  district: {
+    type: String,
+  },
+
+  nearest_town: {
+    type: String,
   },
 });
 
