@@ -9,6 +9,9 @@ import Employee_Registration from "./pages/Employee_Registration";
 import Complaint from "./pages/Complaint";
 import Register from "./pages/Register";
 import PaymentUI from "./pages/payment/PaymentUI";
+import OrderDelivery from "./pages/OrderDelivery";
+import BranchUI from "./pages/Branch/BranchUI";
+import TaskUI from "./pages/Task/TaskUI";
 export default function App() {
   return (
     <BrowserRouter>
@@ -26,6 +29,9 @@ export default function App() {
           element={<Employee_Registration />}
         />
         <Route path="/payment" element={<PaymentUI />} />
+        <Route path="/task" element={<TaskUI />} />
+        <Route path="/branch" element={<BranchUI />} />
+        <Route path="/orderDelivery" element={<OrderDelivery />} />
       </Routes>
       <Footer />
     </BrowserRouter>

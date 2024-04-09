@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 // Create a new Order
 router.post("/order-add", async (req, res) => {
     try {
-        const { customer_id, purchase_amount, total_amount, order_status, additional_notes, delivery:{charges,distance}} = req.body;
+        const { customer_id, purchase_amount, total_amount, order_status, additional_notes} = req.body;
 
         const newOrder = new Order({
             customer_id,
@@ -19,10 +19,7 @@ router.post("/order-add", async (req, res) => {
             total_amount,
             order_status,
             additional_notes,
-            delivery:{
-                charges,
-                distance
-            }
+    
         });
 
         await newOrder.save();
@@ -129,7 +126,7 @@ router.delete("/order/:orderId/remove-item/:itemId", async (req, res) => {
 router.put("/order-update/:orderID", async (req, res) => {
     try {
         const { orderID } = req.params;
-        const { customer_id, purchase_amount, total_amount, order_status, additional_notes, delivery:{charges,distance}} = req.body;
+        const { customer_id, purchase_amount, total_amount, order_status, additional_notes} = req.body;
 
         const updatedOrder = await Order.findByIdAndUpdate(orderID, {
             customer_id,
@@ -137,10 +134,7 @@ router.put("/order-update/:orderID", async (req, res) => {
             total_amount,
             order_status,
             additional_notes,
-            delivery:{
-                charges,
-                distance,
-            }
+            
         }, { new: true });
 
         if (!updatedOrder) {
@@ -194,6 +188,103 @@ router.get("/order/:OrderID", async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "An error occurred while fetching the Order" });
+    }
+});
+// Add delivery details to order
+router.post("/add-delivery/:orderId", async (req, res) => {
+    try {
+        const orderId = req.params.orderId;
+        const { distance, costPerkm } = req.body;
+        const charges = distance * costPerkm;
+
+        const order = await Order.findById(orderId);
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        order.delivery.push({ charges, distance, costPerkm });
+
+        await order.save();
+
+        res.json("Delivery details added to the order successfully");
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while adding details to the order" });
+    }
+});
+
+// Update delivery details to order
+router.put("/:orderId/update-delivery/:deliveryId", async (req, res) => {
+    try {
+        const orderId = req.params.orderId;
+        const deliveryId = req.params.deliveryId;
+        const { distance, costPerkm } = req.body;
+        const charges = distance * costPerkm;
+
+        const order = await Order.findById(orderId);
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        const deliver = order.delivery.id(deliveryId);
+        if (!deliver) {
+            return res.status(404).json({ error: "Delivery not found in the order" });
+        }
+
+        deliver.distance = distance;
+        deliver.costPerkm = costPerkm;
+        deliver.charges = charges;
+
+        await order.save();
+
+        res.json("Delivery details updated in the order successfully");
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while updating Delivery details in the order" });
+    }
+});
+
+// Read a delivery detail by ID
+router.get("/:orderId/read_delivery/:deliveryId", async (req, res) => {
+    try {
+        const { orderId, deliveryId } = req.params;
+
+        const order = await Order.findById(orderId);
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        const deliveryDetail = order.delivery.id(deliveryId);
+        if (!deliveryDetail) {
+            return res.status(404).json({ error: "Delivery detail not found in the order" });
+        }
+
+        res.json(deliveryDetail);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while fetching the delivery detail" });
+    }
+});
+
+// Read all delivery details for an order
+router.get("/order/:orderId/delivery-details", async (req, res) => {
+    try {
+        const { orderId } = req.params;
+
+        const order = await Order.findById(orderId);
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        const deliveryDetails = order.delivery;
+        if (!deliveryDetails || deliveryDetails.length === 0) {
+            return res.status(404).json({ message: "No delivery details found for the order" });
+        }
+
+        res.json(deliveryDetails);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while fetching delivery details" });
     }
 });
 

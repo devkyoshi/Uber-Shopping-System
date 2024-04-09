@@ -18,7 +18,7 @@ const SITEMAP = [
     links: ["Groceries", "Electronics", "Kids", "Ceremics"],
   },
 ];
-
+ 
 const currentYear = new Date().getFullYear();
 
 export function Footer() {
