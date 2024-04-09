@@ -50,7 +50,7 @@ export default function Complaint(){
             <div className='flex justify-end mt-4'>
             <Button color='gray' 
                     ripple="light" 
-                    className='w-30 mt-3 font-medium leading-6 text-base py-2 px-4 border border-transparent'>
+                    className='w-30 mt-3  text-base py-2 px-4 border border-transparent'>
                         New Complaint
             </Button>
             </div>
@@ -71,12 +71,12 @@ export default function Complaint(){
                                <div className='ml-auto flex'>
                                     <Button color='blue' 
                                             ripple='light' 
-                                            className='w-30 mr-3 mt-3 font-medium leading-6 text-base py-2 border border-transparent' 
+                                            className='w-30 mr-3 mt-3 text-base py-2 border border-transparent' 
                                             size='regular'>Edit
                                     </Button>
                                     <Button onClick={() => deleteComplaint(Complaints._id)} color='red' 
                                                                                        ripple='light' 
-                                                                                       className='w-30 mt-3 font-medium leading-6 text-base py-2 px-4 border border-transparent' 
+                                                                                       className='w-30 mt-3  py-2 px-4 text-base border border-transparent' 
                                                                                        size='regular'>
                                                                                         Delete
                                     </Button>
