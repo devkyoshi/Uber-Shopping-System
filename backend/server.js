@@ -41,10 +41,6 @@ connection.once("open", () => {
 
 const QualityRouter = require('./routes/complaintCRUD.js');
 app.use("/quality", QualityRouter);
-// const RefundRouter = require('./routes/refundCRUDjs');
-// app.use("/refund", RefundRouter);
-// const ReportRouter = require('./routes/reportCRUD.js');
-// app.use("/report", ReportRouter);
 const Order = require("./routes/orderCRUD.js");
 app.use("/Order", Order);
 const Customer = require("./routes/authentic.js");
