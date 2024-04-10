@@ -94,7 +94,7 @@ export default function Complaint(){
                                    {Complaints.quantity}
                            </div>
                            {Complaints.complaint_status === 'accepted' && Complaints.resolving_option === 'refund' && (
-                           <Link to={`/refund/${Complaints._id}`}>Submit Bank Details</Link>
+                           <Link to={`/refund/${Complaints._id}`}>Click Here to Submit Bank Details</Link>
                         )}
                         </div>
                         
