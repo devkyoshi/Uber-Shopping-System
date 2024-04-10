@@ -4,11 +4,19 @@ const router = express.Router();
 const Task = require("../models/task");
 const mongoose = require("mongoose");
 
-// Add a new task
+// Add a new task(new) - Sarindu
 router.post("/add-task", async (req, res) => {
   try {
-    const { driver_id, task_status, route } = req.body;
+    const { driver_id, task_status, route, orderIds } = req.body;
     const task = new Task({ driver_id, task_status, route });
+
+    // Push each orderId into the orders array
+    if (orderIds && Array.isArray(orderIds)) {
+      orderIds.forEach((orderId) => {
+        task.orders.push({ order_id: orderId });
+      });
+    }
+
     await task.save();
     res.json(task);
   } catch (error) {
@@ -17,27 +25,252 @@ router.post("/add-task", async (req, res) => {
   }
 });
 
-// Update a task
-router.put("/update-task/:taskId", async (req, res) => {
+// Add pickup details within a task(new) - Gimashi
+router.put("/add-pickup/:taskId/:orderId", async (req, res) => {
   try {
-    const { taskId } = req.params;
-    const { driver_id, task_status, route } = req.body;
+    const { taskId, orderId } = req.params;
+    const { status, pickup_image_url } = req.body;
 
-    const updatedTask = await Task.findByIdAndUpdate(
-      taskId,
-      { driver_id, task_status, route },
-      { new: true }
-    );
-    if (!updatedTask) {
+    // Find the task by taskId
+    const task = await Task.findById(taskId);
+
+    if (!task) {
       return res.status(404).json({ error: "Task not found" });
     }
 
-    res.json(updatedTask);
+    // Find the order within the task's orders array
+    const order = task.orders.find((order) => order._id.toString() === orderId);
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Update order details if provided in the request
+    if (status) {
+      order.status = status;
+    }
+    if (pickup_image_url) {
+      order.pickup_image_url = pickup_image_url;
+    }
+
+    // Automatically set pickedup_time to current date and time
+    order.pickedup_time = Date.now();
+
+    // Save the updated task
+    await task.save();
+
+    res.json(task);
   } catch (error) {
     console.error(error);
     res
       .status(500)
-      .json({ error: "An error occurred while updating the task" });
+      .json({ error: "An error occurred while updating the order" });
+  }
+});
+
+// Update pickup details within a task - Gimashi
+router.put("/update-pickup/:taskId/:orderId", async (req, res) => {
+  try {
+    const { taskId, orderId } = req.params;
+    const { status, pickup_image_url, pickedup_time } = req.body;
+
+    // Find the task by taskId
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    // Find the order within the task's orders array
+    const order = task.orders.find((order) => order._id.toString() === orderId);
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Update order details if provided in the request
+    if (status) {
+      order.status = status;
+    }
+    if (pickup_image_url) {
+      order.pickup_image_url = pickup_image_url;
+    }
+    if (pickedup_time) {
+      order.pickedup_time = pickedup_time;
+    }
+
+    // Save the updated task
+    await task.save();
+
+    res.json(task);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the order" });
+  }
+});
+
+// Delete pickup within a task
+router.delete("/delete-pickup/:taskId/:orderId", async (req, res) => {
+  try {
+    const { taskId, orderId } = req.params;
+
+    // Find the task by taskId
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    // Find the index of the order within the task's orders array
+    const orderIndex = task.orders.findIndex(
+      (order) => order._id.toString() === orderId
+    );
+
+    if (orderIndex === -1) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Remove the order from the task's orders array
+    task.orders.splice(orderIndex, 1);
+
+    // Save the updated task
+    await task.save();
+
+    res.json(task);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while deleting the order" });
+  }
+});
+
+// Add delivered details within a task -  Gimashi
+router.put("/add-delivered/:taskId/:orderId", async (req, res) => {
+  try {
+    const { taskId, orderId } = req.params;
+    const { status, delivered_image_url } = req.body;
+
+    // Find the task by taskId
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    // Find the order within the task's orders array
+    const order = task.orders.find((order) => order._id.toString() === orderId);
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Update delivered details if provided in the request
+    if (status) {
+      order.status = status;
+    }
+    if (delivered_image_url) {
+      order.delivered_image_url = delivered_image_url;
+    }
+
+    // Automatically set delivered_time to current date and time
+    order.delivered_time = Date.now();
+
+    // Save the updated task
+    await task.save();
+
+    res.json(task);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the order" });
+  }
+});
+
+// Update delivered details within a task - Gimashi
+router.put("/update-delivered/:taskId/:orderId", async (req, res) => {
+  try {
+    const { taskId, orderId } = req.params;
+    const { status, delivered_image_url } = req.body;
+
+    // Find the task by taskId
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    // Find the order within the task's orders array
+    const order = task.orders.find((order) => order._id.toString() === orderId);
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Update delivered details if provided in the request
+    if (status) {
+      order.status = status;
+    }
+    if (delivered_image_url) {
+      order.delivered_image_url = delivered_image_url;
+    }
+
+    // Automatically set delivered_time to current date and time
+    order.delivered_time = Date.now();
+
+    // Save the updated task
+    await task.save();
+
+    res.json(task);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the order" });
+  }
+});
+
+// Delete delivered details within a task - Gimashi
+router.delete("/delete-delivered/:taskId/:orderId", async (req, res) => {
+  try {
+    const { taskId, orderId } = req.params;
+
+    // Find the task by taskId
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    // Find the index of the order within the task's orders array
+    const orderIndex = task.orders.findIndex(
+      (order) => order._id.toString() === orderId
+    );
+
+    if (orderIndex === -1) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Remove the delivered details from the order
+    const order = task.orders[orderIndex];
+    order.status = null;
+    order.delivered_image_url = null;
+    order.delivered_time = null;
+
+    // Save the updated task
+    await task.save();
+
+    res.json(task);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({
+        error: "An error occurred while deleting the delivered details",
+      });
   }
 });
 
@@ -125,11 +358,9 @@ router.post("/:taskId/add-order", async (req, res) => {
     res.json("Order details added to task");
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        error: "An error occurred while adding order details to the task",
-      });
+    res.status(500).json({
+      error: "An error occurred while adding order details to the task",
+    });
   }
 });
 
@@ -213,11 +444,9 @@ router.get("/:taskId/get-all-orders", async (req, res) => {
     res.json(task.orders);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        error: "An error occurred while fetching all orders for the task",
-      });
+    res.status(500).json({
+      error: "An error occurred while fetching all orders for the task",
+    });
   }
 });
 

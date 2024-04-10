@@ -9,6 +9,9 @@ const driverSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Empolyee",
   },
+  available_district: {
+    type: String,
+  },
   current_handover_money: {
     type: Number, // Changed to Number for monetary values
     default: 0, // Changed default to 0
