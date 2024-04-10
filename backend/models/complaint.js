@@ -28,6 +28,7 @@ const complaintSchema = new Schema({
     },
     resolving_option: {
         type: String,
+        enum: ['refund', 'replacement'],
         required: true
     },
     complaint_img: {
@@ -40,6 +41,7 @@ const complaintSchema = new Schema({
     },
     complaint_status: {
         type: String,
+        enum: ['pending', 'accepted', 'resolved'],
         default: "pending"
     }
 });
