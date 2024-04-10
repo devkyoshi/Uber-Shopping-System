@@ -2,10 +2,12 @@ import React,{useEffect, useState} from 'react'
 import axios  from 'axios'//Import axios for making HTTP request
 import {useSelector} from 'react-redux'
 import {Button} from '@material-tailwind/react'
+//import {useHistory} from 'react-router-dom'
 
 export default function Complaint(){
     const cusId = useSelector((state) => state.cusId);
     const [complaints,setComplaints] = useState([]);
+    //const history = useHistory();
     
 
 
@@ -43,9 +45,12 @@ export default function Complaint(){
     }
 
     const handleBankDetailsSubmit = (complaintId) => {
+        event.preventDefault();
         // Implement logic to handle bank details submission
         console.log('Bank details submitted for complaint ID:', complaintId);
-        // You can add further logic here, such as displaying a success message to the user
+       
+        //history.push(`/refund/${complaintId}`);
+        window.location.href = `/refund/${complaintId}`;
       };
 
     
