@@ -41,10 +41,10 @@ const branchSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // district: {
-  //   type: String,
-  //   required: true,
-  // },
+  district: {
+    type: String,
+    required: true,
+  },
   // branch_Latitude: {
   //   type: String,
   // },
