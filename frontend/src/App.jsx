@@ -13,6 +13,9 @@ import BranchUI from "./pages/Branch/BranchUI";
 import TaskUI from "./pages/Task/TaskUI";
 import ItemUI from "./pages/item/ItemUI";
 import Refund from "./pages/Refund/RefundForm"
+import Employee_Signin from "./pages/Employee_Signin"
+import Dashboard from "./pages/Dashboard"
+import Emp_PrivateRoute from './components/Emp_PrivateRoute';
 export default function App() {
   return (
     <BrowserRouter>
@@ -31,6 +34,11 @@ export default function App() {
         <Route path="/branch" element={<BranchUI />} />
         <Route path="/item" element={<ItemUI />} />
         <Route path="/refund/:complaintId" element={<Refund/>} />
+        <Route path="/Employee_Signin" element={<Employee_Signin/>}/>
+        <Route element={<Emp_PrivateRoute />}>
+         <Route path="/Dashboard" element={<Dashboard/>}/>
+         
+      </Route>
       </Routes>
       <Footer />
     </BrowserRouter>

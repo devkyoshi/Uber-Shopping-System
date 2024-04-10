@@ -6,6 +6,8 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
 require("dotenv").config();
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 //created a port
 const PORT = process.env.PORT || 8070;
@@ -71,6 +73,9 @@ app.use("/Branch", Branch);
 //register authentication                                                             error check 
 const authroutes= require('./routes/Employee_authentication.route.js');
 app.use('/Employee', authroutes);
+
+const userRoutes = require('./routes/user.route.js');
+app.use('/Employee/user', userRoutes);
 
 
 app.listen(PORT, () =>{
