@@ -3,10 +3,9 @@ const Schema = mongoose.Schema;
 
 const taskSchema = new Schema({
   driver_id: {
-    type: String,
-    // Schema.Types.ObjectId,
-    // ref: "Employee",
-    // required: true,
+    type: Schema.Types.ObjectId,
+    ref: "Employee",
+    required: true,
   },
   task_status: {
     type: String,
@@ -15,13 +14,12 @@ const taskSchema = new Schema({
   route: {
     type: String,
   },
+
   orders: [
     {
       order_id: {
-        type: 
-        Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Order",
-        required: true,
       },
       status: {
         type: String,

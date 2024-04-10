@@ -11,7 +11,7 @@ const TABLE_HEAD = [
 const TABLE_ROWS = [
   {
     name: "John Michael",
-    type: "test",
+    type: item.item_type,
     price: "test",
     quanitity: "test",
     description: "test",
