@@ -2,10 +2,12 @@ import React,{useEffect, useState} from 'react'
 import axios  from 'axios'//Import axios for making HTTP request
 import {useSelector} from 'react-redux'
 import {Button} from '@material-tailwind/react'
+import { Link } from 'react-router-dom';
 
 export default function Complaint(){
     const cusId = useSelector((state) => state.cusId);
     const [complaints,setComplaints] = useState([]);
+    //const history = useHistory();
     
 
 
@@ -42,11 +44,7 @@ export default function Complaint(){
         
     }
 
-    const handleBankDetailsSubmit = (complaintId) => {
-        // Implement logic to handle bank details submission
-        console.log('Bank details submitted for complaint ID:', complaintId);
-        // You can add further logic here, such as displaying a success message to the user
-      };
+    
 
     
     return(
@@ -96,11 +94,7 @@ export default function Complaint(){
                                    {Complaints.quantity}
                            </div>
                            {Complaints.complaint_status === 'accepted' && Complaints.resolving_option === 'refund' && (
-                           <form onSubmit={() => handleBankDetailsSubmit(Complaints._id)}>
-                                {/* Bank details form fields */}
-                                {/* Implement your form fields here */}
-                           <button type="submit">Submit Bank Details</button>
-                           </form>
+                           <Link to={`/refund/${Complaints._id}`}>Submit Bank Details</Link>
                         )}
                         </div>
                         
