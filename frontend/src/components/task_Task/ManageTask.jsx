@@ -106,7 +106,7 @@ export function ManageTask({taskId}) {
                                             <Input
                                                 size="sm"
                                                 value={task.driver_id}
-                                                onChange={(e) => handleInputChange(e, task._id, 'driver_id')}
+                                                readOnly
                                                 className="mr-2"
                                             />
                                             <Input

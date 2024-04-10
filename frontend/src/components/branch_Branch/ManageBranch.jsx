@@ -20,7 +20,7 @@ export function ManageBranch() {
         try {
             const response = await axios.get("http://localhost:8070/Branch/branch-all");
             setBranches(response.data);
-            setRefresh(false); // <-- Reset refresh state
+            setRefresh(true); // <-- Reset refresh state
         } catch (error) {
             console.error("Error fetching branches:", error);
             setErrorMessage("Error fetching branches");

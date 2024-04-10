@@ -61,8 +61,24 @@ import {
     
     const handleSubmit = async (e) => {
       e.preventDefault();
+      
   
       try {
+
+        const branchResponse = await axios.get("http://localhost:8070/Branch/branch-all");
+        const branches = branchResponse.data;
+    
+        console.log("Fetched branch:", branches); // Debugging log
+    
+        const isExists = branches.some(branch => branch.branch_ID === formData.branch_ID);
+    
+        console.log("isExists:", isExists); // Debugging log
+    
+        if (isExists) {
+            setErrorMessage("Branch id already exists in previous tasks.");
+            return;
+        }
+
         const response = await axios.post("http://localhost:8070/Branch/branch-add", formData); //api thingy (address)
         console.log(response.data); // You can handle the response as needed
       } catch (error) {
@@ -146,7 +162,7 @@ import {
                         ))}
                     </Select> */}
 
-                    
+
                     {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
                         Branch Latitude
                     </Typography>

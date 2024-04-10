@@ -30,14 +30,45 @@ export function AddTask() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await axios.post("http://localhost:8070/Task/add-task", formData); //api thingy (address)
-      console.log(response.data); // You can handle the response as needed
+      // Check if order_id exists in previous tasks
+      const tasksResponse = await axios.get("http://localhost:8070/Task/get-all-tasks");
+      const tasks = tasksResponse.data;
+  
+      console.log("Fetched tasks:", tasks); // Debugging log
+  
+      const isOrderIdExists = tasks.some(task => task.order_id === formData.order_id);
+  
+      console.log("isOrderIdExists:", isOrderIdExists); // Debugging log
+  
+      if (isOrderIdExists) {
+        setErrorMessage("Order ID already exists in previous tasks.");
+        return;
+      }
+      
+  
+      // If order_id doesn't exist, proceed with adding the task
+      const response = await axios.post("http://localhost:8070/Task/add-task", formData);
+      console.log(response.data);
+  
+      // Reset form fields and clear error message
+      setFormData({
+        driver_id: "",  
+        task_status: "",
+        order_id: "",
+        route: ""
+      });
+      setErrorMessage(""); 
+  
     } catch (error) {
       console.error("Error:", error);
+      setErrorMessage("An error occurred while processing the task.");
     }
   };
+  
+  
+  
 
   return (
     <Card color="transparent" shadow={false}>
