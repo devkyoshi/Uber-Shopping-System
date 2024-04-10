@@ -7,6 +7,7 @@ import {Button} from '@material-tailwind/react'
 export default function Complaint(){
     const cusId = useSelector((state) => state.cusId);
     const [complaints,setComplaints] = useState([]);
+    const [selectedComplaintId, setSelectedComplaintId] = useState(null);
     //const history = useHistory();
     
 
@@ -46,12 +47,23 @@ export default function Complaint(){
 
     const handleBankDetailsSubmit = (complaintId) => {
         event.preventDefault();
-        // Implement logic to handle bank details submission
-        console.log('Bank details submitted for complaint ID:', complaintId);
-       
-        //history.push(`/refund/${complaintId}`);
-        window.location.href = `/refund/${complaintId}`;
-      };
+        setSelectedComplaintId(complaintId);
+    // Call the server-side API endpoint using POST request
+    fetch('/api/bank-details', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ complaintId })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Handle response from server
+      console.log('Bank details submitted successfully:', data);
+      // Redirect to another page or perform further actions as needed
+    })
+    .catch(error => console.error('Error submitting bank details:', error));
+  };
 
     
     return(
