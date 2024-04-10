@@ -2,6 +2,8 @@ const User = require('../models/user.model.js');
 const bcrypt = require('bcrypt');
 const { errorHandler } = require('../utils/error.js');
 const jwt = require('jsonwebtoken');
+const dotenv = require("dotenv");
+dotenv.config();
 
 exports.register = async (req, res, next) => {
     const { username, email, password, Emp_Name, Emp_Age, Emp_Gender, Emp_CNumber, Emp_Address ,profilePhoto} = req.body;

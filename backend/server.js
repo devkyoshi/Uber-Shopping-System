@@ -68,9 +68,9 @@ app.use("/Refund", Refund);
 const Branch = require("./routes/branchCRUD.js");
 app.use("/Branch", Branch);
 
-  //register authentication                                                             error check 
-  const authroutes= require('./routes/Employee_authentication.route.js');
-  app.use('/Employee', authroutes);
+//register authentication                                                             error check 
+const authroutes= require('./routes/Employee_authentication.route.js');
+app.use('/Employee', authroutes);
 
 
 app.listen(PORT, () =>{

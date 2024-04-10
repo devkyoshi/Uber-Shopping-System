@@ -6,5 +6,5 @@ const router = express.Router();
 
 router.post('/register', register);
 router.post('/signin', signin);
-//router.post('/google', google);
+//router.post('/google', google);                             
 module.exports =  router;

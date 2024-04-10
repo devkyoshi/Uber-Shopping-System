@@ -25,10 +25,7 @@ export default function App() {
         <Route path="/orderForm" element={<OrderForm />} />
         <Route path="/complaint" element={<Complaint />} />
         <Route path="/customer_register" element={<Register />} />
-        <Route
-          path="/Employee_Registration"
-          element={<Employee_Registration />}
-        />
+        <Route path="/Employee_Registration" element={<Employee_Registration />}/>
         <Route path="/payment" element={<PaymentUI />} />
         <Route path="/task" element={<TaskUI />} />
         <Route path="/branch" element={<BranchUI />} />

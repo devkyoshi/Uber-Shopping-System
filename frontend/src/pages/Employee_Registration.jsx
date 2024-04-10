@@ -26,7 +26,7 @@ export default function Employee_Registration() {
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await fetch('/Employee/register', {
+      const res = await fetch('http://localhost:8070/Employee/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
