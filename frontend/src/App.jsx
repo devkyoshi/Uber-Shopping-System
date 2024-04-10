@@ -16,6 +16,8 @@ import Refund from "./pages/Refund/RefundForm"
 import Employee_Signin from "./pages/Employee_Signin"
 import Dashboard from "./pages/Dashboard"
 import Emp_PrivateRoute from './components/Emp_PrivateRoute';
+import ViewOrder from "./pages/ViewOrder";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -36,7 +38,8 @@ export default function App() {
         <Route path="/refund/:complaintId" element={<Refund/>} />
         <Route path="/Employee_Signin" element={<Employee_Signin/>}/>
         <Route element={<Emp_PrivateRoute />}>
-         <Route path="/Dashboard" element={<Dashboard/>}/>
+        <Route path="/Dashboard" element={<Dashboard/>}/>
+        <Route path="/myOrder" element={<ViewOrder />} />
          
       </Route>
       </Routes>
