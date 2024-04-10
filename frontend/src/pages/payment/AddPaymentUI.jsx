@@ -18,7 +18,6 @@ export default function AddPaymentUI({ orderId }) {
         setError("Error fetching payment amount");
       }
     };
-
     fetchPaymentAmount();
   }, [orderId]);
 
