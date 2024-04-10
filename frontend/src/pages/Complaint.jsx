@@ -6,6 +6,7 @@ import {Button} from '@material-tailwind/react'
 export default function Complaint(){
     const cusId = useSelector((state) => state.cusId);
     const [complaints,setComplaints] = useState([]);
+    
 
 
      //Display Previous Complaints 
@@ -40,6 +41,12 @@ export default function Complaint(){
         }
         
     }
+
+    const handleBankDetailsSubmit = (complaintId) => {
+        // Implement logic to handle bank details submission
+        console.log('Bank details submitted for complaint ID:', complaintId);
+        // You can add further logic here, such as displaying a success message to the user
+      };
 
     
     return(
@@ -88,7 +95,15 @@ export default function Complaint(){
                                <div className='ml-10 mr-3'>Quantity : </div>
                                    {Complaints.quantity}
                            </div>
+                           {Complaints.complaint_status === 'accepted' && Complaints.resolving_option === 'refund' && (
+                           <form onSubmit={() => handleBankDetailsSubmit(Complaints._id)}>
+                                {/* Bank details form fields */}
+                                {/* Implement your form fields here */}
+                           <button type="submit">Submit Bank Details</button>
+                           </form>
+                        )}
                         </div>
+                        
                     </li>
                     
                 ))}
