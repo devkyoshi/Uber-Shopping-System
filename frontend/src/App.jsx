@@ -20,11 +20,11 @@ export default function App() {
       <Routes>
         {/* add your code below the last route! Dont add on Top*/}
         <Route path="/unregiHome" element={<HomeUnregistered />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/orderForm" element={<OrderForm />} />
-        <Route path="/complaint" element={<Complaint />} />
-        <Route path="/customer_register" element={<Register />} />
+        <Route path="/home" element={<Home />}/>
+        <Route path="/about" element={<About />}/>
+        <Route path="/orderForm" element={<OrderForm />}/>
+        <Route path="/complaint" element={<Complaint />}/>
+        <Route path="/customer_register" element={<Register />}/>
         <Route path="/Employee_Registration" element={<Employee_Registration />}/>
         <Route path="/payment" element={<PaymentUI />} />
         <Route path="/task" element={<TaskUI />} />
