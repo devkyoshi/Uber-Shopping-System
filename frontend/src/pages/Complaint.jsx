@@ -2,12 +2,11 @@ import React,{useEffect, useState} from 'react'
 import axios  from 'axios'//Import axios for making HTTP request
 import {useSelector} from 'react-redux'
 import {Button} from '@material-tailwind/react'
-//import {useHistory} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 export default function Complaint(){
     const cusId = useSelector((state) => state.cusId);
     const [complaints,setComplaints] = useState([]);
-    const [selectedComplaintId, setSelectedComplaintId] = useState(null);
     //const history = useHistory();
     
 
@@ -45,25 +44,7 @@ export default function Complaint(){
         
     }
 
-    const handleBankDetailsSubmit = (complaintId) => {
-        event.preventDefault();
-        setSelectedComplaintId(complaintId);
-    // Call the server-side API endpoint using POST request
-    fetch('/api/bank-details', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ complaintId })
-    })
-    .then(response => response.json())
-    .then(data => {
-      // Handle response from server
-      console.log('Bank details submitted successfully:', data);
-      // Redirect to another page or perform further actions as needed
-    })
-    .catch(error => console.error('Error submitting bank details:', error));
-  };
+    
 
     
     return(
@@ -113,11 +94,7 @@ export default function Complaint(){
                                    {Complaints.quantity}
                            </div>
                            {Complaints.complaint_status === 'accepted' && Complaints.resolving_option === 'refund' && (
-                           <form onSubmit={() => handleBankDetailsSubmit(Complaints._id)}>
-                                {/* Bank details form fields */}
-                                {/* Implement your form fields here */}
-                           <button type="submit">Submit Bank Details</button>
-                           </form>
+                           <Link to={`/refund/${Complaints._id}`}>Submit Bank Details</Link>
                         )}
                         </div>
                         
