@@ -132,12 +132,12 @@ export function ViewBranch({ branchID }) {
                   <Typography variant="subtitle1" color="gray">
                     District: {Branch.district}
                   </Typography>
-                  <Typography variant="subtitle1" color="gray">
+                  {/* <Typography variant="subtitle1" color="gray">
                     Branch Latitude: {Branch.branch_Latitude}
                   </Typography>
                   <Typography variant="subtitle1" color="gray">
                     Branch Longitude: {Branch.branch_Longitude}
-                  </Typography>
+                  </Typography> */}
                 </div>
               </div>  
             </Card>

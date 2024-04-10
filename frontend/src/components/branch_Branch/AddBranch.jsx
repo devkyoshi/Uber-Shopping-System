@@ -145,7 +145,9 @@ import {
                             </Option>
                         ))}
                     </Select> */}
-                    <Typography variant="h6" color="blue-gray" className="-mb-3">
+
+                    
+                    {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
                         Branch Latitude
                     </Typography>
                     <Input
@@ -168,7 +170,7 @@ import {
                         name="branch_Longitude"
                         placeholder="Enter Branch Longitude"
                         className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                    />
+                    /> */}
                 </div>
                 <Button type="submit" className="mt-6" fullWidth>
                     Add Branch

@@ -93,12 +93,12 @@ export function ManageBranch() {
                                         <Typography variant="subtitle1" color="gray">
                                             District: {branch.district}
                                         </Typography>
-                                        <Typography variant="subtitle1" color="gray">
+                                        {/* <Typography variant="subtitle1" color="gray">
                                             Branch Latitude: {branch.branch_Latitude}
                                         </Typography>
                                         <Typography variant="subtitle1" color="gray">
                                             Branch Longitude: {branch.branch_Longitude}
-                                        </Typography>
+                                        </Typography> */}
                                         <div className="flex mt-2">
                                             <Input
                                                 size="sm"
@@ -124,7 +124,7 @@ export function ManageBranch() {
                                                 onChange={(e) => handleInputChange(e, branch._id, 'district')}
                                                 className="mr-2"
                                             />
-                                            <Input
+                                            {/* <Input
                                                 size="sm"
                                                 value={branch.branch_Latitude}
                                                 onChange={(e) => handleInputChange(e, branch._id, 'branch_Latitude')}
@@ -135,7 +135,7 @@ export function ManageBranch() {
                                                 value={branch.branch_Longitude}
                                                 onChange={(e) => handleInputChange(e, branch._id, 'branch_Longitude')}
                                                 className="mr-2"
-                                            />
+                                            /> */}
                                             <Button color="blue" onClick={() => handleUpdate(branch)}>
                                                 Update
                                             </Button>

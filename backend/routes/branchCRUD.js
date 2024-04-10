@@ -16,8 +16,8 @@ router.post("/branch-add", async (req, res) => {
             branch_name,
             branch_Location,
             district,
-            branch_Latitude,
-            branch_Longitude
+            // branch_Latitude,
+            // branch_Longitude
         });
 
         await newBranch.save();
@@ -41,15 +41,15 @@ router.post("/branch-add", async (req, res) => {
 router.put("/branch-update/:branchID", async (req, res) => {
     try {
         const { branchID } = req.params;
-        const { branch_ID, branch_name, branch_Location, district, branch_Latitude, branch_Longitude} = req.body;
+    const { branch_ID, branch_name, branch_Location, district, /*branch_Latitude, branch_Longitude*/ } = req.body;
 
         const updatedBranch = await Branch.findByIdAndUpdate(branchID, {
             branch_ID,
             branch_name,
             branch_Location,
             district,
-            branch_Latitude,
-            branch_Longitude
+            // branch_Latitude,
+            // branch_Longitude
 
         }, { new: true });
 

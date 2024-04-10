@@ -41,18 +41,16 @@ const branchSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  district: {
-    type: String,
-    required: true,
-  },
-  branch_Latitude: {
-    type: String,
-    default: "n/a",
-  },
-  branch_Longitude: {
-    type: String,
-    default: "n/a",
-  },
+  // district: {
+  //   type: String,
+  //   required: true,
+  // },
+  // branch_Latitude: {
+  //   type: String,
+  // },
+  // branch_Longitude: {
+  //   type: String,
+  // },
   drivers: [driverSchema],
 });
 
