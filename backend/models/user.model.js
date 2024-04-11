@@ -43,6 +43,11 @@ const userSchema = new mongoose.Schema(
     Emp_Level: {
       type: String,
     },
+    isAdmin:
+    {
+      type:Boolean,
+      default:false
+    }
    
   },
   { timestamps: true }
