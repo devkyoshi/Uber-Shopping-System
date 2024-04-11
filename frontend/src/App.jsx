@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from 'react'
 import About from "./pages/About";
 import OrderForm from "./pages/OrderForm";
 import HomeUnregistered from "./pages/HomeUnregistered";
@@ -6,7 +7,6 @@ import { NavigationBar } from "./components/NavigationBar";
 import { Footer } from "./components/Footer";
 import Employee_Registration from "./pages/Employee_Registration";
 import Complaint from "./pages/Complaint";
-import Register from "./pages/Register";
 import PaymentUI from "./pages/payment/PaymentUI";
 import BranchUI from "./pages/Branch/BranchUI";
 import TaskUI from "./pages/Task/TaskUI";
@@ -17,12 +17,22 @@ import Emp_PrivateRoute from "./components/Emp_PrivateRoute";
 import ViewOrder from "./pages/ViewOrder";
 import Refund from "./pages/Refund/RefundForm";
 import PaymentAdminUI from "./pages/payment/PaymentAdminUI";
+<<<<<<< Updated upstream
 import Header from "./components/Header"
+=======
+import Register from './pages/CustomerRegister'
+import Login from './pages/CustomerLogin'
+import Profile from './pages/CustomerProfile'
+import Header from './components/CustomerHeader'
+import PrivateRoute from './components/CustomerProfilePrivateRoute'
+import AdminPrivateRoute from './components/CustomerAdminPrivateRoute'
+import CustomerAdmin from './pages/CustomerAdmin'
+>>>>>>> Stashed changes
 
 export default function App() {
   return (
     <BrowserRouter>
-      <NavigationBar />
+      <Header/>
       <Routes>
         {/* add your code below the last route! Dont add on Top*/}
         <Route path="/" element={<HomeUnregistered />} />
@@ -54,6 +64,13 @@ export default function App() {
         <Route path="/myOrder" element={<ViewOrder />} />
         <Route path="/refund/:complaintId" element={<Refund />} />
         <Route path="/payment-admin" element={<PaymentAdminUI />} />
+        <Route path="/Customerlogin" element={<Login/>}/>
+        <Route path="/Customerregister" element={<Register/>}/>
+        <Route element={<PrivateRoute/>}>
+        <Route path="/Customerprofile" element={<Profile/>}/></Route>
+        <Route element={<AdminPrivateRoute />}>
+          {/*adminpages*/}<Route path="/Adminlogin" element={<CustomerAdmin/>}/>
+        </Route>
         {/* Methanin pahala add krnnaaaa nattan conflict wenawaaa udin add krnna epoo */}
       </Routes>
       

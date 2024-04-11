@@ -1,54 +1,61 @@
 const mongoose = require("mongoose")
 
 const customerschema = new mongoose.Schema({
-    Cus_Email:{
+    cus_email:{
         type: String,
         required: true,
         unique: true,
     },
 
-    Cus_Username:{
+    cus_username:{
         type: String,
         required: true,
         unique: true,
     },
 
-    Cus_Password:{
-        type: String,
-        required: true,
-    }
-
-    /*Cus_Name:{
+    cus_password:{
         type: String,
         required: true,
     },
 
-    Cus_CNumber:{
-        type: Number,
-        required: true,
+    isAdmin: {
+        type: Boolean,
+        default: false
     },
 
-    Cus_Gender:{
+    /*cus_name:{
         type: String,
         required: true,
     },
 
-    Cus_Age:{
+    cus_cnumber:{
         type: Number,
         required: true,
     },
 
-    Cus_Address:{
+    cus_gender:{
         type: String,
         required: true,
     },
 
-    Cus_Latitude:{
+    cus_age:{
         type: Number,
+        required: true,
     },
 
-    Cus_Longtitude:{
+    cus_address:{
+        type: String,
+        required: true,
+    },
+
+    cus_latitude:{
         type: Number,
+        default: 0.00
+    },
+
+    cus_longtitude:{
+        type: Number,
+        default: 0.00
     }*/
 },{timestamps: true});
 
