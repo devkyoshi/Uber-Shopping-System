@@ -7,6 +7,7 @@ export default function Refund(){
     return(
         <div>
             Refund
+            console.log(complaintId);
         </div>
     )
 }
