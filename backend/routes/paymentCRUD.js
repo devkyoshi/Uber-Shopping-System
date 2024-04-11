@@ -207,6 +207,95 @@ router.put("/pay-card/:orderId/update-payment/:paymentId", async (req, res) => {
   }
 });
 
+router.get("/payments", async (req, res) => {
+  try {
+    // Query the database to find all orders
+    const orders = await Order.find().select("_id cash_payment card_payment");
+
+    // Filter orders with either card_payment or cash_payment
+    const filteredOrders = orders.filter(
+      (order) => order.card_payment || order.cash_payment
+    );
+
+    // If no orders with payment information found, send empty response
+    if (filteredOrders.length === 0) {
+      return res.json([]);
+    }
+
+    // Extract payment details from each order
+    const payments = filteredOrders.map((order) => {
+      let payment_id,
+        payment_method,
+        email,
+        payment_status,
+        paid_time,
+        nearest_town,
+        district,
+        updated_time,
+        payment_amount;
+
+      if (order.card_payment) {
+        payment_id = order.card_payment._id;
+        payment_method = order.card_payment.payment_method;
+        payment_status = order.card_payment.payment_status;
+        email = order.card_payment.email;
+        paid_time = order.card_payment.paid_time;
+        district = order.card_payment.district;
+        payment_amount = order.card_payment.payment_amount;
+        nearest_town = order.card_payment.nearest_town;
+        if (order.card_payment.updated_time) {
+          updated_time = order.card_payment.updated_time;
+        } else {
+          updated_time = "Not Updated";
+        }
+      } else if (order.cash_payment) {
+        payment_id = order.cash_payment._id;
+        payment_method = order.cash_payment.payment_method;
+        email = order.cash_payment.email;
+        payment_amount = order.cash_payment.payment_amount;
+        district = order.cash_payment.district;
+        payment_status = order.cash_payment.payment_status;
+        paid_time = order.cash_payment.paid_time;
+        if (order.cash_payment.updated_time) {
+          updated_time = order.cash_payment.updated_time;
+        } else {
+          updated_time = "Not Updated";
+        }
+        nearest_town = order.cash_payment.nearest_town;
+      }
+
+      // Construct the payment object
+      const paymentObj = {
+        payment_id,
+        paid_time,
+        payment_status,
+        customer_id: order.customer_id,
+        payment_method,
+        email,
+        district,
+        nearest_town,
+        updated_time,
+        payment_amount,
+      };
+
+      // Conditionally include order_id if payment exists
+      if (payment_id) {
+        paymentObj.order_id = order._id;
+      }
+
+      return paymentObj;
+    });
+
+    // Send the payments as a response
+    res.json(payments);
+    console.log("Data Passed From DB");
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 // Delete payment details from a certain order document(card)
 router.delete(
   "/pay-card/:orderId/delete-payment/:paymentId",
@@ -254,28 +343,6 @@ router.get("/payment/:orderId", async (req, res) => {
     res
       .status(500)
       .json({ error: "An error occurred while fetching payments" });
-  }
-});
-
-router.get("/payments", async (req, res) => {
-  try {
-    // Query the database to find all orders
-    const orders = await Order.find().select("_id cash_payment card_payment");
-
-    // Extract payment details from each order
-    const payments = orders.map((order) => ({
-      order_id: order._id,
-      cash_payment: order.cash_payment,
-      card_payment: order.card_payment,
-    }));
-
-    // Send the payments as a response
-    res.json(payments);
-    console.log("Data Passed From DB");
-  } catch (error) {
-    // Handle errors
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
   }
 });
 

@@ -12,7 +12,7 @@ import { PaymentAdminTable } from "../../components/paymentComponent/PaymentAdmi
 
 export default function PaymentAdminUI() {
   return (
-    <div className="main-layout">
+    <div className="main-layout ">
       <SideBar />
       <div className="inner-layout">
         <div>

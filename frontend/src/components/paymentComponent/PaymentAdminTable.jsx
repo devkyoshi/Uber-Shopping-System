@@ -8,9 +8,7 @@ import {
   CardBody,
   Chip,
   CardFooter,
-  Avatar,
   IconButton,
-  Tooltip,
   Input,
 } from "@material-tailwind/react";
 import { PencilIcon } from "@heroicons/react/24/solid";
@@ -20,9 +18,12 @@ import {
 } from "@heroicons/react/24/outline";
 
 export function PaymentAdminTable() {
+  const [searchInput, setSearchInput] = useState("");
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     // Fetch payments data from the backend
@@ -30,6 +31,8 @@ export function PaymentAdminTable() {
       .get("http://localhost:8070/Payment/payments")
       .then((response) => {
         setPayments(response.data);
+        console.log(response.data);
+        console.log("Search State: ", searchInput);
         setLoading(false); // Set loading to false after successful fetch
       })
       .catch((error) => {
@@ -39,6 +42,15 @@ export function PaymentAdminTable() {
       });
   }, []); // Empty dependency array to ensure effect runs only once
 
+  const filteredPayments = payments.filter((payment) => {
+    const searchValue = searchInput.toLowerCase();
+    return (
+      payment.order_id.toLowerCase().includes(searchValue) ||
+      payment.payment_id.toLowerCase().includes(searchValue) ||
+      payment.email.toLowerCase().includes(searchValue)
+    );
+  });
+
   if (loading) {
     return <div>Loading...</div>; // Show loading indicator
   }
@@ -47,24 +59,66 @@ export function PaymentAdminTable() {
     return <div>Error: {error.message}</div>; // Show error message
   }
 
-  return <TransactionsTable payments={payments} />;
+  const indexOfLastPayment = currentPage * itemsPerPage;
+  const indexOfFirstPayment = indexOfLastPayment - itemsPerPage;
+  const currentPayments = payments.slice(
+    indexOfFirstPayment,
+    indexOfLastPayment
+  );
+
+  // Function to handle Next button click
+  const handleNextClick = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+  // Function to handle Previous button click
+  const handlePrevClick = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+  // Function to handle search input change
+  const handleSearchInputChange = (event) => {
+    setSearchInput(event.target.value);
+    setCurrentPage(1); // Reset current page when search input changes
+  };
+  const totalPages = Math.ceil(payments.length / itemsPerPage);
+
+  return (
+    <TransactionsTable
+      totalPages={totalPages}
+      payments={currentPayments}
+      currentPage={currentPage}
+      itemsPerPage={itemsPerPage}
+      onNextClick={handleNextClick}
+      onPrevClick={handlePrevClick}
+      onSearchInputChange={handleSearchInputChange}
+      searchInput={searchInput}
+    />
+  );
 }
 
-export function TransactionsTable({ payments }) {
+export function TransactionsTable({
+  payments,
+  currentPage,
+  itemsPerPage,
+  onNextClick,
+  onPrevClick,
+  totalPages,
+  onSearchInputChange,
+  searchInput,
+}) {
   const TABLE_HEAD = [
     "Order ID",
     "Payment ID",
+    "Total Payment",
     "Payment Method",
-    "Amount",
-    "Date",
     "Status",
-    "Nearest Town",
+    "City",
     "District",
-    "",
+    "Paid Time",
+    "Email",
   ];
 
   return (
-    <Card className="h-full w-full">
+    <Card className="h-full w-full" style={{ width: "900px" }}>
       <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
           <div>
@@ -80,6 +134,8 @@ export function TransactionsTable({ payments }) {
               <Input
                 label="Search"
                 icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                onChange={onSearchInputChange}
+                value={searchInput}
               />
             </div>
             <Button className="flex items-center gap-3" size="sm">
@@ -89,7 +145,7 @@ export function TransactionsTable({ payments }) {
         </div>
       </CardHeader>
       <CardBody className="overflow-scroll px-0">
-        <table className="w-full min-w-max table-auto text-left">
+        <table className="w-full min-w-max table-auto m-5 text-center">
           <thead>
             <tr>
               {TABLE_HEAD.map((head) => (
@@ -111,16 +167,18 @@ export function TransactionsTable({ payments }) {
           <tbody>
             {payments.map(
               ({
-                order_id,
                 _id,
+                order_id, // Corrected variable name
                 payment_method,
+                payment_id,
+                email,
                 payment_amount,
                 paid_time,
                 payment_status,
                 nearest_town,
                 district,
               }) => (
-                <tr key={order_id}>
+                <tr key={_id}>
                   <td className="p-4">
                     <Typography
                       variant="small"
@@ -136,7 +194,7 @@ export function TransactionsTable({ payments }) {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {_id}
+                      {payment_id}
                     </Typography>
                   </td>
                   <td className="p-4">
@@ -145,17 +203,23 @@ export function TransactionsTable({ payments }) {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {payment_method}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
+                      Rs.
                       {payment_amount}
                     </Typography>
+                  </td>
+                  <td className="p-4">
+                    <div className="w-max">
+                      <Chip
+                        size="sm"
+                        variant="ghost"
+                        value={
+                          payment_method === "card"
+                            ? "Card Payment"
+                            : "Cash on Delivery"
+                        }
+                        color={payment_method === "card" ? "green" : "amber"}
+                      />
+                    </div>
                   </td>
                   <td className="p-4">
                     <div className="w-max">
@@ -173,22 +237,15 @@ export function TransactionsTable({ payments }) {
                       />
                     </div>
                   </td>
+
                   <td className="p-4">
                     <Typography
                       variant="small"
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {paid_time}
+                      {district}
                     </Typography>
-                  </td>
-
-                  <td className="p-4">
-                    <Tooltip content="Edit User">
-                      <IconButton variant="text">
-                        <PencilIcon className="h-4 w-4" />
-                      </IconButton>
-                    </Tooltip>
                   </td>
 
                   <td className="p-4">
@@ -200,14 +257,22 @@ export function TransactionsTable({ payments }) {
                       {nearest_town}
                     </Typography>
                   </td>
-
                   <td className="p-4">
                     <Typography
                       variant="small"
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {district}
+                      {new Date(paid_time).toLocaleString()}{" "}
+                    </Typography>
+                  </td>
+                  <td className="p-4">
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
+                    >
+                      {email}
                     </Typography>
                   </td>
                 </tr>
@@ -217,33 +282,49 @@ export function TransactionsTable({ payments }) {
         </table>
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-        <Button variant="outlined" size="sm">
+        <Button
+          variant="outlined"
+          size="sm"
+          onClick={onPrevClick}
+          disabled={currentPage === 1}
+        >
           Previous
         </Button>
         <div className="flex items-center gap-2">
-          <IconButton variant="outlined" size="sm">
-            1
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            2
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            3
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            ...
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            8
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            9
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            10
-          </IconButton>
+          {Array.from({ length: totalPages }, (_, index) => {
+            // Determine if the current page should be displayed
+            const displayPage =
+              index + 1 === 1 || // Always display the first page
+              index + 1 === totalPages || // Always display the last page
+              Math.abs(currentPage - (index + 1)) <= 1 || // Display pages within 1 page of the current page
+              index + 1 === currentPage - 2 || // Display pages that are 2 pages before the current page
+              index + 1 === currentPage + 2; // Display pages that are 2 pages after the current page
+
+            // Render the page button
+            return (
+              displayPage && (
+                <IconButton
+                  key={index + 1}
+                  variant="text"
+                  size="sm"
+                  className={
+                    currentPage === index + 1 ? "font-bold text-blue-500" : ""
+                  }
+                >
+                  {index + 1}
+                </IconButton>
+              )
+            );
+          })}
         </div>
-        <Button variant="outlined" size="sm">
+
+        <Button
+          variant="outlined"
+          size="sm"
+          onClick={onNextClick}
+          disabled={payments.length < itemsPerPage}
+          className="ml-2"
+        >
           Next
         </Button>
       </CardFooter>

@@ -45,7 +45,7 @@ const QualityRouter = require('./routes/complaintCRUD.js');
 app.use("/quality", QualityRouter);
 const Order = require("./routes/orderCRUD.js");
 app.use("/Order", Order);
-const Customer = require("./routes/authentic.js");
+const Customer = require("./routes/customer.register.routes.js");
 app.use("/customer", Customer);
 const Payment = require("./routes/paymentCRUD.js");
 app.use("/Payment", Payment);
@@ -76,6 +76,16 @@ app.use('/Employee', authroutes);
 
 const userRoutes = require('./routes/user.route.js');
 app.use('/Employee/user', userRoutes);
+
+app.use((err,req,res,next) => {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Internal server error';
+    res.status(statusCode).json({
+        success: false,
+        statusCode,
+        message
+    });
+});
 
 
 app.listen(PORT, () =>{
