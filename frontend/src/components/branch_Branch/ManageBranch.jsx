@@ -10,17 +10,17 @@ import axios from 'axios';
 export function ManageBranch() {
     const [branches, setBranches] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
-    const [refresh, setRefresh] = useState(false);              // <-- Add refresh state
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         fetchBranches();
-    }, [refresh]);                                              // <-- Trigger fetchBranches when refresh state changes
+    }, [refresh]);
 
     const fetchBranches = async () => {
         try {
             const response = await axios.get("http://localhost:8070/Branch/branch-all");
-            setBranches(response.data);
-            setRefresh(true); // <-- Reset refresh state
+            setBranches(response.data.map(branch => ({ ...branch, originalValues: { ...branch } })));  // Add originalValues to each branch
+            setRefresh(false);
         } catch (error) {
             console.error("Error fetching branches:", error);
             setErrorMessage("Error fetching branches");
@@ -29,9 +29,22 @@ export function ManageBranch() {
 
     const handleDelete = async (branchId) => {
         try {
+            // Check for drivers in the branch
+            const response = await axios.get(`http://localhost:8070/Driver/${branchId}/driver-all`);
+            const drivers = response.data;
+    
+            if (drivers.length > 0) {
+                const confirmDelete = window.confirm(`There are ${drivers.length} drivers in this branch. Are you sure you want to delete it?`);
+                
+                if (!confirmDelete) {
+                    return;  // Exit the function if the user cancels the delete operation
+                }
+            }
+    
+            // Proceed with branch deletion
             await axios.delete(`http://localhost:8070/Branch/branch-delete/${branchId}`);
             console.log("Branch deleted successfully");
-            setRefresh(true); // <-- Set refresh state to true to trigger re-render
+            setRefresh(true);
         } catch (error) {
             console.error("Error deleting Branch:", error);
             setErrorMessage("Error deleting Branch");
@@ -42,7 +55,7 @@ export function ManageBranch() {
         try {
             const response = await axios.put(`http://localhost:8070/Branch/branch-update/${updatedBranch._id}`, updatedBranch);
             console.log("Branch updated successfully:", response.data);
-            setRefresh(true); // <-- Set refresh state to true to trigger re-render
+            setRefresh(true);
         } catch (error) {
             console.error("Error updating branch:", error);
             setErrorMessage("Error updating branch");
@@ -52,8 +65,23 @@ export function ManageBranch() {
     const handleInputChange = (e, branchId, fieldName) => {
         const updatedBranches = branches.map(branch => {
             if (branch._id === branchId) {
-                console.log(`Updating ${fieldName} for branch ID: ${branchId} to value: ${e.target.value}`);  // Debugging line
-                return { ...branch, [fieldName]: e.target.value };
+                return { 
+                    ...branch,
+                    [fieldName]: e.target.value 
+                };
+            }
+            return branch;
+        });
+        setBranches(updatedBranches);
+    };
+
+    const resetToOriginalValues = (branchId) => {
+        const updatedBranches = branches.map(branch => {
+            if (branch._id === branchId) {
+                return { 
+                    ...branch,
+                    ...branch.originalValues  // Reset to original values
+                };
             }
             return branch;
         });
@@ -93,12 +121,6 @@ export function ManageBranch() {
                                         <Typography variant="subtitle1" color="gray">
                                             District: {branch.district}
                                         </Typography>
-                                        {/* <Typography variant="subtitle1" color="gray">
-                                            Branch Latitude: {branch.branch_Latitude}
-                                        </Typography>
-                                        <Typography variant="subtitle1" color="gray">
-                                            Branch Longitude: {branch.branch_Longitude}
-                                        </Typography> */}
                                         <div className="flex mt-2">
                                             <Input
                                                 size="sm"
@@ -124,19 +146,7 @@ export function ManageBranch() {
                                                 onChange={(e) => handleInputChange(e, branch._id, 'district')}
                                                 className="mr-2"
                                             />
-                                            {/* <Input
-                                                size="sm"
-                                                value={branch.branch_Latitude}
-                                                onChange={(e) => handleInputChange(e, branch._id, 'branch_Latitude')}
-                                                className="mr-2"
-                                            />
-                                            <Input
-                                                size="sm"
-                                                value={branch.branch_Longitude}
-                                                onChange={(e) => handleInputChange(e, branch._id, 'branch_Longitude')}
-                                                className="mr-2"
-                                            /> */}
-                                            <Button color="blue" onClick={() => handleUpdate(branch)}>
+                                            <Button color="blue" onClick={() => { handleUpdate(branch); resetToOriginalValues(branch._id); }}>
                                                 Update
                                             </Button>
                                             <Button color="red" onClick={() => handleDelete(branch._id)} className="ml-2">
