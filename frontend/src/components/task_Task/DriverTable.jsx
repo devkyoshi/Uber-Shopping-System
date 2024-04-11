@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
 
 const DriverTable = () => {
   const [drivers, setDrivers] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -10,24 +11,25 @@ const DriverTable = () => {
         const response = await axios.get('http://localhost:8070/Branch/branch-all');
         console.log('API Response:', response.data);
 
-        // Flatten the nested drivers array from the API response
-        const allDrivers = response.data.flatMap(branch => branch.drivers.map(driver => ({
-          ...driver,
-          district: branch.district // Assigning the district from the branch to each driver
-        })));
-
-        // Filter drivers by availability and then sort by district in alphabetical order
-        const filteredDrivers = allDrivers.filter(driver => driver.availability === 'Available');
-        const sortedDrivers = filteredDrivers.sort((a, b) => a.district.localeCompare(b.district));
+        // Filter drivers with driver_status "Available"
+        const availableDrivers = response.data.filter(driver => driver.driver_status === "Available");
         
-        setDrivers(sortedDrivers);
+        // Sort filtered drivers by available_district in alphabetical order
+        const sortedDrivers = availableDrivers.sort((a, b) => a.available_district.localeCompare(b.available_district));
+
+        setDrivers(sortedDrivers); // Set filtered and sorted drivers to the drivers state
       } catch (error) {
         console.error('Error fetching data:', error);
+        setError('Error fetching data'); // Set error state
       }
     };
  
     fetchData();
   }, []);
+
+  if (error) {
+    return <div>Error: {error}</div>; // Display error message if fetching data fails
+  }
 
   return (
     <div>
@@ -36,14 +38,14 @@ const DriverTable = () => {
         <thead>
           <tr>
             <th>Driver ID</th>
-            <th>District</th>
+            <th>Available District</th>
           </tr>
         </thead>
         <tbody>
           {drivers.map(driver => (
             <tr key={driver._id}>
               <td>{driver._id}</td>
-              <td>{driver.district}</td> {/* Correctly displaying the district from the branch */}
+              <td>{driver.available_district}</td>
             </tr>
           ))}
         </tbody>
