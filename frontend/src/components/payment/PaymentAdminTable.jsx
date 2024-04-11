@@ -59,11 +59,10 @@ export function PaymentAdminTable() {
 
   const indexOfLastPayment = currentPage * itemsPerPage;
   const indexOfFirstPayment = indexOfLastPayment - itemsPerPage;
-  const currentPayments = payments.slice(
+  const currentPayments = filteredPayments.slice(
     indexOfFirstPayment,
     indexOfLastPayment
   );
-
   // Function to handle Next button click
   const handleNextClick = () => {
     setCurrentPage((prevPage) => prevPage + 1);
@@ -119,7 +118,7 @@ export function TransactionsTable({
     <Card className="h-full w-full" style={{ width: "900px" }}>
       <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
-          <div>
+          <div className="pl-2">
             <Typography variant="h5" color="blue-gray">
               Recent Transactions
             </Typography>
@@ -147,7 +146,7 @@ export function TransactionsTable({
               {TABLE_HEAD.map((head) => (
                 <th
                   key={head}
-                  className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
+                  className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 font-bold"
                 >
                   <Typography
                     variant="small"
