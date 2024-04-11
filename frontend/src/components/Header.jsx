@@ -1,5 +1,5 @@
 // import { Avatar, Dropdown, Navbar, TextInput } from 'flowbite-react';
-// import React from 'react';
+
 // import { Link, useLocation } from 'react-router-dom';
 // import { Button } from 'flowbite-react';
 // import { AiOutlineSearch } from 'react-icons/ai';
@@ -75,12 +75,12 @@
 //     </Navbar>
 //   )
 // }
+// import React from 'react'
+
 import React from 'react'
 
 export default function Header() {
   return (
-    <div>
-      header
-    </div>
+    <div>Header</div>
   )
 }

@@ -17,6 +17,7 @@ import Emp_PrivateRoute from "./components/Emp_PrivateRoute";
 import ViewOrder from "./pages/ViewOrder";
 import Refund from "./pages/Refund/RefundForm";
 import PaymentAdminUI from "./pages/payment/PaymentAdminUI";
+import Header from "./components/Header"
 
 export default function App() {
   return (
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="/payment-admin" element={<PaymentAdminUI />} />
         {/* Methanin pahala add krnnaaaa nattan conflict wenawaaa udin add krnna epoo */}
       </Routes>
+      
       <Footer />
     </BrowserRouter>
   );
