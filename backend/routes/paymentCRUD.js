@@ -257,6 +257,28 @@ router.get("/payment/:orderId", async (req, res) => {
   }
 });
 
+router.get("/payments", async (req, res) => {
+  try {
+    // Query the database to find all orders
+    const orders = await Order.find().select("_id cash_payment card_payment");
+
+    // Extract payment details from each order
+    const payments = orders.map((order) => ({
+      order_id: order._id,
+      cash_payment: order.cash_payment,
+      card_payment: order.card_payment,
+    }));
+
+    // Send the payments as a response
+    res.json(payments);
+    console.log("Data Passed From DB");
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 // Route method to get all cash payments for a certain customer
 router.get("/cash/:customerId", async (req, res) => {
   const { customerId } = req.params;
