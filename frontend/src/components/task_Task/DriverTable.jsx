@@ -11,9 +11,10 @@ const DriverTable = () => {
         const response = await axios.get('http://localhost:8070/Branch/branch-all');
         console.log('API Response:', response.data);
 
-        // Filter drivers with driver_status "Available"
-        const availableDrivers = response.data.filter(driver => driver.driver_status === "Available");
-        
+        // Filter drivers with availability "available"
+        const availableDrivers = response.data.flatMap(branch => branch.drivers.filter(driver => driver.availability === "Available"));
+        console.log(availableDrivers);
+
         // Sort filtered drivers by available_district in alphabetical order
         const sortedDrivers = availableDrivers.sort((a, b) => a.available_district.localeCompare(b.available_district));
 
@@ -43,8 +44,8 @@ const DriverTable = () => {
         </thead>
         <tbody>
           {drivers.map(driver => (
-            <tr key={driver._id}>
-              <td>{driver._id}</td>
+            <tr key={driver.driver_id}>
+              <td>{driver.driver_id}</td>
               <td>{driver.available_district}</td>
             </tr>
           ))}

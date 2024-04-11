@@ -5,7 +5,6 @@ import { Card, Input, Button, Typography } from "@material-tailwind/react";
 
 export function AddBranch() {
   const [formData, setFormData] = useState({
-    _id: "",
     branch_ID: "",
     branch_name: "",
     branch_Location: "",
@@ -13,29 +12,30 @@ export function AddBranch() {
   });
 
   const [districts, setDistricts] = useState([]);
+  const [branches, setBranches] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    const fetchDistricts = async () => {
+    const fetchBranches = async () => {
       try {
         const branchResponse = await axios.get(
           "http://localhost:8070/Branch/branch-all"
         );
-        const branches = branchResponse.data;
+        const branchesData = branchResponse.data;
+        setBranches(branchesData);
 
         const districtValues = [
-          ...new Set(branches.map((branch) => branch.district)),
+          ...new Set(branchesData.map((branch) => branch.district)),
         ];
-
         setDistricts(districtValues);
       } catch (error) {
-        console.error("Error fetching districts:", error);
-        setErrorMessage("Error fetching districts. Please try again.");
+        console.error("Error fetching branches:", error);
+        setErrorMessage("Error fetching branches. Please try again.");
       }
     };
 
-    fetchDistricts();
+    fetchBranches();
   }, []);
 
   const handleChange = (e) => {
@@ -61,26 +61,29 @@ export function AddBranch() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formDataLowerCase = {
+      ...formData,
+      branch_ID: formData.branch_ID.toLowerCase(),
+      branch_Location: formData.branch_Location.toLowerCase(),
+    };
+
+    // Check for duplicate branch ID or branch Name and Location
+    const isExists = branches.some(
+      (branch) =>
+        branch.branch_ID === formData.branch_ID ||
+        (branch.branch_ID.toLowerCase() === formDataLowerCase.branch_ID &&
+          branch.branch_Location.toLowerCase() === formDataLowerCase.branch_Location)
+    );
+
+    if (isExists) {
+      setErrorMessage("Branch ID or Branch Name and Location already exists.");
+      return;
+    }
+
     try {
-      const branchResponse = await axios.get(
-        "http://localhost:8070/Branch/branch-all"
-      );
-      const branches = branchResponse.data;
-
-      const isExists = branches.some(
-        (branch) =>
-          branch.branch_ID === formData.branch_ID ||
-          branch.branch_Location === formData.branch_Location
-      );
-
-      if (isExists) {
-        setErrorMessage("Branch ID or Branch Location already exists.");
-        return;
-      }
-
       const response = await axios.post(
         "http://localhost:8070/Branch/branch-add",
-        formData
+        formDataLowerCase // Use formDataLowerCase here
       );
       console.log(response.data);
       setFormData({
@@ -108,13 +111,13 @@ export function AddBranch() {
         <form
           className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96 center"
           onSubmit={handleSubmit}
-          required
         >
           <Typography variant="h6" color="blue-gray" className="-mb-3">
             Branch ID
           </Typography>
           <Input
             size="lg"
+            required
             value={formData.branch_ID}
             onChange={handleChange}
             name="branch_ID"
@@ -160,9 +163,9 @@ export function AddBranch() {
                 value: district,
               }))}
               placeholder="Enter or select district"
-              isClearable
               inputValue={inputValue}
               onInputChange={(newInputValue) => setInputValue(newInputValue)}
+              isClearable={false}
             />
           </div>
 
