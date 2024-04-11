@@ -26,12 +26,13 @@ router.post("/refund-add", async (req, res) => {
         }
 
         // Account number and sort code validation
-        const accountNumberRegex = /^[0-9]{10}$/; // Example regex for 8-digit account number
-        const sortCodeRegex = /^[0-9]{9}$/; // Example regex for 6-digit sort code
+        const accountNumberRegex = /^[0-9]{10}$/; // Example regex for 10-digit account number
+        const sortCodeRegex = /^[0-9]{9}$/; // Example regex for 9-digit sort code
 
         if (!accountNumberRegex.test(account_number) || !sortCodeRegex.test(account_sort_code)) {
             return res.status(400).json({ message: 'Invalid account number or sort code format' });
         }
+        
 
         // Create a new refund object
         const newRefund = new Refund({
