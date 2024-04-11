@@ -6,6 +6,16 @@ const mongoose = require('mongoose');
 const Order = require("../models/order")
 const Complaint = require("../models/complaint")
 
+/*          "customer_id":"6607f3c6de3ed9ef425cf30d",
+            "order_id":"66120fc9f7b97eacbe3cb331",
+            "payment_id":"661238bd0c4e07f0981e0433",
+            "complaint_type":"expired",
+            "item_id":"6607f3c6de3ed9ef425cf30d",
+            "resolving_option":"replacement",
+            "complaint_img":"url",
+            "quantity":"2.1kg",
+            "complaint_status":"accepted" */
+
 
 // Route to handle refund form submission
 router.post("/refund-add", async (req, res) => {
@@ -32,7 +42,11 @@ router.post("/refund-add", async (req, res) => {
         if (!accountNumberRegex.test(account_number) || !sortCodeRegex.test(account_sort_code)) {
             return res.status(400).json({ message: 'Invalid account number or sort code format' });
         }
-        
+
+        //Amount validation
+        if(isNaN(amount) || amount <= 0){
+            return res.status(400).json({message: 'Amount must a positive number'})
+        }
 
         // Create a new refund object
         const newRefund = new Refund({
@@ -60,10 +74,11 @@ router.post("/refund-add", async (req, res) => {
 router.put("/refund-update/:refundID", async (req, res) => {
     try {
         const { refundID } = req.params;
-        const { order_id, account_holder, account_sort_code, account_number, amount } = req.body;
+        const { order_id, complaint_id, account_holder, account_sort_code, account_number, amount } = req.body;
 
         const updatedRefund = await Refund.findByIdAndUpdate(refundID, {
             order_id,
+            complaint_id,
             account_holder,
             account_sort_code,
             account_number,
