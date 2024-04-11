@@ -12,10 +12,8 @@ import {
   Input,
 } from "@material-tailwind/react";
 import { PencilIcon } from "@heroicons/react/24/solid";
-import {
-  ArrowDownTrayIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { DownloadButton } from "./DownloadButton";
 
 export function PaymentAdminTable() {
   const [searchInput, setSearchInput] = useState("");
@@ -138,9 +136,7 @@ export function TransactionsTable({
                 value={searchInput}
               />
             </div>
-            <Button className="flex items-center gap-3" size="sm">
-              <ArrowDownTrayIcon strokeWidth={2} className="h-4 w-4" /> Download
-            </Button>
+            <DownloadButton data={payments} />
           </div>
         </div>
       </CardHeader>

@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const driverSchema = new mongoose.Schema({
   driver_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Empolyee",
+    ref: "Empolyee",   
   },
   available_district: {
     type: String,
