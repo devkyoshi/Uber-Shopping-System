@@ -1,6 +1,6 @@
 import React from "react";
 import { SideBar } from "../../components/SideBar";
-import { PaymentTab } from "../../components/paymentComponent/PaymentTab";
+import { PaymentTab } from "../../components/payment/PaymentTab";
 
 export default function PaymentUI() {
   return (

@@ -8,7 +8,7 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-import { PaymentAdminTable } from "../../components/paymentComponent/PaymentAdminTable";
+import { PaymentAdminTable } from "../../components/payment/PaymentAdminTable";
 
 export default function PaymentAdminUI() {
   return (

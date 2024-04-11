@@ -1,5 +1,5 @@
 import React from "react";
-import PaymentForm from "../../components/payment/PaymentForm";
+import PaymentForm from "./PaymentForm";
 
 export default function PaymentSettingsUI({ orderId }) {
   return (

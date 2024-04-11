@@ -267,15 +267,14 @@ router.get("/payments", async (req, res) => {
       // Construct the payment object
       const paymentObj = {
         payment_id,
-        paid_time,
-        payment_status,
-        customer_id: order.customer_id,
-        payment_method,
-        email,
-        district,
-        nearest_town,
-        updated_time,
         payment_amount,
+        payment_method,
+        payment_status,
+        nearest_town,
+        district,
+        paid_time,
+        email,
+        updated_time,
       };
 
       // Conditionally include order_id if payment exists
