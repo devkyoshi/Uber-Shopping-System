@@ -94,7 +94,7 @@ export default function Complaint(){
                                    {Complaints.quantity}
                            </div>
                            {Complaints.complaint_status === 'accepted' && Complaints.resolving_option === 'refund' && (
-                           <Link to={`/refund/${Complaints._id}/${Complaints.item_id}`} className=" hover:text-red-700 text-red-500 font-bold hover:underline ">Click Here to Submit Bank Details</Link>
+                           <Link to={`/refund/${Complaints._id}/${Complaints.order_id}`} className=" hover:text-red-700 text-red-500 font-bold hover:underline ">Click Here to Submit Bank Details</Link>
                         )}
                         </div>
                         
