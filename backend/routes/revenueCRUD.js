@@ -1,70 +1,115 @@
-/* Created by Prasad H.G.A.T */
-
-
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Revenue = require('../models/revenue');
-const Order = require('../models/order');
+const Revenue = require("../models/revenue");
 
-// Calculate daily revenue
-router.get('/calculate-daily-revenue', async (req, res) => {
-    try { 
-        const date = new Date(); // Use current date
-        const startOfDay = new Date(date.setHours(0, 0, 0));
-        const endOfDay = new Date(date.setHours(23, 59, 59));
+//Method to add payment records
+router.post("/add-payment", async (req, res) => {
+  try {
+    const { payment_id, payment_amount } = req.body;
 
-        const orders = await Order.find({
-            'payment.paid_time': {
-                $gte: startOfDay,
-                $lt: endOfDay
-            },
-            'payment.payment_status': 'success'
-        });
+    // Find the existing revenue document (should be only one)
+    let revenue = await Revenue.findOne();
 
-        const totalRevenue = orders.reduce((total, order) => total + order.payment.payment_amount, 0);
-
-        let dailyRevenue = await Revenue.findOne({ date });
-
-        if (!dailyRevenue) {
-            dailyRevenue = new Revenue({ date });
-        }
-
-        dailyRevenue.total_revenue = totalRevenue;
-        dailyRevenue.orders = orders.map(order => ({
-            order_id: order._id,
-            payment_amount: order.payment.payment_amount
-        }));
-
-        await dailyRevenue.save();
-
-        res.status(200).json({ message: `Total revenue for ${date.toDateString()} (successful payments only): ${totalRevenue}` });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error calculating daily revenue' });
+    // If no revenue document exists, create a new one with the payment amount
+    if (!revenue) {
+      revenue = new Revenue({
+        total_revenue: payment_amount,
+        payments: [{ payment_id, time_stamp: Date.now() }],
+      });
+    } else {
+      // Add the payment amount to the existing total revenue
+      revenue.total_revenue += payment_amount;
+      // Record payment details
+      revenue.payments.push({ payment_id, time_stamp: Date.now() });
     }
+
+    // Save the updated or new revenue document
+    await revenue.save();
+
+    res.status(200).json({ message: "Payment amount added to total revenue" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "An error occurred while adding payment amount to total revenue",
+    });
+  }
 });
 
-// Fetch total revenue for a specific date
-router.get('/fetch-revenue-by-date', async (req, res) => {
-    try {
-        const { date } = req.query; // Extract date from query parameters
+//Method to add refund records
+router.post("/add-refund", async (req, res) => {
+  try {
+    const { refund_id, refund_amount } = req.body;
 
-        if (!date) {
-            return res.status(400).json({ error: 'Date parameter is required' });
-        }
+    // Find the existing revenue document (should be only one)
+    let revenue = await Revenue.findOne();
 
-        const selectedDate = new Date(date);
-        const dailyRevenue = await Revenue.findOne({ date: selectedDate });
-
-        if (!dailyRevenue) {
-            return res.status(404).json({ error: 'No revenue record found for the specified date' });
-        }
-
-        res.status(200).json({ message: `Total revenue for ${selectedDate.toDateString()}: ${dailyRevenue.total_revenue}` });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error fetching revenue by date' });
+    // If no revenue document exists or if refund amount is greater than total revenue, return error
+    if (!revenue || refund_amount > revenue.total_revenue) {
+      return res.status(400).json({ error: "Invalid refund amount" });
     }
+
+    // Deduct the refund amount from the existing total revenue
+    revenue.total_revenue -= refund_amount;
+    // Record refund details
+    revenue.refunds.push({ refund_id, time_stamp: Date.now() });
+
+    // Save the updated revenue document
+    await revenue.save();
+
+    res
+      .status(200)
+      .json({ message: "Refund amount deducted from total revenue" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error:
+        "An error occurred while deducting refund amount from total revenue",
+    });
+  }
+});
+
+// Method to remove payment records
+router.delete("/remove-payment/:paymentId", async (req, res) => {
+  try {
+    const { paymentId } = req.params;
+
+    // Find the existing revenue document (should be only one)
+    const revenue = await Revenue.findOne();
+
+    // If no revenue document exists, return an error
+    if (!revenue) {
+      return res.status(404).json({ error: "Revenue document not found" });
+    }
+
+    // Find the payment record to remove
+    const paymentIndex = revenue.payments.findIndex(
+      (payment) => payment.payment_id === paymentId
+    );
+
+    // If the payment record is not found, return an error
+    if (paymentIndex === -1) {
+      return res.status(404).json({ error: "Payment record not found" });
+    }
+
+    // Get the payment amount to subtract from the total revenue
+    const paymentAmountToRemove = revenue.payments[paymentIndex].payment_amount;
+
+    // Remove the payment record from the revenue document
+    revenue.payments.splice(paymentIndex, 1);
+
+    // Subtract the payment amount from the total revenue
+    revenue.total_revenue -= paymentAmountToRemove;
+
+    // Save the updated revenue document
+    await revenue.save();
+
+    res.status(200).json({ message: "Payment record removed successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "An error occurred while removing payment record",
+    });
+  }
 });
 
 module.exports = router;
