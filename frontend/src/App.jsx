@@ -24,6 +24,7 @@ import Header from "./components/CustomerHeader";
 import PrivateRoute from "./components/CustomerProfilePrivateRoute";
 import AdminPrivateRoute from "./components/CustomerAdminPrivateRoute";
 import CustomerAdmin from "./pages/CustomerAdmin";
+import UpdateOrder from "./pages/UpdateOrder";
 
 export default function App() {
   return (
@@ -69,6 +70,7 @@ export default function App() {
           {/*adminpages*/}
           <Route path="/Adminlogin" element={<CustomerAdmin />} />
         </Route>
+        <Route path="/updateOrder" element={<UpdateOrder />} />
         {/* Methanin pahala add krnnaaaa nattan conflict wenawaaa udin add krnna epoo */}
       </Routes>
 
