@@ -6,30 +6,36 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
-import { PlusCircleIcon, EyeIcon } from "@heroicons/react/24/solid";
-import ViewDriverUI from "../../pages/driver/ViewDriverUI";
-import AddDriverUI from "../../pages/driver/AddDriverUI";
+import { PlusCircleIcon, EyeIcon, CogIcon } from "@heroicons/react/24/solid";
+import { AddBranch } from "./AddBranch";
+import { ViewBranches } from "./ViewBranches";
+import { ManageBranch } from "./ManageBranch";
+import { BranchTable } from "./BranchTable";
 
-export function DriverTab(branch_ID) {
+export function BranchTab() {
   const [activeTab, setactiveTab] = useState("add");
 
-  console.log("Driver Tab", branch_ID);
-
   const tapMapping = {
-    add: <AddDriverUI branchID={branch_ID} />,
-    view: <ViewDriverUI branchID={branch_ID} />,
+    add: <AddBranch />,
+    view: <BranchTable />,
+    manage: <ManageBranch />,
   };
 
   const data = [
     {
-      label: "AddDriver",
+      label: "Add Branch",
       value: "add",
       icon: PlusCircleIcon,
     },
     {
-      label: "ViewDriver",
+      label: "View Branch",
       value: "view",
       icon: EyeIcon,
+    },
+    {
+      label: "Manage Branch",
+      value: "manage",
+      icon: CogIcon,
     },
   ];
 

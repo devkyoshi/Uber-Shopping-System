@@ -10,7 +10,7 @@ import {
   Radio,
 } from "@material-tailwind/react";
 
-export function DriverForm() {
+export function DriverForm(branch_ID) {
   const [driverDetails, setDriverDetails] = useState({
     branchID: "",
     driver_id: "",
@@ -19,6 +19,8 @@ export function DriverForm() {
     availability: "Available",
     available_district: "",
   });
+
+  console.log(branch_ID);
 
   const handleChange = (e) => {
     if (e.target && e.target.name) {
@@ -30,9 +32,8 @@ export function DriverForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("Yawapuwa",driverDetails);
       const response = await axios.post(
-        `http://localhost:8070/Driver/${driverDetails.branchID}/driver-add`,
+        `http://localhost:8070/Driver/${branch_ID}/driver-add`,
         driverDetails
       );
       console.log(response.data); // handle success message
@@ -57,24 +58,13 @@ export function DriverForm() {
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Branch ID
             </Typography>
-            {/* <Select
-              label="Select Branch ID"
-              className="w-72"
-              name="branchID"
-              value={driverDetails.branchID}
-              onChange={handleChange}
-            >
-              <Option value="kamal">Kamal</Option>
-              <Option value="Bid1234">Bid1234</Option>
-              <Option value="Bid1235">Bid1235</Option>
-            </Select> */}
-             <Input
+            <Input
               type="text"
               size="lg"
               name="branchID"
-              value={driverDetails.branchID}
-              onChange={handleChange}
-              placeholder="Enter branch"
+              readOnly
+              value={branch_ID}
+              placeholder="Branch ID"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
 
@@ -109,7 +99,7 @@ export function DriverForm() {
               placeholder="Enter Current Hand Over Money"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
-             <Typography variant="h6" color="blue-gray" className="-mb-3">
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
               Driver ID
             </Typography>
             <Input
