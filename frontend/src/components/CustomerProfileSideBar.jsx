@@ -45,16 +45,58 @@ export default function ProfileSideBar() {
                 <Sidebar.Item as='div' active={tab === 'profile'} icon={HiUser} label={'User'} labelColor='dark'>
                     Profile
                 </Sidebar.Item></Link>
-                {!currentCustomer.isAdmin && (
+                {currentCustomer.adminType === 'null' && (
                   <Link to='/Employee_Registration'>
                   <Sidebar.Item as='div' active={locationLink.pathname === '/Employee_Registration'} icon={HiUser} label={'Employee'} labelColor='dark'>
                       Register
                   </Sidebar.Item></Link>
                 )}
-                {currentCustomer.isAdmin && (
-                  <Link to='/AdminLogin?tab=admin'>
-                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=admin'} icon={HiUser} label={'Admin'} labelColor='red'>
-                        Dashboard
+                {currentCustomer.adminType === 'customer' && (
+                  <Link to='/AdminLogin?tab=customeradmin'>
+                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=customeradmin'} icon={HiUser} label={'Customer'} labelColor='red'>
+                       Dashboard
+                    </Sidebar.Item>
+                  </Link>
+                )}
+                {currentCustomer.adminType === 'order' && (
+                  <Link to='/AdminLogin?tab=orderadmin'>
+                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=orderadmin'} icon={HiUser} label={'Order'} labelColor='red'>
+                       Dashboard
+                    </Sidebar.Item>
+                  </Link>
+                )}
+                {currentCustomer.adminType === 'payment' && (
+                  <Link to='/AdminLogin?tab=paymentadmin'>
+                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=paymentadmin'} icon={HiUser} label={'Payment'} labelColor='red'>
+                       Dashboard
+                    </Sidebar.Item>
+                  </Link>
+                )}
+                {currentCustomer.adminType === 'route' && (
+                  <Link to='/AdminLogin?tab=routeadmin'>
+                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=routeadmin'} icon={HiUser} label={'Route'} labelColor='red'>
+                       Dashboard
+                    </Sidebar.Item>
+                  </Link>
+                )}
+                {currentCustomer.adminType === 'supermarket' && (
+                  <Link to='/AdminLogin?tab=supermarketadmin'>
+                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=supermarketadmin'} icon={HiUser} label={'Supermarket'} labelColor='red'>
+                       Dashboard
+                    </Sidebar.Item>
+                  </Link>
+                )}
+                {currentCustomer.adminType === 'quality' && (
+                  <Link to='/AdminLogin?tab=qualityadmin'>
+                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=qualityadmin'} icon={HiUser} label={'Quality'} labelColor='red'>
+                       Dashboard
+                    </Sidebar.Item>
+                  </Link>
+                )}
+                {currentCustomer.adminType === 'delivery' && (
+                  <Link to='/AdminLogin?tab=deliveryadmin'>
+                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=deliveryadmin'} icon={HiUser} label={'Delivery'} labelColor='red'>
+                       Dashboard
                     </Sidebar.Item>
                   </Link>
                 )}<br></br>

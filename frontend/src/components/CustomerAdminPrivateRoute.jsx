@@ -4,5 +4,5 @@ import { Outlet, Navigate } from 'react-router-dom'
 
 export default function AdminPrivateRoute() {
     const { currentCustomer } = useSelector((state) => state.customer)
-  return currentCustomer && currentCustomer.isAdmin ? <Outlet /> : <Navigate to= '/Customerprofile?tab=profile' />
+  return currentCustomer && currentCustomer.adminType !== 'null' ? <Outlet /> : <Navigate to= '/Customerprofile?tab=profile' />
 }
