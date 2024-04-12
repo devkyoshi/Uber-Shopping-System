@@ -23,7 +23,8 @@ const ViewDriverUI = () => {
   };
 
   useEffect(() => {
-    if (branchId.trim() !== "") { // Check if branchId is not empty before fetching data
+    if (branchId.trim() !== "") {
+      // Check if branchId is not empty before fetching data
       fetchData();
     }
   }, [branchId]); // Fetch data whenever branchId changes
@@ -42,7 +43,9 @@ const ViewDriverUI = () => {
           onChange={handleBranchInputChange}
         />
       </div>
-      <Button onClick={fetchData} color="blue">Fetch Drivers</Button>
+      <Button onClick={fetchData} color="blue">
+        Fetch Drivers
+      </Button>
       {loading ? (
         <p>Loading drivers...</p>
       ) : drivers.length === 0 ? (

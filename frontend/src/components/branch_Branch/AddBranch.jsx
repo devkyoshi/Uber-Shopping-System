@@ -72,7 +72,8 @@ export function AddBranch() {
       (branch) =>
         branch.branch_ID === formData.branch_ID ||
         (branch.branch_ID.toLowerCase() === formDataLowerCase.branch_ID &&
-          branch.branch_Location.toLowerCase() === formDataLowerCase.branch_Location)
+          branch.branch_Location.toLowerCase() ===
+            formDataLowerCase.branch_Location)
     );
 
     if (isExists) {
@@ -101,54 +102,55 @@ export function AddBranch() {
 
   return (
     <Card color="transparent" shadow={false}>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Typography variant="h4" color="blue-gray ">
-          Make Branch
-        </Typography>
-      </div>
+      <Typography
+        variant="h4"
+        color="blue-gray"
+        className="text-center pt-8 pb-3"
+      >
+        Make Branch
+      </Typography>
 
-      <div className="flex items-center justify-center h-full">
+      <div className="ml-48 pl-36">
         <form
-          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96 center"
+          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
           onSubmit={handleSubmit}
         >
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Branch ID
-          </Typography>
-          <Input
-            size="lg"
-            required
-            value={formData.branch_ID}
-            onChange={handleChange}
-            name="branch_ID"
-            placeholder="Enter Branch ID"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Branch Name
-          </Typography>
-          <Input
-            size="lg"
-            value={formData.branch_name}
-            onChange={handleChange}
-            name="branch_name"
-            placeholder="Enter Branch Name"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Branch Location
-          </Typography>
-          <Input
-            type="text"
-            size="lg"
-            value={formData.branch_Location}
-            onChange={handleChange}
-            name="branch_Location"
-            placeholder="Enter Branch Location"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-          />
-
           <div className="mb-1 flex flex-col gap-5">
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Branch ID
+            </Typography>
+            <Input
+              size="lg"
+              required
+              value={formData.branch_ID}
+              onChange={handleChange}
+              name="branch_ID"
+              placeholder="Enter Branch ID"
+              className="!border-t-blue-gray-200 focus:!border-t-gray-900 -mb-3"
+            />
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Branch Name
+            </Typography>
+            <Input
+              size="lg"
+              value={formData.branch_name}
+              onChange={handleChange}
+              name="branch_name"
+              placeholder="Enter Branch Name"
+              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            />
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Branch Location
+            </Typography>
+            <Input
+              type="text"
+              size="lg"
+              value={formData.branch_Location}
+              onChange={handleChange}
+              name="branch_Location"
+              placeholder="Enter Branch Location"
+              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            />
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               District
             </Typography>

@@ -3,7 +3,6 @@ import React from "react";
 import About from "./pages/About";
 import OrderForm from "./pages/OrderForm";
 import HomeUnregistered from "./pages/HomeUnregistered";
-import { NavigationBar } from "./components/NavigationBar";
 import { Footer } from "./components/Footer";
 import Employee_Registration from "./pages/Employee_Registration";
 import Complaint from "./pages/Complaint";
@@ -24,8 +23,8 @@ import Header from "./components/CustomerHeader";
 import PrivateRoute from "./components/CustomerProfilePrivateRoute";
 import AdminPrivateRoute from "./components/CustomerAdminPrivateRoute";
 import CustomerAdmin from "./pages/CustomerAdmin";
-import UpdateOrder from "./pages/UpdateOrder";
 import DriverUI from "./pages/driver/DriverUI";
+import UpdateOrder from "./pages/UpdateOrder";
 
 export default function App() {
   return (
@@ -74,8 +73,7 @@ export default function App() {
         <Route path="/updateOrder" element={<UpdateOrder />} />
         {/* Methanin pahala add krnnaaaa nattan conflict wenawaaa udin add krnna epoo */}
 
-        <Route path="/driver" element={<DriverUI/>} />
-
+        <Route path="/driver/:branchID" element={<DriverUI />} />
       </Routes>
 
       <Footer />
