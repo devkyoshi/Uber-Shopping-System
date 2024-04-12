@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '@material-tailwind/react';
+import { SideBar } from '../../components/SideBar';
 
 export default function RefundForm() {
     const { complaintId ,orderId} = useParams(); // Get complaintId and itemId from route parameters
@@ -43,10 +44,13 @@ export default function RefundForm() {
     }
 
     return (
-        <div className="inner-layout">
+    <div className='main-layout'>
+        <SideBar/>
+     <div className="inner-layout">
+     <h1 className="text-4xl font-semibold mb-9 ml-3 ">Refund Form</h1>
         <div className=" container mx-auto mt-5 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 rounded-lg border border-gray-300">
             <br/>
-            <h1 className="text-4xl font-semibold mb-9 ml-10 ">Refund Form</h1>
+            
             <form onSubmit={handleSubmit} className=" max-w-screen-md mx-auto w-full ">
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <div>
@@ -78,6 +82,7 @@ export default function RefundForm() {
             </form>
             <br/><br/>
         </div>
+      </div>
     </div>
     )
 }

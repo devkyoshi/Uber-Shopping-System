@@ -3,6 +3,7 @@ import axios  from 'axios'//Import axios for making HTTP request
 import {useSelector} from 'react-redux'
 import {Button} from '@material-tailwind/react'
 import { Link } from 'react-router-dom';
+import { SideBar } from '../components/SideBar';
 
 export default function Complaint(){
     const cusId = useSelector((state) => state.cusId);
@@ -48,10 +49,10 @@ export default function Complaint(){
 
     
     return(
+        <div className='main-layout'>
+        <SideBar/>
         <div className='inner-layout'>
-            
-                <h3 className='text-4xl ml-3 font-semibold'>Prev. Complaints</h3>
-            
+            <h3 className='text-4xl ml-3 font-semibold'>Prev. Complaints</h3>
             <div className='flex justify-end mt-4'>
             <Button  
                     ripple="light" 
@@ -102,5 +103,6 @@ export default function Complaint(){
                 ))}
             </ul>
         </div>
+    </div>
     )
 }
