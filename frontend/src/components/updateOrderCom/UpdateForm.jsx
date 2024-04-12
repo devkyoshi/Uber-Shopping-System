@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 
-  export function FormOrder() {
+  export function UpdateForm() {
 
     const [formData, setFormData] = useState({
         customer_id: "",
@@ -42,12 +42,12 @@ import axios from 'axios';
         }
       };
 
-
+    // design starts from here
     return (
        <Card color="transparent" shadow={false}>
          <div style={{ display: 'flex', justifyContent: 'center' }}>
          <Typography variant="h4" color="blue-gray ">
-          Make Order
+          Make Changes
         </Typography>
          </div>
         
@@ -124,7 +124,7 @@ import axios from 'axios';
                   </span>
               </label>
               <label class="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="check">
-                  Delivered
+                  Another
                 </label>
 
                 {/**check box 3 */}
@@ -143,10 +143,10 @@ import axios from 'axios';
                   </span>
               </label>
               <label class="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="check">
-                  Picking
+                  Done
                 </label>
                 
-            </div>
+            </div> 
 
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Additional Notes
@@ -198,13 +198,14 @@ import axios from 'axios';
           </div>
           
           <Button type="submit" className="mt-6" fullWidth>
-            Add Order
+            Confirm Changes
+          </Button>
+          <Button className="bg-gray-300 text-black hover:bg-gray-500 mt-3" fullWidth>
+            Cancel
           </Button>
          
         </form>
         </div>
-        
-       
       </Card>
     );
   }
