@@ -49,13 +49,13 @@ export default function Complaint(){
     
     return(
         <div className='inner-layout'>
-            <div className='bg-gray-700 text-white py-4 px-6 rounded-lg shadow-md'>
-                <h3 className='text-xl font-semibold'>Complaints</h3>
-            </div>
+            
+                <h3 className='text-4xl ml-3 font-semibold'>Prev. Complaints</h3>
+            
             <div className='flex justify-end mt-4'>
-            <Button color='gray' 
+            <Button  
                     ripple="light" 
-                    className='w-30 mt-3  text-base py-2 px-4 border border-transparent'>
+                    className='w-30 mt-3 text-base py-2 px-4 border border-transparent bg-gradient-to-r from-pink-500 via-red-500 to-orange-500'>
                         New Complaint
             </Button>
             </div>
@@ -63,27 +63,26 @@ export default function Complaint(){
             <ul>
                 {complaints.map((Complaints) => (
                     <li key={Complaints._id} className='mb-2'>
-                        <div className='border border-gray-400 bg-gray-300 p-4 rounded-lg items-center justify-between'>
+                        <div className='border border-gray-300 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 p-4 rounded-lg items-center justify-between'>
                             <div className='flex'>
                                <strong className='mr-2'>Order ID : </strong>
                                {Complaints.order_id}
                                <strong className='ml-10 mr-2'>Complaint Status : </strong>
                                <strong>
-                                  <div className='border border-gray-300 text-red-800 bg-white px-4 rounded-lg shadow-md'>
+                                  <div className='border border-gray-300 text-red-900 bg-white px-4 rounded-lg shadow-md'>
                                      {Complaints.complaint_status}
                                   </div>
                                </strong>
                                <div className='ml-auto flex'>
-                                    <Button color='blue' 
+                                    <Button color='gray' 
                                             ripple='light' 
-                                            className='w-30 mr-3 mt-3 text-base py-2 border border-transparent' 
+                                            className='w-30 mr-3 mt-3 text-base py-2 border border-transparent bg-gray-600' 
                                             size='regular'>Edit
                                     </Button>
                                     <Button onClick={() => deleteComplaint(Complaints._id)} color='red' 
-                                                                                       ripple='light' 
-                                                                                       className='w-30 mt-3  py-2 px-4 text-base border border-transparent' 
-                                                                                       size='regular'>
-                                                                                        Delete
+                                                                                            ripple='light' 
+                                                                                            className='w-30 mt-3  py-2 px-4 text-base border border-transparent bg-red-900' 
+                                                                                            size='regular'>Delete
                                     </Button>
                                </div>
                            </div>
@@ -94,7 +93,7 @@ export default function Complaint(){
                                    {Complaints.quantity}
                            </div>
                            {Complaints.complaint_status === 'accepted' && Complaints.resolving_option === 'refund' && (
-                           <Link to={`/refund/${Complaints._id}/${Complaints.order_id}`} className=" hover:text-red-700 text-red-500 font-bold hover:underline ">Click Here to Submit Bank Details</Link>
+                           <Link to={`/refund/${Complaints._id}/${Complaints.order_id}`} className=" hover:text-red-00 text-red-800 font-bold hover:underline ">Click Here to Submit Bank Details</Link>
                         )}
                         </div>
                         

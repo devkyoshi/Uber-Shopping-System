@@ -43,39 +43,41 @@ export default function RefundForm() {
     }
 
     return (
-        <div className=" container mx-auto mt-10 bg-gray-100 rounded-md border border-transparent rounded-lg">
+        <div className="inner-layout">
+        <div className=" container mx-auto mt-5 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 rounded-lg border border-gray-300">
             <br/>
             <h1 className="text-4xl font-semibold mb-9 ml-10 ">Refund Form</h1>
-            <form onSubmit={handleSubmit} className=" max-w-screen mx-auto w-full ">
-                <div className="grid grid-cols-2 gap-3 mb-4">
+            <form onSubmit={handleSubmit} className=" max-w-screen-md mx-auto w-full ">
+                <div className="grid grid-cols-2 gap-3 mb-3">
                   <div>
                     <label htmlFor="orderId" className="block mb-2 font-bold">Order ID:</label>
-                    <input type="text" id="orderId" name="order_id" value={formData.order_id} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
+                    <input type="text" id="orderId" name="order_id" value={formData.order_id} onChange={handleChange} className="w-full p-2 bg-red-45 border border-gray-400 rounded-md" required />
                   </div>
                   <div>
                     <label htmlFor="complaintId" className="block mb-2 font-bold">Complaint ID:</label>
                     <input type="text" id="complaintId" name="complaint_id" value={formData.complaint_id} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
                   </div>
                 </div>
-                <div className="mb-4">
+                <div className="mb-3">
                     <label htmlFor="accountHolder" className="block mb-2 font-bold">Account Holder:</label>
                     <input type="text" id="accountHolder" name="account_holder" value={formData.account_holder} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
                 </div>
-                <div className="mb-4">
+                <div className="mb-3">
                     <label htmlFor="accountSortCode" className="block mb-2 font-bold">Account Sort Code:</label>
                     <input type="text" id="accountSortCode" name="account_sort_code" value={formData.account_sort_code} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
                 </div>
-                <div className="mb-4">
+                <div className="mb-3">
                     <label htmlFor="accountNumber" className="block mb-2 font-bold">Account Number:</label>
                     <input type="text" id="accountNumber" name="account_number" value={formData.account_number} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
                 </div>
-                <div className="mb-4">
+                <div className="mb-3">
                     <label htmlFor="amount" className="block mb-2 font-bold">Amount:</label>
                     <input type="Number" id="amount" name="amount" value={formData.amount} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" />
                 </div>
-                <Button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Submit</Button>
+                <Button type="submit" className="bg-gradient-to-r from-pink-300 via-red-300 to-orange-300 text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-gradient-to-r from-pink-600 via-red-600 to-orange-600 transition duration-300">Submit</Button>
             </form>
             <br/><br/>
         </div>
+    </div>
     )
 }
