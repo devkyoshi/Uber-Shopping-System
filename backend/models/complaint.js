@@ -43,6 +43,10 @@ const complaintSchema = new Schema({
         type: String,
         enum: ['pending', 'accepted', 'resolved'],
         default: "pending"
+    },
+    updated_time: {
+        type: Date,
+        required: true,
     }
 });
 

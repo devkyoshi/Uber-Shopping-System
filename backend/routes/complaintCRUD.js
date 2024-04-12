@@ -5,6 +5,17 @@ const express = require("express");
 const router = express.Router();
 const Complaint = require("../models/complaint");
 const mongoose = require('mongoose');
+const Refund = require("../models/refund")
+
+/*
+            "order_id":"66120fc9f7b97eacbe3cb331",
+            "complaint_id":"66162d4584931d86219f6d51",
+            "account_holder":"Chanmi",
+            "account_sort_code":123456780,
+            "account_number":1234567890,
+            "amount":10000
+
+*/
 
 // Create a new complaint
 router.post("/complaint-add", async (req, res) => {
@@ -80,7 +91,9 @@ router.delete("/complaint-delete/:complaintID", async (req, res) => {
 // Read all complaint
 router.get("/complaint-all", async (req, res) => {
     try {
-        const complaint = await Complaint.find().select('order_id complaint_status item_id quantity resolving_option ');
+        // Fetch all complaint IDs from refunds
+        const refundedComplaintIds = await Refund.distinct("complaint_id");
+        const complaint = await Complaint.find({ _id: { $nin: refundedComplaintIds } }).sort({ updatedAt: -1 }).select('order_id complaint_status item_id quantity resolving_option ');
         res.json(complaint);
     } catch (error) {
         console.error(error);
