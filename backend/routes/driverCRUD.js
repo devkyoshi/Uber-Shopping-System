@@ -19,7 +19,8 @@ router.post("/:branchID/driver-add", async (req, res) => {
       available_district,
     } = req.body;
 
-    const branch = await Branch.findById(branchID);
+    const branch = await Branch.findOne({ branch_ID: branchID }); // Find branch by branch_ID
+
     if (!branch) {
       return res.status(404).json({ error: "Branch not found" });
     }
@@ -45,6 +46,7 @@ router.post("/:branchID/driver-add", async (req, res) => {
     });
   }
 });
+
 
 // Update driver details within a branch - Gimashi
 router.put("/:branchID/driver-update/:driverID", async (req, res) => {
@@ -136,6 +138,28 @@ router.delete("/:branchID/driver-delete/:driverID", async (req, res) => {
     res.status(500).json({
       error: "An error occurred while deleting the driver from the branch",
     });
+  }
+});
+
+
+
+// Route to get all drivers in a branch by branch_ID
+router.get('/drivers/:branchId', async (req, res) => {
+  const { branchId } = req.params;
+
+  try {
+    // Find the branch by branch_ID and populate the 'drivers' field
+    const branch = await Branch.findOne({ branch_ID: branchId }).populate('drivers');
+    
+    if (!branch) {
+      return res.status(404).json({ message: 'Branch not found' });
+    }
+
+    // Return the drivers belonging to the branch
+    res.json({ drivers: branch.drivers });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
   }
 });
 
