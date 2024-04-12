@@ -6,7 +6,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
 require("dotenv").config();
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
 //created a port
@@ -19,29 +19,28 @@ app.use(bodyParser.json());
 //get url
 const URL = process.env.MONGODB_URL;
 
-
 //connect mongoDB
-mongoose.connect(URL, {
+mongoose
+  .connect(URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-}).then(() => {
+  })
+  .then(() => {
     console.log("MongoDB Connected Successfully");
-}).catch(err => {
+  })
+  .catch((err) => {
     console.error("Error connecting to MongoDB:", err);
-});
+  });
 
 //open connection
 const connection = mongoose.connection;
 connection.once("open", () => {
-    console.log("Mongodb Connection Success!");
+  console.log("Mongodb Connection Success!");
 });
-
-
 
 /* Add your part here */
 
-
-const QualityRouter = require('./routes/complaintCRUD.js');
+const QualityRouter = require("./routes/complaintCRUD.js");
 app.use("/quality", QualityRouter);
 const Order = require("./routes/orderCRUD.js");
 app.use("/Order", Order);
@@ -52,15 +51,15 @@ app.use("/Payment", Payment);
 // const Revenue = require("./routes/revenueCRUD.js");
 // app.use("/Revenue", Revenue);
 const Task = require("./routes/taskCRUD.js");
-app.use("/Task", Task);
+app.use("/Task", Task);
 const Driver = require("./routes/driverCRUD.js");
-app.use("/Driver", Driver);
+app.use("/Driver", Driver);
 const Supermarket = require("./routes/supermarketCRUD.js");
 app.use("/Supermarket", Supermarket);
 const Items = require("./routes/itemsCRUD.js");
-app.use("/Items", Items);
+app.use("/Items", Items);
 const Promotion = require("./routes/promotionCRUD.js");
-app.use("/Promotion", Promotion);
+app.use("/Promotion", Promotion);
 const Complaint = require("./routes/complaintCRUD.js");
 app.use("/Complaint", Complaint);
 const Refund = require("./routes/refundCRUD.js");
@@ -69,46 +68,29 @@ app.use("/Refund", Refund);
 // app.use("/Report", Report);
 const Branch = require("./routes/branchCRUD.js");
 app.use("/Branch", Branch);
+const Revenue = require("./routes/revenueCRUD.js");
+app.use("/Revenue", Revenue);
 
-//register authentication                                                             error check 
-const authroutes= require('./routes/Employee_authentication.route.js');
-app.use('/Employee', authroutes);
+//register authentication                                                             error check
+const authroutes = require("./routes/Employee_authentication.route.js");
+app.use("/Employee", authroutes);
 
-const userRoutes = require('./routes/user.route.js');
-app.use('/Employee/user', userRoutes);
+const userRoutes = require("./routes/user.route.js");
+app.use("/Employee/user", userRoutes);
 
-app.use((err,req,res,next) => {
-    const statusCode = err.statusCode || 500;
-    const message = err.message || 'Internal server error';
-    res.status(statusCode).json({
-        success: false,
-        statusCode,
-        message
-    });
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal server error";
+  res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+  });
 });
 
-
-app.listen(PORT, () =>{
-    console.log(`Server is up and running no port:  ${PORT}`)
+app.listen(PORT, () => {
+  console.log(`Server is up and running no port:  ${PORT}`);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 //Look how simple the code is

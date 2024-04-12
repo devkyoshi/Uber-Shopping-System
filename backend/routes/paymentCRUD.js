@@ -6,18 +6,19 @@ const router = express.Router();
 const Order = require("../models/order");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const axios = require("axios");
+const Revenue = require("../models/revenue");
 
-// Add payment details to a certain order document(cash)
+// Add payment details to a certain order document(cash) Revenue Thingy added
 router.post("/pay-cash/:orderId/add-payment", async (req, res) => {
   try {
     const orderId = req.params.orderId;
-
     const order = await Order.findById(orderId);
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
-    const { email, address, postal_code, district, nearest_town } = req.body;
 
+    const { email, address, postal_code, district, nearest_town } = req.body;
     const payment_amount = order.total_amount;
     const paymentId = new ObjectId(); // Generate new ObjectId for payment
 
@@ -36,8 +37,26 @@ router.post("/pay-cash/:orderId/add-payment", async (req, res) => {
         nearest_town,
       },
     });
-    // Send response
-    res.json("Payment details added to the order successfully");
+
+    // Update the revenue
+    let revenue = await Revenue.findOne();
+    if (!revenue) {
+      revenue = new Revenue({
+        total_revenue: payment_amount,
+        payments: [{ _id: paymentId, time_stamp: Date.now() }],
+      });
+    } else {
+      // Add the payment amount to the existing total revenue
+      revenue.total_revenue += payment_amount;
+      // Record payment details
+      revenue.payments.push({ _id: paymentId, time_stamp: Date.now() });
+    }
+    await revenue.save();
+
+    // Send success response
+    res
+      .status(200)
+      .json({ message: "Payment details added to the order successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -46,7 +65,49 @@ router.post("/pay-cash/:orderId/add-payment", async (req, res) => {
   }
 });
 
-// Delete payment details from a certain order document(cash)
+// Update payment details for a certain order document(cash)
+router.put("/pay-cash/:orderId/update-payment/:paymentId", async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+    const paymentId = req.params.paymentId;
+
+    const {
+      email,
+      payment_amount,
+      address,
+      postal_code,
+      district,
+      nearest_town,
+    } = req.body;
+
+    const payment_status = "Paid (Updated)";
+
+    // Update the payment details within the order document
+    await Order.findOneAndUpdate(
+      { _id: orderId, "cash_payment._id": paymentId },
+      {
+        $set: {
+          "cash_payment.email": email,
+          "cash_payment.payment_amount": payment_amount,
+          "cash_payment.address": address,
+          "cash_payment.postal_code": postal_code,
+          "cash_payment.payment_status": payment_status,
+          "cash_payment.updated_time": new Date(),
+          "cash_payment.district": district,
+          "cash_payment.nearest_town": nearest_town,
+        },
+      }
+    );
+
+    res.json("Payment details updated successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "An error occurred while updating payment details",
+    });
+  }
+});
+
 router.delete(
   "/pay-cash/:orderId/delete-payment/:paymentId",
   async (req, res) => {
@@ -60,7 +121,32 @@ router.delete(
         { $unset: { cash_payment: paymentId } }
       );
 
-      res.json("Payment details deleted successfully");
+      // Find the order
+      const order = await Order.findById(orderId);
+      if (!order) {
+        console.log("Order Not Found");
+      }
+      const RemovepaymentAmount = order.total_amount;
+
+      const revenue = await Revenue.findOne();
+      if (!revenue) {
+        return res.status(404).json({ error: "Revenue document not found" });
+      }
+
+      revenue.total_revenue -= RemovepaymentAmount;
+
+      // Find the index of the payment in the payments array
+      const paymentIndex = revenue.payments.findIndex(
+        (payment) => payment._id.toString() === paymentId
+      );
+
+      if (paymentIndex === -1) {
+        return res.status(404).json({ error: "Payment record not found" });
+      }
+      revenue.payments.splice(paymentIndex, 1);
+      await revenue.save();
+      // Send success response
+      res.status(200).json({ message: "Payment record removed successfully" });
     } catch (error) {
       console.error(error);
       res.status(500).json({
@@ -110,54 +196,26 @@ router.post("/pay-card/:orderId/add-payment", async (req, res) => {
       },
     });
 
+    // Update the revenue
+    let revenue = await Revenue.findOne();
+    if (!revenue) {
+      revenue = new Revenue({
+        total_revenue: payment_amount,
+        payments: [{ _id: paymentId, time_stamp: Date.now() }],
+      });
+    } else {
+      // Add the payment amount to the existing total revenue
+      revenue.total_revenue += payment_amount;
+      // Record payment details
+      revenue.payments.push({ _id: paymentId, time_stamp: Date.now() });
+    }
+    await revenue.save();
+
     res.json("Card payment details added to the order successfully");
   } catch (error) {
     console.error(error);
     res.status(500).json({
       error: "An error occurred while adding card payment details to the order",
-    });
-  }
-});
-
-// Update payment details for a certain order document(cash)
-router.put("/pay-cash/:orderId/update-payment/:paymentId", async (req, res) => {
-  try {
-    const orderId = req.params.orderId;
-    const paymentId = req.params.paymentId;
-
-    const {
-      email,
-      payment_amount,
-      address,
-      postal_code,
-      district,
-      nearest_town,
-    } = req.body;
-
-    const payment_status = "Paid (Updated)";
-
-    // Update the payment details within the order document
-    await Order.findOneAndUpdate(
-      { _id: orderId, "cash_payment._id": paymentId },
-      {
-        $set: {
-          "cash_payment.email": email,
-          "cash_payment.payment_amount": payment_amount,
-          "cash_payment.address": address,
-          "cash_payment.postal_code": postal_code,
-          "cash_payment.payment_status": payment_status,
-          "cash_payment.updated_time": new Date(),
-          "cash_payment.district": district,
-          "cash_payment.nearest_town": nearest_town,
-        },
-      }
-    );
-
-    res.json("Payment details updated successfully");
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      error: "An error occurred while updating payment details",
     });
   }
 });
@@ -206,6 +264,55 @@ router.put("/pay-card/:orderId/update-payment/:paymentId", async (req, res) => {
     });
   }
 });
+
+// Delete payment details from a certain order document(card)
+router.delete(
+  "/pay-card/:orderId/delete-payment/:paymentId",
+  async (req, res) => {
+    try {
+      const orderId = req.params.orderId;
+      const paymentId = req.params.paymentId;
+
+      // Delete the payment details from the order document
+      await Order.findOneAndUpdate(
+        { _id: orderId },
+        { $unset: { card_payment: paymentId } }
+      );
+
+      // Find the order
+      const order = await Order.findById(orderId);
+      if (!order) {
+        console.log("Order Not Found");
+      }
+      const RemovepaymentAmount = order.total_amount;
+
+      const revenue = await Revenue.findOne();
+      if (!revenue) {
+        return res.status(404).json({ error: "Revenue document not found" });
+      }
+
+      revenue.total_revenue -= RemovepaymentAmount;
+
+      const paymentIndex = revenue.payments.findIndex(
+        (payment) => payment._id.toString() === paymentId
+      );
+
+      if (paymentIndex === -1) {
+        return res.status(404).json({ error: "Payment record not found" });
+      }
+
+      revenue.payments.splice(paymentIndex, 1);
+      await revenue.save();
+
+      res.json("Card payment details deleted successfully");
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        error: "An error occurred while deleting card payment details",
+      });
+    }
+  }
+);
 
 router.get("/payments", async (req, res) => {
   try {
@@ -294,30 +401,6 @@ router.get("/payments", async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
-
-// Delete payment details from a certain order document(card)
-router.delete(
-  "/pay-card/:orderId/delete-payment/:paymentId",
-  async (req, res) => {
-    try {
-      const orderId = req.params.orderId;
-      const paymentId = req.params.paymentId;
-
-      // Delete the payment details from the order document
-      await Order.findOneAndUpdate(
-        { _id: orderId },
-        { $unset: { card_payment: paymentId } }
-      );
-
-      res.json("Card payment details deleted successfully");
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        error: "An error occurred while deleting card payment details",
-      });
-    }
-  }
-);
 
 // Route to read payments for a specific order ID
 router.get("/payment/:orderId", async (req, res) => {
