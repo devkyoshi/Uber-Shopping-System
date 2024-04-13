@@ -80,7 +80,7 @@ const login = async (req, res, next) => {
                 return next(errorHandler(400,'Wrong credentials'));
             }
 
-            const token = jwt.sign({ id: validUser._id, isAdmin: validUser.isAdmin }, process.env.JWT_SECRET);
+            const token = jwt.sign({ id: validUser._id, adminType: validUser.adminType }, process.env.JWT_SECRET);
 
             const { cus_password: _, ...userData } = validUser._doc;
 
