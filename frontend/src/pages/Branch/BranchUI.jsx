@@ -1,6 +1,5 @@
 import React from "react";
 import { SideBar } from "../../components/SideBar";
-import Branch from "./Branch";
 import { BranchTab } from "../../components/branch_Branch/BranchTab";
 
 export default function BranchUI() {

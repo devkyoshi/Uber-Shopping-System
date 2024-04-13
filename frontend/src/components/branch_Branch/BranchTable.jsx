@@ -1,9 +1,8 @@
 import { Card, Typography, Button } from "@material-tailwind/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom"; // Import Link from React Router
-import AddDriverUI from "../../pages/driver/AddDriverUI";
-import DriverUI from "../../pages/driver/DriverUI";
+import { useNavigate } from "react-router-dom";
+// Import Link from React Router
 
 const TABLE_HEAD = [
   "Branch ID",
@@ -16,7 +15,7 @@ const TABLE_HEAD = [
 export function BranchTable() {
   const [branchList, setBranchList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const [selectedBranchID, setSelectedBranchID] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBranch = async () => {
@@ -94,12 +93,22 @@ export function BranchTable() {
                   {branch.district}
                 </Typography>
               </td>
-              <td className="p-4">
-                <Link to={`/driver/${branch.branch_ID}`}>
-                  {" "}
-                  {/* Use Link instead of Button */}
+              <td>
+                <Button
+                  className="hover:bg-black"
+                  onClick={() => {
+                    navigate("/driver", {
+                      replace: true,
+                      state: {
+                        //Sending data
+                        branch_ID: branch.branch_ID,
+                        district: branch.district,
+                      },
+                    });
+                  }}
+                >
                   Add Driver
-                </Link>
+                </Button>
               </td>
             </tr>
           ))}

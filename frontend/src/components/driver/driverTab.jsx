@@ -10,14 +10,12 @@ import { PlusCircleIcon, EyeIcon } from "@heroicons/react/24/solid";
 import ViewDriverUI from "../../pages/driver/ViewDriverUI";
 import AddDriverUI from "../../pages/driver/AddDriverUI";
 
-export function DriverTab(branch_ID) {
+export function DriverTab({ branch_ID, district }) {
   const [activeTab, setactiveTab] = useState("add");
 
-  console.log("Driver Tab", branch_ID);
-
   const tapMapping = {
-    add: <AddDriverUI branchID={branch_ID} />,
-    view: <ViewDriverUI branchID={branch_ID} />,
+    add: <AddDriverUI branch_ID={branch_ID} district={district} />,
+    view: <ViewDriverUI />,
   };
 
   const data = [

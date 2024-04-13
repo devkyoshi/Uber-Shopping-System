@@ -10,7 +10,7 @@ import {
   Radio,
 } from "@material-tailwind/react";
 
-export function DriverForm(branch_ID) {
+export function DriverForm({ branch_ID, district }) {
   const [driverDetails, setDriverDetails] = useState({
     branchID: "",
     driver_id: "",
@@ -19,8 +19,6 @@ export function DriverForm(branch_ID) {
     availability: "Available",
     available_district: "",
   });
-
-  console.log(branch_ID);
 
   const handleChange = (e) => {
     if (e.target && e.target.name) {
@@ -119,8 +117,8 @@ export function DriverForm(branch_ID) {
               type="text"
               size="lg"
               name="available_district"
-              value={driverDetails.available_district}
-              onChange={handleChange}
+              value={district}
+              readOnly
               placeholder="Enter Available Districts"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />

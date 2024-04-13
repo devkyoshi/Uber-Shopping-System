@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import React from "react";
 import About from "./pages/About";
 import OrderForm from "./pages/OrderForm";
@@ -73,7 +73,7 @@ export default function App() {
         <Route path="/updateOrder" element={<UpdateOrder />} />
         {/* Methanin pahala add krnnaaaa nattan conflict wenawaaa udin add krnna epoo */}
 
-        <Route path="/driver/:branchID" element={<DriverUI />} />
+        <Route path="/driver" element={<DriverUI />} />
       </Routes>
 
       <Footer />
