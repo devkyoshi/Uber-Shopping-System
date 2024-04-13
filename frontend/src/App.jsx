@@ -25,6 +25,7 @@ import AdminPrivateRoute from "./components/CustomerAdminPrivateRoute";
 import CustomerAdmin from "./pages/CustomerAdmin";
 import DriverUI from "./pages/driver/DriverUI";
 import UpdateOrder from "./pages/UpdateOrder";
+import ComplaintForm from "./pages/Complaint/ComplaintForm"
 
 export default function App() {
   return (
@@ -67,13 +68,14 @@ export default function App() {
           <Route path="/Customerprofile" element={<Profile />} />
         </Route>
         <Route element={<AdminPrivateRoute />}>
-          {/*adminpages*/}
+        {/*adminpages*/}
           <Route path="/Adminlogin" element={<CustomerAdmin />} />
         </Route>
         <Route path="/updateOrder" element={<UpdateOrder />} />
         {/* Methanin pahala add krnnaaaa nattan conflict wenawaaa udin add krnna epoo */}
 
         <Route path="/driver" element={<DriverUI />} />
+        <Route path="/complaintForm" element={<ComplaintForm/>}/>
       </Routes>
 
       <Footer />

@@ -2,13 +2,13 @@ import React,{useEffect, useState} from 'react'
 import axios  from 'axios'//Import axios for making HTTP request
 import {useSelector} from 'react-redux'
 import {Button} from '@material-tailwind/react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SideBar } from '../components/SideBar';
 
 export default function Complaint(){
     const cusId = useSelector((state) => state.cusId);
     const [complaints,setComplaints] = useState([]);
-    //const history = useHistory();
+    const navigate = useNavigate();
     
 
 
@@ -56,7 +56,8 @@ export default function Complaint(){
             <div className='flex justify-end mt-4'>
             <Button  
                     ripple="light" 
-                    className='w-30 mt-3 text-base py-2 px-4 border border-transparent bg-gradient-to-r from-pink-500 via-red-500 to-orange-500'>
+                    className='w-30 mt-3 text-base py-2 px-4 border border-transparent bg-gradient-to-r from-pink-500 via-red-500 to-orange-500'
+                    onClick={() => navigate(`/complaintForm`)} >
                         New Complaint
             </Button>
             </div>

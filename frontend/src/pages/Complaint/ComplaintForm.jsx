@@ -1,12 +1,15 @@
 import React,{useState} from 'react';
 
-export function ComplaintForm(){
+export default function ComplaintForm(){
     const [orderId , setOrderId] = useState('');
     const [paymentId,setPaymentId] = useState('');
     const [complaintType,setComplaintType] = useState('');
     const [resolvingOption,setResolvingOption] = useState('');
     const [quantity,setQuantity] = useState(0);
+
     return(
-        <div></div>
+        <div>
+            complaint
+        </div>
     )
 }
