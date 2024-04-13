@@ -18,9 +18,9 @@ const customerschema = new mongoose.Schema({
         required: true,
     },
 
-    isAdmin: {
-        type: Boolean,
-        default: false
+    adminType: {
+        type: String,
+        default: 'null'
     },
 
     /*cus_name:{
