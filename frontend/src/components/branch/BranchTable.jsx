@@ -35,7 +35,7 @@ export function BranchTable() {
 
   return (
     <Card className="h-full w-full overflow-scroll">
-      <table className="w-full min-w-max table-auto text-left text-center">
+      <table className="w-full min-w-max table-auto text-center">
         <thead>
           <tr>
             {TABLE_HEAD.map((head) => (
@@ -84,7 +84,7 @@ export function BranchTable() {
                   {branch.branch_Location}
                 </Typography>
               </td>
-              <td className="p-4">
+              <td className="p-4 bg-blue-gray-50/50">
                 <Typography
                   variant="small"
                   color="blue-gray"
