@@ -7,33 +7,32 @@ import {
   TabPanel,
 } from "@material-tailwind/react";
 import { PlusCircleIcon, EyeIcon, CogIcon } from "@heroicons/react/24/solid";
-import { AddBranch } from "./AddBranch";
-import { ViewBranches } from "./ViewBranches";
-import { ManageBranch } from "./ManageBranch";
-import { BranchTable } from "./BranchTable";
+import { AddTask } from "./AddTask";
+import { ViewTasks } from "./ViewTasks";
+import { ManageTask } from "./ManageTask";
 
-export function BranchTab() {
+export function TaskTab() {
   const [activeTab, setactiveTab] = useState("add");
 
   const tapMapping = {
-    add: <AddBranch />,
-    view: <BranchTable />,
-    manage: <ManageBranch />,
+    add: <AddTask />,
+    view: <ViewTasks />,
+    manage: <ManageTask />,
   };
 
   const data = [
     {
-      label: "Add Branch",
+      label: "Add Task",
       value: "add",
       icon: PlusCircleIcon,
     },
     {
-      label: "View Branch",
+      label: "View Task",
       value: "view",
       icon: EyeIcon,
     },
     {
-      label: "Manage Branch",
+      label: "Manage Task",
       value: "manage",
       icon: CogIcon,
     },

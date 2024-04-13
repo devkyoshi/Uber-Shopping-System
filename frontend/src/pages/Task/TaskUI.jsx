@@ -1,6 +1,6 @@
 import React from "react";
 import { SideBar } from "../../components/SideBar";
-import Task from "./Task";
+import { TaskTab } from "../../components/task/TaskTab";
 
 export default function TaskUI() {
   const taskId = "6615ce6a66d9ecafbe566b0f"; // Example taskId
@@ -9,8 +9,11 @@ export default function TaskUI() {
   const branchID = "6611f62b50033ea2c700995b";
 
   return (
-      <div className="inner-layout">
-        <Task taskId={taskId} orderId={orderId} driverId={driverId} branchID={branchID} />
+    <div className="main-layout bg">
+      <SideBar />
+        <div className="inner-layout">
+          <TaskTab taskId={taskId} orderId={orderId} driverId={driverId} branchID={branchID} />
+        </div>
       </div>
   );
 }
