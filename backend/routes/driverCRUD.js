@@ -180,6 +180,7 @@ router.get("/:branchID/driver-all", async (req, res) => {
     });
   }
 });
+
 router.get("/drivers", async (req, res) => {
   try {
     // Fetch all branches with drivers populated

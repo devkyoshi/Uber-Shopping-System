@@ -35,7 +35,7 @@ export function BranchTable() {
 
   return (
     <Card className="h-full w-full overflow-scroll">
-      <table className="w-full min-w-max table-auto text-left">
+      <table className="w-full min-w-max table-auto text-left text-center">
         <thead>
           <tr>
             {TABLE_HEAD.map((head) => (
