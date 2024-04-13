@@ -1,6 +1,6 @@
 import React from "react";
 import { SideBar } from "../../components/SideBar";
-import { BranchTab } from "../../components/branch_Branch/BranchTab";
+import { BranchTab } from "../../components/branch/BranchTab";
 
 export default function BranchUI() {
   const branchID = "6615f2a45beb3dd29ad645b1"; // Example branchID

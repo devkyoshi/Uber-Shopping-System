@@ -1,10 +1,10 @@
 import React from "react";
-import { AddTask } from "../../components/task_Task/AddTask";
-import { ViewTask } from "../../components/task_Task/ViewTask";
-import { ViewTasks } from "../../components/task_Task/ViewTasks";
-import { ManageTask } from "../../components/task_Task/ManageTask";
-import DriverTable from "../../components/task_Task/DriverTable";
-import OrderTable from "../../components/task_Task/OrderTable";
+import { AddTask } from "../../components/task/AddTask";
+import { ViewTask } from "../../components/task/ViewTask";
+import { ViewTasks } from "../../components/task/ViewTasks";
+import { ManageTask } from "../../components/task/ManageTask";
+import DriverTable from "../../components/task/DriverTable";
+import OrderTable from "../../components/task/OrderTable";
 import { SideBar } from "../../components/SideBar";
 import { Footer } from "../../components/Footer";
 
