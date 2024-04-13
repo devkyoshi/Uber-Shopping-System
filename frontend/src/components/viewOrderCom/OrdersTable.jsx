@@ -1,4 +1,13 @@
-import { Card, Typography } from "@material-tailwind/react";
+import React from "react";
+import {
+  Card,
+  Typography,
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
 
 const TABLE_HEAD = ["Item Name", "Quantity", "Price", ""];
 
@@ -21,6 +30,16 @@ const TABLE_ROWS = [
 ];
 
 export function OrdersTable() {
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => setOpen(!open);
+
+  const handleDeleteConfirm = () => {
+    // Perform delete action here
+    console.log("Order deleted");
+    handleOpen(); // Close the dialog after deletion
+  };
+
   return (
     <div className="w-full">
       <Typography
@@ -31,7 +50,7 @@ export function OrdersTable() {
         My Order
       </Typography>
 
-      <Card className="h-full w-full pt-2 pl-5 pr-5 pb-0">
+      <Card className="">
         <table className="w-full min-w-max table-auto text-center">
           <thead>
             <tr>
@@ -55,7 +74,9 @@ export function OrdersTable() {
           <tbody>
             {TABLE_ROWS.map(({ iName, qnty, price }, index) => {
               const isLast = index === TABLE_ROWS.length - 1;
-              const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
+              const classes = isLast
+                ? "p-4"
+                : "p-4 border-b border-blue-gray-50";
 
               return (
                 <tr key={iName}>
@@ -91,31 +112,50 @@ export function OrdersTable() {
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
                       Edit
                     </button>
-                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    <button
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                      onClick={handleOpen}
+                    >
                       Remove
                     </button>
+                    {/**pop up confirmation message for deletion */}
+                    <Dialog open={open} handler={handleOpen} transitionDuration={300}>
+                      <DialogHeader>Order Deletion</DialogHeader>
+                      <DialogBody>
+                      This will be permanently removed. Are you sure? want to delete this order.<br></br>
+                      </DialogBody>
+                      <DialogFooter>
+                        <Button
+                          variant="text"
+                          color="red"
+                          onClick={handleOpen}
+                          className="mr-1"
+                        >
+                          <span>Cancel</span>
+                        </Button>
+                        <Button
+                          variant="gradient"
+                          color="green"
+                          onClick={handleDeleteConfirm}
+                        >
+                          <span>Confirm</span>
+                        </Button>
+                      </DialogFooter>
+                    </Dialog>
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        <hr/>
+        <hr />
 
         <div className="p-5 pl-32">
-          <Typography
-            variant="small"
-            color="blue-gray"
-            className="font-bold"
-          >
+          <Typography variant="small" color="blue-gray" className="font-bold">
             Delivery Charges: {"$5"}
-          </Typography> <br />
-
-          <Typography
-            variant="small"
-            color="blue-gray"
-            className="font-bold"
-          >
+          </Typography>{" "}
+          <br />
+          <Typography variant="small" color="blue-gray" className="font-bold">
             Total Price : {"$30"}
           </Typography>
         </div>
