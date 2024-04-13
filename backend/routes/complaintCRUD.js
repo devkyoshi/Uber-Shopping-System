@@ -93,7 +93,7 @@ router.get("/complaint-all", async (req, res) => {
     try {
         // Fetch all complaint IDs from refunds
         const refundedComplaintIds = await Refund.distinct("complaint_id");
-        const complaint = await Complaint.find({ _id: { $nin: refundedComplaintIds } }).sort({ updatedAt: -1 }).select('order_id complaint_status item_id quantity resolving_option ');
+        const complaint = await Complaint.find({ _id: { $nin: refundedComplaintIds } }).sort({ updated_at: -1 }).select('order_id complaint_status item_id quantity resolving_option ');
         res.json(complaint);
     } catch (error) {
         console.error(error);
