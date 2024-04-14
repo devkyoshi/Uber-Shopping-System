@@ -2,18 +2,20 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const taskSchema = new Schema({
+  branch_id: {
+    type: String,
+    ref: "Branch",
+    required: true,
+  },
   driver_id: {
     type: Schema.Types.ObjectId,
     ref: "Employee",
     required: true,
   },
-  task_status: {
-    type: String,
-    default: "ongoing",
-  },
-  route: {
+  district: {
     type: String,
   },
+  
 
   orders: [
     {

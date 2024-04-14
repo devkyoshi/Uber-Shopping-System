@@ -2,18 +2,22 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/task");
+const Order = require("../models/order");
 const mongoose = require("mongoose");
 
 // Add a new task(new) - Sarindu
 router.post("/add-task", async (req, res) => {
   try {
-    const { driver_id, task_status, route, orderIds } = req.body;
-    const task = new Task({ driver_id, task_status, route });
+    const { driver_id, branch_id, district, orderIds } = req.body;
+    const task = new Task({ driver_id, branch_id, district });
 
     // Push each orderId into the orders array
     if (orderIds && Array.isArray(orderIds)) {
-      orderIds.forEach((orderId) => {
+      orderIds.forEach(async (orderId) => {
         task.orders.push({ order_id: orderId });
+
+        // Update order status to "processing"
+        await Order.updateOne({ _id: orderId }, { $set: { order_status: "Processing" } });
       });
     }
 
