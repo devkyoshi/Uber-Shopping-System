@@ -98,6 +98,9 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  order_district: {
+    type: String,
+  },
   total_amount: {
     type: Number,
     required: true,
@@ -128,16 +131,16 @@ const orderSchema = new mongoose.Schema({
     },
   ],
 
-    items: [
-      {
-        item_id: {
-          type: mongoose.Schema.Types.ObjectId,
-        },
-        quantity: {
-          type: Number,
-        },
+  items: [
+    {
+      item_id: {
+        type: mongoose.Schema.Types.ObjectId,
       },
-    ],
+      quantity: {
+        type: Number,
+      },
+    },
+  ],
   cash_payment: cashPaymentSchema,
   card_payment: cardPaymentSchema,
 });

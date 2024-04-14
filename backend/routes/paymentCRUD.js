@@ -9,7 +9,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const axios = require("axios");
 const Revenue = require("../models/revenue");
 
-// Add payment details to a certain order document(cash) Revenue Thingy added
+// Add payment details for a certain order document(cash)
 router.post("/pay-cash/:orderId/add-payment", async (req, res) => {
   try {
     const orderId = req.params.orderId;
@@ -22,19 +22,22 @@ router.post("/pay-cash/:orderId/add-payment", async (req, res) => {
     const payment_amount = order.total_amount;
     const paymentId = new ObjectId(); // Generate new ObjectId for payment
 
-    // Update the order document with the provided payment details
+    // Update the order document with the provided payment details and district
     await Order.findByIdAndUpdate(orderId, {
-      cash_payment: {
-        _id: paymentId,
-        payment_method: "cash",
-        email,
-        payment_amount,
-        address,
-        postal_code,
-        paid_time: new Date(),
-        payment_status: "Pending",
-        district,
-        nearest_town,
+      $set: {
+        order_district: district,
+        cash_payment: {
+          _id: paymentId,
+          payment_method: "cash",
+          email,
+          payment_amount,
+          address,
+          postal_code,
+          paid_time: new Date(),
+          payment_status: "Pending",
+          district,
+          nearest_town,
+        },
       },
     });
 
@@ -95,6 +98,7 @@ router.put("/pay-cash/:orderId/update-payment/:paymentId", async (req, res) => {
           "cash_payment.updated_time": new Date(),
           "cash_payment.district": district,
           "cash_payment.nearest_town": nearest_town,
+          order_district: district, // Update order_district field
         },
       }
     );
@@ -178,7 +182,7 @@ router.post("/pay-card/:orderId/add-payment", async (req, res) => {
     const payment_amount = order.total_amount;
     const paymentId = new ObjectId(); // Generate new ObjectId for payment
 
-    // Update the order document with the provided payment details
+    // Update the order document with the provided payment details and district
     await Order.findByIdAndUpdate(orderId, {
       card_payment: {
         _id: paymentId,
@@ -194,6 +198,7 @@ router.post("/pay-card/:orderId/add-payment", async (req, res) => {
         district,
         nearest_town,
       },
+      order_district: district, // Update order_district field
     });
 
     // Update the revenue
@@ -237,6 +242,7 @@ router.put("/pay-card/:orderId/update-payment/:paymentId", async (req, res) => {
       nearest_town,
     } = req.body;
     const payment_status = "Pending(Updated)";
+
     // Update the payment details within the order document
     await Order.findOneAndUpdate(
       { _id: orderId, "card_payment._id": paymentId },
@@ -252,6 +258,7 @@ router.put("/pay-card/:orderId/update-payment/:paymentId", async (req, res) => {
           "card_payment.updated_time": new Date(),
           "card_payment.district": district,
           "card_payment.nearest_town": nearest_town,
+          order_district: district, // Update order_district field
         },
       }
     );

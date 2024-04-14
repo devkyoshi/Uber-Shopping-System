@@ -4,48 +4,76 @@ import {
   CardBody,
   CardFooter,
   Typography,
-  Button,
 } from "@material-tailwind/react";
-
 import { useState } from "react";
 import { PopOver } from "./PopOver";
 
-export function CardContainer() {
+export function CardContainer({
+  supermarket,
+  itemName,
+  price,
+  description,
+  itemImage,
+  itemID,
+}) {
   const [isPopOverOpen, setIsPopOverOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const togglePopOver = () => {
     setIsPopOverOpen(!isPopOverOpen);
   };
 
+  const toggleDescription = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const formatPriceWithCommas = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   return (
-    <Card className="w-96">
-      <CardHeader shadow={false} floated={false} className="h-96">
+    <Card className="w-96 h-auto">
+      <CardHeader shadow={false} floated={false} className="h-60">
         <img
-          src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=927&q=80"
+          src={itemImage}
           alt="card-image"
           className="h-full w-full object-cover"
         />
       </CardHeader>
-      <CardBody>
+      <CardBody className="flex flex-col justify-between">
         <div className="mb-2 flex items-center justify-between">
-          <Typography color="blue-gray" className="font-medium">
-            Apple AirPods
+          <Typography color="blue-gray" className="font-bold">
+            {itemName}
           </Typography>
-          <Typography color="blue-gray" className="font-medium">
-            $95.00
+          <Typography color="green" className="font-bold">
+            Rs. {formatPriceWithCommas(price)}
           </Typography>
         </div>
-        <Typography
-          variant="small"
-          color="gray"
-          className="font-normal opacity-75"
-        >
-          With plenty of talk and listen time, voice-activated Siri access, and
-          an available wireless charging case.
-        </Typography>
+        <div className="overflow-hidden">
+          <Typography
+            variant="small"
+            color="gray"
+            className={`font-normal opacity-75 ${
+              isExpanded ? "h-auto" : "h-20"
+            }`}
+          >
+            {description}
+          </Typography>
+        </div>
+        {!isExpanded && (
+          <Typography
+            color="gray"
+            onClick={toggleDescription}
+            className="cursor-pointer mt-2 fon"
+          >
+            Read More
+          </Typography>
+        )}
       </CardBody>
       <CardFooter className="pt-0 items-center justify-center ml-20 pl-10">
         <PopOver
+          supermarket={supermarket}
+          itemID={itemID}
           size="lg"
           fullWidth={true}
           isOpen={isPopOverOpen}

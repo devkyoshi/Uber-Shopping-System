@@ -8,7 +8,7 @@ import {
 
 import { InputBox } from "./InputBox";
 
-export function PopOver() {
+export function PopOver({ supermarket, itemID }) {
   return (
     <Popover placement="bottom">
       <PopoverHandler>
@@ -34,6 +34,7 @@ export function PopOver() {
             label=""
             icon={<i className="fas fa heart" />}
             placeholder={"Item ID"}
+            value={itemID}
           />
           <Typography
             variant="small"

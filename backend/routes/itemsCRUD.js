@@ -140,4 +140,75 @@ router.get("/:supermarketId/items", async (req, res) => {
   }
 });
 
+// Route to get item details of all supermarkets
+router.get("/item-details", async (req, res) => {
+  try {
+    // Find all supermarkets and populate the items field
+    const supermarkets = await Supermarket.find().populate("items");
+
+    // Extract item details from each supermarket
+    const itemDetails = [];
+    supermarkets.forEach((supermarket) => {
+      supermarket.items.forEach((item) => {
+        // Extract relevant item details
+        const itemDetail = {
+          supermarket: supermarket.sm_name,
+          itemType: item.item_type,
+          itemName: item.item_name,
+          price: item.price,
+          availableQuantity: item.available_quantity,
+          description: item.description,
+          itemImage: item.item_img,
+        };
+        itemDetails.push(itemDetail);
+      });
+    });
+
+    // Return the item details in the response
+    res.json(itemDetails);
+  } catch (error) {
+    console.error("Error fetching item details:", error);
+    res.status(500).json({ error: "Failed to fetch item details" });
+  }
+});
+
+//To retrieve item details from item type
+router.get("/item-details/:itemType", async (req, res) => {
+  try {
+    const itemType = req.params.itemType;
+
+    // Find all supermarkets where itemType matches
+    const supermarkets = await Supermarket.find({
+      "items.item_type": itemType,
+    }).populate("items");
+
+    // Extract item details from each supermarket
+    const itemDetails = [];
+    supermarkets.forEach((supermarket) => {
+      supermarket.items.forEach((item) => {
+        if (item.item_type === itemType) {
+          // Extract relevant item details
+          const itemDetail = {
+            supermarket: supermarket.sm_name,
+            itemType: item.item_type,
+            itemName: item.item_name,
+            itemID: item._id,
+            price: item.price,
+            availableQuantity: item.available_quantity,
+            description: item.description,
+            itemImage: item.item_img,
+          };
+          itemDetails.push(itemDetail);
+        }
+      });
+    });
+
+    // Return the item details in the response
+    res.json(itemDetails);
+  } catch (error) {
+    console.error("Error fetching item details by itemType:", error);
+    res.status(500).json({ error: "Failed to fetch item details by itemType" });
+  }
+});
+
 module.exports = router;
