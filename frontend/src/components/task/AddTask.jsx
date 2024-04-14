@@ -1,150 +1,145 @@
-import {
-  Card,
-  Input,
-  Checkbox,
-  Button,
-  Typography,
-} from "@material-tailwind/react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-import React, { useState } from 'react';
-import axios from 'axios';
+const AddTask = () => {
+  const [pendingOrders, setPendingOrders] = useState([]);
+  const [OrdersByDistrict, setOrdersByDistrict] = useState([]);
+  const [message, setMessage] = useState("");
 
-export function AddTask() {
+  useEffect(() => {
+    const fetchPendingOrders = async () => {
+      try {
+        const response = await axios.get("http://localhost:8070/Order/orders");
+        if (response && response.data && Array.isArray(response.data)) {
+          console.log("Response received:", response);
 
-  const [formData, setFormData] = useState({
-    driver_id: "",  
-    task_status: "",
-    order_id: "",
-    route: ""
-  });
+          const orders = response.data.filter(order => order.order_status === "pending");
+          console.log("Filtered orders:", orders);
 
-  const [errorMessage, setErrorMessage] = useState("");
+          // Group orders by district
+          const ordersByDistrict = {};
+          orders.forEach(order => {
+            if (!order.order_district) {
+              console.error("District information missing for order:", order);
+              return;
+            }
+            if (!ordersByDistrict[order.order_district]) {
+              ordersByDistrict[order.order_district] = [];
+            }
+            ordersByDistrict[order.order_district].push(order);
+          });
+          console.log("Orders grouped by district:", ordersByDistrict);
+          
+          setOrdersByDistrict(ordersByDistrict);
+          // Set pending orders state
+          setPendingOrders(orders);
+        }
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
+    fetchPendingOrders(); // Call the fetch function
+  }, []); // Empty dependency array to run once on component mount
+
+  const sendDataToBackend = async () => {
     try {
-      // Check if order_id exists in previous tasks
-      const tasksResponse = await axios.get("http://localhost:8070/Task/get-all-tasks");
-      const tasks = tasksResponse.data;
-  
-      console.log("Fetched tasks:", tasks); // Debugging log
-  
-      const isOrderIdExists = tasks.some(task => task.order_id === formData.order_id);
-  
-      console.log("isOrderIdExists:", isOrderIdExists); // Debugging log
-  
-      if (isOrderIdExists) {
-        setErrorMessage("Order ID already exists in previous tasks.");
+      const firstFiveOrders = pendingOrders.slice(0, 5);
+
+      const response = await axios.get("http://localhost:8070/Driver/drivers");
+      console.log('response:', response.data);
+      const drivers = response.data.filter(driver => driver.availability === "Available");
+      console.log('filter:', drivers); 
+      
+      if (drivers.length === 0) {
+        setMessage("No available driver found");
         return;
       }
-      
-  
-      // If order_id doesn't exist, proceed with adding the task
-      const response = await axios.post("http://localhost:8070/Task/add-task", formData);
-      console.log(response.data);
-  
-      // Reset form fields and clear error message
-      setFormData({
-        driver_id: "",  
-        task_status: "",
-        order_id: "",
-        route: ""
+
+      // group drivers according to the district
+      const driversByDistrict = {};
+      drivers.forEach(driver => {
+        if (!driver.available_district) {
+          console.error("District information missing for Driver:", driver);
+          return;
+        }
+        if (!driversByDistrict[driver.available_district]) {
+          driversByDistrict[driver.available_district] = [];
+        }
+        driversByDistrict[driver.available_district].push(driver);
       });
-      setErrorMessage(""); 
-  
+      console.log("Drivers grouped by district:", driversByDistrict);
+
+      console.log('order Constant:', OrdersByDistrict); 
+
+      // Check for available drivers matching order districts
+      const matchingDistricts = Object.keys(OrdersByDistrict).filter(district =>
+        Object.keys(driversByDistrict).includes(district) &&
+        driversByDistrict[district].length > 0
+      );
+      console.log('matching districts:', matchingDistricts);
+
+      if (matchingDistricts.length === 0) {
+        setMessage("No available driver found for the order districts");
+        return;
+      }
+
+      // Get driver IDs for matching districts
+      const matchingDriverIds = matchingDistricts.reduce((acc, available_district) => {
+        const driversForDistrict = driversByDistrict[available_district];
+        const driverIdsForDistrict = driversForDistrict.map(driver => driver._id);
+        return [...acc, ...driverIdsForDistrict];
+      }, []);
+
+      console.log('Matching driver IDs:', matchingDriverIds);
+
+      const randomDistrict = matchingDistricts[Math.floor(Math.random() * matchingDistricts.length)];
+      const randomDriversInDistrict = driversByDistrict[randomDistrict];
+      const randomDriver = randomDriversInDistrict[Math.floor(Math.random() * randomDriversInDistrict.length)];
+
+      console.log('randomDriver', randomDriver);
+
+      if (!randomDriver) {
+        setMessage("No available driver found for the selected district");
+        return;
+      }
+
+      const taskData = {
+        driver_id: randomDriver.driver_id,
+        branch_id: randomDriver.branch_ID,
+        district: randomDistrict,
+        orderIds: firstFiveOrders.map(order => order._id)
+      };
+      
+      console.log('Task Data:', taskData);
+      console.log('Task Data123:', taskData.driver_id, taskData.branch_id, taskData.district, taskData.orderIds);
+    
+      await axios.post("http://localhost:8070/Task/add-task", taskData);
+     
+      setPendingOrders(updatedOrders);
+      setMessage("Task added successfully");
     } catch (error) {
-      console.error("Error:", error);
-      setErrorMessage("An error occurred while processing the task.");
+      console.error("Error sending data to backend:", error);
+      setMessage("Error occurred while adding task");
     }
   };
-  
-  
-  
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (pendingOrders.length > 4) {
+        sendDataToBackend();
+      }
+    }, 30*60*1000); // Check every 30 minutes if there are at least 5 pending orders
+
+    return () => clearInterval(interval);
+  }, [pendingOrders]);
 
   return (
-    <Card color="transparent" shadow={false}>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Typography variant="h4" color="blue-gray ">
-          Make Task
-        </Typography>
-      </div>
-      
-      <div className="flex items-center justify-center h-full">
-        <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96 center" onSubmit={handleSubmit}>
-          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-          <div className="mb-1 flex flex-col gap-5">
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Order ID
-            </Typography>
-            <Input
-              size="lg"
-              value={formData.order_id}
-              onChange={handleChange}
-              name="order_id"
-              placeholder="Order ID"
-              className="border-t-blue-gray-200 focus:border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Driver ID
-            </Typography>
-            <Input
-              size="lg"
-              value={formData.driver_id}
-              onChange={handleChange}
-              name="driver_id"
-              placeholder="Driver ID"
-              className="border-t-blue-gray-200 focus:border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Task Status
-            </Typography>
-            <Input
-              size="lg"
-              value={formData.task_status}
-              onChange={handleChange}
-              name="task_status"
-              placeholder="Task Status"
-              className="border-t-blue-gray-200 focus:border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Route
-            </Typography>
-            <Input
-              type="text"
-              size="lg"
-              value={formData.route}
-              onChange={handleChange}
-              name="route"
-              placeholder="Route"
-              className="border-t-blue-gray-200 focus:border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-          </div>
-          <Button type="submit" className="mt-6" fullWidth>
-            Add Task
-          </Button>
-        </form>
-      </div>
-    </Card>
+    <div>
+      <h2>Add Task</h2>
+      {message && <p>{message}</p>}
+    </div>
   );
-}
+};
+
+export default AddTask;

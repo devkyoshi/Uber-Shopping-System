@@ -7,9 +7,9 @@ import {
   TabPanel,
 } from "@material-tailwind/react";
 import { PlusCircleIcon, EyeIcon, CogIcon } from "@heroicons/react/24/solid";
-import { AddTask } from "./AddTask";
 import { ViewTasks } from "./ViewTasks";
 import { ManageTask } from "./ManageTask";
+import AddTask from "./AddTask";
 
 export function TaskTab() {
   const [activeTab, setactiveTab] = useState("add");
