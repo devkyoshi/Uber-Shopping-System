@@ -16,6 +16,7 @@ export default function ComplaintForm(){
     });
 
     const [imagePreview, setImagePreview] = useState(null);
+    const [uploading, setUploading] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -37,11 +38,35 @@ export default function ComplaintForm(){
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8070/Complaint/complaint-add', formData);
-            console.log(response.data); // Handle success response
+          setUploading(true);
+
+          const formDataToSend = new FormData();
+          formDataToSend.append('customer_id', formData.customer_id);
+          formDataToSend.append('order_id', formData.order_id);
+          formDataToSend.append('payment_id', formData.payment_id);
+          formDataToSend.append('complaint_type', formData.complaint_type);
+          formDataToSend.append('item_id', formData.item_id);
+          formDataToSend.append('resolving_option', formData.resolving_option);
+          formDataToSend.append('complaint_img', formData.complaint_img);
+          formDataToSend.append('quantity', formData.quantity);
+          
+          const response = await axios.post('http://localhost:8070/Complaint/complaint-add', formDataToSend, {
+                headers: {
+                    'Content-Type': 'multipart/form-data' // Ensure correct content type for FormData
+                },
+                onUploadProgress: (progressEvent) => {
+                  const { loaded, total } = progressEvent;
+                  const percentCompleted = Math.round((loaded * 100) / total);
+                  console.log(percentCompleted);
+                },
+            });
+            
+          console.log(response.data); // Handle success response
         } catch (error) {
             console.error('Error submitting complaint:', error);
-        }
+        } finally {
+          setUploading(false);
+      }
     };
 
 
@@ -97,7 +122,9 @@ export default function ComplaintForm(){
                        <input type="file" id="complaint_img" name="complaint_img" onChange={handleFileChange} required />
                        {imagePreview && <img src={imagePreview} alt="Complaint Preview" style={{ maxWidth: '100%', marginTop: '10px'}} />}
                     </div>
-                    <Button type="submit" className="bg-gradient-to-r from-pink-300 via-red-300 to-orange-300 text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-gradient-to-r from-pink-600 via-red-600 to-orange-600 transition duration-300">Submit</Button>
+                    <Button type="submit" disabled={uploading} className="bg-gradient-to-r from-pink-300 via-red-300 to-orange-300 text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-gradient-to-r from-pink-600 via-red-600 to-orange-600 transition duration-300">
+                            {uploading ? 'Uploading...' : 'Submit'}
+                    </Button>
                   </form>
                   <br/>
                 </div>

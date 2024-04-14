@@ -6,6 +6,7 @@ const router = express.Router();
 const Complaint = require("../models/complaint");
 const mongoose = require('mongoose');
 const Refund = require("../models/refund")
+const multer = require('multer');
 
 /*
             "order_id":"66120fc9f7b97eacbe3cb331",
@@ -18,29 +19,43 @@ const Refund = require("../models/refund")
 */
 
 // Create a new complaint
-router.post("/complaint-add", async (req, res) => {
-    try {
-        const {customer_id,order_id, payment_id ,complaint_type ,item_id ,resolving_option , complaint_img, quantity, complaint_status} = req.body;
-
-        const newComplaint = new Complaint({
-            customer_id,
-            order_id,
-            payment_id,
-            complaint_type,
-            item_id,
-            resolving_option,
-            complaint_img,
-            quantity, 
-            complaint_status
-        });
-
-        await newComplaint.save();
-        res.json("Complaint Added");
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "An error occurred while adding the customer" });
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './images'); // Specify the directory for storing uploaded files
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname); // Keep the original file name
     }
-});
+  });
+  
+  const upload = multer({ storage: storage });
+  
+  router.post("/complaint-add", upload.single('complaint_img'), async (req, res) => {
+    try {
+      const { customer_id, order_id, payment_id, complaint_type, item_id, resolving_option, quantity, complaint_status } = req.body;
+      const complaint_img = req.file.path; // Save the file path in the database
+  
+      const newComplaint = new Complaint({
+        customer_id,
+        order_id,
+        payment_id,
+        complaint_type,
+        item_id,
+        resolving_option,
+        complaint_img,
+        quantity,
+        complaint_status,
+        created_at: Date.now(),
+        updated_at: Date.now()
+      });
+  
+      await newComplaint.save();
+      res.json("Complaint Added");
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "An error occurred while adding the customer" });
+    }
+  });
 
 // Update an existing complaint
 router.put("/complaint-update/:complaintID", async (req, res) => {
