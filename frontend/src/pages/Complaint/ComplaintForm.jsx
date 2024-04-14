@@ -2,8 +2,14 @@ import React,{useState} from 'react';
 import { SideBar } from '../../components/SideBar';
 import { Button } from '@material-tailwind/react';
 import axios from 'axios'
+import {useNavigate} from 'react-router-dom'
 
 export default function ComplaintForm(){
+
+    // Initialize useNavigate hook
+    const navigate = useNavigate(); 
+
+    // State variables to manage form data and image preview
     const [formData, setFormData] = useState({
         customer_id: '',
         order_id: '',
@@ -11,18 +17,20 @@ export default function ComplaintForm(){
         complaint_type: '',
         item_id: '',
         resolving_option: '', 
-        complaint_img: null,
+        complaint_img: '',
         quantity: '',
     });
 
     const [imagePreview, setImagePreview] = useState(null);
     const [uploading, setUploading] = useState(false);
 
+    // Function to handle changes in form inputs
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
+    // Function to handle file input change and display image preview
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setFormData({ ...formData, complaint_img: file });
@@ -35,11 +43,14 @@ export default function ComplaintForm(){
         reader.readAsDataURL(file);
     };
 
+    // Function to handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
           setUploading(true);
 
+         //Each attribute of the complaint form is stored as a key-value pair in this object.
+         // Construct FormData object to send form data to the server
           const formDataToSend = new FormData();
           formDataToSend.append('customer_id', formData.customer_id);
           formDataToSend.append('order_id', formData.order_id);
@@ -54,17 +65,19 @@ export default function ComplaintForm(){
                 headers: {
                     'Content-Type': 'multipart/form-data' // Ensure correct content type for FormData
                 },
-                onUploadProgress: (progressEvent) => {
-                  const { loaded, total } = progressEvent;
-                  const percentCompleted = Math.round((loaded * 100) / total);
-                  console.log(percentCompleted);
-                },
             });
-            
-          console.log(response.data); // Handle success response
+          
+           // Handle success response
+          console.log(response.data);
+
+          // Navigate to the complaint page upon successful submission
+          navigate(`/complaint`);
+
         } catch (error) {
+            // Handle errors
             console.error('Error submitting complaint:', error);
         } finally {
+          // Reset uploading state after submission
           setUploading(false);
       }
     };
@@ -100,7 +113,8 @@ export default function ComplaintForm(){
                     </div>
                     <div className="mb-3">
                        <label htmlFor="complaintType" className="block mb-2 font-bold">Complaint Type:</label>
-                       <select id="complaintType" name="complaint_type" value={formData.complaint_type} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required>
+                       <select id="complaintType" name="complaint_type" value={formData.complaint_type} onChange={handleChange} className="w-full p-2 bg-white border border-gray-400 rounded-md" required>
+                         <option value="">---Select Complaint Type---</option>
                          <option value="Expired">Item is expired</option>
                          <option value="Damaged">Item is damaged</option>
                          <option value="WrongItem">Not what I ordered</option>
@@ -108,7 +122,8 @@ export default function ComplaintForm(){
                     </div>
                     <div className="mb-3">
                        <label htmlFor="resolvingOption" className="block mb-2 font-bold">Resolving Option:</label>
-                       <select id="resolving_option" name="resolving_option" value={formData.resolving_option} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required>
+                       <select id="resolving_option" name="resolving_option" value={formData.resolving_option} onChange={handleChange} className="w-full p-2 bg-white border border-gray-400 rounded-md" required>
+                         <option value="">---Select Resolving Option---</option>
                          <option value="refund">Refund</option>
                          <option value="replacement">Replacement</option>
                        </select>
@@ -120,8 +135,9 @@ export default function ComplaintForm(){
                     <div className="mb-3">
                        <label htmlFor="complaint_img" className="block mb-2 font-bold">Complaint Image :</label>
                        <input type="file" id="complaint_img" name="complaint_img" onChange={handleFileChange} required />
-                       {imagePreview && <img src={imagePreview} alt="Complaint Preview" style={{ maxWidth: '100%', marginTop: '10px'}} />}
+                       {imagePreview && <img src={imagePreview} alt="Complaint Preview" style={{maxWidth: '50%', marginTop: '10px'}} />}
                     </div>
+                    {/* Button to submit the form */}
                     <Button type="submit" disabled={uploading} className="bg-gradient-to-r from-pink-300 via-red-300 to-orange-300 text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-gradient-to-r from-pink-600 via-red-600 to-orange-600 transition duration-300">
                             {uploading ? 'Uploading...' : 'Submit'}
                     </Button>

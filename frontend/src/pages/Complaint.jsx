@@ -71,7 +71,7 @@ export default function Complaint(){
                                {Complaints.order_id}
                                <strong className='ml-10 mr-2'>Complaint Status : </strong>
                                <strong>
-                                  <div className='border border-gray-300 text-red-900 bg-white px-4 rounded-lg shadow-md'>
+                                  <div className='border border-gray-200 text-red-900  bg-white px-4 rounded-md shadow-md'>
                                      {Complaints.complaint_status}
                                   </div>
                                </strong>
