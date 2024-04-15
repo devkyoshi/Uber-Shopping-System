@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import {
   Card,
   Typography,
@@ -162,18 +163,18 @@ export function SideBar() {
             </ListItemPrefix>
             Profile
           </ListItem>
-          <ListItem onClick='/feedbackportal?tab-feedback'>
+          <Link to='/feedbackportal?tab=feedback'><ListItem>
             <ListItemPrefix>
               <ChatBubbleOvalLeftIcon className="h-5 w-5" />
             </ListItemPrefix>
             Feedback Portal
-          </ListItem>
-          <ListItem onClick='/employeerate?tab=rating'>
+          </ListItem></Link>
+          <Link to='/employeerate?tab=rating'><ListItem>
             <ListItemPrefix>
               <StarIcon className="h-5 w-5" />
             </ListItemPrefix>
             Rate Employees
-          </ListItem>
+          </ListItem></Link>
           <hr className="my-2 border-blue-gray-50" />
           <ListItem>
             <ListItemPrefix>
