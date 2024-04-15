@@ -51,7 +51,7 @@ export default function editComplaint(){
 
             const imageURL = `http://localhost:8070/${fetchedComplaint.imageURL}`;
             setImageURL(imageURL);
-            console.log(imageURL);
+            
             
         } catch (error) {
             console.error('Error fetching complaint data:', error);

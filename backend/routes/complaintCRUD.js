@@ -7,6 +7,7 @@ const Complaint = require("../models/complaint");
 const mongoose = require('mongoose');
 const Refund = require("../models/refund")
 const upload = require('./multerConfig');
+const fs = require('fs');
 
 /*
             "order_id":"66120fc9f7b97eacbe3cb331",
@@ -53,6 +54,15 @@ router.put("/complaint-update/:complaintID",  upload.single('complaint_img') ,as
         const { customer_id, order_id, payment_id ,complaint_type ,item_id ,resolving_option , quantity, complaint_status} = req.body;
         const complaint_img = req.file.path;
 
+        // Find the complaint to get the previous image path
+        const complaint = await Complaint.findById(complaintID);
+        if (!complaint) {
+            return res.status(404).json({ error: "Complaint not found" });
+        }
+
+        // Delete the previous image file
+        fs.unlinkSync(complaint.complaint_img);
+
         const updatedComplaint = await Complaint.findByIdAndUpdate(complaintID, {
             customer_id,
             order_id,
@@ -71,6 +81,8 @@ router.put("/complaint-update/:complaintID",  upload.single('complaint_img') ,as
             return res.status(404).json({ error: "Complaint not found" });
         }
 
+         
+
         res.json(updatedComplaint);
     } catch (error) {
         console.error(error);
@@ -83,6 +95,15 @@ router.delete("/complaint-delete/:complaintID", async (req, res) => {
     try {
         const { complaintID } = req.params;
         const deletedComplaint = await Complaint.findByIdAndDelete(complaintID);
+
+        // Find the complaint to get the previous image path
+        const complaint = await Complaint.findById(complaintID);
+        if (!complaint) {
+            return res.status(404).json({ error: "Complaint not found" });
+        }
+
+        // Delete the previous image file
+        fs.unlinkSync(complaint.complaint_img);
 
         if (!deletedComplaint) {
             return res.status(404).json({ error: "Complaint not found" });
