@@ -36,7 +36,7 @@ export default function editComplaint(){
             const response = await axios.get(`http://localhost:8070/Complaint/complaint/${complaintId}`);
 
             // Set the fetched complaint data into the form data state
-            console.log(response.data);
+            
             const fetchedComplaint = response.data;
             setFormData({
                 customer_id:fetchedComplaint.customer_id,
@@ -49,9 +49,9 @@ export default function editComplaint(){
                 quantity: fetchedComplaint.quantity,
             })
 
-            //set the image preview
-            setImageURL(fetchedComplaint.imageURL);
-            
+            const imageURL = `http://localhost:8070/${fetchedComplaint.imageURL}`;
+            setImageURL(imageURL);
+            console.log(imageURL);
             
         } catch (error) {
             console.error('Error fetching complaint data:', error);
