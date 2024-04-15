@@ -24,6 +24,17 @@ export default function ProfileDetail() {
       setUpdateUserFailure('No changes made');
       return;
     }
+    if (!formData.cus_email &&
+      /*!formData.cus_age &&
+      !formData.cus_name &&
+      !formData.cus_gender &&
+      !formData.cus_cnumber &&
+      !formData.cus_address &&*/
+      !formData.cus_username) {
+        dispatch(updateFailure());
+        setUpdateUserFailure("Can't keep fields empty.");
+        return;
+    }
     try {
       dispatch(updateStart());
       const res = await fetch(`/customer/update/${currentCustomer._id}`, {
@@ -34,14 +45,16 @@ export default function ProfileDetail() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if(!res.ok){
-        dispatch(updateFailure());
-        setUpdateUserFailure(data.message);
-      }
-      else{
-        dispatch(updateSuccess(data));
-        setUpdateUserSuccess("Your profile updated successfully");
-      }
+
+      if (!res.ok) {
+      dispatch(updateFailure());
+      setUpdateUserFailure(data.message);
+      return;
+    } else {
+      dispatch(updateSuccess(data));
+      setUpdateUserSuccess("Your profile updated successfully");
+    }
+    
     } catch (error) {
       dispatch(updateFailure(error.message));
       setUpdateUserFailure(error.message);
@@ -92,7 +105,7 @@ export default function ProfileDetail() {
       <h1 className='my-7 text-center font-semibold text-3xl'>Profile</h1>
       <form onSubmit={handleSubmit} className='flex  flex-col gap-4'>
         <div className='w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full'>
-            <img src='http://cdn.onlinewebfonts.com/svg/img_87237.png' alt="user" className='rounded-full w-full h-full object-cover border-8 border-[lightgray]' />
+            <img src='https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png' alt="user" className='rounded-full w-full h-full object-cover border-8 border-[lightgray]' />
         </div>
         <TextInput onChange={handleChange} type='text' id='cus_username' placeholder='Username' defaultValue={currentCustomer.cus_username}></TextInput>
         <TextInput onChange={handleChange} type='email' id='cus_email' placeholder='E-mail' defaultValue={currentCustomer.cus_email}></TextInput>
