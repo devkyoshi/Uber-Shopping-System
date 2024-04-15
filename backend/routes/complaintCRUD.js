@@ -116,7 +116,7 @@ router.get("/complaint/:complaintID", async (req, res) => {
         if (!complaint) {
             return res.status(404).json({ error: "Complaint not found" });
         }
-        const imageURL = `http://localhost:8070/images/${complaint.complaint_img}`// Concatenate the base URL with the image filename
+        const imageURL = `images/${complaint.complaint_img}`// Concatenate the base URL with the image filename
 
         // Add the imageURL to the complaint object before sending the response
         const complaintWithImage ={

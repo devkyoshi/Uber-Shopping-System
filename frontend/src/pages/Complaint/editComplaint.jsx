@@ -36,6 +36,7 @@ export default function editComplaint(){
             const response = await axios.get(`http://localhost:8070/Complaint/complaint/${complaintId}`);
 
             // Set the fetched complaint data into the form data state
+            console.log(response.data);
             const fetchedComplaint = response.data;
             setFormData({
                 customer_id:fetchedComplaint.customer_id,
