@@ -45,6 +45,14 @@ export default function Complaint(){
         
     }
 
+    const handleEditClick = (complaint) => {
+        if (complaint.complaint_status !== 'accepted') {
+            navigate(`/editComplaint/${complaint._id}`);
+        } else {
+            console.log('Complaint status is accepted. Edit not allowed.');
+        }
+    };
+
     
 
     
@@ -79,7 +87,9 @@ export default function Complaint(){
                                     <Button color='gray' 
                                             ripple='light' 
                                             className='w-30 mr-3 mt-3 text-base py-2 border border-transparent bg-gray-600' 
-                                            size='regular'>Edit
+                                            size='regular'
+                                            disabled={Complaints.complaint_status === 'accepted'}
+                                            onClick={() => handleEditClick(Complaints)}>Edit
                                     </Button>
                                     <Button onClick={() => deleteComplaint(Complaints._id)} color='red' 
                                                                                             ripple='light' 
