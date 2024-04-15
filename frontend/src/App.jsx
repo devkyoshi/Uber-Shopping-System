@@ -5,7 +5,7 @@ import OrderForm from "./pages/OrderForm";
 import HomeUnregistered from "./pages/HomeUnregistered";
 import { Footer } from "./components/Footer";
 import Employee_Registration from "./pages/Employee_Registration";
-import Complaint from "./pages/Complaint";
+import Complaint from "./pages/Complaint/Complaint";
 import PaymentUI from "./pages/payment/PaymentUI";
 import BranchUI from "./pages/Branch/BranchUI";
 import TaskUI from "./pages/Task/TaskUI";
@@ -26,6 +26,7 @@ import CustomerAdmin from "./pages/CustomerAdmin";
 import DriverUI from "./pages/driver/DriverUI";
 import UpdateOrder from "./pages/UpdateOrder";
 import ComplaintForm from "./pages/Complaint/ComplaintForm"
+import editComplaint from "./pages/Complaint/editComplaint";
 
 export default function App() {
   return (
@@ -76,6 +77,7 @@ export default function App() {
 
         <Route path="/driver" element={<DriverUI />} />
         <Route path="/complaintForm" element={<ComplaintForm/>}/>
+        <Route path="/editComplaint/:complaintId" element={<editComplaint/>}></Route>
       </Routes>
 
       <Footer />

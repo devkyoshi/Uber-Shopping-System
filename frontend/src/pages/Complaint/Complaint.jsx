@@ -3,7 +3,7 @@ import axios  from 'axios'//Import axios for making HTTP request
 import {useSelector} from 'react-redux'
 import {Button} from '@material-tailwind/react'
 import { Link, useNavigate } from 'react-router-dom';
-import { SideBar } from '../components/SideBar';
+import { SideBar } from '../../components/SideBar';
 
 export default function Complaint(){
     const cusId = useSelector((state) => state.cusId);
