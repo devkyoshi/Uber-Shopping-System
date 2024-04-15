@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import PaymentForm from "../../components/payment/PaymentForm";
 import axios from "axios";
 
+//Crazy Ashan always angry
+
 export default function AddPaymentUI({ orderId }) {
   const [error, setError] = useState(null);
   const [payment_amount, setTotalAmount] = useState("");
