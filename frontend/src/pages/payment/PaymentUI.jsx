@@ -9,7 +9,7 @@ export default function PaymentUI() {
       <div className="inner-layout">
         <div>
           {/* TODO:this should be changed: Order ID should be passed */}
-          <PaymentTab orderId={"661796ad2801abcc349b736a"} />
+          <PaymentTab orderId={"66120fc9f7b97eacbe3cb331"} />
         </div>
       </div>
     </div>

@@ -98,6 +98,8 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
     postal_code: "",
   });
 
+  const [paymentMade, setPaymentMade] = useState(false);
+
   const handleSetPaymentMethodCash = () => {
     setPaymentMethod("cash");
   };
@@ -201,47 +203,62 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
     try {
       setLoading(true);
 
+      console.log("Before: ", paymentMade);
       let successMessage = "";
       if (currentMode === "create") {
-        if (paymentMethod == "card") {
-          await axios.post(
-            `http://localhost:8070/Payment/pay-card/${orderId}/add-payment`,
-            formData
-          );
+        if (paymentMade) {
+          // Check if payment has already been made
+          setError("Payment has already been made for this order.");
+          setLoading(false);
+          setShowAlert(true);
+          return; // Prevent further execution
         }
 
-        if (paymentMethod == "cash") {
-          await axios.post(
-            `http://localhost:8070/Payment/pay-cash/${orderId}/add-payment`,
-            formData
-          );
+        if (paymentMethod === "card") {
+          await axios
+            .post(
+              `http://localhost:8070/Payment/pay-card/${orderId}/add-payment`,
+              formData
+            )
+            .then(() => {
+              console.log("Payment successful. Updating paymentMade...");
+              setPaymentMade(true); // Update paymentMade after successful payment
+            });
+          setPaymentMade(true);
+        } else if (paymentMethod === "cash") {
+          await axios
+            .post(
+              `http://localhost:8070/Payment/pay-cash/${orderId}/add-payment`,
+              formData
+            )
+            .then(() => {
+              console.log("Payment successful. Updating paymentMade...");
+              setPaymentMade(true); // Update paymentMade after successful payment
+            });
         }
 
-        successMessage = "Payment Added SuccessFully!";
+        successMessage = "Payment Added Successfully!";
+        // Set paymentMade to true after successful payment
+        console.log("After: ", paymentMade);
       } else if (currentMode === "update") {
-        if (cardPaymentDetails) {
-          await axios.put(
-            `http://localhost:8070/Payment/pay-card/${orderId}/update-payment/${cardPaymentDetails._id}`,
-            formData
-          );
-        } else if (cashPaymentDetails) {
+        if (cardPaymentDetails && paymentMethod === "card") {
+          successMessage = "You can't update card payments.";
+        } else if (cashPaymentDetails && paymentMethod === "cash") {
           await axios.put(
             `http://localhost:8070/Payment/pay-cash/${orderId}/update-payment/${cashPaymentDetails._id}`,
             formData
           );
+          successMessage = "Payment Updated Successfully!";
         }
-        successMessage = "Payment Updated SuccessFully!";
-      } else if (currentMode == "delete") {
-        if (cardPaymentDetails) {
-          await axios.delete(
-            `http://localhost:8070/Payment/pay-card/${orderId}/delete-payment/${cardPaymentDetails._id}`
-          );
-        } else if (cashPaymentDetails) {
+      } else if (currentMode === "delete") {
+        if (cardPaymentDetails && paymentMethod === "card") {
+          successMessage = "You can't delete card payments.";
+        } else if (cashPaymentDetails && paymentMethod === "cash") {
           await axios.delete(
             `http://localhost:8070/Payment/pay-cash/${orderId}/delete-payment/${cashPaymentDetails._id}`
           );
+          successMessage = "Payment Removed!";
         }
-        successMessage = "Payment Removed!";
       }
 
       console.log(successMessage);
