@@ -25,6 +25,7 @@ export default function editComplaint(){
 
     const [imagePreview, setImagePreview] = useState(null);
     const [uploading, setUploading] = useState(false);
+    const [imageURL, setImageURL] = useState('');
 
     useEffect(() => {
         fetchComplaintData(); // Fetch complaint data when component mounts
@@ -48,7 +49,7 @@ export default function editComplaint(){
             })
 
             //set the image preview
-            setImagePreview(fetchedComplaint.complaint_img);
+            setImageURL(fetchedComplaint.imageURL);
             
             
         } catch (error) {
@@ -168,6 +169,7 @@ export default function editComplaint(){
                        <label htmlFor="complaint_img" className="block mb-2 font-bold">Complaint Image :</label>
                        <input type="file" id="complaint_img" name="complaint_img" onChange={handleFileChange} required />
                        {imagePreview && <img src={imagePreview} alt="Complaint Preview" style={{maxWidth: '50%', marginTop: '10px'}} />}
+                       {imageURL && <img src={imageURL} alt="Complaint Image" style={{ maxWidth: '50%', marginTop: '10px' }} />}
                     </div>
                     {/* Button to submit the form */}
                     <Button type="submit" disabled={uploading} className="bg-gradient-to-r from-pink-300 via-red-300 to-orange-300 text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-gradient-to-r from-pink-600 via-red-600 to-orange-600 transition duration-300">

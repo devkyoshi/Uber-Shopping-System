@@ -8,6 +8,9 @@ const app = express();
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
+const images = require('../backend/routes/multerConfig.js');
+// Serve static files from the 'uploads' directory
+app.use('/images', express.static('images'));
 
 //created a port
 const PORT = process.env.PORT || 8070;

@@ -6,7 +6,7 @@ const router = express.Router();
 const Complaint = require("../models/complaint");
 const mongoose = require('mongoose');
 const Refund = require("../models/refund")
-const multer = require('multer');
+const upload = require('./multerConfig');
 
 /*
             "order_id":"66120fc9f7b97eacbe3cb331",
@@ -18,18 +18,7 @@ const multer = require('multer');
 
 */
 
-// Create a new complaint
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, './images'); // Specify the directory for storing uploaded files
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname); // Keep the original file name
-    }
-  });
-  
-  const upload = multer({ storage: storage });
-  
+// Create a new complaint 
   router.post("/complaint-add", upload.single('complaint_img'), async (req, res) => {
     try {
       const { customer_id, order_id, payment_id, complaint_type, item_id, resolving_option, quantity, complaint_status } = req.body;
@@ -58,20 +47,23 @@ const storage = multer.diskStorage({
   });
 
 // Update an existing complaint
-router.put("/complaint-update/:complaintID", async (req, res) => {
+router.put("/complaint-update/:complaintID",  upload.single('complaint_img') ,async (req, res) => {
     try {
         const { complaintID } = req.params;
-        const {  order_id, payment_id ,complaint_type ,item_id ,resolving_option , complaint_img, quantity, complaint_status} = req.body;
+        const { customer_id, order_id, payment_id ,complaint_type ,item_id ,resolving_option , quantity, complaint_status} = req.body;
+        const complaint_img = req.file.path;
 
         const updatedComplaint = await Complaint.findByIdAndUpdate(complaintID, {
+            customer_id,
             order_id,
             payment_id,
             complaint_type,
             item_id,
             resolving_option,
             complaint_img,
-            quantity, 
-            complaint_status
+            quantity,
+            complaint_status,
+            updated_at: Date.now()
 
         }, { new: true });
 
@@ -124,7 +116,7 @@ router.get("/complaint/:complaintID", async (req, res) => {
         if (!complaint) {
             return res.status(404).json({ error: "Complaint not found" });
         }
-        const imageURL = `/images/${complaint.complaint_img}`// Concatenate the base URL with the image filename
+        const imageURL = `http://localhost:8070/images/${complaint.complaint_img}`// Concatenate the base URL with the image filename
 
         // Add the imageURL to the complaint object before sending the response
         const complaintWithImage ={
