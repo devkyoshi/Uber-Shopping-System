@@ -20,6 +20,8 @@ import {
   Cog6ToothIcon,
   InboxIcon,
   PowerIcon,
+  StarIcon,
+  ChatBubbleOvalLeftIcon,
 } from "@heroicons/react/24/solid";
 
 import {
@@ -159,6 +161,18 @@ export function SideBar() {
               <UserCircleIcon className="h-5 w-5" />
             </ListItemPrefix>
             Profile
+          </ListItem>
+          <ListItem onClick='/feedbackportal?tab-feedback'>
+            <ListItemPrefix>
+              <ChatBubbleOvalLeftIcon className="h-5 w-5" />
+            </ListItemPrefix>
+            Feedback Portal
+          </ListItem>
+          <ListItem onClick='/employeerate?tab=rating'>
+            <ListItemPrefix>
+              <StarIcon className="h-5 w-5" />
+            </ListItemPrefix>
+            Rate Employees
           </ListItem>
           <hr className="my-2 border-blue-gray-50" />
           <ListItem>
