@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import {useDispatch } from 'react-redux';
+import { signoutSuccess } from '../redux/customer/customerRegisterSlice';
 import {
   Card,
   Typography,
@@ -34,9 +36,26 @@ import {
 export function SideBar() {
   const [open, setOpen] = React.useState(0);
   const [openAlert, setOpenAlert] = React.useState(true);
+  const dispatch = useDispatch();
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch('/customer/signout', {
+        method:'POST'
+      });
+      const data = await res.json();
+      if(!res.ok){
+        console.log(data.message);
+      }else{
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -157,12 +176,12 @@ export function SideBar() {
               />
             </ListItemSuffix>
           </ListItem>
-          <ListItem>
+          <Link to='/Customerprofile?tab=profile'><ListItem>
             <ListItemPrefix>
               <UserCircleIcon className="h-5 w-5" />
             </ListItemPrefix>
             Profile
-          </ListItem>
+          </ListItem></Link>
           <Link to='/feedbackportal?tab=feedback'><ListItem>
             <ListItemPrefix>
               <ChatBubbleOvalLeftIcon className="h-5 w-5" />
@@ -182,7 +201,7 @@ export function SideBar() {
             </ListItemPrefix>
             Settings
           </ListItem>
-          <ListItem>
+          <ListItem onClick={handleSignOut}>
             <ListItemPrefix>
               <PowerIcon className="h-5 w-5" />
             </ListItemPrefix>

@@ -46,9 +46,9 @@ export default function ProfileSideBar() {
                     Profile
                 </Sidebar.Item></Link>
                 {currentCustomer.adminType === 'null' && (
-                  <Link to='/Employee_Registration'>
-                  <Sidebar.Item as='div' active={locationLink.pathname === '/Employee_Registration'} icon={HiUser} label={'Employee'} labelColor='dark'>
-                      Register
+                  <Link to='/Employee_Signin'>
+                  <Sidebar.Item as='div' active={locationLink.pathname === '/Employee_Signin'} icon={HiUser} label={'Employee'} labelColor='dark'>
+                      Login
                   </Sidebar.Item></Link>
                 )}
                 {currentCustomer.adminType === 'customer' && (
