@@ -201,12 +201,12 @@ export function SideBar() {
             </ListItemPrefix>
             Settings
           </ListItem>
-          <ListItem onClick={handleSignOut}>
+          <Link to={'/Customerlogin'}><ListItem onClick={handleSignOut}>
             <ListItemPrefix>
               <PowerIcon className="h-5 w-5" />
             </ListItemPrefix>
             Log Out
-          </ListItem>
+          </ListItem></Link>
         </List>
       </Card>
     </div>
