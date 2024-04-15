@@ -52,10 +52,10 @@ export default function HomeUnregistered() {
 
   const renderItems = (items) => {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5">
+      <div className="flex flex-wrap  gap-5 ">
         {/* Render each item's details */}
         {items.map((item, index) => (
-          <div key={index} className="inline-block">
+          <div key={index} className="w-72 ">
             <CardContainer
               supermarket={item.supermarket}
               itemName={item.itemName}

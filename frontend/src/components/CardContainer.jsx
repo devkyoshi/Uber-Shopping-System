@@ -32,8 +32,8 @@ export function CardContainer({
   };
 
   return (
-    <Card className="w-96 h-auto">
-      <CardHeader shadow={false} floated={false} className="h-60">
+    <Card className="w-72 h-auto">
+      <CardHeader shadow={false} floated={false} className="h-40">
         <img
           src={itemImage}
           alt="card-image"
@@ -41,11 +41,11 @@ export function CardContainer({
         />
       </CardHeader>
       <CardBody className="flex flex-col justify-between">
-        <div className="mb-2 flex items-center justify-between">
-          <Typography color="blue-gray" className="font-bold">
+        <div className="mb-1 flex items-center justify-between">
+          <Typography color="blue-gray" className="font-bold text-sm">
             {itemName}
           </Typography>
-          <Typography color="green" className="font-bold">
+          <Typography color="green" className="font-bold text-sm">
             Rs. {formatPriceWithCommas(price)}
           </Typography>
         </div>
@@ -54,8 +54,8 @@ export function CardContainer({
             variant="small"
             color="gray"
             className={`font-normal opacity-75 ${
-              isExpanded ? "h-auto" : "h-20"
-            }`}
+              isExpanded ? "h-auto" : "h-16"
+            } text-sm`}
           >
             {description}
           </Typography>
@@ -64,17 +64,17 @@ export function CardContainer({
           <Typography
             color="gray"
             onClick={toggleDescription}
-            className="cursor-pointer mt-2 fon"
+            className="cursor-pointer mt-1 font-medium text-sm"
           >
             Read More
           </Typography>
         )}
       </CardBody>
-      <CardFooter className="pt-0 items-center justify-center ml-20 pl-10">
+      <CardFooter className="pt-0 items-center justify-center ml-10">
         <PopOver
           supermarket={supermarket}
           itemID={itemID}
-          size="lg"
+          size="md"
           fullWidth={true}
           isOpen={isPopOverOpen}
           togglePopover={togglePopOver}
