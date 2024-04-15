@@ -47,10 +47,9 @@ export default function editComplaint(){
                 quantity: fetchedComplaint.quantity,
             })
 
-            // If there's a complaint image, set the image preview
-            if(fetchedComplaint.complaint_img){
-                setImagePreview(fetchedComplaint.complaint_img);
-            }
+            //set the image preview
+            setImagePreview(fetchedComplaint.complaint_img);
+            
             
         } catch (error) {
             console.error('Error fetching complaint data:', error);

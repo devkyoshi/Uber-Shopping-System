@@ -124,7 +124,16 @@ router.get("/complaint/:complaintID", async (req, res) => {
         if (!complaint) {
             return res.status(404).json({ error: "Complaint not found" });
         }
-        res.json(complaint);
+        const imageURL = `/images/${complaint.complaint_img}`// Concatenate the base URL with the image filename
+
+        // Add the imageURL to the complaint object before sending the response
+        const complaintWithImage ={
+            ...complaint.toObject(),// Convert Mongoose document to plain JavaScript object
+            imageURL
+        }
+
+        res.json(complaintWithImage);
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "An error occurred while fetching the Complaint" });
