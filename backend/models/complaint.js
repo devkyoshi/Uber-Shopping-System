@@ -39,6 +39,10 @@ const complaintSchema = new Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     complaint_status: {
         type: String,
         enum: ['pending', 'accepted', 'resolved'],

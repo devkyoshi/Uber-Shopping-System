@@ -21,11 +21,14 @@ export default function editComplaint(){
         resolving_option: '', 
         complaint_img: '',
         quantity: '',
+        description:''
+
     });
 
     const [imagePreview, setImagePreview] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [imageURL, setImageURL] = useState('');
+    
 
     useEffect(() => {
         fetchComplaintData(); // Fetch complaint data when component mounts
@@ -47,6 +50,7 @@ export default function editComplaint(){
                 resolving_option: fetchedComplaint.resolving_option, 
                 complaint_img: fetchedComplaint.complaint_img,
                 quantity: fetchedComplaint.quantity,
+                description: fetchedComplaint.description,
             })
 
             const imageURL = `http://localhost:8070/${fetchedComplaint.imageURL}`;
@@ -94,6 +98,9 @@ export default function editComplaint(){
           formDataToSend.append('resolving_option', formData.resolving_option);
           formDataToSend.append('complaint_img', formData.complaint_img);
           formDataToSend.append('quantity', formData.quantity);
+          formDataToSend.append('description', formData.description);
+
+          console.log(formDataToSend)
           
           const response = await axios.put(`http://localhost:8070/Complaint/complaint-update/${complaintId}`, formDataToSend, {
                 headers: {
@@ -165,6 +172,10 @@ export default function editComplaint(){
                     <div className="mb-3">
                        <label htmlFor="quantity" className="block mb-2 font-bold">Quantity :</label>
                        <input type="text" id="quantity" name="quantity" value={formData.quantity} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
+                    </div>
+                    <div className="mb-3">
+                       <label htmlFor="description" className="block mb-2 font-bold">Description :</label>
+                       <textarea type="text" id="description" name="description" value={formData.description} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
                     </div>
                     <div className="mb-3">
                        <label htmlFor="complaint_img" className="block mb-2 font-bold">Complaint Image :</label>

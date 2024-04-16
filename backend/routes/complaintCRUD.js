@@ -22,7 +22,7 @@ const fs = require('fs');
 // Create a new complaint 
   router.post("/complaint-add", upload.single('complaint_img'), async (req, res) => {
     try {
-      const { customer_id, order_id, payment_id, complaint_type, item_id, resolving_option, quantity, complaint_status } = req.body;
+      const { customer_id, order_id, payment_id, complaint_type, item_id, resolving_option, quantity, description, complaint_status } = req.body;
       const complaint_img = req.file.path; // Save the file path in the database
   
       const newComplaint = new Complaint({
@@ -34,6 +34,7 @@ const fs = require('fs');
         resolving_option,
         complaint_img,
         quantity,
+        description,
         complaint_status,
         created_at: Date.now(),
         updated_at: Date.now()
@@ -51,8 +52,8 @@ const fs = require('fs');
 router.put("/complaint-update/:complaintID",  upload.single('complaint_img') ,async (req, res) => {
     try {
         const { complaintID } = req.params;
-        const { customer_id, order_id, payment_id ,complaint_type ,item_id ,resolving_option , quantity, complaint_status} = req.body;
-        const complaint_img = req.file.path;
+        const { customer_id, order_id, payment_id ,complaint_type ,item_id ,resolving_option , quantity,description, complaint_status} = req.body;
+        const complaint_img = req.file ? req.file.path : undefined;
 
         // Find the complaint to get the previous image path
         const complaint = await Complaint.findById(complaintID);
@@ -60,8 +61,11 @@ router.put("/complaint-update/:complaintID",  upload.single('complaint_img') ,as
             return res.status(404).json({ error: "Complaint not found" });
         }
 
-        // Delete the previous image file
-        fs.unlinkSync(complaint.complaint_img);
+        // Delete the previous image file if it exists
+        if (complaint.complaint_img && fs.existsSync(complaint.complaint_img)) {
+            fs.unlinkSync(complaint.complaint_img);
+        }
+
 
         const updatedComplaint = await Complaint.findByIdAndUpdate(complaintID, {
             customer_id,
@@ -72,6 +76,7 @@ router.put("/complaint-update/:complaintID",  upload.single('complaint_img') ,as
             resolving_option,
             complaint_img,
             quantity,
+            description,
             complaint_status,
             updated_at: Date.now()
 
@@ -96,20 +101,42 @@ router.delete("/complaint-delete/:complaintID", async (req, res) => {
         const { complaintID } = req.params;
         const deletedComplaint = await Complaint.findByIdAndDelete(complaintID);
 
-        // Find the complaint to get the previous image path
-        const complaint = await Complaint.findById(complaintID);
-        if (!complaint) {
-            return res.status(404).json({ error: "Complaint not found" });
+       // Delete the image file if it exists
+       if (deletedComplaint.complaint_img) {
+        if (fs.existsSync(deletedComplaint.complaint_img)) {
+            fs.unlinkSync(deletedComplaint.complaint_img);
+        } else {
+            console.log(`Image file not found: ${deletedComplaint.complaint_img}`);
         }
-
-        // Delete the previous image file
-        fs.unlinkSync(complaint.complaint_img);
-
-        if (!deletedComplaint) {
-            return res.status(404).json({ error: "Complaint not found" });
-        }
+    }
 
         res.json({ message: "Complaint deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while deleting the Complaint" });
+    }
+});
+
+// Delete an existing complaint image
+router.delete("/complaint-deleteimg/:complaintID", async (req, res) => {
+    try {
+        const { complaintID } = req.params;
+        const deletedComplaint = await Complaint.findById(complaintID)
+
+       // Delete the image file if it exists
+       if (deletedComplaint.complaint_img) {
+        if (fs.existsSync(deletedComplaint.complaint_img)) {
+            fs.unlinkSync(deletedComplaint.complaint_img);
+        } else {
+            console.log(`Image file not found: ${deletedComplaint.complaint_img}`);
+        }
+    }
+
+       // Remove the complaint_img attribute from the complaint document
+       deletedComplaint.complaint_img = '';
+       await deletedComplaint.save();
+
+       res.json({ message: "Complaint image and attribute deleted successfully" });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "An error occurred while deleting the Complaint" });

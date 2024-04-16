@@ -19,6 +19,7 @@ export default function ComplaintForm(){
         resolving_option: '', 
         complaint_img: '',
         quantity: '',
+        description:''
     });
 
     const [imagePreview, setImagePreview] = useState(null);
@@ -60,6 +61,7 @@ export default function ComplaintForm(){
           formDataToSend.append('resolving_option', formData.resolving_option);
           formDataToSend.append('complaint_img', formData.complaint_img);
           formDataToSend.append('quantity', formData.quantity);
+          formDataToSend.append('description', formData.description);
           
           const response = await axios.post('http://localhost:8070/Complaint/complaint-add', formDataToSend, {
                 headers: {
@@ -131,6 +133,10 @@ export default function ComplaintForm(){
                     <div className="mb-3">
                        <label htmlFor="quantity" className="block mb-2 font-bold">Quantity :</label>
                        <input type="text" id="quantity" name="quantity" value={formData.quantity} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
+                    </div>
+                    <div className="mb-3">
+                       <label htmlFor="description" className="block mb-2 font-bold">Description :</label>
+                       <textarea type="text" id="description" name="description" value={formData.description} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
                     </div>
                     <div className="mb-3">
                        <label htmlFor="complaint_img" className="block mb-2 font-bold">Complaint Image :</label>
