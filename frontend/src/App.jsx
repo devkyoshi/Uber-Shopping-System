@@ -27,6 +27,7 @@ import DriverUI from "./pages/driver/DriverUI";
 import UpdateOrder from "./pages/UpdateOrder";
 import ComplaintForm from "./pages/Complaint/ComplaintForm"
 import EditComplaint from "./pages/Complaint/editComplaint"
+import ComplaintAdmin from "./pages/Complaint/ComplaintAdmin"
 
 export default function App() {
   return (
@@ -78,6 +79,7 @@ export default function App() {
         <Route path="/driver" element={<DriverUI />} />
         <Route path="/complaintForm" element={<ComplaintForm/>}/>
         <Route path="/editComplaint/:complaintId" element={<EditComplaint/>}></Route>
+        <Route path="/complaint-admin" element={<ComplaintAdmin/>}/>
       </Routes>
 
       <Footer />
