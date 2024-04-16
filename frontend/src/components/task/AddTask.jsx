@@ -4,7 +4,10 @@ import axios from "axios";
 const AddTask = () => {
   const [pendingOrders, setPendingOrders] = useState([]);
   const [OrdersByDistrict, setOrdersByDistrict] = useState([]);
-  const [message, setMessage] = useState("");
+  const [districtOrderCount, setDistrictOrderCount] = useState([]);
+  const [firstFiveOrder, setFirstFiveOrders] = useState([]);
+  const [massage, setMassage] = useState("");
+  const [error, setError] = useState("")
 
   useEffect(() => {
     const fetchPendingOrders = async () => {
@@ -18,6 +21,7 @@ const AddTask = () => {
 
           // Group orders by district
           const ordersByDistrict = {};
+          const districtOrderCount ={};
           orders.forEach(order => {
             if (!order.order_district) {
               console.error("District information missing for order:", order);
@@ -25,12 +29,16 @@ const AddTask = () => {
             }
             if (!ordersByDistrict[order.order_district]) {
               ordersByDistrict[order.order_district] = [];
+              districtOrderCount[order.order_district] = 0;
             }
             ordersByDistrict[order.order_district].push(order);
+            districtOrderCount[order.order_district]++;
           });
           console.log("Orders grouped by district:", ordersByDistrict);
+          console.log("Order count by district:", districtOrderCount);
           
           setOrdersByDistrict(ordersByDistrict);
+          setDistrictOrderCount(districtOrderCount);
           // Set pending orders state
           setPendingOrders(orders);
         }
@@ -40,23 +48,34 @@ const AddTask = () => {
     };
 
     fetchPendingOrders(); // Call the fetch function
-  }, []); // Empty dependency array to run once on component mount
+  }, [massage]); // Empty dependency array to run once on component mount
 
   const sendDataToBackend = async () => {
     try {
-      const firstFiveOrders = pendingOrders.slice(0, 5);
 
+      //get the first five orders from order array
+      const districtWithFiveOrders = Object.keys(OrdersByDistrict).find(district => OrdersByDistrict[district].length >= 5);
+
+      if (districtWithFiveOrders) {
+        const firstFiveOrders = OrdersByDistrict[districtWithFiveOrders].slice(0, 5);
+        setFirstFiveOrders(firstFiveOrders);
+      }
+
+      console.log('firstFiveOrder', firstFiveOrder);
+
+
+      // get available drivers from  all branches
       const response = await axios.get("http://localhost:8070/Driver/drivers");
       console.log('response:', response.data);
       const drivers = response.data.filter(driver => driver.availability === "Available");
       console.log('filter:', drivers); 
       
       if (drivers.length === 0) {
-        setMessage("No available driver found");
+        setError("No available driver found");
         return;
       }
 
-      // group drivers according to the district
+      //  available drivers are allocate as the district level
       const driversByDistrict = {};
       drivers.forEach(driver => {
         if (!driver.available_district) {
@@ -68,7 +87,7 @@ const AddTask = () => {
         }
         driversByDistrict[driver.available_district].push(driver);
       });
-      console.log("Drivers grouped by district:", driversByDistrict);
+      console.log("Drivers allocate as the district:", driversByDistrict);
 
       console.log('order Constant:', OrdersByDistrict); 
 
@@ -80,7 +99,7 @@ const AddTask = () => {
       console.log('matching districts:', matchingDistricts);
 
       if (matchingDistricts.length === 0) {
-        setMessage("No available driver found for the order districts");
+        setError("No available driver found for the order districts");
         return;
       }
 
@@ -100,7 +119,7 @@ const AddTask = () => {
       console.log('randomDriver', randomDriver);
 
       if (!randomDriver) {
-        setMessage("No available driver found for the selected district");
+        setError("No available driver found for the selected district");
         return;
       }
 
@@ -108,7 +127,7 @@ const AddTask = () => {
         driver_id: randomDriver.driver_id,
         branch_id: randomDriver.branch_ID,
         district: randomDistrict,
-        orderIds: firstFiveOrders.map(order => order._id)
+        orderIds: firstFiveOrder.map(order => order._id)
       };
       
       console.log('Task Data:', taskData);
@@ -116,28 +135,54 @@ const AddTask = () => {
     
       await axios.post("http://localhost:8070/Task/add-task", taskData);
      
-      setPendingOrders(updatedOrders);
-      setMessage("Task added successfully");
+      setMassage("Task added successfully");
     } catch (error) {
       console.error("Error sending data to backend:", error);
-      setMessage("Error occurred while adding task");
+      setError("Error occurred while adding task");
     }
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (pendingOrders.length > 4) {
-        sendDataToBackend();
-      }
-    }, 30*60*1000); // Check every 30 minutes if there are at least 5 pending orders
 
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const hasEnoughOrders = Object.values(districtOrderCount).some(count => count >= 5);
+  //     console.log("District Counts:", districtOrderCount);
+  //     console.log("Checking for enough orders in any district:", hasEnoughOrders);
+  //     if (hasEnoughOrders) {
+  //       console.log("Enough orders found. Triggering task assignment.");
+  //       sendDataToBackend();                      
+  //     } else {
+  //       console.log("Not enough orders found.");
+  //     }
+  //   }, 5 * 1000);
+
+  //   return () => clearInterval(interval);
+  // }, [districtOrderCount]);
+
+
+  useEffect(() => {
+    if(Object.values(districtOrderCount).some(count => count >= 5)){
+      console.log("Enough orders found. Triggering task assignment.");
+      sendDataToBackend();
+      return;
+    };
+
+    const interval = setInterval(() => {
+      const hasEnoughOrders = Object.values(districtOrderCount).some(count => count < 5);
+      console.log("Order Counts according to district:", districtOrderCount);
+      console.log("Checking for enough orders in any district:", hasEnoughOrders);
+      if (hasEnoughOrders) {
+        console.log("Not enough orders found.");
+      } 
+    }, 20 * 1000);
     return () => clearInterval(interval);
-  }, [pendingOrders]);
+  }, [districtOrderCount]);
 
   return (
     <div>
       <h2>Add Task</h2>
-      {message && <p>{message}</p>}
+      {error && <p>{error}</p>}
+      {massage && <p>{massage}</p>}
     </div>
   );
 };

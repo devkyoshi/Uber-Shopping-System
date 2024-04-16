@@ -29,6 +29,57 @@ router.post("/add-task", async (req, res) => {
   }
 });
 
+
+ ///// update task - manage task
+router.put("/update-task/:taskId", async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const { driver_id, branch_id, district, orderIds } = req.body;
+
+    // Find the task by ID
+    let task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    // Update task properties if provided in the request body
+    if (driver_id) {
+      task.driver_id = driver_id;
+    }
+    if (branch_id) {
+      task.branch_id = branch_id;
+    }
+    if (district) {
+      task.district = district;
+    }
+
+    // Update orderIds if provided, and update order status to "Processing"
+    if (orderIds && Array.isArray(orderIds)) {
+      // Clear existing orders
+      task.orders = [];
+
+      // Update order status to "Processing" for each order
+      for (const orderId of orderIds) {
+        task.orders.push({ order_id: orderId });
+        await Order.updateOne({ _id: orderId }, { $set: { order_status: "Processing" } });
+      }
+    }
+
+    // Save the updated task
+    task = await task.save();
+
+    res.json(task);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while updating the task" });
+  }
+});
+
+
+
+
+
 // Add pickup details within a task(new) - Gimashi
 router.put("/add-pickup/:taskId/:orderId", async (req, res) => {
   try {
@@ -71,6 +122,11 @@ router.put("/add-pickup/:taskId/:orderId", async (req, res) => {
       .json({ error: "An error occurred while updating the order" });
   }
 });
+
+
+
+
+
 
 // Update pickup details within a task - Gimashi
 router.put("/update-pickup/:taskId/:orderId", async (req, res) => {
@@ -115,6 +171,11 @@ router.put("/update-pickup/:taskId/:orderId", async (req, res) => {
   }
 });
 
+
+
+
+
+
 // Delete pickup within a task
 router.delete("/delete-pickup/:taskId/:orderId", async (req, res) => {
   try {
@@ -150,6 +211,10 @@ router.delete("/delete-pickup/:taskId/:orderId", async (req, res) => {
       .json({ error: "An error occurred while deleting the order" });
   }
 });
+
+
+
+
 
 // Add delivered details within a task -  Gimashi
 router.put("/add-delivered/:taskId/:orderId", async (req, res) => {
@@ -194,6 +259,10 @@ router.put("/add-delivered/:taskId/:orderId", async (req, res) => {
   }
 });
 
+
+
+
+
 // Update delivered details within a task - Gimashi
 router.put("/update-delivered/:taskId/:orderId", async (req, res) => {
   try {
@@ -237,6 +306,10 @@ router.put("/update-delivered/:taskId/:orderId", async (req, res) => {
   }
 });
 
+
+
+
+
 // Delete delivered details within a task - Gimashi
 router.delete("/delete-delivered/:taskId/:orderId", async (req, res) => {
   try {
@@ -278,6 +351,9 @@ router.delete("/delete-delivered/:taskId/:orderId", async (req, res) => {
   }
 });
 
+
+
+
 // Delete a task
 router.delete("/delete-task/:taskId", async (req, res) => {
   try {
@@ -296,6 +372,10 @@ router.delete("/delete-task/:taskId", async (req, res) => {
       .json({ error: "An error occurred while deleting the task" });
   }
 });
+
+
+
+
 
 // Get a specific task
 router.get("/get-task/:taskId", async (req, res) => {
@@ -316,6 +396,10 @@ router.get("/get-task/:taskId", async (req, res) => {
   }
 });
 
+
+
+
+
 // Get all tasks
 router.get("/get-all-tasks", async (req, res) => {
   try {
@@ -328,6 +412,32 @@ router.get("/get-all-tasks", async (req, res) => {
       .json({ error: "An error occurred while fetching all tasks" });
   }
 });
+
+
+
+// use for task table
+router.get("/tasks", async (req, res) => {
+  try {
+    // Fetch all tasks and populate the orders field
+    const tasks = await Task.find().populate('orders.order_id');
+
+    // Map tasks to include task_id along with other fields
+    const tasksWithId = tasks.map(task => ({
+      task_id: task._id,
+      branch_id: task.branch_id,
+      driver_id: task.driver_id,
+      district: task.district,
+      orders: task.orders
+    }));
+
+    res.json(tasksWithId);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while fetching tasks" });
+  }
+});
+
+
 
 // Add order details to a specific task
 router.post("/:taskId/add-order", async (req, res) => {
@@ -367,6 +477,10 @@ router.post("/:taskId/add-order", async (req, res) => {
     });
   }
 });
+
+
+
+
 
 // Update order details for a specific task
 router.put("/:taskId/update-order/:orderId", async (req, res) => {
@@ -408,6 +522,9 @@ router.put("/:taskId/update-order/:orderId", async (req, res) => {
   }
 });
 
+
+
+
 // Remove order from a specific task
 router.delete("/:taskId/remove-order/:orderId", async (req, res) => {
   try {
@@ -435,6 +552,10 @@ router.delete("/:taskId/remove-order/:orderId", async (req, res) => {
   }
 });
 
+
+
+
+
 // Get all orders for a specific task
 router.get("/:taskId/get-all-orders", async (req, res) => {
   try {
@@ -453,6 +574,10 @@ router.get("/:taskId/get-all-orders", async (req, res) => {
     });
   }
 });
+
+
+
+
 
 // Get a specific order from a specific task
 router.get("/:taskId/get-order/:orderId", async (req, res) => {
@@ -477,5 +602,49 @@ router.get("/:taskId/get-order/:orderId", async (req, res) => {
       .json({ error: "An error occurred while fetching the order" });
   }
 });
+
+
+
+  // using for task view - driver UI
+
+  // router.get('/:taskId/details', async (req, res) => {
+  //   try {
+  //     const { taskId } = req.params;
+  
+  //     // Find the task by ID and populate the orders field
+  //     const task = await Task.findById(taskId).populate({
+  //       path: 'orders',
+  //       populate: {
+  //         path: 'order_id',
+  //         populate: {
+  //           path: 'customer_id',
+  //         select: ' phone nearest_town', // Select only required fields
+  //         },
+  //         select: 'order_id status', // Select only required fields
+  //       },
+  //     });
+   
+  //     // Check if the task exists
+  //     if (!task) {
+  //       return res.status(404).json({ message: 'Task not found' });
+  //     }
+  
+  //     // Extract customer details, nearest town, customer name, and order ID from the populated task
+  //     const taskDetails = {
+  //       customer: task.orders.map(order => ({
+  //         //name: order.order_id.customer_id.name,
+  //         phone: order.order_id.customer_id.phone,
+  //         nearest_town: order.order_id.customer_id.nearest_town,
+  //         orderId: order.order_id._id,
+  //       })),
+  //     };
+  
+  //     res.json(taskDetails);
+  //   } catch (err) {
+  //     console.error(err);
+  //     res.status(500).json({ message: 'Server Error' });
+  //   }
+  // });
+  
 
 module.exports = router;

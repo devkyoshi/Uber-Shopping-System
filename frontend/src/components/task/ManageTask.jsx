@@ -7,9 +7,8 @@ import {
     Input,
 } from "@material-tailwind/react";
 
-export function ManageTask({ taskId }) {
+export function ManageTask() {
     const [tasks, setTasks] = useState([]);
-    const [refresh, setRefresh] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
@@ -18,9 +17,9 @@ export function ManageTask({ taskId }) {
 
     const fetchTasks = async () => {
         try {
-            const response = await axios.get("http://localhost:8070/Task/get-all-tasks");
+            const response = await axios.get("http://localhost:8070/Task/tasks");
             setTasks(response.data);
-            setRefresh(false);
+
         } catch (error) {
             console.error("Error fetching tasks:", error);
             setErrorMessage("Error fetching tasks");
@@ -28,26 +27,23 @@ export function ManageTask({ taskId }) {
     };
 
     const handleDelete = async (taskId) => {
+        console.log('taskId', taskId);
         try {
             await axios.delete(`http://localhost:8070/Task/delete-task/${taskId}`);
             console.log("Task deleted successfully");
             fetchTasks();
-            setRefresh(true);
+
+            if (taskId.length > 0) {
+                const confirmDelete = window.confirm(`Are you sure you want to delete Task ${taskId} ? Order details are also removed!`);
+                
+                if (confirmDelete) {
+                    return;
+                }
+            }
+
         } catch (error) {
             console.error("Error deleting task:", error);
             setErrorMessage("Error deleting task");
-        }
-    };
-
-    const handleUpdate = async (updatedTask) => {
-        try {
-            const response = await axios.put(`http://localhost:8070/Task/update-task/${updatedTask._id}`, updatedTask);
-            console.log("Task updated successfully:", response.data);
-            fetchTasks();
-            setRefresh(true);
-        } catch (error) {
-            console.error("Error updating task:", error);
-            setErrorMessage("Error updating task");
         }
     };
 
@@ -62,6 +58,19 @@ export function ManageTask({ taskId }) {
         setTasks(updatedTasks);
     };
 
+    const handleUpdate = async (updatedTask) => {
+        try {
+            // Make a PUT request to update the task
+            console.log("Ín function", updatedTask);
+            await axios.put(`http://localhost:8070/Task/update-task/${updatedTask.task_id}`, updatedTask);
+            console.log("Task updated successfully");
+            fetchTasks(); // Fetch updated task list
+        } catch (error) {
+            console.error("Error updating task:", error);
+            setErrorMessage("Error updating task");
+        }
+    };
+
     return (
         <Card className="h-full w-full overflow-scroll">
             {errorMessage && (
@@ -72,9 +81,10 @@ export function ManageTask({ taskId }) {
             <table className="w-full min-w-max table-auto text-left">
                 <thead>
                     <tr>
-                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 ">
+                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <Typography
                                 variant="small"
+                                readOnly
                                 color="blue-gray"
                                 style={{ fontWeight: "bolder" }}
                                 className="font-normal leading-none opacity-70 text-center"
@@ -82,9 +92,10 @@ export function ManageTask({ taskId }) {
                                 Task ID
                             </Typography>
                         </th>
-                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 ">
+                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <Typography
                                 variant="small"
+                                readOnly
                                 color="blue-gray"
                                 style={{ fontWeight: "bolder" }}
                                 className="font-normal leading-none opacity-70 text-center"
@@ -92,17 +103,7 @@ export function ManageTask({ taskId }) {
                                 Branch ID
                             </Typography>
                         </th>
-                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 ">
-                            <Typography
-                                variant="small"
-                                color="blue-gray"
-                                style={{ fontWeight: "bolder" }}
-                                className="font-normal leading-none opacity-70 text-center"
-                            >
-                                Order ID
-                            </Typography>
-                        </th>
-                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 ">
+                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <Typography
                                 variant="small"
                                 color="blue-gray"
@@ -112,9 +113,10 @@ export function ManageTask({ taskId }) {
                                 Driver ID
                             </Typography>
                         </th>
-                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 ">
+                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <Typography
                                 variant="small"
+                                readOnly
                                 color="blue-gray"
                                 style={{ fontWeight: "bolder" }}
                                 className="font-normal leading-none opacity-70 text-center"
@@ -122,7 +124,17 @@ export function ManageTask({ taskId }) {
                                 District
                             </Typography>
                         </th>
-                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 ">
+                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                            <Typography
+                                variant="small"
+                                color="blue-gray"
+                                style={{ fontWeight: "bolder" }}
+                                className="font-normal leading-none opacity-70 text-center"
+                            >
+                                Order Id
+                            </Typography>
+                        </th>
+                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <Typography
                                 variant="small"
                                 color="blue-gray"
@@ -132,9 +144,9 @@ export function ManageTask({ taskId }) {
                                 Update
                             </Typography>
                         </th>
-                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 ">
+                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <Typography
-                                variant="small"
+                               variant="small"
                                 color="blue-gray"
                                 style={{ fontWeight: "bolder" }}
                                 className="font-normal leading-none opacity-70 text-center"
@@ -152,7 +164,7 @@ export function ManageTask({ taskId }) {
                                     type="text"
                                     readOnly
                                     value={task.task_id}
-                                    onChange={(e) => handleInputChange(e, task._id, 'task._id')}
+                                    onChange={(e) => handleInputChange(e, task._id, 'task_id')}
                                 />
                             </td>
                             <td className="p-4">
@@ -167,13 +179,6 @@ export function ManageTask({ taskId }) {
                                 <Input
                                     type="text"
                                     readOnly
-                                    value={task.order_id}
-                                    onChange={(e) => handleInputChange(e, task._id, 'order_id')}
-                                />
-                            </td>
-                            <td className="p-4">
-                                <Input
-                                    type="text"
                                     value={task.driver_id}
                                     onChange={(e) => handleInputChange(e, task._id, 'driver_id')}
                                 />
@@ -181,10 +186,17 @@ export function ManageTask({ taskId }) {
                             <td className="p-4">
                                 <Input
                                     type="text"
-                                    readOnly
-                                    value={task.nearest_town}
+                                    value={task.district}
                                     onChange={(e) => handleInputChange(e, task._id, 'district')}
                                 />
+                            </td>
+                            <td className="p-4">
+                                {/* Display order IDs as a list */}
+                                <ul>
+                                    {task.orders.map((order, index) => (
+                                        <li key={index}>{order.order_id._id}</li>
+                                    ))}
+                                </ul>
                             </td>
                             <td className="p-4">
                                 <Button color="blue" onClick={() => handleUpdate(task)}>
@@ -192,7 +204,7 @@ export function ManageTask({ taskId }) {
                                 </Button>
                             </td>
                             <td className="p-4">
-                                <Button color="red" onClick={() => handleDelete(task._id)} className="ml-2">
+                                <Button color="red" onClick={() => handleDelete(task.task_id)} className="ml-2">
                                     Delete
                                 </Button>
                             </td>

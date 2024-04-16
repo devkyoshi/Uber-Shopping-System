@@ -245,7 +245,7 @@ router.put("/:orderId/update-delivery/:deliveryId", async (req, res) => {
 });
 
 // Read a delivery detail by ID
-router.get("/:orderId/read_delivery/:deliveryId", async (req, res) => {
+router.get("/:orderId/read_delivery", async (req, res) => {
     try {
         const { orderId, deliveryId } = req.params;
 

@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {
+  Card,
+  Typography,
+} from "@material-tailwind/react";
+
+const TABLE_HEAD = [
+  "Order ID",
+  "Status",
+  "District",
+  "Date and Time"
+];
 
 const OrderTable = () => {
   const [orders, setOrders] = useState([]);
@@ -20,13 +31,14 @@ const OrderTable = () => {
           const districtB = b.cash_payment ? b.cash_payment.district : (b.card_payment ? b.card_payment.district : '');
 
           if (districtA === districtB) {
-            return String(a._id).localeCompare(String(b._id));
+            return a._id - b._id; // Sort by _id if districts are the same
           } 
           return districtA.localeCompare(districtB);
         });
 
         setOrders(sortedOrders);
         setLoading(false); // Set loading to false after fetching and setting orders
+        console.log('sorted Order', sortedOrders);
       } catch (error) {
         console.error('Error fetching orders:', error);
         setError('Failed to fetch orders. Please try again later.');
@@ -46,27 +58,72 @@ const OrderTable = () => {
   }
 
   return (
-    <div>
-      <h1>Orders</h1>
-      <table>
+    <Card className="h-full w-full overflow-scroll">
+      <table className="w-full min-w-max table-auto text-left">
         <thead>
           <tr>
-            <th>Order ID</th>
-            <th>District</th>
+            {TABLE_HEAD.map((head) => (
+              <th
+                key={head}
+                className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+              >
+                <Typography
+                    variant="small"
+                    color="blue-gray"
+                    style={{ fontWeight: "bolder" }}
+                    className="font-normal leading-none opacity-70 text-center"
+                >
+                  {head}
+                </Typography>
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {orders.map(order => (
-            <tr key={String(order._id)}>
-              <td>{order._id}</td>
-              <td>
-                {order.cash_payment ? order.cash_payment.district : (order.card_payment ? order.card_payment.district : '')}
+        {orders.map(order => (
+          <tr key={order._id}>
+              <td className="p-4">
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  className="font-normal"
+                >
+                  {order._id}
+                </Typography>
+              </td>
+              <td className="p-4 bg-blue-gray-50/50">
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  className="font-normal"
+                >
+                  {order.order_status}
+                </Typography>
+              </td> 
+              <td className="p-4 ">
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  className="font-normal"
+                >
+                  {order.order_district}
+                </Typography>
+              </td>
+              
+              <td className="p-4 bg-blue-gray-50/50">
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  className="font-normal"
+                >
+                  {new Date(order.order_date).toLocaleString()}
+                </Typography>   
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-    </div>
+    </Card>
   );
 };
 
