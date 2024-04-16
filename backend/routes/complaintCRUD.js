@@ -116,32 +116,7 @@ router.delete("/complaint-delete/:complaintID", async (req, res) => {
         res.status(500).json({ error: "An error occurred while deleting the Complaint" });
     }
 });
-
-// Delete an existing complaint image
-router.delete("/complaint-deleteimg/:complaintID", async (req, res) => {
-    try {
-        const { complaintID } = req.params;
-        const deletedComplaint = await Complaint.findById(complaintID)
-
-       // Delete the image file if it exists
-       if (deletedComplaint.complaint_img) {
-        if (fs.existsSync(deletedComplaint.complaint_img)) {
-            fs.unlinkSync(deletedComplaint.complaint_img);
-        } else {
-            console.log(`Image file not found: ${deletedComplaint.complaint_img}`);
-        }
-    }
-
-       // Remove the complaint_img attribute from the complaint document
-       deletedComplaint.complaint_img = '';
-       await deletedComplaint.save();
-
-       res.json({ message: "Complaint image and attribute deleted successfully" });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "An error occurred while deleting the Complaint" });
-    }
-});
+  
 
 // Read all complaint
 router.get("/complaint-all", async (req, res) => {
@@ -149,6 +124,18 @@ router.get("/complaint-all", async (req, res) => {
         // Fetch all complaint IDs from refunds
         const refundedComplaintIds = await Refund.distinct("complaint_id");
         const complaint = await Complaint.find({ _id: { $nin: refundedComplaintIds } }).sort({ updated_at: -1 }).select('order_id complaint_status item_id quantity resolving_option');
+        res.json(complaint);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while fetching Complaint" });
+    }
+});
+
+// Read all complaint to admin
+router.get("/complaint-alladmin", async (req, res) => {
+    try {
+        
+        const complaint = await Complaint.find({ complaint_status: "accepted" }).sort({ updated_at: -1 });
         res.json(complaint);
     } catch (error) {
         console.error(error);

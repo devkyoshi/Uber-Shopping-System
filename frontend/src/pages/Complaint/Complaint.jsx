@@ -77,16 +77,17 @@ export default function Complaint(){
                             <div className='flex'>
                                <strong className='mr-2'>Order ID : </strong>
                                {Complaints.order_id}
-                               <strong className='ml-10 mr-2'>Complaint Status : </strong>
+                               <strong className=' ml-10 mr-2'>Complaint Status : </strong>
                                <strong>
                                   <div className='border border-gray-200 text-red-900  bg-white px-4 rounded-md shadow-md'>
                                      {Complaints.complaint_status}
                                   </div>
                                </strong>
+                              
                                <div className='ml-auto flex'>
-                                    <Button color='gray' 
+                                    <Button color='blue-gray' 
                                             ripple='light' 
-                                            className='w-30 mr-3 mt-3 text-base py-2 border border-transparent bg-gray-600' 
+                                            className='w-30 mr-3 mt-3 text-base py-2 border border-transparent  ' 
                                             size='regular'
                                             disabled={Complaints.complaint_status === 'accepted'}
                                             onClick={() => handleEditClick(Complaints)}>Edit
@@ -99,7 +100,7 @@ export default function Complaint(){
                                </div>
                            </div>
                            <div className='flex'>
-                               <div className='mr-5'>Item ID :  </div>
+                               <div className='mr-6'>Item ID :  </div>
                                    {Complaints.item_id}
                                <div className='ml-10 mr-3'>Quantity : </div>
                                    {Complaints.quantity}
