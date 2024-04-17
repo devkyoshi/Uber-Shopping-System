@@ -56,13 +56,16 @@ export default function ComplaintAdmin() {
             </div>
             </CardBody>
             <CardFooter className="pt-0">
-            <div className="flex flex-wrap justify-center text-center mb-2 gap-10">
-                <Typography color="gray">Order ID: {complaint.order_id}</Typography>
-                <Typography color="gray">Item ID: {complaint.item_id}</Typography>
+            <div className="flex flex-wrap justify-start text-center mb-2 gap-40">
+                <Typography color="gray">Order ID: <scan>{complaint.order_id}</scan></Typography>
+                <Typography color="gray">Item ID: <scan>{complaint.item_id}</scan></Typography>
             </div>
-            <div className="flex flex-wrap justify-center text-center mb-5 gap-10">
-                <Typography color="gray">Customer ID: {complaint.customer_id}</Typography>
-                <Typography color="gray">Payment ID: {complaint.payment_id}</Typography>
+            <div className="flex flex-wrap justify-start text-center mb-3 gap-32">
+                <Typography color="gray">Customer ID: <scan>{complaint.customer_id}</scan></Typography>
+                <Typography color="gray">Payment ID: <scan>{complaint.payment_id}</scan></Typography>
+            </div>
+            <div className="flex flex-wrap justify-left mb-5 gap-10">
+            <Typography color="gray">{complaint.description}</Typography>
             </div>
             <div className="flex justify-end ">
               <Button className='mr-5'>Refund</Button>
