@@ -56,7 +56,7 @@ export default function ComplaintAdmin() {
             </div>
             </CardBody>
             <CardFooter className="pt-0">
-            <div className="text-center mb-4">
+            <div className="flex flex-wrap justify-center text-center mb-4 gap-10">
                 <Typography color="gray">Order ID: {complaint.order_id}</Typography>
                 <Typography color="gray">Item ID: {complaint.item_id}</Typography>
               </div>
