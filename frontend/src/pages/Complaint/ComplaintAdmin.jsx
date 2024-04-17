@@ -59,7 +59,11 @@ export default function ComplaintAdmin() {
             <div className="flex flex-wrap justify-center text-center mb-4 gap-10">
                 <Typography color="gray">Order ID: {complaint.order_id}</Typography>
                 <Typography color="gray">Item ID: {complaint.item_id}</Typography>
-              </div>
+            </div>
+            <div className="flex flex-wrap justify-center text-center mb-4 gap-10">
+                <Typography color="gray">Customer ID: {complaint.customer_id}</Typography>
+                <Typography color="gray">Payment ID: {complaint.payment_id}</Typography>
+            </div>
             <div className="flex justify-center">
               <Button className='mr-5'>Refund</Button>
               <Button>Ignore</Button>

@@ -74,7 +74,7 @@ export default function Complaint(){
                 {complaints.map((Complaints) => (
                     <li key={Complaints._id} className='mb-2'>
                         <div className='border border-gray-300 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 p-4 rounded-lg items-center justify-between'>
-                            <div className='flex'>
+                            <div className='flex flex-wrap text-center justify-center gap-2'>
                                <strong className='mr-2'>Order ID : </strong>
                                {Complaints.order_id}
                                <strong className=' ml-10 mr-2'>Complaint Status : </strong>
@@ -99,10 +99,10 @@ export default function Complaint(){
                                     </Button>
                                </div>
                            </div>
-                           <div className='flex'>
-                               <div className='mr-6'>Item ID :  </div>
+                           <div className='flex flex-wrap text-center mb-4 gap-4'>
+                               <div className='mr-2'>Item ID :  </div>
                                    {Complaints.item_id}
-                               <div className='ml-10 mr-3'>Quantity : </div>
+                               <div className='ml-10 mr-2'>Quantity : </div>
                                    {Complaints.quantity}
                            </div>
                            {Complaints.complaint_status === 'accepted' && Complaints.resolving_option === 'refund' && (
