@@ -32,39 +32,39 @@ export default function ComplaintAdmin() {
         <br/>
         <div className="grid grid-cols-1 gap-3">
         {complaints.map((complaint, index) => (
-          <Card key={index} className=" p-4 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 ">
+          <Card key={index} className=" p-4 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 border border-gray-300">
             <CardBody>
             <div className="flex justify-center gap-4 " >
               <img
                 src={`http://localhost:8070/${complaint.imageURL}`}
                 alt="Complaint Image"
-                className="mb-4 rounded-lg w-64 h-auto"
+                className="mb-2 rounded-lg w-64 h-auto"
                 onError={(e) => console.error('Error loading image:', e.nativeEvent)} // Error handling for image loading
               />
               <img
                 src={`http://localhost:8070/${complaint.imageURL}`}
                 alt="Complaint Image"
-                className="mb-4 rounded-lg w-64 h-auto"
+                className="mb-2 rounded-lg w-64 h-auto"
                 onError={(e) => console.error('Error loading image:', e.nativeEvent)} // Error handling for image loading
               />
               <img
                 src={`http://localhost:8070/${complaint.imageURL}`}
                 alt="Complaint Image"
-                className="mb-4 rounded-lg w-64 h-auto"
+                className="mb-2 rounded-lg w-64 h-auto"
                 onError={(e) => console.error('Error loading image:', e.nativeEvent)} // Error handling for image loading
               />
             </div>
             </CardBody>
             <CardFooter className="pt-0">
-            <div className="flex flex-wrap justify-center text-center mb-4 gap-10">
+            <div className="flex flex-wrap justify-center text-center mb-2 gap-10">
                 <Typography color="gray">Order ID: {complaint.order_id}</Typography>
                 <Typography color="gray">Item ID: {complaint.item_id}</Typography>
             </div>
-            <div className="flex flex-wrap justify-center text-center mb-4 gap-10">
+            <div className="flex flex-wrap justify-center text-center mb-5 gap-10">
                 <Typography color="gray">Customer ID: {complaint.customer_id}</Typography>
                 <Typography color="gray">Payment ID: {complaint.payment_id}</Typography>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-end ">
               <Button className='mr-5'>Refund</Button>
               <Button>Ignore</Button>
             </div>
