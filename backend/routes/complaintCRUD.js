@@ -19,12 +19,15 @@ const fs = require('fs');
 
 */
 
-// Create a new complaint 
+// ---------------------------------------------CREATE A NEW COMPLAINT-------------------------------------------------------------
+
   router.post("/complaint-add", upload.single('complaint_img'), async (req, res) => {
     try {
+      // Extract data from request body
       const { customer_id, order_id, payment_id, complaint_type, item_id, resolving_option, quantity, description, complaint_status } = req.body;
       const complaint_img = req.file.path; // Save the file path in the database
   
+      // Create new complaint instance
       const newComplaint = new Complaint({
         customer_id,
         order_id,
@@ -39,23 +42,29 @@ const fs = require('fs');
         created_at: Date.now(),
         updated_at: Date.now()
       });
-  
+
+      // Save the new complaint
       await newComplaint.save();
       res.json("Complaint Added");
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "An error occurred while adding the customer" });
     }
   });
 
-// Update an existing complaint
+// ---------------------------------------------UPDATE AN EXISTING COMPLAINT-------------------------------------------------------------
+
 router.put("/complaint-update/:complaintID",  upload.single('complaint_img') ,async (req, res) => {
     try {
+        // Extract complaintID from request parameters
         const { complaintID } = req.params;
+        // Extract data from request body
         const { customer_id, order_id, payment_id ,complaint_type ,item_id ,resolving_option , quantity,description, complaint_status} = req.body;
-        const complaint_img = req.file ? req.file.path : undefined;
+        // Get the new complaint image path, if available
+        const complaint_img =req.file ? req.file.path:undefined;
 
-        // Find the complaint to get the previous image path
+        // Find the complaint to update
         const complaint = await Complaint.findById(complaintID);
         if (!complaint) {
             return res.status(404).json({ error: "Complaint not found" });
@@ -66,7 +75,7 @@ router.put("/complaint-update/:complaintID",  upload.single('complaint_img') ,as
             fs.unlinkSync(complaint.complaint_img);
         }
 
-
+        // Update the complaint
         const updatedComplaint = await Complaint.findByIdAndUpdate(complaintID, {
             customer_id,
             order_id,
@@ -85,9 +94,6 @@ router.put("/complaint-update/:complaintID",  upload.single('complaint_img') ,as
         if (!updatedComplaint) {
             return res.status(404).json({ error: "Complaint not found" });
         }
-
-         
-
         res.json(updatedComplaint);
     } catch (error) {
         console.error(error);
@@ -95,10 +101,13 @@ router.put("/complaint-update/:complaintID",  upload.single('complaint_img') ,as
     }
 });
 
-// Delete an existing complaint
+// ---------------------------------------------DELETE AN EXISTING COMPLAINT-----------------------------------------------------------
+
 router.delete("/complaint-delete/:complaintID", async (req, res) => {
     try {
+        // Extract complaintID from request parameters
         const { complaintID } = req.params;
+        // Find and delete the complaint
         const deletedComplaint = await Complaint.findByIdAndDelete(complaintID);
 
        // Delete the image file if it exists
@@ -118,7 +127,8 @@ router.delete("/complaint-delete/:complaintID", async (req, res) => {
 });
   
 
-// Read all complaint
+// ---------------------------------------------READ ALL COMPLAINTS TO CUSTOMER VIEW------------------------------------------------------------------------
+
 router.get("/complaint-all", async (req, res) => {
     try {
         // Fetch all complaint IDs from refunds
@@ -131,27 +141,50 @@ router.get("/complaint-all", async (req, res) => {
     }
 });
 
-// Read all complaint to admin
+// ---------------------------------------------READ ALL COMPLAINTS TO ADMIN VIEW-------------------------------------------------------------
+
 router.get("/complaint-alladmin", async (req, res) => {
     try {
-        
-        const complaint = await Complaint.find({ complaint_status: "accepted" }).sort({ updated_at: -1 });
-        res.json(complaint);
+        // Find all pending complaints and sort by date
+        const complaints = await Complaint.find({ complaint_status: "pending" }).sort({ updated_at: -1 });
+
+        // Check if there are no complaints
+        if (complaints.length === 0) {
+            return res.status(404).json({ error: "No complaints found" });
+        }
+
+        console.log(complaints);
+
+        // Map each complaint to add imageURL to the complaint object
+        const complaintsWithImages = complaints.map(complaint => {
+            const imageURL = `${complaint.complaint_img}`
+            return {
+                ...complaint.toObject(), // Convert Mongoose document to plain JavaScript object
+                imageURL
+            };
+        });
+
+        // Send the response with the array of complaints with imageURLs
+        res.json(complaintsWithImages);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "An error occurred while fetching Complaint" });
+        res.status(500).json({ error: "An error occurred while fetching complaints" });
     }
 });
 
-// Read a complaint by ID
+// ---------------------------------------------READ COMPLAINT BY ID-------------------------------------------------------------
+
 router.get("/complaint/:complaintID", async (req, res) => {
     try {
+        // Extract complaintID from request parameters
         const { complaintID } = req.params;
+         // Find the complaint by ID
         const complaint = await Complaint.findById(complaintID); 
         if (!complaint) {
             return res.status(404).json({ error: "Complaint not found" });
         }
         const imageURL = `${complaint.complaint_img}`// Concatenate the base URL with the image filename
+
 
         // Add the imageURL to the complaint object before sending the response
         const complaintWithImage ={
