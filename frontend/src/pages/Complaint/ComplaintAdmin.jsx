@@ -68,8 +68,9 @@ export default function ComplaintAdmin() {
             <Typography color="gray">{complaint.description}</Typography>
             </div>
             <div className="flex justify-end ">
-              <Button className='mr-5'>Refund</Button>
-              <Button>Ignore</Button>
+              {complaint.resolving_option==='refund' && (<Button color='blue-gray' className='w-30 mr-3 mt-3 text-base py-2 border border-transparent'>Refund</Button>)}
+              {complaint.resolving_option==='replacement' && (<Button color='blue-gray' className='w-30 mr-3 mt-3 text-base py-2 border border-transparent'>Order</Button>)}
+              <Button className='bg-red-900 w-30 mr-3 mt-3 text-base py-2 border border-transparent'>Ignore</Button>
             </div>
             </CardFooter>
           </Card>
