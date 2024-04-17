@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SideBar } from '../../components/SideBar';
-import { Button, Card, Typography } from '@material-tailwind/react';
+import { Button, Card, CardBody, CardFooter, CardHeader, Typography } from '@material-tailwind/react';
 import axios from 'axios';
 
 export default function ComplaintAdmin() {
@@ -22,7 +22,7 @@ export default function ComplaintAdmin() {
   return (
     <div className='main-layout'>
       <SideBar />
-      <div className='inner-layout'>
+      <div className='inner-layout '>
         <Typography variant="h5" color="blue-gray">
           Recent Complaints
         </Typography>
@@ -30,10 +30,11 @@ export default function ComplaintAdmin() {
           These are details about the last complaints
         </Typography>
         <br/>
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-3">
         {complaints.map((complaint, index) => (
-          <Card key={index} className=" p-4">
-            <div className="flex justify-center gap-4 bg-pink" >
+          <Card key={index} className=" p-4 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 ">
+            <CardBody>
+            <div className="flex justify-center gap-4 " >
               <img
                 src={`http://localhost:8070/${complaint.imageURL}`}
                 alt="Complaint Image"
@@ -53,6 +54,8 @@ export default function ComplaintAdmin() {
                 onError={(e) => console.error('Error loading image:', e.nativeEvent)} // Error handling for image loading
               />
             </div>
+            </CardBody>
+            <CardFooter className="pt-0">
             <div className="text-center mb-4">
                 <Typography color="gray">Order ID: {complaint.order_id}</Typography>
                 <Typography color="gray">Item ID: {complaint.item_id}</Typography>
@@ -61,6 +64,7 @@ export default function ComplaintAdmin() {
               <Button className='mr-5'>Refund</Button>
               <Button>Ignore</Button>
             </div>
+            </CardFooter>
           </Card>
         ))}
        </div>

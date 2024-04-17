@@ -153,7 +153,6 @@ router.get("/complaint-alladmin", async (req, res) => {
             return res.status(404).json({ error: "No complaints found" });
         }
 
-        console.log(complaints);
 
         // Map each complaint to add imageURL to the complaint object
         const complaintsWithImages = complaints.map(complaint => {
