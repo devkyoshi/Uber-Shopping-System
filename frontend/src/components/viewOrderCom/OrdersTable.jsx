@@ -8,6 +8,7 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 
 const TABLE_HEAD = ["Item Name", "Quantity", "Price", ""];
 
@@ -33,6 +34,7 @@ export function OrdersTable() {
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(!open);
+  const navigate = useNavigate();
 
   const handleDeleteConfirm = () => {
     // Perform delete action here
@@ -109,7 +111,7 @@ export function OrdersTable() {
                   </td>
 
                   <td className={`${classes} pr-20`}>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                    <button onClick={()=>{navigate("/updateOrder",{replace: true})}} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
                       Edit
                     </button>
                     <button

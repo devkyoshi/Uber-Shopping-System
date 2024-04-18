@@ -28,6 +28,7 @@ import UpdateOrder from "./pages/UpdateOrder";
 import ComplaintForm from "./pages/Complaint/ComplaintForm"
 import EditComplaint from "./pages/Complaint/editComplaint"
 import ComplaintAdmin from "./pages/Complaint/ComplaintAdmin"
+import PromotionUI from "./pages/promotion/promotionUI";
 
 export default function App() {
   return (
@@ -80,6 +81,8 @@ export default function App() {
         <Route path="/complaintForm" element={<ComplaintForm/>}/>
         <Route path="/editComplaint/:complaintId" element={<EditComplaint/>}></Route>
         <Route path="/complaint-admin" element={<ComplaintAdmin/>}/>
+        <Route path="/promotion" element={<PromotionUI />} />
+
       </Routes>
 
       <Footer />

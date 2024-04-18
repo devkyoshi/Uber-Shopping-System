@@ -7,6 +7,7 @@ import {
   } from "@material-tailwind/react";
 
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 
@@ -23,6 +24,8 @@ import axios from 'axios';
           distance: ""
         }
       });
+
+      const navigate = useNavigate();
     
       const handleChange = (e) => {
         const { name, value } = e.target;
@@ -200,7 +203,8 @@ import axios from 'axios';
           <Button type="submit" className="mt-6" fullWidth>
             Confirm Changes
           </Button>
-          <Button className="bg-gray-300 text-black hover:bg-gray-500 mt-3" fullWidth>
+
+          <Button onClick={()=>{navigate("/myOrder",{replace: true})}} className="bg-gray-300 text-black hover:bg-gray-500 mt-3" fullWidth>
             Cancel
           </Button>
          
