@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { SideBar } from '../../components/SideBar'; // Importing SideBar component
 import { Button, Card, CardBody, CardFooter, Typography } from '@material-tailwind/react'; // Importing Material Tailwind React components
 import axios from 'axios'; // Importing Axios for HTTP requests
+import { useNavigate } from 'react-router-dom'; // Importing useNavigate hook
 
 export default function ComplaintAdmin() {
 
   // State to store complaints data
   const [complaints, setComplaints] = useState([]);
+
+  // Initialize useNavigate hook
+  const navigate = useNavigate(); 
 
   // Function to fetch complaint data from the server
   const fetchComplaintData = async () => {
@@ -90,8 +94,11 @@ export default function ComplaintAdmin() {
                 </div>
                 <div className="flex justify-end">
                   {/* Rendering buttons based on resolving_option */}
-                  {complaint.resolving_option==='refund' && (<Button color='blue-gray' className='w-30 mr-3 mt-3 text-base py-2 border border-transparent'>Refund</Button>)}
-                  {complaint.resolving_option==='replacement' && (<Button color='blue-gray' className='w-30 mr-3 mt-3 text-base py-2 border border-transparent'>Order</Button>)}
+                  {complaint.resolving_option==='refund' && (<Button color='blue-gray' 
+                                                                     className='w-30 mr-3 mt-3 text-base py-2 border border-transparent' 
+                                                                     onClick={() => navigate('/complaint')}>Refund</Button>)}
+                  {complaint.resolving_option==='replacement' && (<Button color='blue-gray' 
+                                                                          className='w-30 mr-3 mt-3 text-base py-2 border border-transparent'>Order</Button>)}
                   <Button className='bg-red-900 w-30 mr-3 mt-3 text-base py-2 border border-transparent'>Ignore</Button>
                 </div>
               </CardFooter>

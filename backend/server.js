@@ -84,6 +84,9 @@ app.use("/Employee/user", userRoutes);
   //posting stuff
 const announcementRoutes = require('./routes/announcement.route.js');
 app.use('/Employee/announcement', announcementRoutes);
+//generate performance
+const qualityGenerateRoutes = require('./routes/quality_performance.routes.js');
+app.use('/Quality/Generate',qualityGenerateRoutes)
 
 
 app.use((err, req, res, next) => {
