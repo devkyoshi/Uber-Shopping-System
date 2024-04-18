@@ -5,6 +5,7 @@ import { Button } from '@material-tailwind/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SideBar } from '../../components/SideBar';
 
+
 export default function Complaint() {
   const cusId = useSelector((state) => state.cusId);
   const [complaints, setComplaints] = useState([]);// State to store complaints
@@ -71,14 +72,14 @@ export default function Complaint() {
       <div className='inner-layout'>
         <h3 className='text-4xl ml-3 font-semibold'>Prev. Complaints</h3>
         <div className='flex justify-end mt-4'>
-         {/* Search input */}
-          <input
-            type='text'
-            placeholder='Search...'
-            className='border border-gray-300 py-2 px-2 rounded-md mr-3'
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
+          {/* Search input */}
+            <input
+              type='text'
+              placeholder='Search...'
+              className='border border-gray-400 py-1 px-8 mt-3 rounded-md mr-5 focus:outline-none'
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
           {/* Button to navigate to new complaint form */}
           <Button
             ripple='light'
