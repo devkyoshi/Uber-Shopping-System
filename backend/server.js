@@ -77,9 +77,14 @@ app.use("/Revenue", Revenue);
 //register authentication                                                             error check
 const authroutes = require("./routes/Employee_authentication.route.js");
 app.use("/Employee", authroutes);
-
+  //register authentication
 const userRoutes = require("./routes/user.route.js");
 app.use("/Employee/user", userRoutes);
+
+  //posting stuff
+const announcementRoutes = require('./routes/announcement.route.js');
+app.use('/api/announcement', announcementRoutes);
+
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

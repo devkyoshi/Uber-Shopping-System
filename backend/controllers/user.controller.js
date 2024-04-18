@@ -2,11 +2,11 @@ const bcryptjs = require('bcryptjs');
 const { errorHandler } = require('../utils/error.js');
 const User = require('../models/user.model.js');
 
-const test = (req, res) => {
+exports.test = (req, res) => {
     res.json({ message: 'API is working!' });
 };
 
-const updateUser = async (req, res, next) =>{
+exports.updateUser = async (req, res, next) => {
     if (req.user.id !== req.params.userId) {
       return next(errorHandler(403, 'You are not allowed to update this user'));
     }
@@ -63,6 +63,8 @@ const updateUser = async (req, res, next) =>{
             Emp_CNumber: req.body.Emp_CNumber,
             Emp_Gender: req.body.Emp_Gender,
             Emp_Age: req.body.Emp_Age,
+            Emp_areofservice: req.body.Emp_areofservice,
+            Emp_transport: req.body.Emp_transport,
             password: req.body.password,
           },
         },
@@ -75,8 +77,31 @@ const updateUser = async (req, res, next) =>{
     }
 };
 
-const deleteUser = async (req, res, next) => {
-    if ( req.user.id !== req.params.userId) {
+exports.lvlupdateUser = async (req, res, next) => {
+    if (req.user.id !== req.params.userId) {
+      return next(errorHandler(403, 'You are not allowed to update this user'));
+    }
+
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.userId,
+        {
+          $set: {
+            Emp_areofservice: req.body.Emp_areofservice,
+            Emp_transport: req.body.Emp_transport,
+          },
+        },
+        { new: true }
+      );
+      const { password, ...rest } = updatedUser._doc;
+      res.status(200).json(rest);
+    } catch (error) {
+      next(error); 
+    }
+};
+
+exports.deleteUser = async (req, res, next) => {
+    if (!req.user.isAdmin && req.user.id !== req.params.userId) {
       return next(errorHandler(403, 'You are not allowed to delete this user'));
     }
     try {
@@ -86,55 +111,53 @@ const deleteUser = async (req, res, next) => {
       next(error);
     }
 };
-  
-const signout = (req, res, next) => {
-    try { res.clearCookie('access_token').status(200).json('User has been signed out');
+
+exports.signout = (req, res, next) => {
+    try { 
+      res.clearCookie('access_token').status(200).json('User has been signed out');
     } catch (error) {
       next(error);
     }
 };
 
-
-
- const getUsers = async (req, res, next) => {
-  if (!req.user.isAdmin) {
-    return next(errorHandler(403, 'You are not allowed to see all users'));
-  }
-  try {
-    const startIndex = parseInt(req.query.startIndex) || 0;
-    const limit = parseInt(req.query.limit) || 9;
-    const sortDirection = req.query.sort === 'asc' ? 1 : -1;//explaing not possible 
-
-    const users = await User.find()
-      .sort({ createdAt: sortDirection })
-      .skip(startIndex)
-      .limit(limit);
-
-    const usersWithoutPassword = users.map((user) => {
-      const { password, ...rest } = user._doc;
-      return rest;
-    });
-
-    const totalUsers = await User.countDocuments();
-
-    const now = new Date();
-
-    const oneMonthAgo = new Date(
-      now.getFullYear(),
-      now.getMonth() - 1,
-      now.getDate()
-    );
-    const lastMonthUsers = await User.countDocuments({
-      createdAt: { $gte: oneMonthAgo },
-    });
-
-    res.status(200).json({
-      users: usersWithoutPassword,
-      totalUsers,
-      lastMonthUsers,
-    });
-  } catch (error) {
-    next(error);
-  }
+exports.getUsers = async (req, res, next) => {
+    if (!req.user.isAdmin) {
+      return next(errorHandler(403, 'You are not allowed to see all users'));
+    }
+    try {
+      const startIndex = parseInt(req.query.startIndex) || 0;
+      const limit = parseInt(req.query.limit) || 9;
+      const sortDirection = req.query.sort === 'asc' ? 1 : -1;
+  
+      const users = await User.find()
+        .sort({ createdAt: sortDirection })
+        .skip(startIndex)
+        .limit(limit);
+  
+      const usersWithoutPassword = users.map((user) => {
+        const { password, ...rest } = user._doc;
+        return rest;
+      });
+  
+      const totalUsers = await User.countDocuments();
+  
+      const now = new Date();
+  
+      const oneMonthAgo = new Date(
+        now.getFullYear(),
+        now.getMonth() - 1,
+        now.getDate()
+      );
+      const lastMonthUsers = await User.countDocuments({
+        createdAt: { $gte: oneMonthAgo },
+      });
+  
+      res.status(200).json({
+        users: usersWithoutPassword,
+        totalUsers,
+        lastMonthUsers,
+      });
+    } catch (error) {
+      next(error);
+    }
 };
-module.exports = { test, updateUser, deleteUser, signout,getUsers };
