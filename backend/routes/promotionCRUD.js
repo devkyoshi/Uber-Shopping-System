@@ -13,14 +13,15 @@ router.post("/:supermarketId/promotion-add", async (req, res) => {
         if (!supermarket) {
             return res.status(404).json({ error: "Supermarket not found" });
         }
-
+        
         const newPromotion = {
             promotion_name,
             discount_rate,
             start_date,
             end_date,
-            Items: Items.map(item => ({ item_type: item.item_type })) 
+            Items: Array.isArray(Items) ? Items.map(item => ({ item_type: item.item_type })) : [] 
         };
+        
 
         supermarket.promotions.push(newPromotion);
 
@@ -91,6 +92,7 @@ router.delete("/:supermarketId/promotion-delete/:promotionId", async (req, res) 
 router.get("/:supermarketId/promotions", async (req, res) => {
     try {
         const { supermarketId } = req.params;
+       
 
         const supermarket = await Supermarket.findById(supermarketId).populate("promotions");
         if (!supermarket) {
