@@ -83,7 +83,7 @@ app.use("/Employee/user", userRoutes);
 
   //posting stuff
 const announcementRoutes = require('./routes/announcement.route.js');
-app.use('/api/announcement', announcementRoutes);
+app.use('/Employee/announcement', announcementRoutes);
 
 
 app.use((err, req, res, next) => {

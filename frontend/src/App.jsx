@@ -29,6 +29,12 @@ import ComplaintForm from "./pages/Complaint/ComplaintForm"
 import EditComplaint from "./pages/Complaint/editComplaint"
 import ComplaintAdmin from "./pages/Complaint/ComplaintAdmin"
 import PromotionUI from "./pages/promotion/promotionUI";
+import Employee_News from "./pages/Employee_News"
+import OnlyHR_PrivateRoute from './components/OnlyHR_PrivateRoute';
+import Employee_AnnouncementEdit from './pages/Employee_AnnouncementEdit';
+import AnnouncementHomeEach from './pages/AnnouncementHomeEach';
+import Employee_Announcements from "./pages/Employee_Announcements"
+import Projects from "./pages/Projects"
 
 export default function App() {
   return (
@@ -82,7 +88,16 @@ export default function App() {
         <Route path="/editComplaint/:complaintId" element={<EditComplaint/>}></Route>
         <Route path="/complaint-admin" element={<ComplaintAdmin/>}/>
         <Route path="/promotion" element={<PromotionUI />} />
+        
+        <Route element={<OnlyHR_PrivateRoute />}>
+          <Route path='/Employee_Announcements' element={<Employee_Announcements />} />
+          <Route path='/Employee_AnnouncementEdit/:announcementId' element={<Employee_AnnouncementEdit />} />
+        </Route>
+      <Route path="/Employee_News" element={<Employee_News/>}/>
+      <Route path="/Projects" element={<Projects/>}/>
+      <Route path="/announcement/:announcementSlug" element={<AnnouncementHomeEach/>}/>
 
+      
       </Routes>
 
       <Footer />

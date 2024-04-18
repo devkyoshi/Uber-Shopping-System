@@ -1,13 +1,5 @@
 import { Sidebar } from "flowbite-react";
-import {
-  HiUser,
-  HiCurrencyDollar,
-  HiCog,
-  HiChatAlt,
-  HiKey,
-  HiArrowSmRight,
-  HiBadgeCheck,
-} from "react-icons/hi";
+import { HiUser, HiCurrencyDollar, HiChartPie, HiChatAlt, HiKey,HiArrowSmRight,HiBadgeCheck, HiOutlineUserGroup, HiDocumentText  } from 'react-icons/hi';
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { signoutSuccess } from "../redux/user/userslice";
@@ -46,96 +38,76 @@ export default function DashSidebar() {
   const isAdmin = useSelector((state) => state.user.isAdmin);
 
   return (
-    <Sidebar className="w-auto md:w-56">
-      <Sidebar.Items>
-        <Sidebar.ItemGroup>
-          <Link to="/Dashboard?tab=profile">
-            <Sidebar.Item
-              active={tab === "profile"}
-              icon={HiUser}
-              label={" "}
-              labelColor={tab === "profile" ? "dark" : "none"}
-              as="div"
-            >
-              My Profile
+    <Sidebar className='w-auto md:w-56 '>
+     
+       <Sidebar.Items >
+        <Sidebar.ItemGroup >
+        
+        {currentUser.isAdmin&&(
+            <Link to='/Dashboard?tab=HR_Dashboard'>
+              <Sidebar.Item active={tab === 'HR_Dashboard'} icon={HiChartPie} label={' '} labelColor={tab === 'HR_Dashboard' ? 'dark' : 'none'} as='div' >
+              Dashboard  
             </Sidebar.Item>
-          </Link>
-
-          {!currentUser.isAdmin && (
-            <Link to="/Dashboard?tab=Employee_level">
-              <Sidebar.Item
-                active={tab === "Employee_level"}
-                icon={HiBadgeCheck}
-                label={" "}
-                labelColor={tab === "Employee_level" ? "dark" : "none"}
-                as="div"
-              >
-                My Level
+          </Link>)}
+          
+          <Link to='/Dashboard?tab=profile'>
+              <Sidebar.Item active={tab === 'profile'}  icon={HiUser} label={' '} labelColor={tab === 'profile' ? 'dark' : 'none' }  as='div'>
+                My Profile
               </Sidebar.Item>
             </Link>
-          )}
 
-          {!currentUser.isAdmin && (
-            <Link to="/Dashboard?tab=Employee_DeliveriesDone">
-              <Sidebar.Item
-                active={tab === "Employee_DeliveriesDone"}
-                icon={HiChatAlt}
-                label={" "}
-                labelColor={tab === "Employee_DeliveriesDone" ? "dark" : "none"}
-                as="div"
-              >
-                Deliveries Done
-              </Sidebar.Item>
-            </Link>
-          )}
-
-          <Link to="/Dashboard?tab=Settings">
-            <Sidebar.Item
-              active={tab === "Settings"}
-              icon={HiCog}
-              label={" "}
-              labelColor={tab === "Settings" ? "dark" : "none"}
-              as="div"
-            >
-              Settings
+            {!currentUser.isAdmin&&(
+            <Link to='/Dashboard?tab=Employee_level'>
+              <Sidebar.Item active={tab === 'Employee_level'} icon={HiBadgeCheck} label={' '} labelColor={tab === 'Employee_level' ? 'dark' : 'none'} as='div' >
+             My Level 
             </Sidebar.Item>
-          </Link>
+          </Link>)}
+       
+          
+          {!currentUser.isAdmin&&(
+          <Link to='/Dashboard?tab=Employee_DeliveriesDone'>
+            <Sidebar.Item active={tab === 'Employee_DeliveriesDone'} icon={HiChatAlt} label={' '} labelColor={tab === 'Employee_DeliveriesDone' ? 'dark' : 'none'} as='div'>
+              Deliveries Done
+            </Sidebar.Item>
+          </Link>)}
 
-          {!currentUser.isAdmin && (
-            <Link to="/Dashboard?tab=Contact_Admin">
-              <Sidebar.Item
-                active={tab === "Contact_Admin"}
-                icon={HiChatAlt}
-                label={" "}
-                labelColor={tab === "Contact_Admin" ? "dark" : "none"}
-                as="div"
-              >
-                Contact Admin
-              </Sidebar.Item>
-            </Link>
-          )}
+        
+
+          {!currentUser.isAdmin&&(
+          <Link to='/Dashboard?tab=Contact_Admin'>
+            <Sidebar.Item active={tab === 'Contact_Admin'} icon={HiChatAlt} label={' '} labelColor={tab === 'Contact_Admin' ? 'dark' : 'none'} as='div'>
+             Contact Admin
+            </Sidebar.Item>
+          </Link>)}
 
           {currentUser.isAdmin && (
-            <Link to="/Dashboard?tab=AdminPage">
-              <Sidebar.Item
-                icon={HiKey}
-                label={" "}
-                labelColor={tab === "AdminPage" ? "dark" : "none"}
-                as="div"
-              >
-                Admin Page
+            <Link to='/Dashboard?tab=AdminPage'>
+              <Sidebar.Item icon={HiKey} label={' '}  labelColor={tab === 'AdminPage' ? 'dark' : 'none'} as='div'>
+                HR Manger Page
               </Sidebar.Item>
             </Link>
           )}
-          <Sidebar.Item
-            onClick={handleSignout}
-            icon={HiArrowSmRight}
-            className="cursor-pointer"
-          >
+           {currentUser.isAdmin && (
+            <Link to='/Dashboard?tab=DashUsers'>
+              <Sidebar.Item icon={HiOutlineUserGroup} label={' '}  labelColor={tab === 'DashUsers' ? 'dark' : 'none'} as='div'>
+                Employee Info
+              </Sidebar.Item>
+            </Link>
+          )}
+           {currentUser.isAdmin && (
+            <Link to='/Dashboard?tab=Announcements'>
+              <Sidebar.Item icon={HiDocumentText} label={' '}  labelColor={tab === 'Announcements' ? 'dark' : 'none'} as='div'>
+                Annoucemnts
+              </Sidebar.Item>
+            </Link>
+          )}
+          <Sidebar.Item onClick={handleSignout} icon={HiArrowSmRight} className='cursor-pointer'>
             Sign Out
           </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
+      
     </Sidebar>
+   
   );
 }
