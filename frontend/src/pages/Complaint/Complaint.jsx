@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { Button } from '@material-tailwind/react';
+import { Button ,Input} from '@material-tailwind/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SideBar } from '../../components/SideBar';
 
@@ -71,19 +71,21 @@ export default function Complaint() {
       <SideBar />
       <div className='inner-layout'>
         <h3 className='text-4xl ml-3 font-semibold'>Prev. Complaints</h3>
-        <div className='flex justify-end mt-4'>
+        <div className='flex justify-end mt-4 gap-2 '>
           {/* Search input */}
-            <input
+          <div className="flex w-full shrink-0 md:w-max">
+            <Input
               type='text'
-              placeholder='Search...'
-              className='border border-gray-400 py-1 px-8 mt-3 rounded-md mr-5 focus:outline-none'
+              label='Search'
+              className='w-full md:w-72'
               value={searchTerm}
               onChange={handleSearchChange}
             />
+            </div>
           {/* Button to navigate to new complaint form */}
           <Button
             ripple='light'
-            className='w-30 mt-3 text-base py-2 px-4 border border-transparent bg-gradient-to-r from-pink-500 via-red-500 to-orange-500'
+            className='w-30 text-base py-2 px-4 border border-transparent bg-gradient-to-r from-pink-500 via-red-500 to-orange-500'
             onClick={() => navigate(`/complaintForm`)}
           >
             New Complaint
