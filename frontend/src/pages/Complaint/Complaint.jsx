@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Button ,Input} from '@material-tailwind/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SideBar } from '../../components/SideBar';
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 
 export default function Complaint() {
@@ -73,11 +74,13 @@ export default function Complaint() {
         <h3 className='text-4xl ml-3 font-semibold'>Prev. Complaints</h3>
         <div className='flex justify-end mt-4 gap-2 '>
           {/* Search input */}
-          <div className="flex w-full shrink-0 md:w-max">
+          <div className="flex w-full shrink-0 md:w-max bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 rounded-xl shadow-md">
             <Input
               type='text'
               label='Search'
-              className='w-full md:w-72'
+              color='blue-gray'
+              className='w-full md:w-72 '
+              icon={<MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />}
               value={searchTerm}
               onChange={handleSearchChange}
             />
