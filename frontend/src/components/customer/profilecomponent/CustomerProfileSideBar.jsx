@@ -3,7 +3,7 @@ import { Sidebar } from 'flowbite-react'
 import { HiArrowSmRight, HiUser } from 'react-icons/hi'
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { signoutSuccess } from '../redux/customer/customerRegisterSlice';
+import { signoutSuccess } from '../../../redux/customer/customerRegisterSlice';
 import { useDispatch,useSelector } from 'react-redux';
 
 

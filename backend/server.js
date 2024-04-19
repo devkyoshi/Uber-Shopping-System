@@ -47,7 +47,7 @@ const QualityRouter = require("./routes/complaintCRUD.js");
 app.use("/quality", QualityRouter);
 const Order = require("./routes/orderCRUD.js");
 app.use("/Order", Order);
-const Customer = require("./routes/customer.register.routes.js");
+const Customer = require("./routes/customer/customer.register.routes.js");
 app.use("/customer", Customer);
 const Payment = require("./routes/paymentCRUD.js");
 app.use("/Payment", Payment);

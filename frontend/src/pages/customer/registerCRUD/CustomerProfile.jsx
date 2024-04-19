@@ -1,8 +1,8 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import ProfileSideBar from '../components/CustomerProfileSideBar'
-import ProfileDetail from '../components/CustomerProfileDetail'
+import ProfileSideBar from '../../../components/customer/profilecomponent/CustomerProfileSideBar'
+import ProfileDetail from '../../../components/customer/profilecomponent/CustomerProfileDetail'
 
 export default function Profile() {
   const location = useLocation()

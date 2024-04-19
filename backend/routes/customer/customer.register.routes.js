@@ -1,6 +1,6 @@
 const express = require("express");
-const { register, login, update, deleteUser, signout }  = require('../controllers/customer.register.controller.js');
-const { verifyUser } = require("../utils/verify.customer.js");
+const { register, login, update, deleteUser, signout }  = require('../../controllers/customer/customer.register.controller.js');
+const { verifyUser } = require("../../utils/verify.customer.js");
 const router = express.Router();
 router.post('/register', register);
 router.post('/login', login);

@@ -1,6 +1,6 @@
-let Customer = require("../models/customer_register_schema.js")
+let Customer = require("../../models/customer/customer_register_schema.js")
 const bcrypt = require("bcrypt");
-const { errorHandler } = require("../utils/error.js");
+const { errorHandler } = require("../../utils/error.js");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -11,18 +11,18 @@ const register = async (req, res, next) => {
     const { cus_email,
             cus_username,
             cus_password,
-            /*cus_name,
+            cus_name,
             cus_age,
             cus_gender,
             cus_cnumber,
             cus_address,
             cus_latitude,
-            cus_longtitude*/ } = req.body;
+            cus_longtitude } = req.body;
   
     if (!cus_email||
         !cus_username||
         !cus_password||
-        /*!cus_name||
+        !cus_name||
         !cus_age||
         !cus_gender||
         !cus_cnumber||
@@ -31,7 +31,7 @@ const register = async (req, res, next) => {
         cus_age.trim() === ''||
         cus_gender.trim() === ''||
         cus_cnumber.trim() === ''||
-        cus_address.trim() === ''||*/
+        cus_address.trim() === ''||
         cus_email.trim() === ''||
         cus_username.trim() === ''||
         cus_password.trim() === '') {
@@ -44,13 +44,13 @@ const register = async (req, res, next) => {
         cus_email,
         cus_username,
         cus_password : hashedPass,
-        /*cus_name,
+        cus_name,
         cus_age,
         cus_gender,
         cus_cnumber,
         cus_address,
         cus_latitude,
-        cus_longtitude*/
+        cus_longtitude
     });
     
     try {
@@ -122,13 +122,13 @@ const update = async(req, res, next) => {
                 cus_email: req.body.cus_email,
                 cus_username: req.body.cus_username,
                 cus_password : req.body.cus_password,
-                /*cus_name: req.body.cus_name,
+                cus_name: req.body.cus_name,
                 cus_age: req.body.cus_age,
                 cus_gender: req.body.cus_gender,
                 cus_cnumber: req.body.cus_cnumber,
                 cus_address: req.body.cus_address,
                 cus_latitude: req.body.cus_latitude,
-                cus_longtitude: req.body.cus_longtitude,*/
+                cus_longtitude: req.body.cus_longtitude,
             },
         }, { new: true });
         const { cus_password: _, ...userData } = updatedUser._doc;

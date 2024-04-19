@@ -1,14 +1,14 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import CustomerAdminProfileDetail from '../adminview/CustomerAdmin'
-import OrderAdminProfileDetail from '../adminview/OrderAdmin'
-import PaymentAdminProfileDetail from '../adminview/PaymentAdmin'
-import RouteAdminProfileDetail from '../adminview/RouteAdmin'
-import SupermarketAdminProfileDetail from '../adminview/SupermarketAdmin'
-import QualityAdminProfileDetail from '../adminview/QualityAdmin'
-import DeliveryAdminProfileDetail from '../adminview/DeliveryAdmin'
-import ProfileSideBar from '../components/CustomerProfileSideBar'
+import CustomerAdminProfileDetail from '../../../adminview/CustomerAdmin'
+import OrderAdminProfileDetail from '../../../adminview/OrderAdmin'
+import PaymentAdminProfileDetail from '../../../adminview/PaymentAdmin'
+import RouteAdminProfileDetail from '../../../adminview/RouteAdmin'
+import SupermarketAdminProfileDetail from '../../../adminview/SupermarketAdmin'
+import QualityAdminProfileDetail from '../../../adminview/QualityAdmin'
+import DeliveryAdminProfileDetail from '../../../adminview/DeliveryAdmin'
+import ProfileSideBar from '../../../components/customer/profilecomponent/CustomerProfileSideBar'
 
 export default function CustomerAdmin() {
     const location = useLocation()
