@@ -14,7 +14,7 @@ export default function ShowCustomers() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const res = await fetch(`/customer/getusers`)
+                const res = await fetch('/customer/getusers')
                 const data = await res.json()
                 if(res.ok){
                     setCustomers(data.users);
