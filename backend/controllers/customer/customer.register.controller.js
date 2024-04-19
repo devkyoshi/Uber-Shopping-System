@@ -139,7 +139,7 @@ const update = async(req, res, next) => {
 }
 
 const deleteUser = async(req, res, next) => {
-    if(req.customer.id !== req.params.cus_ID){
+    if(req.customer.adminType !== 'customer' && req.customer.id !== req.params.cus_ID){
         return next(errorHandler(403, 'You are not allowed to delete this account'));
     }
     try {
