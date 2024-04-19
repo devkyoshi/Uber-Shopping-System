@@ -42,7 +42,7 @@ export default function DashProfile() {
     try {
       dispatch(updateStart());
       const res = await fetch(
-        `http://localhost:8070/Employee/user/update/${currentUser._id}`,
+        `/Employee/user/update/${currentUser._id}`,
         {
           method: "PUT",
           headers: {
