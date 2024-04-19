@@ -113,7 +113,7 @@ export default function ProfileDetail() {
         <TextInput onChange={handleChange} type='text' id='cus_name' placeholder='Full name' defaultValue={currentCustomer.cus_name}></TextInput>
         <div className='flex flex-row gap-2'>
         <div><TextInput onChange={handleChange} type='number' id='cus_cnumber' placeholder='Contact number' defaultValue={currentCustomer.cus_cnumber}></TextInput></div>
-        <div><select onChange={handleChange} className="w-full py-2 px-4 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" id="cus_gender">
+        <div><select defaultValue={currentCustomer.cus_gender} onChange={handleChange} className="w-full py-2 px-4 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" id="cus_gender">
                     <option value="" defaultValue={currentCustomer.cus_gender}></option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>

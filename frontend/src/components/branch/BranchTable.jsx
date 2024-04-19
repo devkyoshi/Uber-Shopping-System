@@ -1,8 +1,8 @@
-import { Card, Typography, Button } from "@material-tailwind/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// Import Link from React Router
+import { Card, Typography, Button } from "@material-tailwind/react";
+import { Branch_Download } from "./Branch_Download";
 
 const TABLE_HEAD = [
   "Branch ID",
@@ -14,6 +14,8 @@ const TABLE_HEAD = [
 
 export function BranchTable() {
   const [branchList, setBranchList] = useState([]);
+  const [filteredBranchList, setFilteredBranchList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
@@ -33,8 +35,31 @@ export function BranchTable() {
     fetchBranch();
   }, []);
 
+  useEffect(() => {
+    // Filter branch list based on search term
+    const filteredList = branchList.filter(branch => (branch.branch_ID.toLowerCase().includes(searchTerm.toLowerCase()) ||(branch.branch_name.toLowerCase().includes(searchTerm.toLowerCase())))
+    );
+    setFilteredBranchList(filteredList);
+  }, [branchList, searchTerm]);
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   return (
     <Card className="h-full w-full overflow-scroll">
+      <div className="flex justify-end p-4">
+        <input
+          type="text"
+          placeholder="Search by Branch ID OR Name"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="px-4 py-2 border border-gray-300 rounded-md"
+        />
+        <div>
+          <Branch_Download data_branch = {filteredBranchList}/>
+        </div>
+      </div>
       <table className="w-full min-w-max table-auto text-center">
         <thead>
           <tr>
@@ -55,7 +80,7 @@ export function BranchTable() {
           </tr>
         </thead>
         <tbody>
-          {branchList.map((branch, index) => (
+          {filteredBranchList.map((branch, index) => (
             <tr key={index}>
               <td className="p-4">
                 <Typography

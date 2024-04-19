@@ -139,7 +139,7 @@ const update = async(req, res, next) => {
 }
 
 const deleteUser = async(req, res, next) => {
-    if(req.customer.id !== req.params.cus_ID){
+    if(req.customer.adminType !== 'customer' && req.customer.id !== req.params.cus_ID){
         return next(errorHandler(403, 'You are not allowed to delete this account'));
     }
     try {
@@ -158,4 +158,46 @@ const signout = (req,res,next) => {
     }
 };
 
-module.exports = { register, login, update,deleteUser,signout };
+const getUsers = async(req, res, next) => {
+    if(req.customer.adminType !== 'customer'){
+        return next(errorHandler(403, 'You are not allowed to see all users'));
+    }
+    try {
+        const startIndex = parseInt(req.query.startIndex) || 0;
+        const limit = parseInt(req.query.limit) || 9;
+        const sortDirection = req.query.order === 'asc' ? 1 : -1;
+
+        const users = await Customer.find()
+            .sort({ createdAt: sortDirection })
+            .skip(startIndex)
+            .limit(limit);
+
+            const userswopassword = users.map((customer) => {
+                const { cus_password, ...userData } = customer._doc;
+                return userData;
+            });
+
+            const totalUsers = await Customer.countDocuments();
+
+            const now = new Date();
+            const previous = new  Date(
+                now.getFullYear(),
+                now.getMonth() - 1,
+                now.getDate()
+            );
+
+            const lastMonthUsers = await Customer.countDocuments({
+                createdAt: { $gte: previous },
+            });
+
+            res.status(200).json({
+                users: userswopassword,
+                totalUsers,
+                lastMonthUsers,
+            });
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { register, login, update,deleteUser,signout, getUsers };
