@@ -174,19 +174,7 @@ export default function DashProfile() {
           onChange={handleChange}
         />
 
-        <TextInput
-          type="text"
-          id="Emp_Level"
-          placeholder="level 1"
-          readOnly={true}
-        />
-
-        <TextInput
-          type="text"
-          id="Emp_salary"
-          placeholder="Salary Amount"
-          readOnly={true}
-        />
+        
 
         <Button type="submit" gradientDuoTone="purpleToBlue" outline>
           Update
