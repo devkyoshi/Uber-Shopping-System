@@ -1,0 +1,12 @@
+const express = require("express");
+const { submitFeedback, getFeedbacks, getUserFeedback, likeFeedback, dislikeFeedback, editFeedback, deleteFeedback } = require("../../controllers/customer/customer.feedback.controller.js");
+const { verifyUser } = require("../../utils/verify.customer.js");
+const router = express.Router();
+router.post('/submitFeedback', verifyUser,submitFeedback);
+router.get('/getFeedback', getFeedbacks);
+router.get('/:cus_ID', getUserFeedback);
+router.put('/likeFeedback/:feedback_ID', verifyUser,likeFeedback);
+router.put('/dislikeFeedback/:feedback_ID', verifyUser,dislikeFeedback);
+router.put('/editFeedback/:feedback_ID', verifyUser,editFeedback);
+router.delete('/deleteFeedback/:feedback_ID', verifyUser,deleteFeedback);
+module.exports = router;

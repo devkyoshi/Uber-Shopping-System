@@ -13,6 +13,10 @@ export default defineConfig({
         target: 'http://localhost:8070',
         secure: false,
       },
+      '/Feedback':{
+        target: 'http://localhost:8070',
+        secure: false,
+      },
 
     },
   },

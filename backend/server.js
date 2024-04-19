@@ -88,6 +88,8 @@ app.use('/Employee/announcement', announcementRoutes);
 const qualityGenerateRoutes = require('./routes/quality_performance.routes.js');
 app.use('/Quality/Generate',qualityGenerateRoutes)
 
+const customerfeedbackRouter = require("./routes/customer/customer.feedback.routes.js")
+app.use("/Feedback",customerfeedbackRouter)
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

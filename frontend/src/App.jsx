@@ -23,6 +23,8 @@ import Header from "./components/CustomerHeader";
 import PrivateRoute from "./components/customer/privateroute/CustomerProfilePrivateRoute";
 import AdminPrivateRoute from "./components/customer/privateroute/CustomerAdminPrivateRoute";
 import CustomerAdmin from "./pages/customer/adminpage/CustomerAdmin";
+import CustomerFeedback from './pages/customer/feedbackCRUD/CustomerFeedback'
+import CustomerRating from './pages/customer/ratingemployeespage/CustomerRateEmployee'
 import DriverUI from "./pages/driver/DriverUI";
 import UpdateOrder from "./pages/UpdateOrder";
 import ComplaintForm from "./pages/Complaint/ComplaintForm"
@@ -73,9 +75,6 @@ export default function App() {
         <Route path="/payment-admin" element={<PaymentAdminUI />} />
         <Route path="/Customerlogin" element={<Login />} />
         <Route path="/Customerregister" element={<Register />} />
-        <Route element={<PrivateRoute />}>
-          <Route path="/Customerprofile" element={<Profile />} />
-        </Route>
         <Route element={<AdminPrivateRoute />}>
         {/*adminpages*/}
           <Route path="/Adminlogin" element={<CustomerAdmin />} />
@@ -96,6 +95,10 @@ export default function App() {
       <Route path="/Employee_News" element={<Employee_News/>}/>
       <Route path="/Projects" element={<Projects/>}/>
       <Route path="/announcement/:announcementSlug" element={<AnnouncementHomeEach/>}/>
+      <Route element={<PrivateRoute/>}>
+        <Route path="/Customerprofile" element={<Profile/>}/>
+        <Route path="/feedbackportal" element={<CustomerFeedback/>}/>
+        <Route path="/employeerate" element={<CustomerRating/>}/></Route>
 
       
       </Routes>
