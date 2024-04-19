@@ -1,9 +1,9 @@
-const User = require('../models/user.model.js');
+const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
-const { errorHandler } = require('../utils/error.js');
+const { errorHandler } = require('../utils/error');
 const jwt = require('jsonwebtoken');
 
-exports.register = async (req, res, next) => {
+const register = async (req, res, next) => {
     const { username, email, password, Emp_Name, Emp_Age, Emp_Gender, Emp_CNumber, Emp_Address ,profilePhoto,Emp_transport,Emp_areofservice} = req.body;
 
     // Check if any required field is missing or empty
@@ -39,7 +39,7 @@ exports.register = async (req, res, next) => {
     }
 };
 
-exports.signin = async (req, res, next) => {
+const signin = async (req, res, next) => {
     const { email, password } = req.body;
   
     if (!email || !password || email === '' || password === '') {
@@ -57,7 +57,6 @@ exports.signin = async (req, res, next) => {
       }
       const token = jwt.sign(
         { id: validUser._id ,isAdmin:validUser.isAdmin},
-
         process.env.JWT_SECRET
       );
 
@@ -74,58 +73,7 @@ exports.signin = async (req, res, next) => {
     }
 };
 
-// export const getSalaryAndBenefits = async (req, res) => {
-//   try {
-//     // Find the user by their ID (assuming you're passing the user ID in the request params)
-//     const user = await User.findById(req.params.employeeId);
-
-//     if (!user) {
-//       return res.status(404).json({ message: 'Employee not found' });
-//     }
-
-//     // Extract salary, bonuses, and benefits from the user document
-//     const { salary, bonuses, benefits } = user;
-
-//     // Return the salary and benefits data
-//     res.json({ salary, bonuses, benefits });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Server Error' });
-//   }
-// };
-
-// // Update salary and benefits for a specific user
-// export const updateSalaryAndBenefits = async (req, res) => {
-//     try {
-//         // Find the user by their ID
-//         const user = await User.findById(req.params.userId);
-
-//         if (!user) {
-//             return res.status(404).json({ message: 'User not found' });
-//         }
-
-//         // Update salary, bonuses, and benefits fields based on request body
-//         user.salary = req.body.salary;
-//         user.bonuses = req.body.bonuses;
-//         user.benefits = req.body.benefits;
-
-//         // Save the updated user document
-//         await user.save();
-
-//         // Return success message
-//         res.json({ message: 'Salary and benefits updated successfully' });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Server Error' });
-//     }
-// };
-  /* res
-        .status(200)
-        .cookie('access_token', token, {
-          httpOnly: true,
-        })
-        .json(rest);
-    } catch (error) {
-      next(error);
-    }*/
-
+module.exports = {
+    register,
+    signin
+};

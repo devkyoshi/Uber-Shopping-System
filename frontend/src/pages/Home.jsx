@@ -8,7 +8,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
-      const res = await fetch('http://localhost:8070/Employee/announcement/getannouncement');
+      const res = await fetch('/api/announcement/getannouncement');
       const data = await res.json();
       setAnnouncements(data.announcements);
     };

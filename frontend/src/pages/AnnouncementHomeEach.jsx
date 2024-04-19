@@ -17,7 +17,7 @@ export default function AnnouncementHomeEach() {
     const fetchAnnouncement = async () => {
       try {
         
-        const res = await fetch(`http://localhost:8070/Employee/announcement/getannouncement?slug=${announcementSlug}`);
+        const res = await fetch(`/api/announcement/getannouncement?slug=${announcementSlug}`);
         const data = await res.json();
         if (!res.ok) {
           setError(true);

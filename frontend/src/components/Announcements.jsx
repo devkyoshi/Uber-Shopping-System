@@ -15,7 +15,7 @@ export default function DashPosts() {
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
-        const res = await fetch(`http://localhost:8070/Employee/announcement/getannouncement?userId=${currentUser._id}`);
+        const res = await fetch(`/api/announcement/getannouncement?userId=${currentUser._id}`);
         const data = await res.json();
         console.log(data);
         if (res.ok) {
@@ -36,7 +36,7 @@ export default function DashPosts() {
   const handleShowMore = async () => {
     const startIndex = userAnnouncements.length;
     try {
-      const res = await fetch(`http://localhost:8070/Employee/announcement/getannouncement?userId=${currentUser._id}&startIndex=${startIndex}`);
+      const res = await fetch(`/api/announcement/getannouncement?userId=${currentUser._id}&startIndex=${startIndex}`);
       const data = await res.json();
       if (res.ok) {
         setUserAnnouncements((prev) => [...prev, ...data.announcements]);
@@ -53,7 +53,7 @@ export default function DashPosts() {
     setShowModal(false);
     try {
       const res = await fetch(
-        `http://localhost:8070/Employee/announcement/deleteannouncement/${announcementIdToDelete}/${currentUser._id}`,
+        `/api/announcement/deleteannouncement/${announcementIdToDelete}/${currentUser._id}`,
         {
           method: 'DELETE',
         }

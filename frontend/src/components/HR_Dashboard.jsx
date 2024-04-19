@@ -26,7 +26,7 @@ export default function DashboardComp() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch('http://localhost:8070/Employee/user/getusers?limit=5');
+        const res = await fetch('/api/user/getusers?limit=5');
         const data = await res.json();
         if (res.ok) {
           setUsers(data.users);
@@ -40,7 +40,7 @@ export default function DashboardComp() {
     
      const fetchAnnouncements = async () => {
       try {
-        const res = await fetch(`http://localhost:8070/Employee/announcement/getannouncement?limit=5`);
+        const res = await fetch(`/api/announcement/getannouncement?limit=5`);
         const data = await res.json();
         console.log(data);
         if (res.ok) {

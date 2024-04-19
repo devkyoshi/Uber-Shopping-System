@@ -9,6 +9,9 @@ export default function Employee_Registration() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   
+
+  
+  
    const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -23,7 +26,7 @@ export default function Employee_Registration() {
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await fetch('http://localhost:8070/Employee/register', {
+      const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

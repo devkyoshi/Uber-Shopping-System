@@ -74,23 +74,29 @@ app.use("/Branch", Branch);
 const Revenue = require("./routes/revenueCRUD.js");
 app.use("/Revenue", Revenue);
 
-//register authentication                                                             error check
-const authroutes = require("./routes/Employee_authentication.route.js");
-app.use("/Employee", authroutes);
-  //register authentication
-const userRoutes = require("./routes/user.route.js");
-app.use("/Employee/user", userRoutes);
 
-  //posting stuff
-const announcementRoutes = require('./routes/announcement.route.js');
-app.use('/Employee/announcement', announcementRoutes);
+
 
 //generate performance
 const qualityGenerateRoutes = require('./routes/quality_performance.routes.js');
 app.use('/Quality/Generate',qualityGenerateRoutes)
 
-const customerfeedbackRouter = require("./routes/customer/customer.feedback.routes.js")
+const customerfeedbackRouter = require("./routes/customer/customer.feedback.routes.js");
 app.use("/Feedback",customerfeedbackRouter)
+
+
+
+
+
+//test connection 
+const userRoutes = require('./routes/user.route.js');
+app.use('/api/user', userRoutes);
+//register authentication
+const authroutes = require('./routes/Employee_authentication.route.js');
+app.use('/api/auth', authroutes);
+//posting stuff
+const announcementroutes = require('./routes/announcement.route.js');
+app.use('/api/announcement', announcementroutes);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

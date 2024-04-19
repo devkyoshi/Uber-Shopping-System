@@ -23,7 +23,7 @@ export default function Employee_Announcements() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:8070/Employee/announcement/announcement', {
+      const res = await fetch('/api/announcement/announcement', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

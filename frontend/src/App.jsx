@@ -4,15 +4,13 @@ import About from "./pages/About";
 import OrderForm from "./pages/OrderForm";
 import HomeUnregistered from "./pages/HomeUnregistered";
 import { Footer } from "./components/Footer";
-import Employee_Registration from "./pages/Employee_Registration";
+
 import Complaint from "./pages/Complaint/Complaint";
 import PaymentUI from "./pages/payment/PaymentUI";
 import BranchUI from "./pages/Branch/BranchUI";
 import TaskUI from "./pages/Task/TaskUI";
 import ItemUI from "./pages/item/ItemUI";
-import Employee_Signin from "./pages/Employee_Signin";
-import Dashboard from "./pages/Dashboard";
-import Emp_PrivateRoute from "./components/Emp_PrivateRoute";
+
 import ViewOrder from "./pages/ViewOrder";
 import Refund from "./pages/Refund/RefundForm";
 import PaymentAdminUI from "./pages/payment/PaymentAdminUI";
@@ -31,14 +29,21 @@ import ComplaintForm from "./pages/Complaint/ComplaintForm";
 import EditComplaint from "./pages/Complaint/editComplaint";
 import ComplaintAdmin from "./pages/Complaint/ComplaintAdmin";
 import PromotionUI from "./pages/promotion/promotionUI";
-import Employee_News from "./pages/Employee_News";
-import OnlyHR_PrivateRoute from "./components/OnlyHR_PrivateRoute";
-import Employee_AnnouncementEdit from "./pages/Employee_AnnouncementEdit";
-import AnnouncementHomeEach from "./pages/AnnouncementHomeEach";
-import Employee_Announcements from "./pages/Employee_Announcements";
-import Projects from "./pages/Projects";
+
 import Test from "./pages/Profile";
 import { NavigationBar } from "./components/NavigationBar";
+import Emp_PrivateRoute from './components/Emp_PrivateRoute';
+import Employee_AnnouncementEdit from './pages/Employee_AnnouncementEdit';
+import AnnouncementHomeEach from './pages/AnnouncementHomeEach';
+import Home from "./pages/Home"
+import Employee_Registration from "./pages/Employee_Registration"
+import Employee_Signin from "./pages/Employee_Signin"
+import Employee_News from "./pages/Employee_News"
+import Dashboard from "./pages/Dashboard"
+import Employee_Announcements from "./pages/Employee_Announcements"
+import Projects from "./pages/Projects"
+
+import OnlyHR_PrivateRoute from './components/OnlyHR_PrivateRoute';
 
 export default function App() {
   return (
@@ -51,19 +56,13 @@ export default function App() {
         <Route path="/orderForm" element={<OrderForm />} />
         <Route path="/complaint" element={<Complaint />} />
         <Route path="/customer_register" element={<Register />} />
-        <Route
-          path="/Employee_Registration"
-          element={<Employee_Registration />}
-        />
+       
         <Route path="/payment" element={<PaymentUI />} />
         <Route path="/task" element={<TaskUI />} />
         <Route path="/branch" element={<BranchUI />} />
         <Route path="/item" element={<ItemUI />} />
         <Route path="/refund/:complaintId/:orderId" element={<Refund />} />
-        <Route path="/Employee_Signin" element={<Employee_Signin />} />
-        <Route element={<Emp_PrivateRoute />}>
-          <Route path="/Dashboard" element={<Dashboard />} />
-        </Route>
+        
         <Route path="/myOrder" element={<ViewOrder />} />
         <Route path="/refund/:complaintId" element={<Refund />} />
         <Route path="/payment-admin" element={<PaymentAdminUI />} />
@@ -85,28 +84,28 @@ export default function App() {
         <Route path="/complaint-admin" element={<ComplaintAdmin />} />
         <Route path="/promotion" element={<PromotionUI />} />
 
-        <Route element={<OnlyHR_PrivateRoute />}>
-          <Route
-            path="/Employee_Announcements"
-            element={<Employee_Announcements />}
-          />
-          <Route
-            path="/Employee_AnnouncementEdit/:announcementId"
-            element={<Employee_AnnouncementEdit />}
-          />
-        </Route>
-        <Route path="/Employee_News" element={<Employee_News />} />
-        <Route path="/Projects" element={<Projects />} />
-        <Route
-          path="/announcement/:announcementSlug"
-          element={<AnnouncementHomeEach />}
-        />
+        
         <Route element={<PrivateRoute />}>
           <Route path="/Customerprofile" element={<Profile />} />
           <Route path="/feedbackportal" element={<CustomerFeedback />} />
           <Route path="/employeerate" element={<CustomerRating />} />
         </Route>
         <Route path="/test" element={<Test />} />
+        <Route path="/Employee_Signin" element={<Employee_Signin/>}/>
+      <Route path="/Employee_Registration" element={<Employee_Registration/>}/>
+      <Route element={<Emp_PrivateRoute />}>
+         <Route path="/Dashboard" element={<Dashboard/>}/>
+         
+      </Route>
+      <Route element={<OnlyHR_PrivateRoute />}>
+          <Route path='/Employee_Announcements' element={<Employee_Announcements />} />
+          <Route path='/Employee_AnnouncementEdit/:announcementId' element={<Employee_AnnouncementEdit />} />
+        </Route>
+      <Route path="/Employee_News" element={<Employee_News/>}/>
+      <Route path="/Projects" element={<Projects/>}/>
+      <Route path="/announcement/:announcementSlug" element={<AnnouncementHomeEach/>}/>
+
+      
       </Routes>
 
       <Footer />
