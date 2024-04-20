@@ -218,12 +218,37 @@ export default function CustomerFeedbackPortal() {
                 />
                 <div className='flex justify-between items-center mt-5'>
                     <p className='text-gray-500 text-sm'>{400-feedback.length} characters remaining</p>
-                    <Button outline gradientDuoTone='pinkToOrange' type='submit' disabled={loading}>{
+                    {/* <Button outline gradientDuoTone='pinkToOrange' type='submit' disabled={loading}>{
                         loading ? (
                         <><Spinner size='sm'/><span className='pl-3'>Loading...</span></>
                         ) : 'Submit'
                         }
-                    </Button>
+                    </Button> */}
+                    <button 
+                        type='submit' 
+                        disabled={loading} 
+                        style={{
+                            padding: '0.5rem 1rem',
+                            fontSize: '1rem',
+                            borderRadius: '0.375rem',
+                            color: 'linear-gradient(90deg, #EC4899, #FFB037)',
+                            background: 'transparent',
+                            border: '1px solid #EC4899',
+                            outline: 'none',
+                            opacity: loading ? '0.7' : '1',
+                            pointerEvents: loading ? 'none' : 'auto',
+                            cursor: loading ? 'not-allowed' : 'pointer'
+                            }}
+                        onMouseEnter={(e) => { 
+                            e.target.style.background = 'linear-gradient(90deg, #EC4899, #FFB037)';
+                            e.target.style.color = 'white';
+                        }}
+                        onMouseLeave={(e) => { 
+                            e.target.style.background = 'transparent';
+                            e.target.style.color = 'black';
+                        }}>
+                        {loading ? 'Loading...' : 'Submit'}
+                    </button>
                 </div>  
             </form>)
         }
@@ -258,8 +283,7 @@ export default function CustomerFeedbackPortal() {
       <Modal
         show={showModal}
         onClose={() => setShowModal(false)}
-        popup
-        size='md'>
+        >
             <Modal.Header/>
             <Modal.Body>
                 <div className='text-center'>

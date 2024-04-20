@@ -64,12 +64,47 @@ export default function Feedback({ feedback, onLike, onDislike, onEdit, onDelete
                         onChange={(e) => setEditedFeedback(e.target.value)}
                      />
                      <div className='flex justify-end gap-2 text-xs'>
-                        <Button type='button' size='sm' gradientDuoTone='pinkToOrange' onClick={handleSave}>
+                        {/* <Button type='button' size='sm' gradientDuoTone='pinkToOrange' onClick={handleSave}>
                             Save
-                        </Button>
-                        <Button type='button' size='sm' gradientDuoTone='pinkToOrange' outline onClick={() => setEditing(false)}>
+                        </Button> */}
+                        <button 
+                            type='submit' 
+                            onClick={handleSave} 
+                            style={{
+                                padding: '0.5rem 1rem',
+                                fontSize: '0.8rem',
+                                borderRadius: '0.375rem',
+                                color: 'white',
+                                background: 'linear-gradient(90deg, #EC4899, #FFB037)',
+                                border: '1px solid #EC4899',
+                                outline: 'none'
+                            }}
+                            >Save
+                        </button>
+                        {/* <Button type='button' size='sm' gradientDuoTone='pinkToOrange' outline onClick={() => setEditing(false)}>
                             Cancel
-                        </Button>
+                        </Button> */}
+                        <button 
+                            type='submit' 
+                            onClick={() => setEditing(false)} 
+                            style={{
+                                padding: '0.5rem 1rem',
+                                fontSize: '0.8rem',
+                                borderRadius: '0.375rem',
+                                color: 'linear-gradient(90deg, #EC4899, #FFB037)',
+                                background: 'transparent',
+                                border: '1px solid #EC4899',
+                                outline: 'none'
+                            }}
+                            onMouseEnter={(e) => { 
+                                e.target.style.background = 'linear-gradient(90deg, #EC4899, #FFB037)';
+                                e.target.style.color = 'white';
+                                }}
+                            onMouseLeave={(e) => { 
+                                e.target.style.background = 'transparent';
+                                e.target.style.color = 'black';
+                            }}>Cancel
+                        </button>
                      </div>
                 </>
             ): (

@@ -18,7 +18,7 @@ export default function CustomerFeedback() {
   },[location.search])
   return (
     <div className='main-layout bg min-h-full flex flex-col md:flex-row'>
-      <div>
+      <div className='flex flex-auto'>
         <SideBar/>
       </div>
       <div className="inner-layout">{tab === 'feedback' && <CustomerFeedbackPortal cus_id={currentCustomer._id}/>}</div>

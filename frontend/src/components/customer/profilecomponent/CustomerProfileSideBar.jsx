@@ -42,12 +42,12 @@ export default function ProfileSideBar() {
         <Sidebar.Items>
             <Sidebar.ItemGroup className='flex flex-col gap-1'>
                 <Link to='/Customerprofile?tab=profile'>
-                <Sidebar.Item as='div' active={tab === 'profile'} icon={HiUser} label={currentCustomer.adminType !== 'null' ? 'Admin' : 'User'} labelColor='dark'>
+                <Sidebar.Item as='div' active={tab === 'profile'} icon={HiUser} label={currentCustomer.adminType !== 'null' ? 'Admin' : 'User'} labelColor='green'>
                     Profile
                 </Sidebar.Item></Link>
                 {currentCustomer.adminType === 'null' && (
                   <Link to='/Employee_Signin'>
-                  <Sidebar.Item as='div' active={locationLink.pathname === '/Employee_Signin'} icon={HiUser} label={'Employee'} labelColor='dark'>
+                  <Sidebar.Item as='div' active={locationLink.pathname === '/Employee_Signin'} icon={HiUser} label={'Employee'} labelColor='red'>
                       Login
                   </Sidebar.Item></Link>
                 )}

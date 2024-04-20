@@ -146,27 +146,33 @@ export default function ProfileDetail() {
             <TextInput className='flex flex-1' onChange={handleChange} type='number' placeholder='Latitude' id='cus_latitude' defaultValue={currentCustomer.cus_latitude}/>
             <TextInput className='flex flex-1' onChange={handleChange} type='number' placeholder='Longtitude' id='cus_longtitude' defaultValue={currentCustomer.cus_longtitude}/>  
         </div>
+        {/* <Button type='submit' gradientDuoTone='pinkToOrange' outline disabled={loading}>{loading ? 'Loading...' : 'Save changes'}</Button> */}
+        
         <button 
-    type='submit' 
-    disabled={loading} 
-    style={{
-        padding: '0.5rem 1rem',
-        fontSize: '1rem',
-        borderRadius: '0.375rem',
-        color: 'linear-gradient(90deg, #EC4899, #FFB037)',
-        background: 'transparent',
-        border: '1px solid #EC4899',
-        outline: 'none',
-        transition: 'all 0.3s ease',
-        opacity: loading ? '0.7' : '1',
-        pointerEvents: loading ? 'none' : 'auto',
-        cursor: loading ? 'not-allowed' : 'pointer'
-    }}
-    onMouseEnter={(e) => { e.target.style.background = 'linear-gradient(90deg, #EC4899, #FFB037)'; }}
-    onMouseLeave={(e) => { e.target.style.background = 'transparent'; }}
->
-    {loading ? 'Loading...' : 'Save changes'}
-</button>
+          type='submit' 
+          disabled={loading} 
+          style={{
+            padding: '0.5rem 1rem',
+            fontSize: '1rem',
+            borderRadius: '0.375rem',
+            color: 'linear-gradient(90deg, #EC4899, #FFB037)',
+            background: 'transparent',
+            border: '1px solid #EC4899',
+            outline: 'none',
+            opacity: loading ? '0.7' : '1',
+            pointerEvents: loading ? 'none' : 'auto',
+            cursor: loading ? 'not-allowed' : 'pointer'
+          }}
+          onMouseEnter={(e) => { 
+          e.target.style.background = 'linear-gradient(90deg, #EC4899, #FFB037)';
+          e.target.style.color = 'white';
+          }}
+          onMouseLeave={(e) => { 
+          e.target.style.background = 'transparent';
+          e.target.style.color = 'black';
+          }}>
+          {loading ? 'Loading...' : 'Save changes'}
+        </button>
 
       </form>
       <div className='text-red-500 flex justify-between mt-10'>

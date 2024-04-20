@@ -18,7 +18,7 @@ export default function CustomerRate() {
   },[location.search])
   return (
     <div className='main-layout bg min-h-screen flex flex-col md:flex-row'>
-      <div>
+      <div className='flex flex-auto'>
         <SideBar/>
       </div>
       <div className="inner-layout">{tab === 'rating' && <CustomerRateTab cus_id={currentCustomer._id}/>}</div>
