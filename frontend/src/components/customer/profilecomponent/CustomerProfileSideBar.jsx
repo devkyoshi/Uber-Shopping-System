@@ -45,12 +45,12 @@ export default function ProfileSideBar() {
                 <Sidebar.Item as='div' active={tab === 'profile'} icon={HiUser} label={currentCustomer.adminType !== 'null' ? 'Admin' : 'User'} labelColor='green'>
                     Profile
                 </Sidebar.Item></Link>
-                {currentCustomer.adminType === 'null' && (
+                
                   <Link to='/Employee_Signin'>
                   <Sidebar.Item as='div' active={locationLink.pathname === '/Employee_Signin'} icon={HiUser} label={'Employee'} labelColor='red'>
                       Login
                   </Sidebar.Item></Link>
-                )}
+                
                 {currentCustomer.adminType === 'customer' && (
                   <Link to='/AdminLogin?tab=customeradmin'>
                     <Sidebar.Item as='div' active={tab === 'customeradmin'} icon={HiChartPie} label={'Customer'} labelColor='red'>

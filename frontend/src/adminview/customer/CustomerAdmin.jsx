@@ -88,9 +88,50 @@ export default function CustomerAdminProfileDetail() {
         <div className='flex flex-col w-full md:w-auto shadow-md p-3 rounded-md'>
           <div className='flex justify-between p-3 text-sm font-semibold'>
             <h1 className='text-center p-2'>Recent Users</h1>
-            <Button outline gradientDuoTone='pinkToOrange'><Link to={'/AdminLogin?tab=showusers'}>See all</Link></Button>
+            {/* <Button outline gradientDuoTone='pinkToOrange'><Link to={'/AdminLogin?tab=showfeedbacks'}>See all</Link></Button> */}
+            <Link to={'/AdminLogin?tab=showfeedbacks'}><button 
+              type='submit'  
+              style={{
+                padding: '0.5rem 1rem',
+                fontSize: '1rem',
+                borderRadius: '0.375rem',
+                color: 'linear-gradient(90deg, #EC4899, #FFB037)',
+                background: 'transparent',
+                border: '1px solid #EC4899',
+                outline: 'none',
+              }}
+              onMouseEnter={(e) => { 
+                e.target.style.background = 'linear-gradient(90deg, #EC4899, #FFB037)';
+                e.target.style.color = 'white';
+              }}
+              onMouseLeave={(e) => { 
+                e.target.style.background = 'transparent';
+                e.target.style.color = 'black';
+              }}>
+                See all
+          </button></Link>
           </div>
-          <Table hoverable> 
+          <table className='shadow-md' style={{width: '100%', borderCollapse: 'collapse'}}>
+        <thead>
+            <tr style={{backgroundColor: '#F3F4F6'}}>
+                <th style={{padding: '12px'}}>User image</th>
+                <th style={{padding: '12px'}}>Username</th>
+            </tr>
+        </thead>
+        <tbody>
+            {customers && customers.map((customer, index) => (
+                <tr style={{backgroundColor: '#FFFFFF'}} key={customer._id}>
+                    <td style={{padding: '12px'}}>
+                        <img src='https://th.bing.com/th/id/OIP.eU8MYLNMRBadK-YgTT6FJQHaHw?rs=1&pid=ImgDetMain' alt='user' style={{width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', backgroundColor: '#D1D5DB'}} />
+                    </td>
+                    <td style={{padding: '12px', fontWeight: 'bold', color: '#4B5563'}}>
+                        {customer.cus_username}
+                    </td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+          {/*<Table hoverable> 
             <Table.Head>
               <Table.HeadCell>User image</Table.HeadCell>
               <Table.HeadCell>Username</Table.HeadCell>
@@ -107,14 +148,36 @@ export default function CustomerAdminProfileDetail() {
                 </Table.Row>
               </Table.Body>
             ))}
-          </Table>
+          </Table>*/}
         </div>
+
         <div className='flex flex-col w-full md:w-auto shadow-md p-2 rounded-md'>
           <div className='flex justify-between p-3 text-sm font-semibold'>
             <h1 className='text-center p-2'>Recent Feedbacks</h1>
-            <Button outline gradientDuoTone='pinkToOrange'><Link to={'/AdminLogin?tab=showfeedbacks'}>See all</Link></Button>
+            {/* <Button outline gradientDuoTone='pinkToOrange'><Link to={'/AdminLogin?tab=showfeedbacks'}>See all</Link></Button> */}
+            <Link to={'/AdminLogin?tab=showfeedbacks'}><button 
+              type='submit'  
+              style={{
+                padding: '0.5rem 1rem',
+                fontSize: '1rem',
+                borderRadius: '0.375rem',
+                color: 'linear-gradient(90deg, #EC4899, #FFB037)',
+                background: 'transparent',
+                border: '1px solid #EC4899',
+                outline: 'none',
+              }}
+              onMouseEnter={(e) => { 
+                e.target.style.background = 'linear-gradient(90deg, #EC4899, #FFB037)';
+                e.target.style.color = 'white';
+              }}
+              onMouseLeave={(e) => { 
+                e.target.style.background = 'transparent';
+                e.target.style.color = 'black';
+              }}>
+                See all
+          </button></Link>
           </div>
-          <Table hoverable> 
+          {/* <Table hoverable> 
             <Table.Head>
               <Table.HeadCell>Feedback</Table.HeadCell>
               <Table.HeadCell>Likes</Table.HeadCell>
@@ -132,7 +195,29 @@ export default function CustomerAdminProfileDetail() {
                 </Table.Row>
               </Table.Body>
             ))}
-          </Table>
+          </Table> */}
+          <table className='shadow-md' style={{borderCollapse: 'collapse'}}>
+            <thead>
+              <tr style={{backgroundColor: '#F3F4F6'}}>
+                <th style={{padding: '12px', textAlign: 'left'}}>Feedback</th>
+                <th style={{padding: '12px'}}>Likes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {feedbacks && feedbacks.map((feedback) => (
+                <tr style={{backgroundColor: '#FFFFFF'}} key={feedback._id}>
+                  <td style={{padding: '12px', width: '400px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
+                      {feedback.cus_feedback}
+                  </td>
+                  <td style={{padding: '12px', display: 'flex', alignItems: 'center', gap: '4px'}}>
+                    {feedback.numberOfLikes}
+                    <FaThumbsUp style={{fontSize: '0.875rem', marginBottom: '0.2rem', color: '#22C55E'}} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
         </div>
       </div>
     </div>

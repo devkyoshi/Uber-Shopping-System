@@ -67,7 +67,7 @@ export default function ShowCustomers() {
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 mt-5'>
       {currentCustomer.adminType === 'customer' && customers.length > 0 ? (
         <>
-            <Table hoverable className='shadow-md'>
+            {/* <Table hoverable className='shadow-md'>
                 <Table.Head>
                     <Table.HeadCell>Date created</Table.HeadCell>
                     <Table.HeadCell>User Image</Table.HeadCell>
@@ -95,7 +95,39 @@ export default function ShowCustomers() {
                         </Table.Row>
                     </Table.Body>
                 ))}
-            </Table>
+            </Table> */}
+            <table className='shadow-md mt-2' style={{borderCollapse: 'collapse', width: '100%', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}}>
+                <thead>
+                <tr style={{backgroundColor: '#F3F4F6', borderBottom: '1px solid #D1D5DB'}}>
+                    <th style={{padding: '10px', textAlign: 'left'}}>Date created</th>
+                    <th style={{padding: '10px', textAlign: 'left'}}>User Image</th>
+                    <th style={{padding: '10px', textAlign: 'left'}}>Username</th>
+                    <th style={{padding: '10px', textAlign: 'left'}}>E-Mail</th>
+                    <th style={{padding: '10px', textAlign: 'left'}}>Admin</th>
+                    <th style={{padding: '10px', textAlign: 'left'}}>Remove</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {customers.map((user, index) => (
+                        <tr style={{backgroundColor: '#FFFFFF', marginBottom: index < customers.length - 1 ? '10px' : 0}} key={user._id}>
+                        <td style={{padding: '10px'}}>{new Date(user.createdAt).toLocaleDateString()}</td>
+                        <td style={{padding: '10px'}}><img src='https://th.bing.com/th/id/OIP.eU8MYLNMRBadK-YgTT6FJQHaHw?rs=1&pid=ImgDetMain' alt={user._id} style={{borderRadius: '9999px', width: '40px', height: '40px', objectFit: 'cover', backgroundColor: '#D1D5DB'}}/></td>
+                        <td style={{padding: '10px', fontWeight: 'bold', color: '#4B5563'}}>{user.cus_username}</td>
+                        <td style={{padding: '10px'}}>{user.cus_email}</td>
+                        <td style={{padding: '10px'}}>{user.adminType !== 'null' ? (<span style={{color: '#22C55E'}}><FaCheck /></span>) : (<span style={{color: '#EF4444'}}><FaTimes /></span>)}</td>
+                        <td style={{padding: '10px'}}>
+                        <span onClick={() => {
+                            setShowModel(true);
+                            setUserIdToDelete(user._id);
+                        }} style={{fontWeight: 'bold', color: '#EF4444', cursor: 'pointer', textDecoration: 'underline'}} className='hover:underline'>
+                            Delete
+                        </span>
+                    </td>
+                </tr>
+                ))}
+                </tbody>
+            </table>
+
             {
                 showMore && (
                     <button onClick={handleShowMore} className='w-full text-teal-500 self-center tect-sm py-7'>Show more</button>
@@ -108,8 +140,7 @@ export default function ShowCustomers() {
       <Modal
         show={showModel}
         onClose={() => setShowModel(false)}
-        popup
-        size='md'>
+        >
             <Modal.Header/>
             <Modal.Body>
                 <div className='text-center'>
