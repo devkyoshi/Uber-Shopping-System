@@ -118,20 +118,32 @@ export default function Employee_Registration() {
           
 
             <Button
-              gradientDuoTone='purpleToPink'
-              type='submit'
-              disabled={loading}
-              className='w-40 h-10 mx-auto '
-              style={{ backgroundColor: '#00008B' }}
+               type='submit' 
+               className='mt-5'
+               disabled={loading} 
+               style={{
+                 padding: '0.25rem 0.25rem',
+                 fontSize: '1rem',
+                 borderRadius: '0.375rem',
+                 color: 'linear-gradient(90deg, #EC4899, #FFB037)',
+                 background: 'transparent',
+                 border: '1px solid #EC4899',
+                 outline: 'none',
+                 opacity: loading ? '0.7' : '1',
+                 pointerEvents: loading ? 'none' : 'auto',
+                 cursor: loading ? 'not-allowed' : 'pointer'
+               }}
+               onMouseEnter={(e) => { 
+               e.target.style.background = 'linear-gradient(90deg, #EC4899, #FFB037)';
+               e.target.style.color = 'white';
+               }}
+               onMouseLeave={(e) => { 
+               e.target.style.background = 'transparent';
+               e.target.style.color = 'black';
+               }}
+               
             >
-              {loading ? (
-                <>
-                  <Spinner size='sm' />
-                  <span className='pl-3'>Loading...</span>
-                </>
-              ) : (
-                'Register'
-              )}
+              Register
             </Button>
             
           </form>

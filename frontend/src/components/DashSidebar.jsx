@@ -83,21 +83,21 @@ export default function DashSidebar() {
 
           {currentUser.isAdmin && (
             <Link to='/Dashboard?tab=AdminPage'>
-              <Sidebar.Item icon={HiKey} label={' '}  labelColor={tab === 'AdminPage' ? 'dark' : 'none'} as='div'>
+              <Sidebar.Item icon={HiKey} label={' '} active={tab === 'AdminPage'} labelColor={tab === 'AdminPage' ? 'dark' : 'none'} as='div'>
                 HR Manger Page
               </Sidebar.Item>
             </Link>
           )}
            {currentUser.isAdmin && (
             <Link to='/Dashboard?tab=DashUsers'>
-              <Sidebar.Item icon={HiOutlineUserGroup} label={' '}  labelColor={tab === 'DashUsers' ? 'dark' : 'none'} as='div'>
+              <Sidebar.Item icon={HiOutlineUserGroup} label={' '} active={tab === 'DashUsers'} labelColor={tab === 'DashUsers' ? 'dark' : 'none'} as='div'>
                 Employee Info
               </Sidebar.Item>
             </Link>
           )}
            {currentUser.isAdmin && (
             <Link to='/Dashboard?tab=Announcements'>
-              <Sidebar.Item icon={HiDocumentText} label={' '}  labelColor={tab === 'Announcements' ? 'dark' : 'none'} as='div'>
+              <Sidebar.Item icon={HiDocumentText} label={' '} active={tab === 'Announcements'} labelColor={tab === 'Announcements' ? 'dark' : 'none'} as='div'>
                 Annoucemnts
               </Sidebar.Item>
             </Link>

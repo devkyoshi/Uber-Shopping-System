@@ -34,7 +34,7 @@ export default function Employee_Signin() {
   
       if(res.ok) {
         dispatch(signInSuccess(data));
-        navigate('/Dashboard');
+        navigate('/Emp_Home');
       }
     } catch (error) {
       dispatch(signInFailure(data.message));
@@ -73,11 +73,28 @@ export default function Employee_Signin() {
             </div>
 
                           <button
-                          gradientDuoTone='purpleToPink'
-                          type='submit'
-                          disabled={loading}
-                          className='w-40 h-10 mx-auto '
-                          style={{ backgroundColor: '#00008B' }}
+                              type='submit' 
+                              disabled={loading} 
+                              style={{
+                                padding: '0.5rem 1rem',
+                                fontSize: '1rem',
+                                borderRadius: '0.375rem',
+                                color: 'linear-gradient(90deg, #EC4899, #FFB037)',
+                                background: 'transparent',
+                                border: '1px solid #EC4899',
+                                outline: 'none',
+                                opacity: loading ? '0.7' : '1',
+                                pointerEvents: loading ? 'none' : 'auto',
+                                cursor: loading ? 'not-allowed' : 'pointer'
+                              }}
+                              onMouseEnter={(e) => { 
+                              e.target.style.background = 'linear-gradient(90deg, #EC4899, #FFB037)';
+                              e.target.style.color = 'white';
+                              }}
+                              onMouseLeave={(e) => { 
+                              e.target.style.background = 'transparent';
+                              e.target.style.color = 'black';
+                              }}
               >
                 Login
               </button>

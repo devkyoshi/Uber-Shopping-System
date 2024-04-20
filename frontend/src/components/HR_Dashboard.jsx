@@ -102,7 +102,31 @@ export default function DashboardComp() {
               <Link to={'/Dashboard?tab=DashUsers'}>See all</Link>
             </Button>
           </div>
-          <Table hoverable>
+          <table className="table hoverable shadow-md">
+  <thead>
+    <tr >
+      <th  className="w-auto pl-3 pr-0 pb-3 pt-3">User image</th>
+      <th  className="w-auto pl-0 pr-12 pb-3 pt-3">Username</th>
+    </tr>
+  </thead>
+  <tbody>
+    {users &&
+      users.map((user) => (
+        <tr key={user._id} className=" w-auto table-row bg-white dark:border-gray-700 dark:bg-gray-800">
+          <td  className="pl-3 pr-3">
+            <img
+              src={'https://www.366icons.com/media/01/profile-avatar-account-icon-16699.png'}
+              alt="user"
+              className="w-10 h-10 rounded-full bg-gray-500"
+            />
+          </td>
+          <td  className="pl-3 pr-3 pb-3 pt-3">{user.username}</td>
+        </tr>
+      ))}
+  </tbody>
+</table>
+
+          {/* <Table hoverable>
             <Table.Head>
               <Table.HeadCell>User image</Table.HeadCell>
               <Table.HeadCell>Username</Table.HeadCell>
@@ -122,7 +146,7 @@ export default function DashboardComp() {
                   </Table.Row>
                 </Table.Body>
               ))}
-          </Table>
+          </Table> */}
         </div>
         <div className='flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800'>
         
@@ -135,7 +159,36 @@ export default function DashboardComp() {
               <Link to={'/Dashboard?tab=Announcements'}>See all</Link>
             </Button>
           </div>
-          <Table hoverable>
+          <div className='shadow-md'>
+              <table className="table hoverable">
+  <thead>
+    <tr>
+      <th className="pl-3 pr-3">Announcements image</th>
+      <th className="pl-3 pr-3">Announcements Title</th>
+      <th className="pl-3 pr-3">Announcements Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    {announcements &&
+      announcements.map((announcement) => (
+        <tr key={announcement._id} className="table-row bg-white dark:border-gray-700 dark:bg-gray-800">
+          <td className="pl-3 pr-3 pt-3 pb-3 ">
+            <img
+              src={announcement.image}
+              alt="announcement"
+              className="w-14 h-10 rounded-md bg-gray-500 "
+            />
+          </td>
+          <td className="w-auto pt-3 pb-3 pl-3 pr-3">{announcement.title}</td>
+          <td className="w-auto pt-3 pb-3 pl-3 pr-3">{announcement.category}</td>
+        </tr>
+      ))}
+  </tbody>
+</table>
+          </div>
+        
+
+          {/* <Table hoverable>
             <Table.Head>
               <Table.HeadCell>Announcements image</Table.HeadCell>
               <Table.HeadCell>Announcements Title</Table.HeadCell>
@@ -157,7 +210,7 @@ export default function DashboardComp() {
                   </Table.Row>
                 </Table.Body>
               ))}
-          </Table>
+          </Table> */}
         </div>
       </div>
     </div>

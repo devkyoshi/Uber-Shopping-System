@@ -25,10 +25,10 @@ we're thrilled to have you join our delivery family.
 Get ready to bring smiles to hungry customers' faces one order at a time. Let's deliver deliciousness together!"
         </p>
         <Link
-          to='/search'
+          to='/Dashboard?tab=profile'
           className='text-xs sm:text-sm text-teal-500 font-bold hover:underline'
         >
-          View all Announcements
+          To Profile
         </Link>
       </div>
       <div className='p-3 bg-amber-100 dark:bg-slate-700 ml-20 mr-20'>

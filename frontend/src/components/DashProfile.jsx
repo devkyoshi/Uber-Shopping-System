@@ -175,16 +175,20 @@ export default function DashProfile() {
 />
 
 
-<Button type='submit'  gradientDuoTone='purpleToBlue' outline>
+<Button type='submit'  gradientDuoTone='purpleToPink'
+               
+               className='w-40 h-10 mx-auto mt-5'
+               style={{ backgroundColor: '#00008B' }}>
     Update
 </Button>
 
 {currentUser.isAdmin && (
           <Link to={'/Employee_Announcements'}>
             <Button
-              type='button'
-              gradientDuoTone='purpleToPink'
-              className='w-full'
+             gradientDuoTone='purpleToPink'
+             type='button'
+             className='w-auto h-auto mx-auto mt-2'
+             style={{ backgroundColor: '#00008B' }}
             >
              Publish an Announcement
             </Button>
@@ -218,8 +222,8 @@ export default function DashProfile() {
       <Modal
         show={showModal}
         onClose={() => setShowModal(false)}
-        popup
-        size='md'
+       
+       
       >
         <Modal.Header />
         <Modal.Body>
