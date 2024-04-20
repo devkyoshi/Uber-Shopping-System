@@ -35,6 +35,7 @@ import Employee_AnnouncementEdit from './pages/Employee_AnnouncementEdit';
 import AnnouncementHomeEach from './pages/AnnouncementHomeEach';
 import Employee_Announcements from "./pages/Employee_Announcements"
 import Projects from "./pages/Projects"
+import PerformanceReport from "./pages/Performance"
 
 export default function App() {
   return (
@@ -96,6 +97,7 @@ export default function App() {
       <Route path="/Employee_News" element={<Employee_News/>}/>
       <Route path="/Projects" element={<Projects/>}/>
       <Route path="/announcement/:announcementSlug" element={<AnnouncementHomeEach/>}/>
+      <Route path="/new" element={<PerformanceReport/>}/>
 
       
       </Routes>
