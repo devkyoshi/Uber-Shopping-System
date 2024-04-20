@@ -143,7 +143,7 @@ import axios from 'axios';
                   </span>
               </label>
               <label class="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="check">
-                  Picking
+                  Picked
                 </label>
                 
             </div>

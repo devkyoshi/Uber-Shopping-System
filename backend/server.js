@@ -97,6 +97,11 @@ app.use('/api/auth', authroutes);
 //posting stuff
 const announcementroutes = require('./routes/announcement.route.js');
 app.use('/api/announcement', announcementroutes);
+//price comparison - adding supermarkets in to the list 
+const comparisonRouter = require('./routes/comparisonCRUD'); 
+app.use('/comparison', comparisonRouter);
+
+
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

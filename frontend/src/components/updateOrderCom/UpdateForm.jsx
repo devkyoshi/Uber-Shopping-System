@@ -127,7 +127,7 @@ import axios from 'axios';
                   </span>
               </label>
               <label class="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="check">
-                  Another
+                  Delivered
                 </label>
 
                 {/**check box 3 */}
@@ -146,7 +146,7 @@ import axios from 'axios';
                   </span>
               </label>
               <label class="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="check">
-                  Done
+                  Picked
                 </label>
                 
             </div> 
