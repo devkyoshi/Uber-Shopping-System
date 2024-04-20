@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {useSelector} from 'react-redux';
 import { Alert, Button, Modal, TextInput } from 'flowbite-react';
-import { updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signoutSuccess } from '../redux/customer/customerRegisterSlice';
+import { updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signoutSuccess } from '../../../redux/customer/customerRegisterSlice';
 import {useDispatch } from 'react-redux';
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 
@@ -25,11 +25,11 @@ export default function ProfileDetail() {
       return;
     }
     if (!formData.cus_email &&
-      /*!formData.cus_age &&
+      !formData.cus_age &&
       !formData.cus_name &&
       !formData.cus_gender &&
       !formData.cus_cnumber &&
-      !formData.cus_address &&*/
+      !formData.cus_address &&
       !formData.cus_username) {
         dispatch(updateFailure());
         setUpdateUserFailure("Can't keep fields empty.");
@@ -110,10 +110,10 @@ export default function ProfileDetail() {
         <TextInput onChange={handleChange} type='text' id='cus_username' placeholder='Username' defaultValue={currentCustomer.cus_username}></TextInput>
         <TextInput onChange={handleChange} type='email' id='cus_email' placeholder='E-mail' defaultValue={currentCustomer.cus_email}></TextInput>
         <TextInput onChange={handleChange} type='password' id='cus_Password' placeholder='Password'></TextInput>
-        {/*<TextInput onChange={handleChange} type='text' id='cus_name' placeholder='Full name' defaultValue={currentCustomer.cus_name}></TextInput>
+        <TextInput onChange={handleChange} type='text' id='cus_name' placeholder='Full name' defaultValue={currentCustomer.cus_name}></TextInput>
         <div className='flex flex-row gap-2'>
         <div><TextInput onChange={handleChange} type='number' id='cus_cnumber' placeholder='Contact number' defaultValue={currentCustomer.cus_cnumber}></TextInput></div>
-        <div><select onChange={handleChange} className="w-full py-2 px-4 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" id="cus_gender">
+        <div><select defaultValue={currentCustomer.cus_gender} onChange={handleChange} className="w-full py-2 px-4 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" id="cus_gender">
                     <option value="" defaultValue={currentCustomer.cus_gender}></option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -124,13 +124,8 @@ export default function ProfileDetail() {
         <div className='flex flex-row gap-2'>
             <TextInput className='flex flex-1' onChange={handleChange} type='number' placeholder='Latitude' id='cus_latitude' defaultValue={currentCustomer.cus_latitude}/>
             <TextInput className='flex flex-1' onChange={handleChange} type='number' placeholder='Longtitude' id='cus_longtitude' defaultValue={currentCustomer.cus_longtitude}/>  
-        </div>*/}
+        </div>
         <Button type='submit' gradientDuoTone='pinkToOrange' outline disabled={loading}>{loading ? 'Loading...' : 'Save changes'}</Button>
-        {/*{
-          currentCustomer.isAdmin && (
-            <Button type='button' gradientDuoTone='pinkToOrange' className='w-full'></Button>
-          )
-        }*/}
       </form>
       <div className='text-red-500 flex justify-between mt-10'>
         <span onClick={() => setShowModal(true)} className='cursor-pointer'>Delete my account</span>

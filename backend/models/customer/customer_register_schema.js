@@ -23,7 +23,7 @@ const customerschema = new mongoose.Schema({
         default: 'null'
     },
 
-    /*cus_name:{
+    cus_name:{
         type: String,
         required: true,
     },
@@ -56,32 +56,8 @@ const customerschema = new mongoose.Schema({
     cus_longtitude:{
         type: Number,
         default: 0.00
-    }*/
+    }
 },{timestamps: true});
-
-/*customerschema.pre("save", async function (next) {
-    if (!this.isNew) {
-        next();
-        return;
-    }
-    try {
-        const Counter = require("./counter.js");
-        const counter = await Counter.findByIdAndUpdate("customerId", {}, { upsert: true, new: true });
-
-        if (!counter.sequence_value) {
-            counter.sequence_value = 100000;
-            await counter.save();
-        }
-
-        this.Cus_ID = counter.sequence_value++;
-        await counter.save();
-        
-        next();
-    } catch (error) {
-        next(error);
-    }
-});*/
-
 
 const Customer = mongoose.model("Customer",customerschema)
 module.exports = Customer;

@@ -152,15 +152,6 @@ export function OrdersTable() {
         </table>
         <hr />
 
-        <div className="p-5 pl-32">
-          <Typography variant="small" color="blue-gray" className="font-bold">
-            Delivery Charges: {"$5"}
-          </Typography>{" "}
-          <br />
-          <Typography variant="small" color="blue-gray" className="font-bold">
-            Total Price : {"$30"}
-          </Typography>
-        </div>
       </Card>
     </div>
   );

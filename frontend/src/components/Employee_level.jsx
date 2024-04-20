@@ -31,7 +31,7 @@ export default function Employee_level()  {
 
     try {
       dispatch(updateStart());
-      const res = await fetch(`http://localhost:8070/Employee/user/lvlupdate/${currentUser._id}`, {
+      const res = await fetch(`/api/user/lvlupdate/${currentUser._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

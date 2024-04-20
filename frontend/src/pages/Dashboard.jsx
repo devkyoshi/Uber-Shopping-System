@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import DashSidebar from '../components/DashSidebar';
 import Employee_level from '../components/Employee_level';
 import DashProfile from '../components/DashProfile';
-
+import Settings from '../components/Settings';
 import Employee_DeliveriesDone from '../components/Employee_DeliveriesDone';
 import Contact_Admin from '../components/Contact_Admin';
 import AdminPage from '../components/AdminPage';

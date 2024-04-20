@@ -1,9 +1,9 @@
 import React from 'react'
 import { Sidebar } from 'flowbite-react'
-import { HiArrowSmRight, HiUser } from 'react-icons/hi'
+import { HiAnnotation, HiArrowSmRight, HiChartPie, HiOutlineUserGroup, HiUser } from 'react-icons/hi'
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { signoutSuccess } from '../redux/customer/customerRegisterSlice';
+import { signoutSuccess } from '../../../redux/customer/customerRegisterSlice';
 import { useDispatch,useSelector } from 'react-redux';
 
 
@@ -40,9 +40,9 @@ export default function ProfileSideBar() {
   return (
       <Sidebar className='w-full md:w-56'>
         <Sidebar.Items>
-            <Sidebar.ItemGroup>
+            <Sidebar.ItemGroup className='flex flex-col gap-1'>
                 <Link to='/Customerprofile?tab=profile'>
-                <Sidebar.Item as='div' active={tab === 'profile'} icon={HiUser} label={'User'} labelColor='dark'>
+                <Sidebar.Item as='div' active={tab === 'profile'} icon={HiUser} label={currentCustomer.adminType !== 'null' ? 'Admin' : 'User'} labelColor='dark'>
                     Profile
                 </Sidebar.Item></Link>
                 {currentCustomer.adminType === 'null' && (
@@ -53,49 +53,63 @@ export default function ProfileSideBar() {
                 )}
                 {currentCustomer.adminType === 'customer' && (
                   <Link to='/AdminLogin?tab=customeradmin'>
-                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=customeradmin'} icon={HiUser} label={'Customer'} labelColor='red'>
+                    <Sidebar.Item as='div' active={tab === 'customeradmin'} icon={HiChartPie} label={'Customer'} labelColor='red'>
                        Dashboard
+                    </Sidebar.Item>
+                  </Link>
+                )}
+                 {currentCustomer.adminType === 'customer' && (
+                  <Link to='/AdminLogin?tab=showusers'>
+                    <Sidebar.Item as='div' active={tab === 'showusers'} icon={HiOutlineUserGroup}>
+                       Users
+                    </Sidebar.Item>
+                  </Link>
+                )}
+                {currentCustomer.adminType === 'customer' && (
+                  <Link to='/AdminLogin?tab=showfeedbacks'>
+                    <Sidebar.Item as='div' active={tab === 'showfeedbacks'} icon={HiAnnotation}>
+                       Feedbacks
                     </Sidebar.Item>
                   </Link>
                 )}
                 {currentCustomer.adminType === 'order' && (
                   <Link to='/AdminLogin?tab=orderadmin'>
-                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=orderadmin'} icon={HiUser} label={'Order'} labelColor='red'>
+                    <Sidebar.Item as='div' active={tab === 'orderadmin'} icon={HiUser} label={'Order'} labelColor='red'>
                        Dashboard
                     </Sidebar.Item>
                   </Link>
                 )}
                 {currentCustomer.adminType === 'payment' && (
                   <Link to='/AdminLogin?tab=paymentadmin'>
-                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=paymentadmin'} icon={HiUser} label={'Payment'} labelColor='red'>
+                    <Sidebar.Item as='div' active={tab === 'paymentadmin'} icon={HiUser} label={'Payment'} labelColor='red'>
                        Dashboard
                     </Sidebar.Item>
                   </Link>
                 )}
                 {currentCustomer.adminType === 'route' && (
                   <Link to='/AdminLogin?tab=routeadmin'>
-                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=routeadmin'} icon={HiUser} label={'Route'} labelColor='red'>
+                    <Sidebar.Item as='div' active={tab === 'routeadmin'} icon={HiUser} label={'Route'} labelColor='red'>
                        Dashboard
                     </Sidebar.Item>
                   </Link>
                 )}
                 {currentCustomer.adminType === 'supermarket' && (
                   <Link to='/AdminLogin?tab=supermarketadmin'>
-                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=supermarketadmin'} icon={HiUser} label={'Supermarket'} labelColor='red'>
+                    <Sidebar.Item as='div' active={tab === 'supermarketadmin'} icon={HiUser} label={'Supermarket'} labelColor='red'>
                        Dashboard
                     </Sidebar.Item>
                   </Link>
                 )}
                 {currentCustomer.adminType === 'quality' && (
                   <Link to='/AdminLogin?tab=qualityadmin'>
-                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=qualityadmin'} icon={HiUser} label={'Quality'} labelColor='red'>
+                    <Sidebar.Item as='div' active={tab === 'qualityadmin'} icon={HiUser} label={'Quality'} labelColor='red'>
                        Dashboard
                     </Sidebar.Item>
                   </Link>
                 )}
                 {currentCustomer.adminType === 'delivery' && (
                   <Link to='/AdminLogin?tab=deliveryadmin'>
-                    <Sidebar.Item as='div' active={locationLink.pathname === '/AdminLogin?tab=deliveryadmin'} icon={HiUser} label={'Delivery'} labelColor='red'>
+                    <Sidebar.Item as='div' active={tab === 'deliveryadmin'} icon={HiUser} label={'Delivery'} labelColor='red'>
                        Dashboard
                     </Sidebar.Item>
                   </Link>

@@ -1,12 +1,6 @@
 const express = require('express');
-const {
-  announcement,
-  getannouncement,
-  deleteannouncement,
-  updateannouncement
-} = require('../controllers/announcement.controller.js');
-const { verifyToken } = require('../utils/verifyuser.js');
-
+const { announcement, getannouncement, deleteannouncement, updateannouncement } = require('../controllers/announcement.controller');
+const { verifyToken } = require('../utils/verifyuser');
 const router = express.Router();
 
 router.post('/announcement', verifyToken, announcement);

@@ -15,7 +15,7 @@ export default function DashPosts() {
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
-        const res = await fetch(`http://localhost:8070/Employee/announcement/getannouncement?userId=${currentUser._id}`);
+        const res = await fetch(`/api/announcement/getannouncement?userId=${currentUser._id}`);
         const data = await res.json();
         console.log(data);
         if (res.ok) {
@@ -36,7 +36,7 @@ export default function DashPosts() {
   const handleShowMore = async () => {
     const startIndex = userAnnouncements.length;
     try {
-      const res = await fetch(`http://localhost:8070/Employee/announcement/getannouncement?userId=${currentUser._id}&startIndex=${startIndex}`);
+      const res = await fetch(`/api/announcement/getannouncement?userId=${currentUser._id}&startIndex=${startIndex}`);
       const data = await res.json();
       if (res.ok) {
         setUserAnnouncements((prev) => [...prev, ...data.announcements]);
@@ -53,7 +53,7 @@ export default function DashPosts() {
     setShowModal(false);
     try {
       const res = await fetch(
-        `http://localhost:8070/Employee/announcement/deleteannouncement/${announcementIdToDelete}/${currentUser._id}`,
+        `/api/announcement/deleteannouncement/${announcementIdToDelete}/${currentUser._id}`,
         {
           method: 'DELETE',
         }
@@ -76,63 +76,60 @@ export default function DashPosts() {
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500'>
     {currentUser.isAdmin && userAnnouncements.length > 0 ? (
       <>
-        <Table hoverable className='shadow-md'>
-          <Table.Head>
-            <Table.HeadCell>Date updated</Table.HeadCell>
-            
-            <Table.HeadCell>Announcment title</Table.HeadCell>
-            <Table.HeadCell>Post image</Table.HeadCell>
-            <Table.HeadCell>Announcment Category</Table.HeadCell>
-            <Table.HeadCell>Delete Announcment</Table.HeadCell>
-            <Table.HeadCell>Edit Announcment</Table.HeadCell>
-          </Table.Head>
-          {userAnnouncements.map((announcements) => (
-            <Table.Body key={announcements._id} className='divide-y'>
-              <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-                <Table.Cell>
-                  {new Date(announcements.updatedAt).toLocaleDateString()}
-                </Table.Cell>
-                
-                <Table.Cell>
-                  <Link
-                    className='font-medium text-gray-900 dark:text-white'
-                    to={`/announcement/${announcements.slug}`}
-                  >
-                    {announcements.title}
-                  </Link>
-                </Table.Cell>
-                <Table.Cell>
-                    <Link to={`/post/${announcements.slug}`}>
-                      <img
-                        src={announcements.image}
-                        className='w-20 h-10 object-cover bg-gray-500'
-                      />
-                    </Link>
-                  </Table.Cell>
-                <Table.Cell>{announcements.category}</Table.Cell>
-                <Table.Cell>
-                  <span
-                    onClick={() => {
-                      setShowModal(true);
-                      setAnnouncementsIdToDelete(announcements._id);
-                    }}
-                    className='font-medium text-red-500 hover:underline cursor-pointer'
-                  >
-                    Delete
-                  </span>
-                </Table.Cell>
-                <Table.Cell>
-                  <Link
-                    className='text-teal-500 hover:underline'
-                     to={`/Employee_AnnouncementEdit/${announcements._id}`}
-                  >
-                    <span>Edit</span>
-                  </Link>
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          ))}
-        </Table>
+      <div className='shadow-md'>
+  <div className='grid grid-cols-6 bg-gray-100 dark:bg-gray-800'>
+    <div className='p-3'>Date updated</div>
+    <div className='p-3'>Announcement title</div>
+    <div className='p-3'>Post image</div>
+    <div className='p-3'>Announcement Category</div>
+    <div className='p-3'>Delete Announcement</div>
+    <div className='p-3'>Edit Announcement</div>
+  </div>
+  {userAnnouncements.map((announcements) => (
+    <div key={announcements._id} className='divide-y grid grid-cols-6'>
+      <div className='p-3'>
+        {new Date(announcements.updatedAt).toLocaleDateString()}
+      </div>
+      <div className='p-3'>
+        <Link
+          className='font-medium text-gray-900 dark:text-white'
+          to={`/announcement/${announcements.slug}`}
+        >
+          {announcements.title}
+        </Link>
+      </div>
+      <div className='p-3'>
+        <Link to={`/post/${announcements.slug}`}>
+          <img
+            src={announcements.image}
+            className='w-20 h-10 object-cover bg-gray-500'
+          />
+        </Link>
+      </div>
+      <div className='p-3'>{announcements.category}</div>
+      <div className='p-3'>
+        <span
+          onClick={() => {
+            setShowModal(true);
+            setAnnouncementsIdToDelete(announcements._id);
+          }}
+          className='font-medium text-red-500 hover:underline cursor-pointer'
+        >
+          Delete
+        </span>
+      </div>
+      <div className='p-3'>
+        <Link
+          className='text-teal-500 hover:underline'
+          to={`/Employee_AnnouncementEdit/${announcements._id}`}
+        >
+          <span>Edit</span>
+        </Link>
+      </div>
+    </div>
+  ))}
+</div>
+
         <button
           onClick={handleShowMore}
           className='w-full text-teal-500 self-center text-sm py-7'

@@ -3,7 +3,7 @@ import { React, useState } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import { Button } from 'flowbite-react';
 import { useDispatch,useSelector } from 'react-redux';
-import { loginStart, loginSuccess, loginFailure } from '../redux/customer/customerRegisterSlice.js';
+import { loginStart, loginSuccess, loginFailure } from '../../../redux/customer/customerRegisterSlice.js';
 
 export default function Login() {
   const [formData, setFormData] = useState({});

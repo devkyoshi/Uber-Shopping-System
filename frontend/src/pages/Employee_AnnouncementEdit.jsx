@@ -2,9 +2,16 @@ import React from 'react'
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
+// import {
+//   getDownloadURL,
+//   getStorage,
+//   ref,
+//   uploadBytesResumable,
+// } from 'firebase/storage';
+// import { app } from '../firebase';
 import { useState,useEffect} from 'react';
-
+// import { CircularProgressbar } from 'react-circular-progressbar';
+//  import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate,useParams } from 'react-router-dom';
 import { current } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
@@ -21,7 +28,7 @@ export default function Employee_AnnouncementEdit() {
  useEffect(() => {
   try {
     const fetchAnnouncement = async () => {
-      const res = await fetch(`http://localhost:8070/Employee/announcement/getannouncement?announcementId=${announcementId}`);
+      const res = await fetch(`/api/announcement/getannouncement?announcementId=${announcementId}`);
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
@@ -43,7 +50,7 @@ export default function Employee_AnnouncementEdit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:8070/Employee/announcement/updateannouncement/${formData._id}/${currentUser._id}`, {
+      const res = await fetch(`/api/announcement/updateannouncement/${formData._id}/${currentUser._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -95,15 +102,21 @@ export default function Employee_AnnouncementEdit() {
         }}
         value={formData.content}
       />
-      <Button type='submit' gradientDuoTone='purpleToPink'>
+      <Button type='submit'   
+       gradientDuoTone='purpleToPink'     
+               className='w-40 h-10 mx-auto '
+               style={{ backgroundColor: '#00008B' }}>
       Update 
       </Button>
+     
       {publishError && (
         <Alert className='mt-5' color='failure'>
           {publishError}
         </Alert>
       )}
+     
     </form>
+    
   </div>
 );
 }

@@ -15,11 +15,11 @@ export default function Register() {
     e.preventDefault();
     if (!formData.cus_email||
         !formData.cus_username||
-        /*!formData.cus_age||
+        !formData.cus_age||
         !formData.cus_name||
         !formData.cus_gender||
         !formData.cus_cnumber||
-        !formData.cus_address||*/
+        !formData.cus_address||
         !formData.cus_password){
           return setErrorMesseage('Please fill out all fields.')
         }

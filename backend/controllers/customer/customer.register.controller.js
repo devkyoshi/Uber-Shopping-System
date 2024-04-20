@@ -1,6 +1,6 @@
-let Customer = require("../models/customer_register_schema.js")
+let Customer = require("../../models/customer/customer_register_schema.js")
 const bcrypt = require("bcrypt");
-const { errorHandler } = require("../utils/error.js");
+const { errorHandler } = require("../../utils/error.js");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -11,18 +11,18 @@ const register = async (req, res, next) => {
     const { cus_email,
             cus_username,
             cus_password,
-            /*cus_name,
+            cus_name,
             cus_age,
             cus_gender,
             cus_cnumber,
             cus_address,
             cus_latitude,
-            cus_longtitude*/ } = req.body;
+            cus_longtitude } = req.body;
   
     if (!cus_email||
         !cus_username||
         !cus_password||
-        /*!cus_name||
+        !cus_name||
         !cus_age||
         !cus_gender||
         !cus_cnumber||
@@ -31,7 +31,7 @@ const register = async (req, res, next) => {
         cus_age.trim() === ''||
         cus_gender.trim() === ''||
         cus_cnumber.trim() === ''||
-        cus_address.trim() === ''||*/
+        cus_address.trim() === ''||
         cus_email.trim() === ''||
         cus_username.trim() === ''||
         cus_password.trim() === '') {
@@ -44,13 +44,13 @@ const register = async (req, res, next) => {
         cus_email,
         cus_username,
         cus_password : hashedPass,
-        /*cus_name,
+        cus_name,
         cus_age,
         cus_gender,
         cus_cnumber,
         cus_address,
         cus_latitude,
-        cus_longtitude*/
+        cus_longtitude
     });
     
     try {
@@ -122,13 +122,13 @@ const update = async(req, res, next) => {
                 cus_email: req.body.cus_email,
                 cus_username: req.body.cus_username,
                 cus_password : req.body.cus_password,
-                /*cus_name: req.body.cus_name,
+                cus_name: req.body.cus_name,
                 cus_age: req.body.cus_age,
                 cus_gender: req.body.cus_gender,
                 cus_cnumber: req.body.cus_cnumber,
                 cus_address: req.body.cus_address,
                 cus_latitude: req.body.cus_latitude,
-                cus_longtitude: req.body.cus_longtitude,*/
+                cus_longtitude: req.body.cus_longtitude,
             },
         }, { new: true });
         const { cus_password: _, ...userData } = updatedUser._doc;
@@ -139,7 +139,7 @@ const update = async(req, res, next) => {
 }
 
 const deleteUser = async(req, res, next) => {
-    if(req.customer.id !== req.params.cus_ID){
+    if(req.customer.adminType !== 'customer' && req.customer.id !== req.params.cus_ID){
         return next(errorHandler(403, 'You are not allowed to delete this account'));
     }
     try {
@@ -158,4 +158,46 @@ const signout = (req,res,next) => {
     }
 };
 
-module.exports = { register, login, update,deleteUser,signout };
+const getUsers = async(req, res, next) => {
+    if(req.customer.adminType !== 'customer'){
+        return next(errorHandler(403, 'You are not allowed to see all users'));
+    }
+    try {
+        const startIndex = parseInt(req.query.startIndex) || 0;
+        const limit = parseInt(req.query.limit) || 9;
+        const sortDirection = req.query.order === 'asc' ? 1 : -1;
+
+        const users = await Customer.find()
+            .sort({ createdAt: sortDirection })
+            .skip(startIndex)
+            .limit(limit);
+
+            const userswopassword = users.map((customer) => {
+                const { cus_password, ...userData } = customer._doc;
+                return userData;
+            });
+
+            const totalUsers = await Customer.countDocuments();
+
+            const now = new Date();
+            const previous = new  Date(
+                now.getFullYear(),
+                now.getMonth() - 1,
+                now.getDate()
+            );
+
+            const lastMonthUsers = await Customer.countDocuments({
+                createdAt: { $gte: previous },
+            });
+
+            res.status(200).json({
+                users: userswopassword,
+                totalUsers,
+                lastMonthUsers,
+            });
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { register, login, update,deleteUser,signout, getUsers };

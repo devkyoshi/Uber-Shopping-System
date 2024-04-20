@@ -1,7 +1,7 @@
-const Announcement = require("../models/announcement.model.js");
-const { errorHandler } = require('../utils/error.js');
+const Announcement = require("../models/announcement.model");
+const { errorHandler } = require('../utils/error');
 
-exports.announcement = async (req, res, next) => {
+const announcement = async (req, res, next) => {
   if (!req.user.isAdmin) {
     return next(errorHandler(403, 'You are not allowed to create a post'));
   }
@@ -10,9 +10,9 @@ exports.announcement = async (req, res, next) => {
   }
 
   const slug = req.body.title.split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]/g, '');
-  
+
   const newAnnouncement = new Announcement({ ...req.body, slug, userId: req.user.id });
-  
+
   try {
     const savedAnnouncement = await newAnnouncement.save();
     res.status(201).json(savedAnnouncement);
@@ -21,7 +21,7 @@ exports.announcement = async (req, res, next) => {
   }
 };
 
-exports.getannouncement = async (req, res, next) => {
+const getannouncement = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
@@ -42,7 +42,11 @@ exports.getannouncement = async (req, res, next) => {
     const totalAnnouncements = await Announcement.countDocuments();
 
     const now = new Date();
-    const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
 
     const lastMonthAnnouncements = await Announcement.countDocuments({
       createdAt: { $gte: oneMonthAgo },
@@ -58,7 +62,7 @@ exports.getannouncement = async (req, res, next) => {
   }
 };
 
-exports.deleteannouncement = async (req, res, next) => {
+const deleteannouncement = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(errorHandler(403, 'You are not allowed to delete this announcement'));
   }
@@ -70,7 +74,7 @@ exports.deleteannouncement = async (req, res, next) => {
   }
 };
 
-exports.updateannouncement = async (req, res, next) => {
+const updateannouncement = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(errorHandler(403, 'You are not allowed to update this announcement'));
   }
@@ -90,4 +94,11 @@ exports.updateannouncement = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+module.exports = {
+  announcement,
+  getannouncement,
+  deleteannouncement,
+  updateannouncement,
 };

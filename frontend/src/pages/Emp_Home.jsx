@@ -3,12 +3,12 @@ import Emp_CallToAction from '../components/Emp_CallToAction';
 import { useEffect, useState } from 'react';
 import AnnouncementCard from '../components/AnnouncementCard';
 
-export default function Home() {
+export default function Emp_Home() {
   const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
-      const res = await fetch('http://localhost:8070/Employee/announcement/getannouncement');
+      const res = await fetch('/api/announcement/getannouncement');
       const data = await res.json();
       setAnnouncements(data.announcements);
     };
@@ -28,10 +28,10 @@ Get ready to bring smiles to hungry customers' faces one order at a time. Let's 
           to='/search'
           className='text-xs sm:text-sm text-teal-500 font-bold hover:underline'
         >
-          View all posts
+          View all Announcements
         </Link>
       </div>
-      <div className='p-3 bg-amber-100 dark:bg-slate-700'>
+      <div className='p-3 bg-amber-100 dark:bg-slate-700 ml-20 mr-20'>
         <Emp_CallToAction />
       </div>
 

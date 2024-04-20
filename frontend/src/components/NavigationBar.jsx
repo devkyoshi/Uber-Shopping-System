@@ -1,5 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { signoutSuccess } from "../redux/customer/customerRegisterSlice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { Dropdown, TextInput } from "flowbite-react";
+import React, { useState } from "react";
 
 import {
   Navbar,
@@ -13,6 +17,11 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
+  Avatar,
+  Popover,
+  PopoverHandler,
+  PopoverContent,
+  ListItemPrefix,
 } from "@material-tailwind/react";
 import {
   ChevronDownIcon,
@@ -174,6 +183,26 @@ function NavList() {
 
 export function NavigationBar() {
   const [openNav, setOpenNav] = React.useState(false);
+  const path = useLocation().pathname;
+  const { currentCustomer } = useSelector((state) => state.customer);
+  const dispatch = useDispatch();
+  const [isAvatarDropdownOpen, setIsAvatarDropdownOpen] = useState(false);
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch("/customer/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   React.useEffect(() => {
     window.addEventListener(
@@ -192,19 +221,173 @@ export function NavigationBar() {
             variant="h6"
             className="mr-4 cursor-pointer py-1.5 lg:ml-2"
           >
-            <span className="logo-span1">Uber </span>
-            <span className="logo-span2">Shopping</span>
+            <Link to="/Customerregister">
+              <div>
+                <span className="logo-span1">Uber </span>
+                <span className="logo-span2">Shopping</span>
+              </div>
+            </Link>
           </Typography>
           <div className="hidden lg:block">
             <NavList />
           </div>
+
           <div className="hidden gap-2 lg:flex">
-            <Button variant="text" size="sm" color="blue-gray">
-              Log In
-            </Button>
-            <Button variant="gradient" size="sm">
-              Sign In
-            </Button>
+            {currentCustomer ? (
+              <div>
+                <Popover placement="bottom-end">
+                  <PopoverHandler>
+                    <Avatar
+                      alt="user"
+                      src="https://docs.material-tailwind.com/img/face-2.jpg"
+                    />
+                  </PopoverHandler>
+                  <PopoverContent className="w-72">
+                    <div className="mb-4 flex items-center gap-4 border-b border-blue-gray-50 pb-4">
+                      <Avatar
+                        src="https://docs.material-tailwind.com/img/team-4.jpg"
+                        alt="tania andrew"
+                      />
+                      <div>
+                        <Typography variant="h6" color="blue-gray">
+                          {currentCustomer.cus_username}
+                        </Typography>
+                        <Typography
+                          variant="small"
+                          color="gray"
+                          className="font-medium text-blue-gray-500"
+                        >
+                          General Manager
+                        </Typography>
+                      </div>
+                    </div>
+                    <List className="p-0">
+                      <a
+                        href="#"
+                        className="text-initial font-medium text-blue-gray-500"
+                      >
+                        <ListItem>
+                          <ListItemPrefix>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              class="w-6 h-6"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z"
+                              />
+                            </svg>
+                          </ListItemPrefix>
+                          ABC Construction
+                        </ListItem>
+                      </a>
+                      <a
+                        href="#"
+                        className="text-initial font-medium text-blue-gray-500"
+                      >
+                        <ListItem>
+                          <ListItemPrefix>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              class="w-6 h-6"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
+                              />
+                            </svg>
+                          </ListItemPrefix>
+                          00 123 456 789
+                        </ListItem>
+                      </a>
+                      <a
+                        href="#"
+                        className="text-initial font-medium text-blue-gray-500"
+                      >
+                        <ListItem className="border-b">
+                          <ListItemPrefix>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              class="w-6 h-6"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                              />
+                            </svg>
+                          </ListItemPrefix>
+                          {currentCustomer.cus_email}
+                        </ListItem>
+                      </a>
+
+                      <Link to={"/Customerprofile?tab=profile"}>
+                        <ListItem>
+                          <ListItemPrefix>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              class="w-6 h-6"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                              />
+                            </svg>
+                          </ListItemPrefix>
+                          Profile
+                        </ListItem>
+                      </Link>
+                      <Link to={"/Customerlogin"}>
+                        <ListItem onClick={handleSignOut}>
+                          <ListItemPrefix>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              class="w-6 h-6"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                              />
+                            </svg>
+                          </ListItemPrefix>
+                          Sign Out
+                        </ListItem>
+                      </Link>
+                    </List>
+                  </PopoverContent>
+                </Popover>
+              </div>
+            ) : (
+              <Link to="/Customerlogin">
+                <Button variant="gradient" size="sm">
+                  Log In
+                </Button>
+              </Link>
+            )}
           </div>
           <IconButton
             variant="text"
