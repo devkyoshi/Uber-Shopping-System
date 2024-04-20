@@ -17,11 +17,11 @@ export default function CustomerRate() {
     }
   },[location.search])
   return (
-    <div className='min-h-screen flex flex-col md:flex-row'>
-      <div className='md:w-56'>
+    <div className='main-layout bg min-h-screen flex flex-col md:flex-row'>
+      <div>
         <SideBar/>
       </div>
-      {tab === 'rating' && <CustomerRateTab cus_id={currentCustomer._id}/>}
+      <div className="inner-layout">{tab === 'rating' && <CustomerRateTab cus_id={currentCustomer._id}/>}</div>
     </div>
   )
 }

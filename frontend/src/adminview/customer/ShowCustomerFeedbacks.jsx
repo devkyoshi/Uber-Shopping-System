@@ -68,7 +68,7 @@ export default function ShowCustomerFeedbacks() {
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 mt-5'>
       {currentCustomer.adminType === 'customer' && feedbacks.length > 0 ? (
         <>
-            <Table hoverable className='shadow-md'>
+            {/* <Table hoverable className='shadow-md'>
                 <Table.Head>
                     <Table.HeadCell>Date updated</Table.HeadCell>
                     <Table.HeadCell>User ID</Table.HeadCell>
@@ -96,7 +96,49 @@ export default function ShowCustomerFeedbacks() {
                         </Table.Row>
                     </Table.Body>
                 ))}
-            </Table>
+            </Table> */}
+            <table style={{borderCollapse: 'collapse', width: '100%', borderSpacing: 0}} className='shadow-md mt-2'>
+    <thead>
+        <tr style={{backgroundColor: '#F3F4F6', borderBottom: '1px solid #E5E7EB'}}>
+            <th style={{padding: '10px', textAlign: 'left'}}>Date updated</th>
+            <th style={{padding: '10px', textAlign: 'left'}}>User ID</th>
+            <th style={{padding: '10px', textAlign: 'left'}}>Feedback details</th>
+            <th style={{padding: '10px', textAlign: 'left'}}>Number of likes</th>
+            <th style={{padding: '10px', textAlign: 'left'}}>Number of dislikes</th>
+            <th style={{padding: '10px', textAlign: 'left'}}>Remove</th>
+        </tr>
+    </thead>
+    <tbody>
+        {feedbacks.map((feedback) => (
+            <tr style={{backgroundColor: '#FFFFFF', borderBottom: '1px solid #E5E7EB'}} key={feedback._id}>
+                <td style={{padding: '10px'}}>{new Date(feedback.updatedAt).toLocaleDateString()}</td>
+                <td style={{padding: '10px', fontWeight: 'bold', color: '#4B5563'}}>{feedback.cus_id}</td>
+                <td style={{padding: '10px'}}>{feedback.cus_feedback}</td>
+                <td style={{padding: '10px'}}>
+                    <div style={{display: 'flex', justifyContent: 'center', gap: '10px'}}>
+                        {feedback.numberOfLikes}
+                        <FaThumbsUp className='text-sm mt-1 text-green-400'/>
+                    </div>
+                </td>
+                <td style={{padding: '10px'}}>
+                    <div style={{display: 'flex', justifyContent: 'center', gap: '10px'}}>
+                        {feedback.numberOfDislikes}
+                        <FaThumbsDown className='text-sm mt-1 text-red-400'/>
+                    </div>
+                </td>
+                <td style={{padding: '10px'}}>
+                    <span onClick={() => {
+                        setShowModel(true);
+                        setFeedbackIdToDelete(feedback._id);
+                    }} style={{fontWeight: 'bold', color: '#EF4444', cursor: 'pointer'}} className='hover:underline'>
+                        Delete
+                    </span>
+                </td>
+            </tr>
+        ))}
+    </tbody>
+</table>
+
             {
                 showMore && (
                     <button onClick={handleShowMore} className='w-full text-teal-500 self-center tect-sm py-7'>Show more</button>

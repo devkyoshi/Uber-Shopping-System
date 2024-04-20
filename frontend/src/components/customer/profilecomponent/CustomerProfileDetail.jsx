@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {useSelector} from 'react-redux';
 import { Alert, Button, Modal, TextInput } from 'flowbite-react';
 import { updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signoutSuccess } from '../../../redux/customer/customerRegisterSlice';
@@ -24,13 +24,13 @@ export default function ProfileDetail() {
       setUpdateUserFailure('No changes made');
       return;
     }
-    if (!formData.cus_email &&
-      !formData.cus_age &&
-      !formData.cus_name &&
-      !formData.cus_gender &&
-      !formData.cus_cnumber &&
-      !formData.cus_address &&
-      !formData.cus_username) {
+    if (formData.cus_email === '' ||
+      formData.cus_age === '' ||
+      formData.cus_name === ''||
+      formData.cus_gender === '' ||
+      formData.cus_cnumber === '' ||
+      formData.cus_address === '' ||
+      formData.cus_username === '') {
         dispatch(updateFailure());
         setUpdateUserFailure("Can't keep fields empty.");
         return;
@@ -94,6 +94,27 @@ export default function ProfileDetail() {
       console.log(error.message);
     }
   };
+  useEffect(() => {
+    let errorMessageTimer;
+    let updateSuccessTimer;
+
+    if (updateUserFailure) {
+        errorMessageTimer = setTimeout(() => {
+            setUpdateUserFailure(null);
+        }, 3000); 
+    }
+
+    if (updateUserSuccess) {
+        updateSuccessTimer = setTimeout(() => {
+            setUpdateUserSuccess(null);
+        }, 3000); 
+    }
+
+    return () => {
+        clearTimeout(errorMessageTimer);
+        clearTimeout(updateSuccessTimer);
+    };
+}, [updateUserSuccess, updateUserFailure]);
   return (
     <div className='max-w-lg mx-auto p-3 w-full'>
       <style>
@@ -125,14 +146,35 @@ export default function ProfileDetail() {
             <TextInput className='flex flex-1' onChange={handleChange} type='number' placeholder='Latitude' id='cus_latitude' defaultValue={currentCustomer.cus_latitude}/>
             <TextInput className='flex flex-1' onChange={handleChange} type='number' placeholder='Longtitude' id='cus_longtitude' defaultValue={currentCustomer.cus_longtitude}/>  
         </div>
-        <Button type='submit' gradientDuoTone='pinkToOrange' outline disabled={loading}>{loading ? 'Loading...' : 'Save changes'}</Button>
+        <button 
+    type='submit' 
+    disabled={loading} 
+    style={{
+        padding: '0.5rem 1rem',
+        fontSize: '1rem',
+        borderRadius: '0.375rem',
+        color: 'linear-gradient(90deg, #EC4899, #FFB037)',
+        background: 'transparent',
+        border: '1px solid #EC4899',
+        outline: 'none',
+        transition: 'all 0.3s ease',
+        opacity: loading ? '0.7' : '1',
+        pointerEvents: loading ? 'none' : 'auto',
+        cursor: loading ? 'not-allowed' : 'pointer'
+    }}
+    onMouseEnter={(e) => { e.target.style.background = 'linear-gradient(90deg, #EC4899, #FFB037)'; }}
+    onMouseLeave={(e) => { e.target.style.background = 'transparent'; }}
+>
+    {loading ? 'Loading...' : 'Save changes'}
+</button>
+
       </form>
       <div className='text-red-500 flex justify-between mt-10'>
         <span onClick={() => setShowModal(true)} className='cursor-pointer'>Delete my account</span>
         <span onClick={handleSignOut} className='cursor-pointer'>Sign out</span>
       </div>
       {updateUserSuccess && (
-        <Alert color='success' className='mt-5'> {updateUserSuccess} </Alert>
+        <Alert color='success' className='mt-5 bg-green-100'> {updateUserSuccess} </Alert>
       )}
       {updateUserFailure && (
         <Alert color='failure' className='mt-5'> {updateUserFailure} </Alert>
@@ -141,7 +183,7 @@ export default function ProfileDetail() {
       {error && (
         <Alert color='failure' className='mt-5'> {error} </Alert>
       )}
-      <Modal show={showModal} onClose={() => setShowModal(false)} popup size='md'>
+      <Modal show={showModal} onClose={() => setShowModal(false)}>
         <Modal.Header/>
         <Modal.Body>
           <div className='text-center'>
