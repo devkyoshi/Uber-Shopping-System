@@ -47,14 +47,14 @@ const PerformanceReport = () => {
      <Card className=' bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 border border-gray-300 '>
      <CardBody>
      <div className="flex w-full shrink-0 gap-2 md:w-max ">
-        <Input type="number" 
+        <Input
                label='Month'
                color='blue-gray'
                value={month} 
                className='w-full md:w-72 '
                onChange={(e) => setMonth(e.target.value)} />
 
-        <Input type="number"
+        <Input 
                label='Year'
                color='blue-gray'
                value={year} 
