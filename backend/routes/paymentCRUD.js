@@ -6,7 +6,6 @@ const router = express.Router();
 const Order = require("../models/order");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
-const axios = require("axios");
 const Revenue = require("../models/revenue");
 
 // Add payment details for a certain order document(cash)
