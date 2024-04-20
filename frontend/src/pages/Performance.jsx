@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { SideBar } from '../components/SideBar';
+import {Button, Card, CardBody, CardFooter, Input, Typography} from '@material-tailwind/react'
 
 const PerformanceReport = () => {
   const [reportData, setReportData] = useState(null);
@@ -33,24 +35,49 @@ const PerformanceReport = () => {
   };
 
   return (
-    <div>
-      <h1>Performance Report</h1>
-      <div>
-        <label>Month:</label>
-        <input type="number" value={month} onChange={(e) => setMonth(e.target.value)} />
+    <div className='main-layout'>
+        <SideBar/>
+     <div className="inner-layout">
+     <Typography variant="h5" color="blue-gray">
+      Performance Report
+     </Typography>
+     <Typography color="gray" className="mt-1 font-normal mb-5">
+          These are details about the performance
+     </Typography>
+     <Card className=' bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 border border-gray-300 '>
+     <CardBody>
+     <div className="flex w-full shrink-0 gap-2 md:w-max ">
+        <Input type="number" 
+               label='Month'
+               color='blue-gray'
+               value={month} 
+               className='w-full md:w-72 '
+               onChange={(e) => setMonth(e.target.value)} />
+
+        <Input type="number"
+               label='Year'
+               color='blue-gray'
+               value={year} 
+               className='w-full md:w-72 '
+               onChange={(e) => setYear(e.target.value)} />
       </div>
-      <div>
-        <label>Year:</label>
-        <input type="number" value={year} onChange={(e) => setYear(e.target.value)} />
-      </div>
+      </CardBody>
+      <CardFooter className="justify-center text-center" >
       {reportData ? (
-        <div>
-          <button onClick={handleDownload}>Download Report</button>
+        <div >
+          <Button onClick={handleDownload}>Download Report</Button>
         </div>
       ) : (
-        <p>Loading...</p>
+        <Typography color="gray" className="mt-1 font-normal justify-center">
+          Loading...
+        </Typography>
       )}
+      </CardFooter>
+      
+      </Card>
+      </div>
     </div>
+    
   );
 };
 
