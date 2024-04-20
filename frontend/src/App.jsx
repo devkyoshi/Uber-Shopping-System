@@ -38,42 +38,41 @@ import TaskdriverUI from "./pages/taskdriver/TaskdriverUI";
 
 import Test from "./pages/Profile";
 import { NavigationBar } from "./components/NavigationBar";
-import Emp_PrivateRoute from './components/Emp_PrivateRoute';
-import Employee_AnnouncementEdit from './pages/Employee_AnnouncementEdit';
-import AnnouncementHomeEach from './pages/AnnouncementHomeEach';
+import Emp_PrivateRoute from "./components/Emp_PrivateRoute";
+import Employee_AnnouncementEdit from "./pages/Employee_AnnouncementEdit";
+import AnnouncementHomeEach from "./pages/AnnouncementHomeEach";
 import Emp_Header from "./components/Emp_Header";
-import Employee_Registration from "./pages/Employee_Registration"
-import Employee_Signin from "./pages/Employee_Signin"
-import Employee_News from "./pages/Employee_News"
-import Dashboard from "./pages/Dashboard"
-import Employee_Announcements from "./pages/Employee_Announcements"
-import Projects from "./pages/Projects"
+import Employee_Registration from "./pages/Employee_Registration";
+import Employee_Signin from "./pages/Employee_Signin";
+import Employee_News from "./pages/Employee_News";
+import Dashboard from "./pages/Dashboard";
+import Employee_Announcements from "./pages/Employee_Announcements";
+import Projects from "./pages/Projects";
 import Emp_Home from "./pages/Emp_Home";
 
-import OnlyHR_PrivateRoute from './components/OnlyHR_PrivateRoute';
-import PerformanceReport from "./pages/Performance"
+import OnlyHR_PrivateRoute from "./components/OnlyHR_PrivateRoute";
+import PerformanceReport from "./pages/Performance";
 
 export default function App() {
   return (
     <BrowserRouter>
       <NavigationBar />
-      <Routes  >
+      <Routes>
         {/* add your code below the last route! Dont add on Top*/}
         <Route path="/" element={<HomeUnregistered />} />
         <Route path="/about" element={<About />} />
         <Route path="/orderForm" element={<OrderForm />} />
         <Route path="/complaint" element={<Complaint />} />
         <Route path="/customer_register" element={<Register />} />
-       
+
         <Route path="/payment" element={<PaymentUI />} />
         <Route path="/task" element={<TaskUI />} />
         <Route path="/branch" element={<BranchUI />} />
         <Route path="/item" element={<ItemUI />} />
         <Route path="/refund/:complaintId/:orderId" element={<Refund />} />
-        
+
         <Route path="/myOrder" element={<ViewOrder />} />
         <Route path="/refund/:complaintId" element={<Refund />} />
-        <Route path="/payment-admin" element={<PaymentAdminUI />} />
         <Route path="/Customerlogin" element={<Login />} />
         <Route path="/Customerregister" element={<Register />} />
         <Route element={<AdminPrivateRoute />}>
@@ -97,39 +96,45 @@ export default function App() {
 
        
 
-        
         <Route element={<PrivateRoute />}>
           <Route path="/Customerprofile" element={<Profile />} />
           <Route path="/feedbackportal" element={<CustomerFeedback />} />
           <Route path="/employeerate" element={<CustomerRating />} />
         </Route>
         <Route path="/test" element={<Test />} />
-        <Route path="/Employee_Signin" element={<Employee_Signin/>}/>
-      <Route path="/Employee_Registration" element={<Employee_Registration/>}/>
-      <Route element={<Emp_PrivateRoute />}>
-         <Route path="/Dashboard" element={<Dashboard/>}/>
-         
-      </Route>
-      <Route element={<OnlyHR_PrivateRoute />}>
-          <Route path='/Employee_Announcements' element={<Employee_Announcements />} />
-          <Route path='/Employee_AnnouncementEdit/:announcementId' element={<Employee_AnnouncementEdit />} />
+        <Route path="/Employee_Signin" element={<Employee_Signin />} />
+        <Route
+          path="/Employee_Registration"
+          element={<Employee_Registration />}
+        />
+        <Route element={<Emp_PrivateRoute />}>
+          <Route path="/Dashboard" element={<Dashboard />} />
         </Route>
-      <Route path="/Employee_News" element={<Employee_News/>}/>
-      <Route path="/Projects" element={<Projects/>}/>
-      <Route path="/announcement/:announcementSlug" element={<AnnouncementHomeEach/>}/>
-      
-      
-       <Route >
-         <Route path="/Emp_Home" element={<Emp_Home/>}/>
+        <Route element={<OnlyHR_PrivateRoute />}>
+          <Route
+            path="/Employee_Announcements"
+            element={<Employee_Announcements />}
+          />
+          <Route
+            path="/Employee_AnnouncementEdit/:announcementId"
+            element={<Employee_AnnouncementEdit />}
+          />
+        </Route>
+        <Route path="/Employee_News" element={<Employee_News />} />
+        <Route path="/Projects" element={<Projects />} />
+        <Route
+          path="/announcement/:announcementSlug"
+          element={<AnnouncementHomeEach />}
+        />
+
+        <Route>
+          <Route path="/Emp_Home" element={<Emp_Home />} />
         </Route>
 
-      <Route path="/new" element={<PerformanceReport/>}/>
-
-      
+        <Route path="/new" element={<PerformanceReport />} />
       </Routes>
-     
+
       <Footer />
-      
     </BrowserRouter>
   );
 }
