@@ -14,9 +14,10 @@ export default function AdminPage() {
         {currentUser.isAdmin && (
           <Link to={'/Employee_Announcements'} style={{ textDecoration: 'none' }}>
             <Button
-              type='button'
-              gradientDuoTone='purpleToPink'
-              style={{ width: '100%', margin: 'auto' }}
+               gradientDuoTone='purpleToPink'
+               type='button'
+               className='w-40 h-10 mx-auto '
+               style={{ backgroundColor: '#00008B' }}
             >
               Publish
             </Button>
@@ -30,9 +31,11 @@ export default function AdminPage() {
         {currentUser.isAdmin && (
           <Link to={'/'} style={{ textDecoration: 'none' }}>
             <Button
-              type='button'
-              gradientDuoTone='purpleToPink'
-              style={{ width: '100%', margin: 'auto' }}
+            gradientDuoTone='purpleToPink'
+            type='button'
+            
+            className='w-40 h-10 mx-auto '
+            style={{ backgroundColor: '#00008B' }}
             >
               Manage
             </Button>

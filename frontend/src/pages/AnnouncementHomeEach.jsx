@@ -77,11 +77,12 @@ export default function AnnouncementHomeEach() {
     
       <form style={{ display: 'flex', flexDirection: 'column', marginBottom: '1.75rem', gap: '1rem' }}>
         
-          <Link to={'/'} style={{ textDecoration: 'none' }}>
+          <Link to={'/Emp_Home'} style={{ textDecoration: 'none' }}>
             <Button
-              type='button'
               gradientDuoTone='purpleToPink'
-              style={{ width: 'cover', margin: 'auto' }}
+              type='button'
+              className='w-auto h-10 mx-auto mt-5'
+              style={{ width: 'cover', margin: 'auto', backgroundColor: '#00008B' }}
             >
              Done
             </Button>
@@ -95,9 +96,10 @@ export default function AnnouncementHomeEach() {
         {currentUser.isAdmin && (
           <Link to={'/Dashboard?tab=Announcements'} style={{ textDecoration: 'none' }}>
             <Button
-              type='button'
               gradientDuoTone='purpleToPink'
-              style={{ width: 'cover', margin: 'auto' }}
+              type='button'
+              className='w-auto h-10 mx-auto mt-5'
+              style={{ width: 'cover', margin: 'auto', backgroundColor: '#00008B' }}
             >
               Update Another Announcement
             </Button>
@@ -111,9 +113,11 @@ export default function AnnouncementHomeEach() {
       {currentUser.isAdmin && (
         <Link to={'/Employee_Announcements'} style={{ textDecoration: 'none' }}>
           <Button
-            type='button'
-            gradientDuoTone='purpleToPink'
-            style={{ width: 'cover', margin: 'auto' }}
+         gradientDuoTone='purpleToPink'
+         type='button'
+         className='w-auto h-10 mx-auto mt-5'
+         
+            style={{ width: 'cover', margin: 'auto', backgroundColor: '#00008B' }}
           >
             Publish Another Announcement
           </Button>

@@ -35,13 +35,14 @@ import { NavigationBar } from "./components/NavigationBar";
 import Emp_PrivateRoute from './components/Emp_PrivateRoute';
 import Employee_AnnouncementEdit from './pages/Employee_AnnouncementEdit';
 import AnnouncementHomeEach from './pages/AnnouncementHomeEach';
-import Home from "./pages/Home"
+import Emp_Header from "./components/Emp_Header";
 import Employee_Registration from "./pages/Employee_Registration"
 import Employee_Signin from "./pages/Employee_Signin"
 import Employee_News from "./pages/Employee_News"
 import Dashboard from "./pages/Dashboard"
 import Employee_Announcements from "./pages/Employee_Announcements"
 import Projects from "./pages/Projects"
+import Emp_Home from "./pages/Emp_Home";
 
 import OnlyHR_PrivateRoute from './components/OnlyHR_PrivateRoute';
 
@@ -49,7 +50,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <NavigationBar />
-      <Routes>
+      <Routes  >
         {/* add your code below the last route! Dont add on Top*/}
         <Route path="/" element={<HomeUnregistered />} />
         <Route path="/about" element={<About />} />
@@ -104,11 +105,16 @@ export default function App() {
       <Route path="/Employee_News" element={<Employee_News/>}/>
       <Route path="/Projects" element={<Projects/>}/>
       <Route path="/announcement/:announcementSlug" element={<AnnouncementHomeEach/>}/>
-
       
-      </Routes>
+      
+       <Route >
+         <Route path="/Emp_Home" element={<Emp_Home/>}/>
+        </Route>
 
+      </Routes>
+     
       <Footer />
+      
     </BrowserRouter>
   );
 }

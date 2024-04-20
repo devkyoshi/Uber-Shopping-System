@@ -102,15 +102,21 @@ export default function Employee_AnnouncementEdit() {
         }}
         value={formData.content}
       />
-      <Button type='submit' gradientDuoTone='purpleToPink'>
+      <Button type='submit'   
+       gradientDuoTone='purpleToPink'     
+               className='w-40 h-10 mx-auto '
+               style={{ backgroundColor: '#00008B' }}>
       Update 
       </Button>
+     
       {publishError && (
         <Alert className='mt-5' color='failure'>
           {publishError}
         </Alert>
       )}
+     
     </form>
+    
   </div>
 );
 }

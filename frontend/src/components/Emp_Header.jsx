@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import React from 'react'
 
-export default function Header() {
+export default function EmpHeader() {
     const path = useLocation().pathname;
     const { currentUser } = useSelector((state) => state.user);
     const dispatch = useDispatch();

@@ -2,6 +2,7 @@ import React from 'react'
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Link } from 'react-router-dom';
 // import {
 //   getDownloadURL,
 //   getStorage,
@@ -74,7 +75,10 @@ export default function Employee_Announcements() {
           setFormData({ ...formData, content: value });
         }}
       />
-      <Button type='submit' gradientDuoTone='purpleToPink'>
+      <Button type='submit'  
+       gradientDuoTone='purpleToPink'     
+               className='w-40 h-10 mx-auto '
+               style={{ backgroundColor: '#00008B' }}>
         Publish
       </Button>
       {publishError && (
@@ -83,6 +87,16 @@ export default function Employee_Announcements() {
         </Alert>
       )}
     </form>
+    <Link to={'/Dashboard?tab=HR_Dashboard'} style={{ textDecoration: 'none' }}>
+            <Button
+               gradientDuoTone='purpleToPink'
+               type='button'
+               className='w-40 h-10 mx-auto mt-5'
+               style={{ backgroundColor: '#00008B' }}
+            >
+             Cancel
+            </Button>
+          </Link>
   </div>
 );
 }

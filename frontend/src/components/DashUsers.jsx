@@ -85,59 +85,49 @@ export default function DashUsers() {
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 '>
       {currentUser.isAdmin && users.length > 0 ? (
         <>
-          <Table hoverable className='shadow-md'>
-            <Table.Head >
-              <Table.HeadCell>Date created</Table.HeadCell>
-              <Table.HeadCell>User image</Table.HeadCell>
-              <Table.HeadCell>Username</Table.HeadCell>
-              <Table.HeadCell>Email</Table.HeadCell>
-              <Table.HeadCell>Admin</Table.HeadCell>
-              <Table.HeadCell>Delete</Table.HeadCell>
-               
-            </Table.Head>
-            {users.map((user) => (
-              <Table.Body className='divide-y' key={user._id}>
-               
+         <div className='shadow-md'>
+  <div className='grid grid-cols-6 bg-gray-100 dark:bg-black'>
+    <div className='p-3'>Date created</div>
+    <div className='p-3'>User image</div>
+    <div className='p-3'>Username</div>
+    <div className='p-3'>Email</div>
+    <div className='p-3'>Admin</div>
+    <div className='p-3'>Delete</div>
+  </div>
+  {users.map((user) => (
+    <div key={user._id} className='grid grid-cols-6 divide-x divide-gray-200 dark:divide-gray-800'>
+      <div className='p-3'>{new Date(user.createdAt).toLocaleDateString()}</div>
+      <div className='p-3'>
+        <img
+          src={'https://i.pinimg.com/originals/13/1d/19/131d198170c4c42f03145d30602f06f9.png'}
+          alt={user.username}
+          className='w-10 h-10 object-cover bg-gray-500 rounded-full'
+        />
+      </div>
+      <div className='p-3'>{user.username}</div>
+      <div className='p-3'>{user.email}</div>
+      <div className='p-3'>
+        {user.isAdmin ? (
+          <FaCheck className='text-green-500' />
+        ) : (
+          <FaTimes className='text-red-500' />
+        )}
+      </div>
+      <div className='p-3'>
+        <span
+          onClick={() => {
+            setShowModal(true);
+            setUserIdToDelete(user._id);
+          }}
+          className='font-medium text-red-500 hover:underline cursor-pointer'
+        >
+          Delete
+        </span>
+      </div>
+    </div>
+  ))}
+</div>
 
-            <Table.Row className='bg-white dark:border-black dark:bg-black'>
-                  <Table.Cell>
-                    {new Date(user.createdAt).toLocaleDateString()}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <img
-                      src={'https://i.pinimg.com/originals/13/1d/19/131d198170c4c42f03145d30602f06f9.png'}
-                      alt={user.username}
-                      className='w-10 h-10 object-cover bg-gray-500 rounded-full'
-                    />
-                  </Table.Cell>
-                  <Table.Cell>{user.username}</Table.Cell>
-                  <Table.Cell>{user.email}</Table.Cell>
-                  <Table.Cell>
-                    {user.isAdmin ? (
-                      <FaCheck className='text-green-500' />
-                    ) : (
-                      <FaTimes className='text-red-500' />
-                    )}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span
-                      onClick={() => {
-                        setShowModal(true);
-                        setUserIdToDelete(user._id);
-                      }}
-                      className='font-medium text-red-500 hover:underline cursor-pointer'
-                    >
-                      Delete
-                    </span>
-                  </Table.Cell>
-                  
-                 
-          
-         
-                </Table.Row>
-              </Table.Body>
-            ))}
-          </Table>
           {showMore && (
             <button
               onClick={handleShowMore}

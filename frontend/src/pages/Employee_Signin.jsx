@@ -72,15 +72,16 @@ export default function Employee_Signin() {
               <TextInput type='password' placeholder='Password' id='password'onChange={handleChange}/>
             </div>
 
-            <Button
-              gradientDuoTone='purpleToPink'
-              type='submit'
-             //disabled={loading}
-              className='w-40 h-10 mx-auto'
-            >Login
-            </Button>
-          
-          
+                          <button
+                          gradientDuoTone='purpleToPink'
+                          type='submit'
+                          disabled={loading}
+                          className='w-40 h-10 mx-auto '
+                          style={{ backgroundColor: '#00008B' }}
+              >
+                Login
+              </button>
+
            
 
 

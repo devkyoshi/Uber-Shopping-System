@@ -64,24 +64,24 @@ export default function Employee_Registration() {
           </p>
           <form className='flex flex-col gap-2 '  onSubmit={handleSubmit} >
             
-            <div>
+            <div >
               <Label value='Name' />
-              <TextInput type='name' placeholder='Eg: kamal' id='Emp_Name'onChange={handleChange}/>
+              <TextInput type='name' placeholder='  Eg: kamal' id='Emp_Name'onChange={handleChange} style={{ height: '40px' , padding: '10px'}} />
             </div>
             
             <div>
              <Label value='Age' />
-             <TextInput type='age' placeholder='Eg: 30' id='Emp_Age'onChange={handleChange} />
+             <TextInput type='age' placeholder='   Eg: 30' id='Emp_Age'onChange={handleChange}  style={{ height: '40px' , padding: '10px'}}/>
             </div>
 
            <div>
               <Label value='Gender' />
-              <TextInput type='gender' placeholder='Eg: Male /Female /Other' id='Emp_Gender'onChange={handleChange}/>
+              <TextInput type='gender' placeholder='   Eg: Male /Female /Other' id='Emp_Gender'onChange={handleChange} style={{ height: '40px' , padding: '10px'}}/>
             </div>
 
             <div>
               <Label value='Address' />
-              <TextInput type='address' placeholder='Eg: 123 Main St, City, Country' id='Emp_Address'onChange={handleChange}/>
+              <TextInput type='address' placeholder='  Eg: 123 Main St, City, Country' id='Emp_Address'onChange={handleChange} style={{ height: '40px' , padding: '10px'}}/>
             </div>
 
             <div>
@@ -121,7 +121,8 @@ export default function Employee_Registration() {
               gradientDuoTone='purpleToPink'
               type='submit'
               disabled={loading}
-              className='w-40 h-10 mx-auto'
+              className='w-40 h-10 mx-auto '
+              style={{ backgroundColor: '#00008B' }}
             >
               {loading ? (
                 <>
