@@ -9,28 +9,32 @@ const Complaint = require('../models/complaint')
 
 router.get('/quality-generate',async (req, res) => {
     try {
-        const { month, year } = req.query; // Assuming month and year are provided as query parameters
+      const { month, year } = req.query;
 
-        // Calculate the start and end dates of the selected month
-        const startDate = new Date(year, month - 1, 1); // month is 0-indexed in JavaScript Date
-        const endDate = new Date(year, month, 0); // Last day of the selected month
+      // Parse the year to ensure it's a number
+      const yearNumber = parseInt(year);
 
-        const doneComplaints = await Complaint.find({'complaint_status':'accepted'});
-        const complaints = await Complaint.find();
+      // Calculate the start and end dates of the selected month
+      const startDate = new Date(year, month - 1, 1); // month is 0-indexed in JavaScript Date
+      const endDate = new Date(year, month, 0); // Last day of the selected month
 
-        // Fetch orders with orderStatus as 'Picked'
-        const doneorders = await Order.find({ order_status: 'Picked' });
-        const orders = await Order.find();
+      // Retrieve complaints within the selected month
+      const doneComplaints = await Complaint.find({ 'complaint_status': 'accepted', 'created_at': { $gte: startDate, $lte: endDate } });
+      const complaints = await Complaint.find({ 'created_at': { $gte: startDate, $lte: endDate } });
 
-        // Fetch orders with cash payment status as 'Paid'
-        const cashPayments = await Order.distinct('cash_payment');
-        const doneCashPayments = await Order.find({ 'cash_payment.payment_status': 'Paid' });
+      // Retrieve orders within the selected month
+      const doneorders = await Order.find({ 'order_status': 'Picked', 'order_date': { $gte: startDate, $lte: endDate } });
+      const orders = await Order.find({ 'order_date': { $gte: startDate, $lte: endDate } });
+
+      // Retrieve cash payments within the selected month
+      const cashPayments = await Order.distinct('cash_payment', { 'cash_payment.paid_time': { $gte: startDate, $lte: endDate } });
+      const doneCashPayments = await Order.find({ 'cash_payment.payment_status': 'Paid', 'cash_payment.paid_time': { $gte: startDate, $lte: endDate } });
+
+      // Retrieve card payments within the selected month
+      const cardPayments = await Order.distinct('card_payment', { 'card_payment.paid_time': { $gte: startDate, $lte: endDate } });
+      const doneCardPayments = await Order.find({ 'card_payment.payment_status': 'Paid', 'card_payment.paid_time': { $gte: startDate, $lte: endDate } });
     
-        // Fetch orders with card payment status as 'Paid'
-        const cardPayments = await Order.distinct('card_payment');
-        const doneCardPayments = await Order.find({ 'card_payment.payment_status': 'Paid' });
-    
-        // Calculate the total number of orders, cash payments, and card payments
+       // Calculate the total number profit related data
         const totalOrders = orders.length;
         const totalDoneOrders = doneorders.length;
         const totalDoneCashPayments = doneCashPayments.length;
@@ -38,15 +42,23 @@ router.get('/quality-generate',async (req, res) => {
         const totalDoneCardPayments = doneCardPayments.length;
         const totalCardPayments = cardPayments.length;
 
+        // Calculate the total number of customer service related data
         const totalComplaints = complaints.length;
         const totalDoneComplaints = doneComplaints.length;
     
-        // Calculate payment percentages
+        // Calculate profit percentages
         const orderPercentage = totalDoneOrders > 0 ? ((totalDoneOrders / totalOrders) * 100).toFixed(2) : 0;
         const cashPaymentPercentage = totalDoneCashPayments > 0 ? ((totalDoneCashPayments / totalOrders) * 100).toFixed(2) : 0;
         const cardPaymentPercentage = totalDoneCardPayments > 0 ? ((totalDoneCardPayments / totalOrders) * 100).toFixed(2) : 0;
-
+        
+        // Calculate customer service percentages
         const complaintPercentage = totalDoneComplaints > 0 ? ((totalDoneComplaints / totalComplaints) * 100).toFixed(2) :0;
+
+        // Extract the month name from the selected date using toLocaleString()
+        const monthName = startDate.toLocaleString('en-US', { month: 'long' });
+
+        // Create HTML for the report title
+        const reportTitle = `<h1>Performance Report - ${monthName} ${yearNumber.toString()}</h1>`;
     
         // Create HTML for the report
         const reportHtml = generateReportHtml(
@@ -68,7 +80,7 @@ router.get('/quality-generate',async (req, res) => {
         );
     
         // Convert HTML to PDF and send to client
-        pdf.create(reportHtml).toStream((err, stream) => {
+        pdf.create(reportTitle + reportHtml).toStream((err, stream) => {
           if (err) {
             return res.status(500).send(err);
           }
@@ -102,7 +114,6 @@ router.get('/quality-generate',async (req, res) => {
           totalComplaints
     ) => {
       let html = '<style>table {border-collapse: collapse; width: 100%;} th, td {border: 1px solid black; padding: 8px; text-align: left;} th {background-color: #f2f2f2;}</style>';
-      html += '<h1>Performance Report</h1>';
 
       html += '<p>Profit Peformance</p>';
       html += '<table>';
