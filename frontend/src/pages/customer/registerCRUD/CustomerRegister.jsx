@@ -61,11 +61,11 @@ export default function Register() {
       </style>
         <div className='flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5'>
         <div className='flex-1 mt-20 mb-20'>
-            <Link to="/Customerregister" className='font-bold dark:text-white text-4xl'>
+            <Link to="/Customerlogin" className='font-bold dark:text-white text-4xl'>
               <span className='px-2 py-1 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-lg text-white'>Food</span>Delivery
             </Link>
             <p className='text-sm mt-5'>
-              vvvvv
+              Please register to see all of our latest products for the best prices
             </p>
           </div>
           <div className='flex-1 mt-20 mb-20'>{/*right*/}
@@ -117,11 +117,34 @@ export default function Register() {
                 <TextInput type='number' placeholder='Longtitude' id='cus_longtitude' onChange={handleChange}/>
               </div>
               </div>
-              <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}>{
+              {/* <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}>{
                 loading ? (
                   <><Spinner size='sm'/><span className='pl-3'>Loading...</span></>
                 ) : 'Register'
-              }</Button>
+              }</Button> */}
+              <button 
+                className='mt-2'
+                type='submit' 
+                disabled={loading} 
+                style={{
+                  padding: '0.6rem 1rem',
+                  fontSize: '0.9rem',
+                  fontWeight: 'bold',
+                  borderRadius: '0.375rem',
+                  color: 'white',
+                  background: 'linear-gradient(90deg, #7B68EE, #EC4899)',
+                  opacity: loading ? '0.7' : '1',
+                  pointerEvents: loading ? 'none' : 'auto',
+                  cursor: loading ? 'not-allowed' : 'pointer'
+                }}
+                onMouseEnter={(e) => { 
+                  e.target.style.background = 'linear-gradient(90deg, #EC4899, #7B68EE)';
+                }}
+                onMouseLeave={(e) => { 
+                  e.target.style.background = 'linear-gradient(90deg, #7B68EE, #EC4899)';
+                }}>
+                {loading ? 'Loading...' : 'Register'}
+              </button>
             </form>
             <div className='flex gap-2 text-sm mt-5'>
               <span>Have an account?</span>

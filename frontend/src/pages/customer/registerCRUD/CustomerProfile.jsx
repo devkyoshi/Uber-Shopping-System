@@ -15,12 +15,12 @@ export default function Profile() {
     }
   },[location.search])
   return (
-    <div className='min-h-screen flex flex-col md:flex-row'>
-      <div className='md:w-56'>{/* profile sidebar */}
+    <div className='main-layout bg min-h-screen flex flex-col md:flex-row'>
+      <div className='flex flex-auto md:w-56'>{/* profile sidebar */}
         <ProfileSideBar />
       </div>
       {/* profile.. */}
-      {tab === 'profile' && <ProfileDetail />}
+      <div className="inner-layout">{tab === 'profile' && <ProfileDetail />}</div>
     </div>
   )
 }
