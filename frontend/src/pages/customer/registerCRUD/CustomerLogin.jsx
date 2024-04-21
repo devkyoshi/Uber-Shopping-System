@@ -38,17 +38,17 @@ export default function Login() {
     }
   };
   return (
-    <div className='min-h-screen' style={{ 
+    <div className='min-h-screen' /*style={{ 
       backgroundImage: "url('https://cdn.dribbble.com/users/2063527/screenshots/11467383/media/c1ad5d2ebbdebb25282247869816cc9c.gif')",
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       width: 'auto',
       height: 'auto',
-  }}>
-        <div className='flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5'>
+  }}*/>
+        <div className='flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center mt-20 gap-5'>
         <div className='flex-1 mt-36'>
             <Link to="/Customerregister" className='font-bold dark:text-white text-4xl'>
-              <span className='px-2 py-1 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-lg text-white'>Food</span>Delivery
+              <span className='px-2 py-1 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-lg text-white'>Uber</span>Shopping
             </Link>
             <p className='text-sm mt-5'>
             Please login to see all of our latest products for the best prices

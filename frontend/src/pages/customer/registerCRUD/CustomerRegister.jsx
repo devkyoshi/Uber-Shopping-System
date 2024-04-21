@@ -1,4 +1,4 @@
-import { Alert, Label, Spinner, TextInput } from 'flowbite-react';
+import { Alert, Label, Select, Spinner, TextInput } from 'flowbite-react';
 import React, { useState } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import { Button } from 'flowbite-react';
@@ -46,13 +46,13 @@ export default function Register() {
     }
   };
   return (
-    <div className='min-h-screen'style={{ 
+    <div className='min-h-screen'/*style={{ 
       backgroundImage: "url('https://cdn.dribbble.com/users/2063527/screenshots/11467383/media/c1ad5d2ebbdebb25282247869816cc9c.gif')",
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       width: 'auto',
       height: 'auto',
-  }}>
+  }}*/>
         <style>
           {`
           #Cus_CNumber::-webkit-inner-spin-button,
@@ -62,7 +62,7 @@ export default function Register() {
         <div className='flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5'>
         <div className='flex-1 mt-20 mb-20'>
             <Link to="/Customerlogin" className='font-bold dark:text-white text-4xl'>
-              <span className='px-2 py-1 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-lg text-white'>Food</span>Delivery
+              <span className='px-2 py-1 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-lg text-white'>Uber</span>Shopping
             </Link>
             <p className='text-sm mt-5'>
               Please register to see all of our latest products for the best prices
@@ -86,20 +86,20 @@ export default function Register() {
                 <Label value='Your password' />
                 <TextInput type='password' placeholder='*********' id='cus_password' onChange={handleChange}/>
               </div>
-              <div className='flex flex-row gap-2'><div>
+              <div className='flex flex-row gap-2'><div className='flex flex-col flex-1'>
                 <Label value='Contact number' />
                 <TextInput type='number' placeholder='+94xxxxxxxxx' id='cus_cnumber' onChange={handleChange}/>
               </div>
-              <div>
+              <div className='flex flex-col flex-1'>
                 <Label value='Your Gender' />
-                <select className="w-full py-2 px-4 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" id="cus_gender" onChange={handleChange}>
+                <Select id="cus_gender" onChange={handleChange}>
                     <option value="" defaultValue>Choose...</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
-                </select>
+                </Select>
               </div>
-              <div>
+              <div className='flex flex-col flex-1'>
                 <Label value='Your Age' />
                 <TextInput type='number' placeholder='Age' id='cus_age' onChange={handleChange}/>
               </div></div>
