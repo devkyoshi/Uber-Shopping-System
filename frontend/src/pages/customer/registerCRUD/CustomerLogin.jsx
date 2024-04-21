@@ -38,13 +38,13 @@ export default function Login() {
     }
   };
   return (
-    <div className='min-h-screen' /*style={{ 
-      backgroundImage: "url('https://cdn.dribbble.com/users/2063527/screenshots/11467383/media/c1ad5d2ebbdebb25282247869816cc9c.gif')",
+    <div className='min-h-screen' style={{ 
+      backgroundImage: "url('https://i.gifer.com/EIG1.gif')",
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       width: 'auto',
       height: 'auto',
-  }}*/>
+  }}>
         <div className='flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center mt-20 gap-5'>
         <div className='flex-1 mt-36'>
             <Link to="/Customerregister" className='font-bold dark:text-white text-4xl'>

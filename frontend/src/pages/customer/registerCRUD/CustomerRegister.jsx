@@ -46,14 +46,14 @@ export default function Register() {
     }
   };
   return (
-    <div className='min-h-screen'/*style={{ 
-      backgroundImage: "url('https://cdn.dribbble.com/users/2063527/screenshots/11467383/media/c1ad5d2ebbdebb25282247869816cc9c.gif')",
+    <div className='min-h-screen' style={{ 
+      backgroundImage: "url('https://i.gifer.com/EIG1.gif')",
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       width: 'auto',
       height: 'auto',
-  }}*/>
-        <style>
+    }}>
+      <style>
           {`
           #Cus_CNumber::-webkit-inner-spin-button,
           #Cus_CNumber::-webkit-outer-spin-button {-webkit-appearance: none;margin: 0;}
@@ -107,16 +107,6 @@ export default function Register() {
                 <Label value='Your address' />
                 <textarea className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-teal-500 resize-none" id='cus_address' onChange={handleChange}></textarea>
               </div>
-              <div className='flex flex-row gap-2'>
-              <div>
-                <Label value='Latitude' />
-                <TextInput type='number' placeholder='Latitude' id='cus_latitude' onChange={handleChange}/>
-              </div>
-              <div>
-                <Label value='Longtitude' />
-                <TextInput type='number' placeholder='Longtitude' id='cus_longtitude' onChange={handleChange}/>
-              </div>
-              </div>
               {/* <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}>{
                 loading ? (
                   <><Spinner size='sm'/><span className='pl-3'>Loading...</span></>
@@ -147,8 +137,8 @@ export default function Register() {
               </button>
             </form>
             <div className='flex gap-2 text-sm mt-5'>
-              <span>Have an account?</span>
-              <Link to='/Customerlogin' className='text-blue-500'>
+              <span className='text-white'>Already have an account?</span>
+              <Link to='/Customerlogin' className='text-blue-900'>
                   Login
               </Link>
             </div>

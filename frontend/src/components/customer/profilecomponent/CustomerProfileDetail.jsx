@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {useSelector} from 'react-redux';
-import { Alert, Button, Modal, TextInput } from 'flowbite-react';
+import { Alert, Button, Label, Modal, Select, TextInput } from 'flowbite-react';
 import { updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signoutSuccess } from '../../../redux/customer/customerRegisterSlice';
 import {useDispatch } from 'react-redux';
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
@@ -20,10 +20,11 @@ export default function ProfileDetail() {
     e.preventDefault();
     setUpdateUserFailure(null);
     setUpdateUserSuccess(null);
-    if(Object.keys(formData).length === 0){
-      setUpdateUserFailure('No changes made');
+    if (Object.keys(formData).length === 0) {
+      setUpdateUserError('No changes made');
       return;
     }
+
     if (formData.cus_email === '' ||
       formData.cus_age === '' ||
       formData.cus_name === ''||
@@ -50,7 +51,7 @@ export default function ProfileDetail() {
       dispatch(updateFailure());
       setUpdateUserFailure(data.message);
       return;
-    } else {
+    }else {
       dispatch(updateSuccess(data));
       setUpdateUserSuccess("Your profile updated successfully");
     }
@@ -124,31 +125,36 @@ export default function ProfileDetail() {
         `}
       </style>
       <h1 className='my-7 text-center font-semibold text-3xl'>Profile</h1>
-      <form onSubmit={handleSubmit} className='flex  flex-col gap-4'>
-        <div className='w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full'>
+      <form onSubmit={handleSubmit} className='flex  flex-col gap-2'>
+        <div className='mb-6 w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full'>
             <img src='https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png' alt="user" className='rounded-full w-full h-full object-cover border-8 border-[lightgray]' />
         </div>
+        <Label value='Username' />
         <TextInput onChange={handleChange} type='text' id='cus_username' placeholder='Username' defaultValue={currentCustomer.cus_username}></TextInput>
+        <Label value='E-mail' />
         <TextInput onChange={handleChange} type='email' id='cus_email' placeholder='E-mail' defaultValue={currentCustomer.cus_email}></TextInput>
+        <Label value='Password' />
         <TextInput onChange={handleChange} type='password' id='cus_Password' placeholder='Password'></TextInput>
+        <Label value='Full name' />
         <TextInput onChange={handleChange} type='text' id='cus_name' placeholder='Full name' defaultValue={currentCustomer.cus_name}></TextInput>
         <div className='flex flex-row gap-2'>
-        <div><TextInput onChange={handleChange} type='number' id='cus_cnumber' placeholder='Contact number' defaultValue={currentCustomer.cus_cnumber}></TextInput></div>
-        <div><select defaultValue={currentCustomer.cus_gender} onChange={handleChange} className="w-full py-2 px-4 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" id="cus_gender">
+        <div className='flex flex-col flex-1'><Label value='Contact number' /><TextInput onChange={handleChange} type='number' id='cus_cnumber' placeholder='Contact number' defaultValue={currentCustomer.cus_cnumber}></TextInput></div>
+        <div className='flex flex-col flex-1'><Label value='Gender' /><Select defaultValue={currentCustomer.cus_gender} onChange={handleChange} id="cus_gender">
                     <option value="" defaultValue={currentCustomer.cus_gender}></option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
-        </select></div>
-        <div><TextInput onChange={handleChange} type='number' id='cus_age' placeholder='Age' defaultValue={currentCustomer.cus_age}></TextInput></div></div>
-        <textarea onChange={handleChange} className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-teal-500 resize-none" id='cus_address' placeholder='Address' defaultValue={currentCustomer.cus_address}></textarea>
-        <div className='flex flex-row gap-2'>
-            <TextInput className='flex flex-1' onChange={handleChange} type='number' placeholder='Latitude' id='cus_latitude' defaultValue={currentCustomer.cus_latitude}/>
-            <TextInput className='flex flex-1' onChange={handleChange} type='number' placeholder='Longtitude' id='cus_longtitude' defaultValue={currentCustomer.cus_longtitude}/>  
+        </Select></div>
+        <div className='flex flex-col flex-1'><Label value='Age' /><TextInput onChange={handleChange} type='number' id='cus_age' placeholder='Age' defaultValue={currentCustomer.cus_age}></TextInput></div></div>
+        <Label value='Address' /><textarea onChange={handleChange} className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-teal-500 resize-none" id='cus_address' placeholder='Address' defaultValue={currentCustomer.cus_address}></textarea>
+        <div className='flex  flex-row gap-2'>
+            <div className='flex flex-col flex-1'><Label value='Latitude' /><TextInput className='flex flex-1' /*onChange={handleChange}*/ type='number' placeholder='Latitude' id='cus_latitude' defaultValue={currentCustomer.cus_latitude}/></div>
+            <div className='flex flex-col flex-1'><Label value='Longtitude' /><TextInput className='flex flex-1' /*onChange={handleChange}*/ type='number' placeholder='Longtitude' id='cus_longtitude' defaultValue={currentCustomer.cus_longtitude}/></div>
         </div>
         {/* <Button type='submit' gradientDuoTone='pinkToOrange' outline disabled={loading}>{loading ? 'Loading...' : 'Save changes'}</Button> */}
         
         <button 
+          className='mt-4'
           type='submit' 
           disabled={loading} 
           style={{
