@@ -42,6 +42,7 @@ import Projects from "./pages/Projects";
 import Emp_Home from "./pages/Emp_Home";
 import OnlyHR_PrivateRoute from "./components/OnlyHR_PrivateRoute";
 import PerformanceReport from "./pages/Performance";
+import Replacement from "./pages/Complaint/ComplaintReplacement"
 import { NavigationBar } from "./components/NavigationBar";
 
 function NavigationBarFun() {
@@ -121,9 +122,18 @@ export default function App() {
           path="/announcement/:announcementSlug"
           element={<AnnouncementHomeEach />}
         />
+
+        <Route>
+          <Route path="/Emp_Home" element={<Emp_Home />} />
+        </Route>
+
+        <Route path="/performance" element={<PerformanceReport />} />
+        <Route path="/replacement" element={<Replacement/>} />
         <Route path="/Emp_Home" element={<Emp_Home />} />
         <Route path="/new" element={<PerformanceReport />} />
       </Routes>
+
+
       <Footer />
     </BrowserRouter>
   );
