@@ -150,9 +150,7 @@ export default function ShowCustomerFeedbacks() {
       )}
       <Modal
         show={showModel}
-        onClose={() => setShowModel(false)}
-        popup
-        size='md'>
+        onClose={() => setShowModel(false)}>
             <Modal.Header/>
             <Modal.Body>
                 <div className='text-center'>

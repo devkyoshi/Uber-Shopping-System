@@ -23,10 +23,12 @@ useEffect(() => {
   }
 },[location.search])
   return (
-    <div className='min-h-screen flex flex-col md:flex-row'>
-      <div className='md:w-56'>{/* profile sidebar */}
+    <div className='main-layout bg min-h-screen flex flex-col md:flex-row'>
+      <div className="flex flex-auto">{/* profile sidebar */}
         <ProfileSideBar />
       </div>
+
+      <div className="inner-layout">
       {/* profile.. */}
       {tab === 'customeradmin' && <CustomerAdminProfileDetail />}
       {tab === 'showusers' && <ShowCustomers />}
@@ -36,7 +38,7 @@ useEffect(() => {
       {tab === 'routeadmin' && <RouteAdminProfileDetail />}
       {tab === 'supermarketadmin' && <SupermarketAdminProfileDetail />}
       {tab === 'qualityadmin' && <QualityAdminProfileDetail />}
-      {tab === 'deliveryadmin' && <DeliveryAdminProfileDetail />}
+      {tab === 'deliveryadmin' && <DeliveryAdminProfileDetail />}</div>
     </div>
   )
 }

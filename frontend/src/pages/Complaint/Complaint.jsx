@@ -76,7 +76,6 @@ export default function Complaint() {
           {/* Search input */}
           <div className="flex w-full shrink-0 md:w-max bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 rounded-xl shadow-md">
             <Input
-              type='text'
               label='Search'
               color='blue-gray'
               className='w-full md:w-72 '

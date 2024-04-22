@@ -47,7 +47,7 @@ export default function ProfileSideBar() {
                 </Sidebar.Item></Link>
                 
                   <Link to='/Employee_Signin'>
-                  <Sidebar.Item as='div' active={locationLink.pathname === '/Employee_Signin'} icon={HiUser} label={'Employee'} labelColor='red'>
+                  <Sidebar.Item as='div' active={locationLink.pathname === '/Employee_Signin'} icon={HiUser} label={'Employee'} labelColor='gray'>
                       Login
                   </Sidebar.Item></Link>
                 

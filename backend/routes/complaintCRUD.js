@@ -199,4 +199,36 @@ router.get("/complaint/:complaintID", async (req, res) => {
     }
 });
 
+// --------------------------------------------UPDATE THE COMPLAINT STATUS-------------------------------------------------------------
+
+router.put('/complaint-status/:complaintID', async (req, res) => {
+    try {
+        const { complaintID } = req.params;
+
+        // Find the complaint to update
+        const complaint = await Complaint.findById(complaintID);
+        if (!complaint) {
+            return res.status(404).json({ error: "Complaint not found" });
+        }
+
+        // Update the complaint status to "accepted"
+        const updatedComplaint = await Complaint.findByIdAndUpdate(complaintID, 
+            { 
+                complaint_status: "accepted",
+                updated_at: Date.now() // Update the updated_at field with the current date
+            },
+            { new: true });
+
+        if (!updatedComplaint) {
+            return res.status(404).json({ error: "Complaint not found" });
+        }
+
+        res.json(updatedComplaint);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while updating the Complaint" });
+    }
+});
+
+
 module.exports = router;
