@@ -1,23 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { SideBar } from '../../components/SideBar'; // Importing SideBar component
-import { Button, Card, CardBody, CardFooter, Typography } from '@material-tailwind/react'; // Importing Material Tailwind React components
-import axios from 'axios'; // Importing Axios for HTTP requests
-import { useNavigate } from 'react-router-dom'; // Importing useNavigate hook
+import React, { useEffect, useState } from "react";
+import { SideBar } from "../../components/SideBar"; // Importing SideBar component
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Typography,
+} from "@material-tailwind/react"; // Importing Material Tailwind React components
+import axios from "axios"; // Importing Axios for HTTP requests
+import { useNavigate } from "react-router-dom"; // Importing useNavigate hook
 
 export default function ComplaintAdmin() {
   // State to store complaints data
   const [complaints, setComplaints] = useState([]);
 
   // Initialize useNavigate hook
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   // Function to fetch complaint data from the server
   const fetchComplaintData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8070/Complaint/complaint-alladmin`);
+      const response = await axios.get(
+        `http://localhost:8070/Complaint/complaint-alladmin`
+      );
       setComplaints(response.data); // Setting complaints data in state
     } catch (error) {
-      console.error('Error fetching complaint data:', error);
+      console.error("Error fetching complaint data:", error);
     }
   };
 
@@ -28,53 +36,59 @@ export default function ComplaintAdmin() {
 
   // Function to handle accepting a complaint refund
   const handleAccept = async (complaintID) => {
+    // Display confirmation dialog
+    const confirmRefund = window.confirm(
+      "Are you sure you want to refund this complaint?"
+    );
 
-   // Display confirmation dialog
-  const confirmRefund = window.confirm('Are you sure you want to refund this complaint?');
+    if (confirmRefund) {
+      try {
+        // Update the complaint status to 'accepted'
+        await axios.put(
+          `http://localhost:8070/Complaint/complaint-status/${complaintID}`
+        );
 
-  if (confirmRefund) {
-    try {
-     
-      // Update the complaint status to 'accepted'
-      await axios.put(`http://localhost:8070/Complaint/complaint-status/${complaintID}`);
-
-      // Fetch the updated complaint data
-      await fetchComplaintData();
-    } catch (error) {
-      console.error('Error accepting complaint:', error);
+        // Fetch the updated complaint data
+        await fetchComplaintData();
+      } catch (error) {
+        console.error("Error accepting complaint:", error);
+      }
+    } else {
+      // User canceled the deletion
+      console.error("Refund canceled");
     }
-  }else {
-    // User canceled the deletion
-    console.error('Refund canceled');
-  }
   };
 
   const deleteComplaint = async (id) => {
     // Display a confirmation dialog
-    const confirmDelete = window.confirm('Are you sure you want to delete this complaint?');
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this complaint?"
+    );
 
     // Check if the user confirmed the deletion
     if (confirmDelete) {
       try {
         // Send DELETE request to the backend
-        await axios.delete(`http://localhost:8070/Complaint/complaint-delete/${id}`);
+        await axios.delete(
+          `http://localhost:8070/Complaint/complaint-delete/${id}`
+        );
 
         // After successful deletion, update the complaints list
         setComplaints(complaints.filter((complaint) => complaint._id !== id));
       } catch (error) {
-        console.error('Error deleting complaint:', error);
+        console.error("Error deleting complaint:", error);
       }
     } else {
       // User canceled the deletion
-      console.error('Deletion canceled');
+      console.error("Deletion canceled");
     }
   };
 
   return (
-    <div className='main-layout'>
+    <div>
       {/* Rendering SideBar component */}
-      <SideBar />
-      <div className='inner-layout '>
+
+      <div>
         <Typography variant="h5" color="blue-gray">
           Recent Complaints
         </Typography>
@@ -85,7 +99,10 @@ export default function ComplaintAdmin() {
         <div className="grid grid-cols-1 gap-3">
           {/* Mapping over complaints data and rendering cards for each complaint */}
           {complaints.map((complaint, index) => (
-            <Card key={index} className="p-4 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 border border-gray-300">
+            <Card
+              key={index}
+              className="p-4 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 border border-gray-300"
+            >
               <CardBody>
                 <div className="grid grid-cols-3 gap-3">
                   {/* Rendering complaint image */}
@@ -94,7 +111,9 @@ export default function ComplaintAdmin() {
                       src={`http://localhost:8070/${complaint.imageURL}`}
                       alt="Complaint Image"
                       className="rounded-lg w-64 h-auto"
-                      onError={(e) => console.error('Error loading image:', e.nativeEvent)} // Error handling for image loading
+                      onError={(e) =>
+                        console.error("Error loading image:", e.nativeEvent)
+                      } // Error handling for image loading
                     />
                     <Typography color="gray">Complaint image</Typography>
                   </div>
@@ -104,7 +123,9 @@ export default function ComplaintAdmin() {
                       src={`http://localhost:8070/${complaint.imageURL}`}
                       alt="Pickup Image"
                       className="rounded-lg w-64 h-auto"
-                      onError={(e) => console.error('Error loading image:', e.nativeEvent)} // Error handling for image loading
+                      onError={(e) =>
+                        console.error("Error loading image:", e.nativeEvent)
+                      } // Error handling for image loading
                     />
                     <Typography color="gray">Pickup image</Typography>
                   </div>
@@ -114,7 +135,9 @@ export default function ComplaintAdmin() {
                       src={`http://localhost:8070/${complaint.imageURL}`}
                       alt="Delivery Image"
                       className="rounded-lg w-64 h-auto"
-                      onError={(e) => console.error('Error loading image:', e.nativeEvent)} // Error handling for image loading
+                      onError={(e) =>
+                        console.error("Error loading image:", e.nativeEvent)
+                      } // Error handling for image loading
                     />
                     <Typography color="gray">Delivery image</Typography>
                   </div>
@@ -124,12 +147,20 @@ export default function ComplaintAdmin() {
                 {/* Rendering details for the complaint */}
                 <div className="grid grid-cols-2 gap-3 mb-3 justify-center">
                   <div className="flex flex-col items-center">
-                    <Typography color="gray">Order ID: <scan>{complaint.order_id}</scan></Typography>
-                    <Typography color="gray">Item ID: <scan>{complaint.item_id}</scan></Typography>
+                    <Typography color="gray">
+                      Order ID: <scan>{complaint.order_id}</scan>
+                    </Typography>
+                    <Typography color="gray">
+                      Item ID: <scan>{complaint.item_id}</scan>
+                    </Typography>
                   </div>
                   <div className="flex flex-col items-center">
-                    <Typography color="gray">Customer ID: <scan>{complaint.customer_id}</scan></Typography>
-                    <Typography color="gray">Payment ID: <scan>{complaint.payment_id}</scan></Typography>
+                    <Typography color="gray">
+                      Customer ID: <scan>{complaint.customer_id}</scan>
+                    </Typography>
+                    <Typography color="gray">
+                      Payment ID: <scan>{complaint.payment_id}</scan>
+                    </Typography>
                   </div>
                 </div>
                 <div className="flex flex-wrap justify-start mb-5 gap-10">
@@ -137,26 +168,30 @@ export default function ComplaintAdmin() {
                 </div>
                 <div className="flex justify-end">
                   {/* Rendering buttons based on resolving_option */}
-                  {complaint.resolving_option === 'refund' && (
+                  {complaint.resolving_option === "refund" && (
                     <Button
-                      color='blueGray'
-                      className='w-30 mr-3 mt-3 text-base py-2 border border-transparent'
+                      color="blueGray"
+                      className="w-30 mr-3 mt-3 text-base py-2 border border-transparent"
                       onClick={() => handleAccept(complaint._id)}
                     >
                       Refund
                     </Button>
                   )}
-                  {complaint.resolving_option === 'replacement' && (
+                  {complaint.resolving_option === "replacement" && (
                     <Button
-                      color='blueGray'
-                      className='w-30 mr-3 mt-3 text-base py-2 border border-transparent'
-                      onClick={() => navigate('/order')}
+                      color="blueGray"
+                      className="w-30 mr-3 mt-3 text-base py-2 border border-transparent"
+                      onClick={() => navigate("/order")}
                     >
                       Order
                     </Button>
                   )}
-                  <Button className='bg-red-900 w-30 mr-3 mt-3 text-base py-2 border border-transparent'
-                          onClick={() => deleteComplaint(complaint._id)}>Ignore</Button>
+                  <Button
+                    className="bg-red-900 w-30 mr-3 mt-3 text-base py-2 border border-transparent"
+                    onClick={() => deleteComplaint(complaint._id)}
+                  >
+                    Ignore
+                  </Button>
                 </div>
               </CardFooter>
             </Card>
