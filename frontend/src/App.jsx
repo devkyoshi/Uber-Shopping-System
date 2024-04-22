@@ -46,8 +46,17 @@ import { NavigationBar } from "./components/NavigationBar";
 
 function NavigationBarFun() {
   const location = useLocation();
-  const specificNavbarRoute = "/Emp_Home";
-  const isSpecificNavbarActive = location.pathname === specificNavbarRoute;
+  const specificNavbarRoute = [
+    "/Emp_Home",
+    "/Dashboard",
+    "/Employee_Announcements",
+    "/Employee_AnnouncementEdit",
+    "/Employee_News",
+  ];
+  const isSpecificNavbarActive = specificNavbarRoute.includes(
+    location.pathname
+  );
+  //const isSpecificNavbarActive = location.pathname === specificNavbarRoute;
 
   return isSpecificNavbarActive ? <Emp_Header /> : <NavigationBar />;
 }
