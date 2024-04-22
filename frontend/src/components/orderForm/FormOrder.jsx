@@ -92,22 +92,7 @@ export function FormOrder() {
                 className: "before:content-none after:content-none",
               }}
             />
-
-            {/* Total Amount Display */}
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Total Amount
-            </Typography>
-            <Input
-              size="lg"
-              value={formData.total_amount}
-              readOnly
-              placeholder="Total Amount"
-              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-
+            
             {/* Order Status Input */}
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Order Status
@@ -155,6 +140,23 @@ export function FormOrder() {
               }}
             />
 
+            {/* Distance Input */}
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Distance
+            </Typography>
+            <Input
+              type="text"
+              size="lg"
+              value={formData.delivery.distance}
+              onChange={handleChange}
+              name="delivery.distance"
+              placeholder="Enter Distance"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+            />
+
             {/* Delivery Charges Display */}
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Delivery Charges
@@ -170,18 +172,16 @@ export function FormOrder() {
               }}
             />
 
-            {/* Distance Input */}
+            {/* Total Amount Display */}
             <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Distance
+              Total Amount
             </Typography>
             <Input
-              type="text"
               size="lg"
-              value={formData.delivery.distance}
-              onChange={handleChange}
-              name="delivery.distance"
-              placeholder="Enter Distance"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              value={formData.total_amount}
+              readOnly
+              placeholder="Total Amount"
+              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}

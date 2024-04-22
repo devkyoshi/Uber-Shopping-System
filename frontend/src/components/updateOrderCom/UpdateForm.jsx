@@ -72,22 +72,6 @@ import axios from 'axios';
               }}
             />
             
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Total Amount
-            </Typography>
-            <Input
-              type="text"
-              size="lg"
-              value={formData.total_amount}
-              onChange={handleChange}
-              name="total_amount"
-              placeholder="Enter Total Amount"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-
             {/**Order status part */}
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Order Status
@@ -122,7 +106,7 @@ import axios from 'axios';
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Additional Notes
             </Typography>
-            <Input
+            <textarea
               type="text"
               size="lg"
               value={formData.additional_notes}
@@ -134,17 +118,17 @@ import axios from 'axios';
                 className: "before:content-none after:content-none",
               }}
             /> 
-
+            
             <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Additional Notes
+              Distance
             </Typography>
             <Input
               type="text"
               size="lg"
-              value={formData.additional_notes}
+              placeholder="Enter Distance"
+              value={formData.distance}
               onChange={handleChange}
-              name="additional_notes"
-              placeholder="Enter Total Amount"
+              name="distance"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
@@ -168,20 +152,21 @@ import axios from 'axios';
             />
 
             <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Distance
+              Total Amount
             </Typography>
             <Input
               type="text"
               size="lg"
-              placeholder="Enter Distance"
-              value={formData.distance}
+              value={formData.total_amount}
               onChange={handleChange}
-              name="distance"
+              name="total_amount"
+              placeholder="Enter Total Amount"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
             />
+
           </div>
           
           <Button type="submit" className="mt-6" fullWidth>
