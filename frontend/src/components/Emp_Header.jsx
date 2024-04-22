@@ -220,7 +220,7 @@ export default function EmpHeader() {
             variant="h6"
             className="mr-4 cursor-pointer py-1.5 lg:ml-2"
           >
-            <Link to="/Customerregister">
+            <Link to="/Emp_Home">
               <div>
                 <span className="logo-span1">Uber </span>
                 <span className="logo-span2">Shopping</span>
@@ -238,13 +238,13 @@ export default function EmpHeader() {
                   <PopoverHandler>
                     <Avatar
                       alt="user"
-                      src="https://docs.material-tailwind.com/img/face-2.jpg"
+                      src="https://www.366icons.com/media/01/profile-avatar-account-icon-16699.png"
                     />
                   </PopoverHandler>
                   <PopoverContent className="w-72">
                     <div className="mb-4 flex items-center gap-4 border-b border-blue-gray-50 pb-4">
                       <Avatar
-                        src="https://docs.material-tailwind.com/img/team-4.jpg"
+                        src="https://www.366icons.com/media/01/profile-avatar-account-icon-16699.png"
                         alt="tania andrew"
                       />
                       <div>

@@ -143,8 +143,7 @@ export default function DashPosts() {
      <Modal
         show={showModal}
         onClose={() => setShowModal(false)}
-        popup
-        size='md'
+        
       >
         <Modal.Header />
         <Modal.Body>

@@ -99,7 +99,7 @@ export default function DashUsers() {
       <div className='p-3'>{new Date(user.createdAt).toLocaleDateString()}</div>
       <div className='p-3'>
         <img
-          src={'https://i.pinimg.com/originals/13/1d/19/131d198170c4c42f03145d30602f06f9.png'}
+          src={'https://www.366icons.com/media/01/profile-avatar-account-icon-16699.png'}
           alt={user.username}
           className='w-10 h-10 object-cover bg-gray-500 rounded-full'
         />
@@ -143,8 +143,7 @@ export default function DashUsers() {
       <Modal
         show={showModal}
         onClose={() => setShowModal(false)}
-        popup
-        size='md'
+       
       >
         <Modal.Header />
         <Modal.Body>
