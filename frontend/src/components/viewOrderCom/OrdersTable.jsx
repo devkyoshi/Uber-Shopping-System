@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   Typography,
@@ -8,26 +9,30 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
 
 const TABLE_HEAD = ["Item Name", "Quantity", "Price", ""];
 
 const TABLE_ROWS = [
   {
-    iName: "Item 1",
-    qnty: "2",
+    item_name: "Item 1",
+    quantity: "2",
     price: "$10",
   },
   {
-    iName: "Item 2",
-    qnty: "1",
+    item_name: "Item 2",
+    quantity: "1",
     price: "$15",
   },
   {
-    iName: "Item 3",
-    qnty: "1",
+    item_name: "Item 3",
+    quantity: "1",
     price: "$15",
   },
+  {
+    item_name: "Chocolate chips cookies",
+    quantity: "1",
+    price: "$4"
+  }
 ];
 
 export function OrdersTable() {
@@ -62,7 +67,7 @@ export function OrdersTable() {
                   className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
                 >
                   <Typography
-                    variant="small"
+                    variant="h6" // Changed to "h6"
                     color="blue-gray"
                     className="font-bold leading-none text-black"
                   >
@@ -74,35 +79,35 @@ export function OrdersTable() {
           </thead>
 
           <tbody>
-            {TABLE_ROWS.map(({ iName, qnty, price }, index) => {
+            {TABLE_ROWS.map(({ item_name, quantity, price }, index) => {
               const isLast = index === TABLE_ROWS.length - 1;
               const classes = isLast
                 ? "p-4"
                 : "p-4 border-b border-blue-gray-50";
 
               return (
-                <tr key={iName}>
+                <tr key={item_name}>
                   <td className={classes}>
                     <Typography
-                      variant="small"
+                      variant="paragraph" // Changed to "paragraph"
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {iName}
+                      {item_name}
                     </Typography>
                   </td>
                   <td className={classes}>
                     <Typography
-                      variant="small"
+                      variant="paragraph" // Changed to "paragraph"
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {qnty}
+                      {quantity}
                     </Typography>
                   </td>
                   <td className={classes}>
                     <Typography
-                      variant="small"
+                      variant="paragraph" // Changed to "paragraph"
                       color="blue-gray"
                       className="font-normal"
                     >
@@ -111,12 +116,12 @@ export function OrdersTable() {
                   </td>
 
                   <td className={`${classes} pr-20`}>
-                    <button onClick={()=>{navigate("/updateOrder",{replace: true})}} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                    <button onClick={()=>{navigate('/updateOrder', {replace: true})}} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
                       Edit
                     </button>
                     <button
                       className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                      onClick={handleOpen}
+                onClick={handleOpen}
                     >
                       Remove
                     </button>
@@ -151,6 +156,16 @@ export function OrdersTable() {
           </tbody>
         </table>
         <hr />
+
+        {/*<div className="p-5 pl-32">
+          <Typography variant="small" color="blue-gray" className="font-bold">
+            Delivery Charges: {"$5"}
+          </Typography>{" "}
+          <br />
+          <Typography variant="small" color="blue-gray" className="font-bold">
+            Total Price : {"$30"}
+          </Typography>
+        </div>*/}
 
       </Card>
     </div>

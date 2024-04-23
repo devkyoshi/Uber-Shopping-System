@@ -37,7 +37,7 @@ export function UpdateForm() {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        const response = await axios.post("http://localhost:8070/Order/update", formData); //api thingy (address)
+        const response = await axios.put("http://localhost:8070/Order/update", formData); //api thingy (address)
         console.log(response.data); // You can handle the response as needed
       } catch (error) {
         console.error("Error:", error);
