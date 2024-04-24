@@ -7,7 +7,7 @@ export default function ItemUI() {
     <div className="main-layout">
       <SideBar />
       <div className="inner-layout">
-        <ItemTab supermarketId="66161123ea585633658a2b78" />
+        <ItemTab supermarketId="6627609e0ecfe8b994946ffe" />
       </div>
     </div>
   );

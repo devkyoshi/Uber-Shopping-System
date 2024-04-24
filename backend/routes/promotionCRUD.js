@@ -36,6 +36,7 @@ router.post("/:supermarketId/promotion-add", async (req, res) => {
 
 
 // Update a promotion for a specific supermarket
+// Update promotion in a specific supermarket
 router.put("/:supermarketId/promotion-update/:promotionId", async (req, res) => {
     try {
         const { supermarketId, promotionId } = req.params;
@@ -46,23 +47,23 @@ router.put("/:supermarketId/promotion-update/:promotionId", async (req, res) => 
             return res.status(404).json({ error: "Supermarket not found" });
         }
 
-        const promotionToUpdate = supermarket.promotions.find(promotion => promotion._id.toString() === promotionId);
-        if (!promotionToUpdate) {
+        const promotionIndex = supermarket.promotions.findIndex(promo => promo._id == promotionId);
+        if (promotionIndex === -1) {
             return res.status(404).json({ error: "Promotion not found" });
         }
 
-        promotionToUpdate.promotion_name = promotion_name;
-        promotionToUpdate.discount_rate = discount_rate;
-        promotionToUpdate.start_date = start_date;
-        promotionToUpdate.end_date = end_date;
-        promotionToUpdate.Items = Items.map(item => ({ item_type: item.item_type }));
+        supermarket.promotions[promotionIndex].promotion_name = promotion_name;
+        supermarket.promotions[promotionIndex].discount_rate = discount_rate;
+        supermarket.promotions[promotionIndex].start_date = start_date;
+        supermarket.promotions[promotionIndex].end_date = end_date;
+        supermarket.promotions[promotionIndex].Items = Array.isArray(Items) ? Items.map(item => ({ item_type: item.item_type })) : [];
 
         await supermarket.save();
 
         res.json("Promotion updated successfully");
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "An error occurred while updating the promotion" });
+        res.status(500).json({ error: "An error occurred while updating the promotion in the supermarket" });
     }
 });
 
