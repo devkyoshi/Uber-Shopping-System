@@ -44,6 +44,7 @@ import OnlyHR_PrivateRoute from "./components/OnlyHR_PrivateRoute";
 import PerformanceReport from "./pages/Performance";
 import Replacement from "./pages/Complaint/ComplaintReplacement"
 import { NavigationBar } from "./components/NavigationBar";
+import DetailedOrder from "./pages/DetailedOrder";
 
 function NavigationBarFun() {
   const location = useLocation();
@@ -131,9 +132,9 @@ export default function App() {
         <Route path="/replacement" element={<Replacement/>} />
         <Route path="/Emp_Home" element={<Emp_Home />} />
         <Route path="/new" element={<PerformanceReport />} />
+        <Route path="/details" element={<DetailedOrder />} />
       </Routes>
      
-
 
       <Footer />
     </BrowserRouter>
