@@ -44,7 +44,6 @@ import OnlyHR_PrivateRoute from "./components/OnlyHR_PrivateRoute";
 import PerformanceReport from "./pages/Performance";
 import Replacement from "./pages/Complaint/ComplaintReplacement"
 import { NavigationBar } from "./components/NavigationBar";
-import SupermarketUI from "./pages/supermarket/SupermarketUI";
 
 function NavigationBarFun() {
   const location = useLocation();
@@ -133,7 +132,7 @@ export default function App() {
         <Route path="/Emp_Home" element={<Emp_Home />} />
         <Route path="/new" element={<PerformanceReport />} />
       </Routes>
-      <Route path="/supermarket" element={<SupermarketUI/>} />
+     
 
 
       <Footer />
