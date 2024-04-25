@@ -45,6 +45,7 @@ import PerformanceReport from "./pages/Performance";
 import Replacement from "./pages/Complaint/ComplaintReplacement"
 import { NavigationBar } from "./components/NavigationBar";
 import SupermarketUI from "./pages/supermarket/SupermarketUI";
+import DetailedOrder from "./pages/DetailedOrder";
 
 function NavigationBarFun() {
   const location = useLocation();
@@ -134,7 +135,7 @@ export default function App() {
         <Route path="/new" element={<PerformanceReport />} />
       </Routes>
       <Route path="/supermarket" element={<SupermarketUI/>} />
-
+      <Route path="/details" element={<DetailedOrder />} />
 
       <Footer />
     </BrowserRouter>
