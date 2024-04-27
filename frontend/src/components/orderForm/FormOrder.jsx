@@ -5,64 +5,59 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom"
+import axios from 'axios'
 
 export function FormOrder() {
   const [formData, setFormData] = useState({
-    customer_id: "123", // Example customer ID
-    total_amount: "", // Will be calculated later
-    order_status: "Ongoing", // Ongoing status selected
-    additional_notes: "",
-    delivery: {
-      charges: "", // Will be calculated later
-      distance: "" // Will be input by the user
-    }
+    customer_id: '',
+    total_amount: '',
+    order_status: '',
+    additional_notes: '',
+    delivery_Charges: '',
+    delivery_Diatance: ''
   });
+  const [uploading, setUploading] = useState(false);
+  const navigate = useNavigate();
 
+  // function to handle changes in form inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
+    setFormData({...formData, [name]: value}) 
+  }
 
-  useEffect(() => {
-    // Calculate total amount based on delivery charges
-    const calculateTotalAmount = () => {
-      const total = parseFloat(formData.delivery.charges) || 0;
-      setFormData(prevState => ({
-        ...prevState,
-        total_amount: total.toFixed(2)
-      }));
-    };
-
-    // Automatically calculate delivery charges based on distance
-    const calculateDeliveryCharges = () => {
-      const distance = parseFloat(formData.delivery.distance) || 0;
-      const charges = distance * 2; // Example calculation
-      setFormData(prevState => ({
-        ...prevState,
-        delivery: {
-          ...prevState.delivery,
-          charges: charges.toFixed(2)
-        }
-      }));
-    };
-
-    calculateTotalAmount();
-    calculateDeliveryCharges();
-  }, [formData.delivery.distance]);
-
+  // function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8070/Order/order-add", formData);
+      setUploading(true);
+
+      const formDataToSend = new FormData();
+      formDataToSend.append('customer_id', formData.customer_id);
+      formDataToSend.append('total_amount', formData.total_amount);
+      formDataToSend.append('order_status', formData.order_status);
+      formDataToSend.append('additional_notes', formData.additional_notes);
+      formDataToSend.append('delivery_Distance', formData.delivery_Diatance);
+      formDataToSend.append('delivery_Charges', formData.delivery_Charges);
+
+      const response = await axios.post('http//localhost:8070/order/order-add', formDataToSend,{
+        headers: {
+          'Content-Type': 'multipart/form-data' //
+        },
+      });
+
+      // handle success response
       console.log(response.data);
-    } catch (error) {
-      console.error("Error:", error);
+      // navigate to the home page after the success placement
+      navigate('/home');
+
+    } catch(error) {
+      // handling errors
+      console.error('Error in order placement: ', error);
+    } finally {
+      // reset uploading
+      setUploading(false);
     }
   };
 
@@ -84,13 +79,7 @@ export function FormOrder() {
             </Typography>
             <Input
               size="lg"
-              value={formData.customer_id}
-              readOnly
-              placeholder="Enter Your Customer ID"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
             />
             
             {/* Order Status Input */}
@@ -101,22 +90,16 @@ export function FormOrder() {
 
               {/* Checkboxes */}
               <Checkbox
-                checked={formData.order_status === "Ongoing"}
-                onChange={handleChange}
                 name="order_status"
                 value="Ongoing"
                 label="Ongoing"
               />
               <Checkbox
-                checked={formData.order_status === "Delevered"}
-                onChange={handleChange}
                 name="order_status"
-                value="Delevered"
+                value="Delivered"
                 label="Delivered"
               />
               <Checkbox
-                checked={formData.order_status === "Picked"}
-                onChange={handleChange}
                 name="order_status"
                 value="Picked"
                 label="Picked"
@@ -130,14 +113,8 @@ export function FormOrder() {
             <Input
               type="text"
               size="lg"
-              value={formData.additional_notes}
               onChange={handleChange}
-              name="additional_notes"
-              placeholder="Enter Additional Notes"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
+              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
 
             {/* Distance Input */}
@@ -147,50 +124,38 @@ export function FormOrder() {
             <Input
               type="text"
               size="lg"
-              value={formData.delivery.distance}
-              onChange={handleChange}
-              name="delivery.distance"
-              placeholder="Enter Distance"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
+              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
-
-            {/* Delivery Charges Display */}
+            
+            {/* Delivery Charges */}
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Delivery Charges
             </Typography>
             <Input
+              type="text"
               size="lg"
-              value={formData.delivery.charges}
-              readOnly
-              placeholder="Delivery Charges"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
             />
 
-            {/* Total Amount Display */}
+            {/* Distance Input */}
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Total Amount
             </Typography>
             <Input
+              type="text"
               size="lg"
-              value={formData.total_amount}
-              readOnly
-              placeholder="Total Amount"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
             />
+            
           </div>
 
           {/* Button for submitting the form */}
-          <Button type="submit" className="mt-6" fullWidth>
-            Add Order
+          <Button type="submit"
+          disabled={uploading}
+          className="mt-6" 
+          fullWidth
+          >
+            {uploading ? 'placing...': 'Place Order'}
           </Button>
         </form>
       </div>
