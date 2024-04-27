@@ -45,7 +45,7 @@ Get ready to bring smiles to hungry customers' faces one order at a time. Let's 
               ))}
             </div>
             <Link
-              to={'/search'}
+              to={'/Emp_search'}
               className='text-lg text-teal-500 hover:underline text-center'
             >
               View all announcements
