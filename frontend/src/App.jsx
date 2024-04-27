@@ -80,7 +80,7 @@ export default function App() {
         <Route path="/branch" element={<BranchUI />} />
         <Route path="/item" element={<ItemUI />} />
         <Route path="/refund/:complaintId/:orderId" element={<Refund />} />
-        <Route path="/myOrder" element={<ViewOrder />} />
+        <Route path="/orders" element={<ViewOrder />} />
         <Route path="/refund/:complaintId" element={<Refund />} />
         <Route path="/Customerlogin" element={<Login />} />
         <Route path="/Customerregister" element={<Register />} />

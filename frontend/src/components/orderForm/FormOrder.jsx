@@ -16,7 +16,7 @@ export function FormOrder() {
     order_status: '',
     additional_notes: '',
     delivery_Charges: '',
-    delivery_Diatance: ''
+    delivery_Distance: ''
   });
   const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
@@ -38,12 +38,12 @@ export function FormOrder() {
       formDataToSend.append('total_amount', formData.total_amount);
       formDataToSend.append('order_status', formData.order_status);
       formDataToSend.append('additional_notes', formData.additional_notes);
-      formDataToSend.append('delivery_Distance', formData.delivery_Diatance);
+      formDataToSend.append('delivery_Distance', formData.delivery_Distance);
       formDataToSend.append('delivery_Charges', formData.delivery_Charges);
 
-      const response = await axios.post('http//localhost:8070/order/order-add', formDataToSend,{
+      const response = await axios.post('http://localhost:8070/order/order-add', formDataToSend,{
         headers: {
-          'Content-Type': 'multipart/form-data' //
+          'Content-Type': 'multipart/form-data' 
         },
       });
 
@@ -107,13 +107,14 @@ export function FormOrder() {
             </div>
 
             {/* Additional Notes Input */}
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
+            <Typography variant="h6"color="blue-gray" className="-mb-3">
               Additional Notes
             </Typography>
             <Input
               type="text"
               size="lg"
               onChange={handleChange}
+              name="additional_notes"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
 
@@ -124,6 +125,8 @@ export function FormOrder() {
             <Input
               type="text"
               size="lg"
+              onChange={handleChange}
+              name="delivery_Distance"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
             
@@ -134,16 +137,20 @@ export function FormOrder() {
             <Input
               type="text"
               size="lg"
+              onChange={handleChange}
+              name="delivery_Charges"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
 
-            {/* Distance Input */}
+            {/* Total Amount Input */}
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Total Amount
             </Typography>
             <Input
               type="text"
               size="lg"
+              onChange={handleChange}
+              name="total_amount"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
             
@@ -153,6 +160,7 @@ export function FormOrder() {
           <Button type="submit"
           disabled={uploading}
           className="mt-6" 
+          onClick={()=>{navigate('/', {replace: true, state:{customer_id: formData.customer_id, total_amount: formData.total_amount, order_status: formData.order_status, additional_notes: formData.additional_notes, delivery_Distance: formData.delivery_Distance, delivery_Charges: formData.delivery_Charges}})}}
           fullWidth
           >
             {uploading ? 'placing...': 'Place Order'}
