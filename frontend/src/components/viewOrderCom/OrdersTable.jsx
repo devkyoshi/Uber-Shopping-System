@@ -1,5 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios"
 import {
   Card,
   Typography,
@@ -41,11 +42,20 @@ export function OrdersTable() {
   const handleOpen = () => setOpen(!open);
   const navigate = useNavigate();
 
-  const handleDeleteConfirm = () => {
-    // Perform delete action here
-    console.log("Order deleted");
-    handleOpen(); // Close the dialog after deletion
-  };
+  // handling deletion
+  const deleteOrder = async (order_id) => {
+    const confirmDelete = window.confirm('Are you sure want to delete this order?');
+
+    if(confirmDelete) {
+      try {
+        await axios.delete('http://localhost:8070/order/order-delete/${order_id}');
+      } catch(error) {
+        console.error('Error in Order deletion: ', error);
+      }
+    } else {
+      console.error('Deletion canceled!');
+    }
+  }
 
   return (
     <div className="w-full">
@@ -143,7 +153,7 @@ export function OrdersTable() {
                         <Button
                           variant="gradient"
                           color="green"
-                          onClick={handleDeleteConfirm}
+                          onClick={deleteOrder}
                         >
                           <span>Confirm</span>
                         </Button>
