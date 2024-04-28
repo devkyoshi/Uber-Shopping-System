@@ -165,9 +165,18 @@ const getUsers = async(req, res, next) => {
     try {
         const startIndex = parseInt(req.query.startIndex) || 0;
         const limit = parseInt(req.query.limit) || 9;
-        const sortDirection = req.query.order === 'asc' ? 1 : -1;
+        const sortDirection = req.query.sort === 'asc' ? 1 : -1;
 
-        const users = await Customer.find()
+        let query = {};
+
+        if (req.query.searchTerm) {
+            query.$or = [
+                { cus_username: { $regex: req.query.searchTerm, $options: 'i' }},
+                { cus_email: { $regex: req.query.searchTerm, $options: 'i' }}
+            ];
+        }
+
+        const users = await Customer.find(query)
             .sort({ createdAt: sortDirection })
             .skip(startIndex)
             .limit(limit);

@@ -26,9 +26,17 @@ const getFeedbacks = async(req,res, next) => {
     try {
         const startIndex = parseInt(req.query.startIndex) || 0;
         const limit = parseInt(req.query.limit) || 9;
-        const sortDirection = req.query.sort === 'desc' ? 1 : -1;
+        const sortDirection = req.query.sort === 'asc' ? 1 : -1;
 
-        const cus_feedback = await Feedback.find().sort({createdAt: sortDirection}).skip(startIndex).limit(limit);
+        let query = {};
+
+        if (req.query.searchTerm) {
+            query.$or = [
+                { cus_feedback: { $regex: req.query.searchTerm, $options: 'i' } }
+            ];
+        }
+
+        const cus_feedback = await Feedback.find(query).sort({createdAt: sortDirection}).skip(startIndex).limit(limit);
         
         const totalFeedbacks = await Feedback.countDocuments();
 

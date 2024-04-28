@@ -1,9 +1,11 @@
-import { Modal, Table, Button } from 'flowbite-react'
+import { Modal, Button } from 'flowbite-react'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { useSelector } from 'react-redux'
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import { AiOutlineSearch } from 'react-icons/ai';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function ShowCustomers() {
     const { currentCustomer } = useSelector((state) => state.customer);
@@ -11,6 +13,57 @@ export default function ShowCustomers() {
     const [showMore,setShowMore] = useState(true);
     const [showModel,setShowModel] = useState(false);
     const [userIdToDelete,setUserIdToDelete] = useState('');
+    const [searchCustomer,setSearchCustomer] = useState('');
+    const  location = useLocation();
+    const navigate = useNavigate();
+    const [searchData ,setSeacrhData] = useState({
+        searchTerm: '',
+        sort: 'desc'
+    });
+    const [loading,setLoading] = useState(false);
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(location.search);
+        const searchTermUrl = urlParams.get('searchTerm');
+        const sortUrl = urlParams.get('sort');
+        if(searchTermUrl){
+            setSearchCustomer(searchTermUrl);
+        }
+        if(searchTermUrl || sortUrl){
+            setSeacrhData({
+                ...searchData,
+                searchTerm: searchTermUrl,
+                sort: sortUrl
+            })
+        }
+        const fetchUsers = async () => {
+            try {
+                setLoading(true);
+                const seacrhQuery = urlParams.toString();
+                const res = await fetch(`/customer/getusers?${seacrhQuery}`);
+                if(!res.ok){
+                    setLoading(false);
+                    return;
+                }
+                if(res.ok){
+                    const data = await res.json()
+                    setCustomers(data.users);
+                    setLoading(false);
+                    if(data.users.length === 9){
+                        setShowMore(true);
+                    }
+                    else{setShowMore(false)}
+                }
+            } catch (error) {
+                setLoading(false);
+                console.log(error.message);
+            }
+        };
+        if(currentCustomer.adminType === 'customer'){
+            fetchUsers();
+        }
+    }, [location.search])
+
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -33,8 +86,11 @@ export default function ShowCustomers() {
 
     const handleShowMore = async () => {
         const startIndex = customers.length;
+        const urlParams = new URLSearchParams(location.search);
+        urlParams.set('startIndex', startIndex)
+        const seacrhQuery = urlParams.toString(); 
         try {
-            const res = await fetch(`/customer/getusers?startIndex=${startIndex}`);
+            const res = await fetch(`/customer/getusers?${seacrhQuery}`);
             const data =await res.json();
             if(res.ok){
                 setCustomers((prev) => [...prev, ...data.users]);
@@ -63,10 +119,142 @@ export default function ShowCustomers() {
             console.log(error.message);
         }
     }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const urlParams = new URLSearchParams(location.search);
+        urlParams.set('searchTerm', searchCustomer);
+        const seacrhQuery = urlParams.toString();
+        navigate(`?${seacrhQuery}`);
+    }
+    const handleChange =(e) => {
+        if(e.target.id === 'searchTerm'){
+            setSeacrhData({
+                ...searchData,
+                searchTerm: e.target.value
+            });
+        }
+        if(e.target.id === 'sort'){
+            const sortOrder = e.target.value || 'desc';
+            setSeacrhData({
+                ...searchData,
+                sort: sortOrder
+            });
+        }
+    }
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const urlParams = new URLSearchParams(location.search);
+        urlParams.set('searchTerm', searchData.searchTerm);
+        urlParams.set('sort', searchData.sort);
+        const seacrhQuery = urlParams.toString();
+        navigate(`?${seacrhQuery}`);
+    }
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 mt-5'>
       {currentCustomer.adminType === 'customer' && customers.length > 0 ? (
         <>
+            <form onSubmit={handleSubmit} className='mb-10' style={{textAlign: 'right'}}>
+                <div style={{ position: 'relative' }}>
+                    <input
+                        className='shadow-md'
+                        type='text'
+                        value={searchCustomer}
+                        placeholder='Search..'
+                        onChange={(e) => setSearchCustomer(e.target.value)}
+                        style={{
+                            padding: '0.5rem 2rem 0.5rem 1rem',
+                            borderRadius: '0.375rem',
+                            borderWidth: '1px',
+                            borderColor: '#e5e7eb',
+                            backgroundColor: '#f9fafb',
+                            width: '30%',
+                            fontSize: '1rem',
+                            outline: 'none',
+                        }}
+                    />
+                    <AiOutlineSearch
+                        style={{
+                            position: 'absolute',
+                            top: '50%',
+                            right: '0.75rem',
+                            transform: 'translateY(-50%)',
+                            color: '#6b7280',
+                        }}
+                    />
+                </div>
+            </form>
+            {searchData.searchTerm && (
+            <div className='p-7'>
+                <form className='flex flex-row gap-2' style={{textAlign: 'left'}} onSubmit={handleSearch}>
+                    <div className='flex flex-1 flex-row items-center gap-2'>
+                        <label className='whitespace-nowrap font-semibold'>Search Term:</label>
+                        <input
+                            type='text'
+                            placeholder='Search...'
+                            id='searchTerm'
+                            value={searchData.searchTerm}
+                            onChange={handleChange}
+                            style={{
+                                padding: '0.75rem 1rem',
+                                borderRadius: '0.375rem',
+                                borderWidth: '1px',
+                                borderColor: '#e5e7eb',
+                                width: '60%',
+                                fontSize: '1rem',
+                                outline: 'none',
+                                boxShadow: 'none',
+                            }}
+                        />
+                    </div>
+                    <div className='flex flex-1 flex-row items-center gap-2'>
+                        <label className='whitespace-nowrap font-semibold'>Sort:</label>
+                        <select id='sort'
+                                defaultValue={searchData.sort}
+                                onChange={handleChange}
+                                style={{
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: '0.375rem',
+                                    borderWidth: '1px',
+                                    borderColor: '#e5e7eb',
+                                    width: '60%',
+                                    fontSize: '1rem',
+                                    outline: 'none',
+                                    boxShadow: 'none',
+                                }}
+                        >
+                            <option value='desc'>Latest</option>
+                            <option value='asc'>Oldest</option>
+                        </select>
+                    </div>
+                    <button 
+                        className=' ml-24'
+                        type='submit' 
+                        disabled={loading} 
+                        style={{
+                            padding: '0.5rem 1rem',
+                            fontSize: '1rem',
+                            borderRadius: '0.375rem',
+                            color: 'linear-gradient(90deg, #EC4899, #FFB037)',
+                            background: 'transparent',
+                            border: '1px solid #EC4899',
+                            outline: 'none',
+                            opacity: loading ? '0.7' : '1',
+                            pointerEvents: loading ? 'none' : 'auto',
+                            cursor: loading ? 'not-allowed' : 'pointer'
+                        }}
+                        onMouseEnter={(e) => { 
+                            e.target.style.background = 'linear-gradient(90deg, #EC4899, #FFB037)';
+                            e.target.style.color = 'white';
+                        }}
+                        onMouseLeave={(e) => { 
+                            e.target.style.background = 'transparent';
+                            e.target.style.color = 'black';
+                        }}>
+                        {loading ? 'Loading...' : 'Apply filters'}
+                    </button>
+                </form>
+            </div>)}
             {/* <Table hoverable className='shadow-md'>
                 <Table.Head>
                     <Table.HeadCell>Date created</Table.HeadCell>
@@ -96,6 +284,7 @@ export default function ShowCustomers() {
                     </Table.Body>
                 ))}
             </Table> */}
+            {!searchData.searchTerm && (
             <table className='shadow-md mt-2' style={{borderCollapse: 'collapse', width: '100%', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}}>
                 <thead>
                 <tr style={{backgroundColor: '#F3F4F6', borderBottom: '1px solid #D1D5DB'}}>
@@ -126,8 +315,40 @@ export default function ShowCustomers() {
                 </tr>
                 ))}
                 </tbody>
+            </table>)}
+            {searchData.searchTerm && (
+                <table className='shadow-md mt-2' style={{borderCollapse: 'collapse', width: '100%', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}}>
+                <thead>
+                <tr style={{backgroundColor: '#F3F4F6', borderBottom: '1px solid #D1D5DB'}}>
+                    <th style={{padding: '10px', textAlign: 'left'}}>Date created</th>
+                    <th style={{padding: '10px', textAlign: 'left'}}>User Image</th>
+                    <th style={{padding: '10px', textAlign: 'left'}}>Username</th>
+                    <th style={{padding: '10px', textAlign: 'left'}}>E-Mail</th>
+                    <th style={{padding: '10px', textAlign: 'left'}}>Admin</th>
+                    <th style={{padding: '10px', textAlign: 'left'}}>Remove</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {customers.map((user, index) => (
+                        <tr style={{backgroundColor: '#FFFFFF', marginBottom: index < customers.length - 1 ? '10px' : 0}} key={user._id}>
+                        <td style={{padding: '10px'}}>{new Date(user.createdAt).toLocaleDateString()}</td>
+                        <td style={{padding: '10px'}}><img src='https://th.bing.com/th/id/OIP.eU8MYLNMRBadK-YgTT6FJQHaHw?rs=1&pid=ImgDetMain' alt={user._id} style={{borderRadius: '9999px', width: '40px', height: '40px', objectFit: 'cover', backgroundColor: '#D1D5DB'}}/></td>
+                        <td style={{padding: '10px', fontWeight: 'bold', color: '#4B5563'}}>{user.cus_username}</td>
+                        <td style={{padding: '10px'}}>{user.cus_email}</td>
+                        <td style={{padding: '10px'}}>{user.adminType !== 'null' ? (<span style={{color: '#22C55E'}}><FaCheck /></span>) : (<span style={{color: '#EF4444'}}><FaTimes /></span>)}</td>
+                        <td style={{padding: '10px'}}>
+                        <span onClick={() => {
+                            setShowModel(true);
+                            setUserIdToDelete(user._id);
+                        }} style={{fontWeight: 'bold', color: '#EF4444', cursor: 'pointer', textDecoration: 'underline'}} className='hover:underline'>
+                            Delete
+                        </span>
+                    </td>
+                </tr>
+                ))}
+                </tbody>
             </table>
-
+            )}
             {
                 showMore && (
                     <button onClick={handleShowMore} className='w-full text-teal-500 self-center tect-sm py-7'>Show more</button>
