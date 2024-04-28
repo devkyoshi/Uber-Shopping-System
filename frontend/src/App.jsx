@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import About from "./pages/About";
 import OrderForm from "./pages/OrderForm";
-import HomeUnregistered from "./pages/HomeUnregistered";
 import { Footer } from "./components/Footer";
 import Complaint from "./pages/Complaint/Complaint";
 import PaymentUI from "./pages/payment/PaymentUI";
@@ -42,10 +41,11 @@ import Projects from "./pages/Projects";
 import Emp_Home from "./pages/Emp_Home";
 import OnlyHR_PrivateRoute from "./components/OnlyHR_PrivateRoute";
 import PerformanceReport from "./pages/Performance";
-import Replacement from "./pages/Complaint/ComplaintReplacement"
+import Replacement from "./pages/Complaint/ComplaintReplacement";
 import { NavigationBar } from "./components/NavigationBar";
 import DetailedOrder from "./pages/DetailedOrder";
-import Emp_search from "./pages/Emp_search"
+import Emp_search from "./pages/Emp_search";
+import Home from "./pages/Home";
 
 function NavigationBarFun() {
   const location = useLocation();
@@ -70,7 +70,7 @@ export default function App() {
       {/* Render the NavigationBar component */}
       <NavigationBarFun />
       <Routes>
-        <Route path="/" element={<HomeUnregistered />} />
+        <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/orderForm" element={<OrderForm />} />
         <Route path="/complaint" element={<Complaint />} />
@@ -107,7 +107,7 @@ export default function App() {
         />
         <Route element={<Emp_PrivateRoute />}>
           <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/Emp_search" element={<Emp_search/>}/>
+          <Route path="/Emp_search" element={<Emp_search />} />
         </Route>
         <Route element={<OnlyHR_PrivateRoute />}>
           <Route
@@ -131,12 +131,11 @@ export default function App() {
         </Route>
 
         <Route path="/performance" element={<PerformanceReport />} />
-        <Route path="/replacement" element={<Replacement/>} />
+        <Route path="/replacement" element={<Replacement />} />
         <Route path="/Emp_Home" element={<Emp_Home />} />
         <Route path="/new" element={<PerformanceReport />} />
         <Route path="/details" element={<DetailedOrder />} />
       </Routes>
-     
 
       <Footer />
     </BrowserRouter>

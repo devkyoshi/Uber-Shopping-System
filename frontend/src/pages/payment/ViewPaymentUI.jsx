@@ -10,6 +10,7 @@ import {
   CardFooter,
   Typography,
   Button,
+  Spinner,
 } from "@material-tailwind/react";
 
 export default function ViewPaymentUI({ orderId }) {
@@ -48,7 +49,11 @@ export default function ViewPaymentUI({ orderId }) {
   }, [orderId]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
   }
 
   if (error) {

@@ -13,6 +13,8 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export function CardContainer({
   itemName,
@@ -24,6 +26,8 @@ export function CardContainer({
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedItemID, setSelectedItemID] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const { currentCustomer } = useSelector((state) => state.customer);
+  const navigate = useNavigate();
 
   const toggleDescription = () => {
     setIsExpanded(!isExpanded);
@@ -39,6 +43,10 @@ export function CardContainer({
   };
 
   const handleAddToCart = () => {
+    if (!currentCustomer) {
+      navigate("/Customerlogin");
+      return;
+    }
     const selectedItem = items.find((item) => item.item_id === selectedItemID);
     if (selectedItem) {
       const newItem = {

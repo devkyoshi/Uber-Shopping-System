@@ -161,9 +161,11 @@ function NavList() {
         color="blue-gray"
         className="font-medium"
       >
-        <ListItem className="flex items-center gap-2 py-2 pr-4 nav-pages">
-          Home
-        </ListItem>
+        <Link to="/">
+          <ListItem className="flex items-center gap-2 py-2 pr-4 nav-pages">
+            Home
+          </ListItem>
+        </Link>
       </Typography>
       <NavListMenu />
       <Typography

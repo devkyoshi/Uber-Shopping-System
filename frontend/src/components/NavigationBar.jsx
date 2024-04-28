@@ -34,6 +34,7 @@ import {
   GlobeAmericasIcon,
   UserGroupIcon,
   ShoppingCartIcon,
+  FaceSmileIcon,
 } from "@heroicons/react/24/solid";
 
 const navListMenuItems = [
@@ -41,7 +42,7 @@ const navListMenuItems = [
     title: "Products",
     description: "Find the perfect items for your needs.",
     icon: SquaresPlusIcon,
-    path: "/products",
+    path: "/#products",
   },
   {
     title: "About Us",
@@ -60,9 +61,10 @@ const navListMenuItems = [
     icon: GlobeAmericasIcon,
   },
   {
-    title: "My Cart",
-    description: "Process Your Order",
-    icon: ShoppingCartIcon,
+    title: "Customer FeedBack",
+    description: "Give your valuable feedback to us",
+    icon: FaceSmileIcon,
+    path: "/feedbackportal?tab=feedback",
   },
   {
     title: "Special Offers",
@@ -167,9 +169,11 @@ function NavList() {
         color="blue-gray"
         className="font-medium"
       >
-        <ListItem className="flex items-center gap-2 py-2 pr-4 nav-pages">
-          Home
-        </ListItem>
+        <Link to="/">
+          <ListItem className="flex items-center gap-2 py-2 pr-4 nav-pages">
+            Home
+          </ListItem>
+        </Link>
       </Typography>
       <NavListMenu />
       <Typography
@@ -264,7 +268,9 @@ export function NavigationBar() {
                           color="gray"
                           className="font-medium text-blue-gray-500"
                         >
-                          {currentCustomer.adminType}
+                          {currentCustomer.adminType === "null"
+                            ? "Customer"
+                            : currentCustomer.adminType}
                         </Typography>
                       </div>
                     </div>

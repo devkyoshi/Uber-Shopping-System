@@ -11,9 +11,10 @@ import {
   PopoverContent,
   Button,
 } from "@material-tailwind/react";
+import { useSelector } from "react-redux";
 import { ShoppingCartIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
-export default function HomeUnregistered() {
+export default function Home() {
   const [cart, setCart] = useState([]); // State for the cart
   const [groceries, setGroceries] = useState([]);
   const [electronics, setElectronics] = useState([]);
@@ -21,6 +22,8 @@ export default function HomeUnregistered() {
   const [vegetables, setVegetables] = useState([]);
   const [pharmacy, setPharmacy] = useState([]);
   const [bakery, setBakery] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { currentCustomer } = useSelector((state) => state.customer);
 
   useEffect(() => {
     // Fetch item details when the component mounts
@@ -105,7 +108,7 @@ export default function HomeUnregistered() {
     <div className="bg">
       <PromotionContainer />
 
-      <section className="routes" id="reservations">
+      <section className="routes" id="products">
         <div className="flex items-center justify-center">
           {/* Title */}
           <Typography variant="h4" color="blue-gray" className="text-4xl mr-8">
@@ -113,76 +116,79 @@ export default function HomeUnregistered() {
           </Typography>
 
           {/* Shopping cart icon with popover */}
-          <div>
-            <Popover placement="bottom-start">
-              <Badge content={`${cart.length}`}>
-                <PopoverHandler>
-                  <IconButton>
-                    <ShoppingCartIcon className="h-6 w-6" />
-                  </IconButton>
-                </PopoverHandler>
-              </Badge>
-              <PopoverContent className="item-center justify-center">
-                <Typography
-                  variant="body"
-                  color="blue-gray"
-                  className="text-center border-b-2 border-green-600 text-xl pb-1 mb-1"
-                >
-                  Your Cart
-                </Typography>
-                {cart.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex justify-between items-center border-b"
+          {currentCustomer && (
+            <div>
+              <Popover placement="bottom-start">
+                <Badge content={`${cart.length}`}>
+                  <PopoverHandler>
+                    <IconButton>
+                      <ShoppingCartIcon className="h-6 w-6" />
+                    </IconButton>
+                  </PopoverHandler>
+                </Badge>
+                <PopoverContent className="item-center justify-center">
+                  <Typography
+                    variant="body"
+                    color="blue-gray"
+                    className="text-center border-b-2 border-green-600 text-xl pb-1 mb-1"
                   >
-                    <div className="pr-10">
-                      <Typography variant="body" color="blue-gray">
-                        {item.name}:
-                      </Typography>
+                    Your Cart
+                  </Typography>
+                  {cart.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between items-center border-b"
+                    >
+                      <div className="pr-10">
+                        <Typography variant="body" color="blue-gray">
+                          {item.name}:
+                        </Typography>
+                      </div>
+                      <div className="flex-grow flex justify-center mr-4">
+                        <Typography variant="body" color="blue-gray">
+                          {item.price} x{" "}
+                          {String(item.quantity).padStart(2, "0")}
+                        </Typography>
+                      </div>
+                      <div>
+                        <Typography
+                          variant="body"
+                          color="blue-gray"
+                          className="text-right mr-4"
+                        >
+                          = Rs.{" "}
+                          {(item.price * item.quantity)
+                            .toFixed(2)
+                            .padStart(5, "0")}
+                        </Typography>
+                      </div>
+                      <div>
+                        <XMarkIcon
+                          className="h-5 w-5 text-red-500"
+                          onClick={() => removeFromCart(item)}
+                        />
+                      </div>
                     </div>
-                    <div className="flex-grow flex justify-center mr-4">
-                      <Typography variant="body" color="blue-gray">
-                        {item.price} x {String(item.quantity).padStart(2, "0")}
-                      </Typography>
-                    </div>
-                    <div>
-                      <Typography
-                        variant="body"
-                        color="blue-gray"
-                        className="text-right mr-4"
-                      >
-                        = Rs.{" "}
-                        {(item.price * item.quantity)
-                          .toFixed(2)
-                          .padStart(5, "0")}
-                      </Typography>
-                    </div>
-                    <div>
-                      <XMarkIcon
-                        className="h-5 w-5 text-red-500"
-                        onClick={() => removeFromCart(item)}
-                      />
-                    </div>
-                  </div>
-                ))}
+                  ))}
 
-                <div className=" flex items-center justify-between mt-2 px-9 py-2">
-                  <Typography variant="body" color="blue-gray">
-                    Total:
-                  </Typography>
-                  <Typography variant="body" color="blue-gray">
-                    Rs. {getTotalPrice().toFixed(2).padStart(5, "0")}
-                  </Typography>
-                </div>
-                <div className="gap-32 inline-flex border-t-2 pt-2 border-green-600">
-                  <Button color="red" onClick={() => setCart([])}>
-                    Clear Cart
-                  </Button>
-                  <Button color="green">Make Order</Button>
-                </div>
-              </PopoverContent>
-            </Popover>
-          </div>
+                  <div className=" flex items-center justify-between mt-2 px-9 py-2">
+                    <Typography variant="body" color="blue-gray">
+                      Total:
+                    </Typography>
+                    <Typography variant="body" color="blue-gray">
+                      Rs. {getTotalPrice().toFixed(2).padStart(5, "0")}
+                    </Typography>
+                  </div>
+                  <div className="gap-32 inline-flex border-t-2 pt-2 border-green-600">
+                    <Button color="red" onClick={() => setCart([])}>
+                      Clear Cart
+                    </Button>
+                    <Button color="green">Make Order</Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+          )}
         </div>
 
         {groceries.length > 0 && (
