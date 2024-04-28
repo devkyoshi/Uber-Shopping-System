@@ -2,9 +2,19 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { CardContainer } from "../components/CardContainer";
 import { PromotionContainer } from "../components/home/PromotionContainer";
-import { Typography } from "@material-tailwind/react";
+import {
+  Typography,
+  IconButton,
+  Popover,
+  Badge,
+  PopoverHandler,
+  PopoverContent,
+  Button,
+} from "@material-tailwind/react";
+import { ShoppingCartIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function HomeUnregistered() {
+  const [cart, setCart] = useState([]); // State for the cart
   const [groceries, setGroceries] = useState([]);
   const [electronics, setElectronics] = useState([]);
   const [fruits, setFruits] = useState([]);
@@ -16,17 +26,20 @@ export default function HomeUnregistered() {
     // Fetch item details when the component mounts
     fetchItemDetails("Groceries");
     fetchItemDetails("Electronics");
+    fetchItemDetails("Fruits");
+    fetchItemDetails("Vegetables");
+    fetchItemDetails("Bakery");
+    fetchItemDetails("Pharmacy");
   }, []);
 
   const fetchItemDetails = async (itemType) => {
     try {
       const response = await axios.get(
-        `http://localhost:8070/Items/item-details/${itemType}`
+        `http://localhost:8070/Supermarket/grouped-items/${itemType}`
       );
       const data = response.data;
       console.log("Item:", response.data);
 
-      // Check if data is not empty
       if (data.length > 0) {
         if (itemType === "Groceries") {
           setGroceries(data);
@@ -50,20 +63,37 @@ export default function HomeUnregistered() {
     }
   };
 
+  // Function to add items to the cart
+  const addToCart = (newItem) => {
+    setCart([...cart, newItem]);
+    console.log("Cart: ", cart);
+  };
+
+  // Function to remove item from the cart
+  const removeFromCart = (itemToRemove) => {
+    const updatedCart = cart.filter((item) => item !== itemToRemove);
+    setCart(updatedCart);
+  };
+
+  // Function to calculate total price of items in the cart
+  const getTotalPrice = () => {
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  };
+
   const renderItems = (items) => {
     return (
-      <div className="flex flex-wrap  gap-5 ">
-        {/* Render each item's details */}
-        {items.map((item, index) => (
-          <div key={index} className="w-72 ">
+      <div className="flex flex-wrap gap-5">
+        {/* Render each itemGroup as a CardContainer */}
+        {items.map((itemGroup, index) => (
+          <div key={index} className="w-72">
             <CardContainer
-              supermarket={item.supermarket}
-              itemName={item.itemName}
-              price={item.price}
-              availableQuantity={item.availableQuantity}
-              description={item.description}
-              itemImage={item.itemImage}
-              itemID={item.itemID}
+              itemName={itemGroup.item_name}
+              itemImage={itemGroup.item_img}
+              description={itemGroup.description}
+              items={itemGroup.items}
+              cart={cart} // Pass down cart state
+              addToCart={addToCart} // Pass down addToCart function
+              getTotalPrice={getTotalPrice} // Pass down getTotalPrice function
             />
           </div>
         ))}
@@ -74,14 +104,86 @@ export default function HomeUnregistered() {
   return (
     <div className="bg">
       <PromotionContainer />
+
       <section className="routes" id="reservations">
-        <Typography
-          variant="h4"
-          color="blue-gray"
-          className="text-center text-4xl "
-        >
-          Shop Items
-        </Typography>
+        <div className="flex items-center justify-center">
+          {/* Title */}
+          <Typography variant="h4" color="blue-gray" className="text-4xl mr-8">
+            Shop Items
+          </Typography>
+
+          {/* Shopping cart icon with popover */}
+          <div>
+            <Popover placement="bottom-start">
+              <Badge content={`${cart.length}`}>
+                <PopoverHandler>
+                  <IconButton>
+                    <ShoppingCartIcon className="h-6 w-6" />
+                  </IconButton>
+                </PopoverHandler>
+              </Badge>
+              <PopoverContent className="item-center justify-center">
+                <Typography
+                  variant="body"
+                  color="blue-gray"
+                  className="text-center border-b-2 border-green-600 text-xl pb-1 mb-1"
+                >
+                  Your Cart
+                </Typography>
+                {cart.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-between items-center border-b"
+                  >
+                    <div className="pr-10">
+                      <Typography variant="body" color="blue-gray">
+                        {item.name}:
+                      </Typography>
+                    </div>
+                    <div className="flex-grow flex justify-center mr-4">
+                      <Typography variant="body" color="blue-gray">
+                        {item.price} x {String(item.quantity).padStart(2, "0")}
+                      </Typography>
+                    </div>
+                    <div>
+                      <Typography
+                        variant="body"
+                        color="blue-gray"
+                        className="text-right mr-4"
+                      >
+                        = Rs.{" "}
+                        {(item.price * item.quantity)
+                          .toFixed(2)
+                          .padStart(5, "0")}
+                      </Typography>
+                    </div>
+                    <div>
+                      <XMarkIcon
+                        className="h-5 w-5 text-red-500"
+                        onClick={() => removeFromCart(item)}
+                      />
+                    </div>
+                  </div>
+                ))}
+
+                <div className=" flex items-center justify-between mt-2 px-9 py-2">
+                  <Typography variant="body" color="blue-gray">
+                    Total:
+                  </Typography>
+                  <Typography variant="body" color="blue-gray">
+                    Rs. {getTotalPrice().toFixed(2).padStart(5, "0")}
+                  </Typography>
+                </div>
+                <div className="gap-32 inline-flex border-t-2 pt-2 border-green-600">
+                  <Button color="red" onClick={() => setCart([])}>
+                    Clear Cart
+                  </Button>
+                  <Button color="green">Make Order</Button>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
 
         {groceries.length > 0 && (
           <div>

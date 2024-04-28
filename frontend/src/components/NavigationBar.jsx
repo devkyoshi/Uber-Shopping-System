@@ -2,15 +2,12 @@ import { Link, useLocation } from "react-router-dom";
 import { signoutSuccess } from "../redux/customer/customerRegisterSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Dropdown, TextInput } from "flowbite-react";
 import React, { useState } from "react";
-
 import {
   Navbar,
   Collapse,
   Typography,
   Button,
-  IconButton,
   List,
   ListItem,
   Menu,
@@ -20,6 +17,8 @@ import {
   Avatar,
   Popover,
   PopoverHandler,
+  Badge,
+  IconButton,
   PopoverContent,
   ListItemPrefix,
 } from "@material-tailwind/react";
@@ -153,7 +152,14 @@ function NavListMenu() {
 
 function NavList() {
   return (
-    <List className="mt-4 mb-6 p-0 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1">
+    <List
+      className="mt-4 mb-6 p-0 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1"
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
       <Typography
         as="a"
         href="#"
@@ -172,6 +178,7 @@ function NavList() {
         variant="small"
         color="blue-gray"
         className="font-medium"
+        style={{ whiteSpace: "nowrap" }} // Prevents text from wrapping
       >
         <ListItem className="flex items-center gap-2 py-2 pr-4 nav-pages">
           Contact Us
@@ -186,7 +193,6 @@ export function NavigationBar() {
   const path = useLocation().pathname;
   const { currentCustomer } = useSelector((state) => state.customer);
   const dispatch = useDispatch();
-  const [isAvatarDropdownOpen, setIsAvatarDropdownOpen] = useState(false);
   console.log(currentCustomer);
 
   const handleSignOut = async () => {
@@ -233,9 +239,9 @@ export function NavigationBar() {
             <NavList />
           </div>
 
-          <div className="hidden gap-2 lg:flex">
+          <div className="hidden gap-5 lg:flex">
             {currentCustomer ? (
-              <div>
+              <div className="flex items-center gap-5">
                 <Popover placement="bottom-end">
                   <PopoverHandler>
                     <Avatar

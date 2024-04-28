@@ -4,31 +4,55 @@ import {
   CardBody,
   CardFooter,
   Typography,
+  Popover,
+  PopoverHandler,
+  PopoverContent,
+  Button,
+  Input,
+  Select,
+  Option,
 } from "@material-tailwind/react";
 import { useState } from "react";
-import { PopOver } from "./PopOver";
 
 export function CardContainer({
-  supermarket,
   itemName,
-  price,
   description,
   itemImage,
-  itemID,
+  items,
+  addToCart,
 }) {
-  const [isPopOverOpen, setIsPopOverOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-
-  const togglePopOver = () => {
-    setIsPopOverOpen(!isPopOverOpen);
-  };
+  const [selectedItemID, setSelectedItemID] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   const toggleDescription = () => {
     setIsExpanded(!isExpanded);
   };
 
-  const formatPriceWithCommas = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const handleChange = (value) => {
+    setSelectedItemID(value);
+    console.log("Item ID: ", value);
+  };
+
+  const handleQuantityChange = (value) => {
+    setQuantity(value); // No need to convert value to number
+  };
+
+  const handleAddToCart = () => {
+    const selectedItem = items.find((item) => item.item_id === selectedItemID);
+    if (selectedItem) {
+      const newItem = {
+        item_id: selectedItemID,
+        name: itemName,
+        quantity: quantity,
+        price: selectedItem.price,
+      };
+      addToCart(newItem); // Call addToCart function from props
+      setSelectedItemID("");
+      setQuantity(1);
+    } else {
+      console.error("Selected item not found");
+    }
   };
 
   return (
@@ -44,9 +68,6 @@ export function CardContainer({
         <div className="mb-1 flex items-center justify-between">
           <Typography color="blue-gray" className="font-bold text-sm">
             {itemName}
-          </Typography>
-          <Typography color="green" className="font-bold text-sm">
-            Rs. {formatPriceWithCommas(price)}
           </Typography>
         </div>
         <div className="overflow-hidden">
@@ -70,15 +91,57 @@ export function CardContainer({
           </Typography>
         )}
       </CardBody>
-      <CardFooter className="pt-0 items-center justify-center ml-10">
-        <PopOver
-          supermarket={supermarket}
-          itemID={itemID}
-          size="md"
-          fullWidth={true}
-          isOpen={isPopOverOpen}
-          togglePopover={togglePopOver}
-        />
+      <CardFooter className="pt-0 items-center justify-center ml-1">
+        <Popover placement="bottom">
+          <PopoverHandler>
+            <Button className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100">
+              View Product
+            </Button>
+          </PopoverHandler>
+          <PopoverContent className="w-96 shadow-lg">
+            <form className="mt-8 mb-2 ">
+              <div className="mb-1 flex flex-col gap-6">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  SuperMarket
+                </Typography>
+
+                <Select
+                  value={selectedItemID}
+                  onChange={(value) => handleChange(value)}
+                  size="lg"
+                  placeholder="Select Supermarket"
+                  className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                >
+                  {items.map((item) => (
+                    <Option key={item.item_id} value={item.item_id}>
+                      {item.sm_name} - Rs. {item.price}
+                    </Option>
+                  ))}
+                </Select>
+
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Quantity
+                </Typography>
+                <Input
+                  type="number"
+                  value={quantity}
+                  onChange={(event) => handleQuantityChange(event.target.value)}
+                  className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+              </div>
+
+              <Button className="mt-6" onClick={handleAddToCart} fullWidth>
+                Add To Cart
+              </Button>
+            </form>
+          </PopoverContent>
+        </Popover>
       </CardFooter>
     </Card>
   );

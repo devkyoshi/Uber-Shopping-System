@@ -1,19 +1,11 @@
 import React from "react";
 import { SideBar } from "../../components/SideBar";
 
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
 import { PaymentAdminTable } from "../../components/payment/PaymentAdminTable";
 
-export default function PaymentAdminUI() {
+export default function AllTransactionsUI() {
   return (
     <div className="main-layout ">
-      <SideBar />
       <div className="inner-layout">
         <div>
           <PaymentAdminTable />

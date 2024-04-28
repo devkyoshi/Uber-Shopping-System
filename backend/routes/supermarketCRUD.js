@@ -108,4 +108,51 @@ router.get("/supermarket/:supermarketId", async (req, res) => {
   }
 });
 
+router.get("/grouped-items/:item_type", async (req, res) => {
+  try {
+    const { item_type } = req.params;
+
+    const allSupermarkets = await Supermarket.find().populate("items");
+
+    // Create a map to group items by item_type and item_name
+    const groupedItems = new Map();
+
+    // Iterate through each supermarket
+    allSupermarkets.forEach((supermarket) => {
+      // Iterate through each item in the supermarket
+      supermarket.items.forEach((item) => {
+        // Check if the item's item_type matches the requested item_type
+        if (item.item_type === item_type) {
+          // Generate a unique key combining item_type and item_name
+          const key = `${item.item_type}_${item.item_name}`;
+          // Check if the key already exists in the map
+          if (!groupedItems.has(key)) {
+            // If the key does not exist, initialize the key with item_name, description, and item_img
+            groupedItems.set(key, {
+              item_name: item.item_name,
+              description: item.description,
+              item_img: item.item_img,
+              items: [],
+            });
+          }
+          // Push the item details (price, item_id, sm_name) to the array under the key
+          groupedItems.get(key).items.push({
+            price: item.price,
+            item_id: item._id,
+            sm_name: supermarket.sm_name,
+          });
+        }
+      });
+    });
+
+    // Convert map values to array
+    const itemGrouped = Array.from(groupedItems.values());
+
+    res.json(itemGrouped);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 module.exports = router;
