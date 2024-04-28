@@ -1,9 +1,10 @@
 import React from "react";
 import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function OrderDetails() {
   const location = useLocation();
+  const navigate = useNavigate();
   console.log(location);
 
   return (
@@ -37,15 +38,15 @@ export function OrderDetails() {
               variant="lead"
               className="leading-loose text-gray-700 tracking-wide"
             >
-              <span className="font-medium text-gray-900">Order Date:</span> 01/01/2024{location.state?.order_date}<br />
-              <span className="font-medium text-gray-900">Order District:</span> Colombo{location.state?.order_district}<br />
-              <span className="font-medium text-gray-900">Order Status:</span> Ongoing{location.state?.order_status}<br />
-              <span className="font-medium text-gray-900">Additional Notes:</span> meet me at the bus stop(colombo){location.state?.adiitional_notes}<br />
-              <span className="font-medium text-gray-900">Purchase Amount:</span> Rs.00.00{location.state?.purchase_amount}<br /> <br />
-              <span className="font-bold text-gray-900">Total Amount: Rs.00.00{location.state?.total_amount}</span><br />
+              <span className="font-medium text-gray-900">Order Date: {location.state?.order_date}</span> <br />
+              <span className="font-medium text-gray-900">Order District: {location.state?.order_district}</span> <br />
+              <span className="font-medium text-gray-900">Order Status: {location.state?.order_status}</span> <br />
+              <span className="font-medium text-gray-900">Additional Notes: {location.state?.additional_notes}</span> <br />
+              <span className="font-medium text-gray-900">Purchase Amount: {location.state?.purchase_amount}</span> <br /> <br />
+              <span className="font-bold text-gray-900">Total Amount: Rs.{location.state?.total_amount}</span><br />
             </Typography>
             <div className="flex !gap-4 mt-12">
-              <Button fullWidth variant="outlined">back</Button>
+              <Button fullWidth variant="outlined" onClick={()=>{navigate('/orders',{replace: true})}}>back</Button>
             </div>
           </CardBody>
         </Card>

@@ -50,7 +50,7 @@ export function FormOrder() {
       // handle success response
       console.log(response.data);
       // navigate to the home page after the success placement
-      navigate('/home');
+      navigate('/details');
 
     } catch(error) {
       // handling errors
@@ -92,16 +92,19 @@ export function FormOrder() {
               <Checkbox
                 name="order_status"
                 value="Ongoing"
+                onChange={handleChange}
                 label="Ongoing"
               />
               <Checkbox
                 name="order_status"
                 value="Delivered"
+                onChange={handleChange}
                 label="Delivered"
               />
               <Checkbox
                 name="order_status"
                 value="Picked"
+                onChange={handleChange}
                 label="Picked"
               />
             </div>
@@ -160,7 +163,7 @@ export function FormOrder() {
           <Button type="submit"
           disabled={uploading}
           className="mt-6" 
-          onClick={()=>{navigate('/', {replace: true, state:{customer_id: formData.customer_id, total_amount: formData.total_amount, order_status: formData.order_status, additional_notes: formData.additional_notes, delivery_Distance: formData.delivery_Distance, delivery_Charges: formData.delivery_Charges}})}}
+          onClick={()=>{navigate('/details', {replace: true, state:{customer_id: formData.customer_id, total_amount: formData.total_amount, order_status: formData.order_status, additional_notes: formData.additional_notes, delivery_Distance: formData.delivery_Distance, delivery_Charges: formData.delivery_Charges}})}}
           fullWidth
           >
             {uploading ? 'placing...': 'Place Order'}
