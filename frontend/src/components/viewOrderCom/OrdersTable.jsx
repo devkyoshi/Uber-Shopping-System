@@ -77,7 +77,7 @@ export function OrdersTable() {
                   className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
                 >
                   <Typography
-                    variant="h6" // Changed to "h6"
+                    variant="h6" 
                     color="blue-gray"
                     className="font-bold leading-none text-black"
                   >
@@ -99,7 +99,7 @@ export function OrdersTable() {
                 <tr key={item_name}>
                   <td className={classes}>
                     <Typography
-                      variant="paragraph" // Changed to "paragraph"
+                      variant="paragraph" 
                       color="blue-gray"
                       className="font-normal"
                     >
@@ -108,7 +108,7 @@ export function OrdersTable() {
                   </td>
                   <td className={classes}>
                     <Typography
-                      variant="paragraph" // Changed to "paragraph"
+                      variant="paragraph" 
                       color="blue-gray"
                       className="font-normal"
                     >
@@ -117,7 +117,7 @@ export function OrdersTable() {
                   </td>
                   <td className={classes}>
                     <Typography
-                      variant="paragraph" // Changed to "paragraph"
+                      variant="paragraph" 
                       color="blue-gray"
                       className="font-normal"
                     >
@@ -130,11 +130,19 @@ export function OrdersTable() {
                       Edit
                     </button>
                     <button
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+                    onClick={()=>{navigate('/details', {replace: true})}}
+                    >   
+                    View
+                    </button>
+                    <button
                       className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                onClick={handleOpen}
+                      onClick={handleOpen}
                     >
                       Remove
                     </button>
+                    
+
                     {/**pop up confirmation message for deletion */}
                     <Dialog open={open} handler={handleOpen} transitionDuration={300}>
                       <DialogHeader>Order Deletion</DialogHeader>
@@ -159,6 +167,7 @@ export function OrdersTable() {
                         </Button>
                       </DialogFooter>
                     </Dialog>
+                    {/**pop up confirmation message for deletion ends*/}
                   </td>
                 </tr>
               );
