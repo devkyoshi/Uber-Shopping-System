@@ -158,10 +158,11 @@ e.preventDefault();
               Distance
             </Typography>
             <Input
-              type="text"
+              type="number"
               size="lg"
               name="delivery_Distance"
               value={formData.delivery_Distance}
+              readOnly
               onChange={handleChange}
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
@@ -171,10 +172,11 @@ e.preventDefault();
               Delivery Charges
             </Typography>
             <Input
-              type="text"
+              type="number"
               size="lg"
               name="delivery_Charges"
               value={formData.delivery_Charges}
+              readOnly
               onChange={handleChange}
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
@@ -184,10 +186,11 @@ e.preventDefault();
               Total Amount
             </Typography>
             <Input
-              type="text"
+              type="number"
               size="lg"
               name="total_amount"
               value={formData.total_amount}
+              readOnly
               onChange={handleChange}
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
