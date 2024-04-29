@@ -3,6 +3,7 @@ import { SideBar } from '../../components/SideBar';
 import { Button } from '@material-tailwind/react';
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
 export default function ComplaintForm(){
 
@@ -24,6 +25,11 @@ export default function ComplaintForm(){
 
     const [imagePreview, setImagePreview] = useState(null);
     const [uploading, setUploading] = useState(false);
+    const {currentCustomer} = useSelector((state)=>state.customer)
+
+    useEffect(() => {
+      setFormData({ ...formData, customer_id: currentCustomer.cus_cnumber});
+  }, []);
 
     // Function to handle changes in form inputs
     const handleChange = (e) => {
