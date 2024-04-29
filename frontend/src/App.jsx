@@ -75,12 +75,12 @@ export default function App() {
         <Route path="/orderForm" element={<OrderForm />} />
         <Route path="/complaint" element={<Complaint />} />
         <Route path="/customer_register" element={<Register />} />
-        <Route path="/payment" element={<PaymentUI />} />
+        <Route path="/payment/:orderId" element={<PaymentUI />} />
         <Route path="/task" element={<TaskUI />} />
         <Route path="/branch" element={<BranchUI />} />
         <Route path="/item" element={<ItemUI />} />
         <Route path="/refund/:complaintId/:orderId" element={<Refund />} />
-        <Route path="/orders" element={<ViewOrder />} />
+        <Route path="/orders/:orderId" element={<ViewOrder />} />
         <Route path="/refund/:complaintId" element={<Refund />} />
         <Route path="/Customerlogin" element={<Login />} />
         <Route path="/Customerregister" element={<Register />} />

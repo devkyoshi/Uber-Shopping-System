@@ -13,6 +13,7 @@ export default function AddPaymentUI({ orderId }) {
           `http://localhost:8070/Payment/payment/${orderId}`
         );
         const { totalAmount } = response.data;
+        console.log(response.data);
         setTotalAmount(totalAmount);
       } catch (error) {
         setError("Error fetching payment amount");

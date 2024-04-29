@@ -270,6 +270,20 @@ export function NavigationBar() {
                         >
                           {currentCustomer.adminType === "null"
                             ? "Customer"
+                            : currentCustomer.adminType === "route"
+                            ? "Route Admin"
+                            : currentCustomer.adminType === "customer"
+                            ? "Customer Admin"
+                            : currentCustomer.adminType === "quality"
+                            ? "Quality Admin"
+                            : currentCustomer.adminType === "supermarket"
+                            ? "SuperMarket Admin"
+                            : currentCustomer.adminType === "order"
+                            ? "Order Admin"
+                            : currentCustomer.adminType === "delivery"
+                            ? "Delivery Admin"
+                            : currentCustomer.adminType === "payment"
+                            ? "Payment Admin"
                             : currentCustomer.adminType}
                         </Typography>
                       </div>

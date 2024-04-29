@@ -155,4 +155,36 @@ router.get("/grouped-items/:item_type", async (req, res) => {
   }
 });
 
+//Get item details from item id
+router.get("/items/:item_Id", async (req, res) => {
+  try {
+    const { item_Id } = req.params;
+
+    // Find the item in any supermarket which contains the given item
+    const supermarket = await Supermarket.findOne({ "items._id": item_Id });
+
+    if (!supermarket) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    // Find the specific item within the supermarket
+    const item = supermarket.items.find(
+      (item) => item._id.toString() === item_Id
+    );
+
+    if (!item) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    // Send response with item details and supermarket name
+    res.json({
+      sm_name: supermarket.sm_name,
+      item,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;

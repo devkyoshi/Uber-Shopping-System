@@ -12,6 +12,7 @@ import {
   Button,
   Spinner,
 } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 
 export default function ViewPaymentUI({ orderId }) {
   const [cashPaymentDetails, setCashPaymentDetails] = useState(null);
@@ -19,6 +20,7 @@ export default function ViewPaymentUI({ orderId }) {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPaymentDetails = async () => {
@@ -168,7 +170,7 @@ export default function ViewPaymentUI({ orderId }) {
           </Typography>
         </CardBody>
         <CardFooter className="pt-3">
-          <Button size="lg" fullWidth={true}>
+          <Button size="lg" fullWidth={true} onClick={() => navigate("/")}>
             Confirm Payment
           </Button>
         </CardFooter>

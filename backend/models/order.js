@@ -103,7 +103,6 @@ const orderSchema = new mongoose.Schema({
   },
   total_amount: {
     type: Number,
-    required: true,
   },
   order_status: {
     type: String,

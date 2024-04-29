@@ -18,7 +18,7 @@ router.post("/pay-cash/:orderId/add-payment", async (req, res) => {
     }
 
     const { email, address, postal_code, district, nearest_town } = req.body;
-    const payment_amount = order.total_amount;
+    const payment_amount = order.purchase_amount;
     const paymentId = new ObjectId(); // Generate new ObjectId for payment
 
     // Update the order document with the provided payment details and district
@@ -129,7 +129,7 @@ router.delete(
       if (!order) {
         console.log("Order Not Found");
       }
-      const RemovepaymentAmount = order.total_amount;
+      const RemovepaymentAmount = order.purchase_amount;
 
       const revenue = await Revenue.findOne();
       if (!revenue) {
@@ -178,7 +178,7 @@ router.post("/pay-card/:orderId/add-payment", async (req, res) => {
       nearest_town,
     } = req.body;
 
-    const payment_amount = order.total_amount;
+    const payment_amount = order.purchase_amount;
     const paymentId = new ObjectId(); // Generate new ObjectId for payment
 
     // Update the order document with the provided payment details and district
@@ -290,7 +290,7 @@ router.delete(
       if (!order) {
         console.log("Order Not Found");
       }
-      const RemovepaymentAmount = order.total_amount;
+      const RemovepaymentAmount = order.purchase_amount;
 
       const revenue = await Revenue.findOne();
       if (!revenue) {
@@ -423,7 +423,7 @@ router.get("/payment/:orderId", async (req, res) => {
     // Extract payment details from the order
     const cashPayment = order.cash_payment;
     const cardPayment = order.card_payment;
-    const totalAmount = order.total_amount;
+    const totalAmount = order.purchase_amount;
 
     res.json({ cashPayment, cardPayment, totalAmount });
   } catch (error) {

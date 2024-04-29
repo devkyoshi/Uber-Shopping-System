@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { CardContainer } from "../components/CardContainer";
 import { PromotionContainer } from "../components/home/PromotionContainer";
 import {
@@ -24,6 +25,7 @@ export default function Home() {
   const [bakery, setBakery] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { currentCustomer } = useSelector((state) => state.customer);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch item details when the component mounts
@@ -62,6 +64,25 @@ export default function Home() {
       }
     } catch (error) {
       console.error(`Error fetching ${itemType} item details:`, error);
+      // Handle error
+    }
+  };
+
+  const makeOrder = async () => {
+    try {
+      const purchaseAmount = getTotalPrice();
+      const response = await axios.post(
+        "http://localhost:8070/Order/create-order",
+        {
+          customer_id: currentCustomer._id, // Pass the current customer's ID
+          cart: cart, // Pass the cart details
+          purchase_amount: purchaseAmount,
+        }
+      );
+      console.log("Order created:", response.data);
+      navigate(`/orders/${response.data._id}`);
+    } catch (error) {
+      console.error("Error creating order:", error);
       // Handle error
     }
   };
@@ -110,12 +131,10 @@ export default function Home() {
 
       <section className="routes" id="products">
         <div className="flex items-center justify-center">
-          {/* Title */}
           <Typography variant="h4" color="blue-gray" className="text-4xl mr-8">
             Shop Items
           </Typography>
 
-          {/* Shopping cart icon with popover */}
           {currentCustomer && (
             <div>
               <Popover placement="bottom-start">
@@ -183,7 +202,9 @@ export default function Home() {
                     <Button color="red" onClick={() => setCart([])}>
                       Clear Cart
                     </Button>
-                    <Button color="green">Make Order</Button>
+                    <Button color="green" onClick={makeOrder}>
+                      Make Order
+                    </Button>
                   </div>
                 </PopoverContent>
               </Popover>
