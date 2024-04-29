@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect } from 'react';
 import { SideBar } from '../../components/SideBar';
 import { Button } from '@material-tailwind/react';
 import axios from 'axios'
@@ -28,8 +28,8 @@ export default function ComplaintForm(){
     const {currentCustomer} = useSelector((state)=>state.customer)
 
     useEffect(() => {
-      setFormData({ ...formData, customer_id: currentCustomer.cus_cnumber});
-  }, []);
+      setFormData({ ...formData, customer_id: currentCustomer._id});
+  }, [currentCustomer]);
 
     // Function to handle changes in form inputs
     const handleChange = (e) => {
