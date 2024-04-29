@@ -15,7 +15,7 @@ export function DriverTab({ branch_ID, district }) {
 
   const tapMapping = {
     add: <AddDriverUI branch_ID={branch_ID} district={district} />,
-    view: <ViewDriverUI />,
+    view: <ViewDriverUI  branch_ID={branch_ID} district={district}/>,
   };
 
   const data = [

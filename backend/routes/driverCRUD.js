@@ -1,12 +1,16 @@
 //CRUD test => pass 31.03.24
 
+//import the Express framework and create a router
 const express = require("express");
 const router = express.Router();
+
+//Import models
 const Branch = require("../models/branch");
 const Task = require("../models/task");
 const mongoose = require("mongoose");
 const Order = require("../models/order");
 const Supermarket = require("../models/supermarkets");
+const Customer = require("../models/customer/customer_register_schema")
 
 // Add drivers to a specific branch - Gimashi
 router.post("/:branchID/driver-add", async (req, res) => {
@@ -38,9 +42,12 @@ router.post("/:branchID/driver-add", async (req, res) => {
       available_district,
     };
 
+    //Adds the new driver to the branch's drivers array and saves the branch in the database.
     branch.drivers.push(newDriver);
     await branch.save();
 
+
+//Sends a JSON response indicating successful driver addition.
     res.json("Driver added to branch");
   } catch (error) {
     console.error(error);
@@ -54,62 +61,43 @@ router.post("/:branchID/driver-add", async (req, res) => {
 router.put("/:branchID/driver-update/:driverID", async (req, res) => {
   try {
     const { branchID, driverID } = req.params;
-
     const {
       current_handover_money,
       vehicle_number,
       availability,
-      // driver_longitude,
-      // driver_latitude,
       available_district,
     } = req.body;
 
-    // Find the branch by branchID
-    const branch = await Branch.findById(branchID);
+    const branch = await Branch.findOne({ branch_ID: branchID }); // Find branch by branch_ID
 
     if (!branch) {
       return res.status(404).json({ error: "Branch not found" });
     }
 
-    // Find the index of the driver within the branch's drivers array
-    const driverIndex = branch.drivers.findIndex(
-      (driver) => driver.driver_id.toString() === driverID
-    );
+    const driverIndex = branch.drivers.findIndex((driver) => {
+      console.log("Driver object:", driver);
+      return driver.driver_id && driver.driver_id.toString() === driverID;
+    });
 
     if (driverIndex === -1) {
       return res.status(404).json({ error: "Driver not found" });
     }
 
-    // Update driver details if provided in the request
-    if (current_handover_money !== undefined) {
-      branch.drivers[driverIndex].current_handover_money =
-        current_handover_money;
-    }
-    if (vehicle_number !== undefined) {
-      branch.drivers[driverIndex].vehicle_number = vehicle_number;
-    }
-    if (availability !== undefined) {
-      branch.drivers[driverIndex].availability = availability;
-    }
-    //   if (driver_longitude !== undefined) {
-    //     branch.drivers[driverIndex].driver_longitude = driver_longitude;
-    //   }
-    //   if (driver_latitude !== undefined) {
-    //     branch.drivers[driverIndex].driver_latitude = driver_latitude;
-    //   }
-    if (available_district !== undefined) {
-      branch.drivers[driverIndex].available_district = available_district;
-    }
+    branch.drivers[driverIndex] = {
+      ...branch.drivers[driverIndex],
+      current_handover_money,
+      vehicle_number,
+      availability,
+      available_district,
+    };
 
-    // Save the updated branch
     await branch.save();
 
-    res.json({ message: "Driver details updated" });
+    res.json("Driver updated in branch");
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      error:
-        "An error occurred while updating the driver details within the branch",
+      error: "An error occurred while updating the driver in the branch",
     });
   }
 });
@@ -119,22 +107,24 @@ router.delete("/:branchID/driver-delete/:driverID", async (req, res) => {
   try {
     const { branchID, driverID } = req.params;
 
-    const branch = await Branch.findById(branchID);
+    const branch = await Branch.findOne({ branch_ID: branchID }); // Find branch by branch_ID
+
     if (!branch) {
       return res.status(404).json({ error: "Branch not found" });
     }
 
-    const driverIndex = branch.drivers.findIndex(
-      (driver) => driver.driver_id.toString() === driverID.toString()
+    const updatedDrivers = branch.drivers.filter(
+      (driver) => driver.driver_id !== driverID
     );
-    if (driverIndex === -1) {
+
+    if (updatedDrivers.length === branch.drivers.length) {
       return res.status(404).json({ error: "Driver not found in branch" });
     }
 
-    branch.drivers.splice(driverIndex, 1);
+    branch.drivers = updatedDrivers;
     await branch.save();
 
-    res.json("Driver deleted successfully");
+    res.json("Driver deleted from branch");
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -142,6 +132,7 @@ router.delete("/:branchID/driver-delete/:driverID", async (req, res) => {
     });
   }
 });
+
 
 // Route to get all drivers in a branch by branch_ID
 router.get("/drivers/:branchId", async (req, res) => {
@@ -246,9 +237,11 @@ router.get("/tasks/:driverId", async (req, res) => {
         const orderId = order.order_id;
         // Retrieve detailed order information using the order ID
         const orderDetails = await getOrderDetails(orderId);
+        const customerDetails = await getCustomerDetails(orderId);
         // Add task and order information to the array
         detailedOrders.push({
           order_details: orderDetails,
+          customer_details: customerDetails
         });
       }
     }
@@ -264,6 +257,38 @@ router.get("/tasks/:driverId", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+// Function to retrieve detailed customer information
+async function getCustomerDetails(orderId) {
+  try {
+    // Find the order by order ID
+    const order = await getOrderDetails(orderId); // Corrected function name
+
+    if (!order) {
+      // Handle case where order is not found
+      throw new Error("Order not found");
+    }
+
+    // Extract the customer ID from the order
+    const customerId = order.customer_id;
+
+    // Find the customer by customer ID
+    const customer = await Customer.findById(customerId);
+
+    if (!customer) {
+      // Handle case where customer is not found
+      throw new Error("Customer not found");
+    }
+
+    // Extract and return relevant customer details
+    const { cus_name, cus_cnumber, cus_address } = customer;
+    return { cus_name, cus_cnumber, cus_address };
+  } catch (error) {
+    console.error("Error fetching order and customer details:", error);
+    throw new Error("Failed to fetch order and customer details");
+  }
+}
+
 
 // Function to retrieve detailed order information
 async function getOrderDetails(orderId) {
