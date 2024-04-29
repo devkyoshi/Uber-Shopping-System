@@ -106,7 +106,7 @@ export function DriverForm({ branch_ID, district }) {
               name="driver_id"
               value={driverDetails.driver_id}
               onChange={handleChange}
-              placeholder="Enter Current Hand Over Money"
+              placeholder="Enter Driver ID"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
 
