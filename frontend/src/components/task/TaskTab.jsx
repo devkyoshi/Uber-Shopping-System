@@ -24,7 +24,7 @@ export function TaskTab({taskId}) {
     drivers: <DriverTable/>
   };
 
-  const data = [
+  const data = [ 
     {
       label: "Add Task",
       value: "add",

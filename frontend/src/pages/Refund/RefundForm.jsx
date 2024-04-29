@@ -67,7 +67,7 @@ export default function RefundForm() {
         <SideBar/>
      <div className="inner-layout">
      <h1 className="text-4xl font-semibold mb-9 ml-3 ">Refund Form</h1>
-        <div className=" container mx-auto mt-5 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 rounded-lg border border-gray-300">
+        <div className=" container mx-auto mt-5 bg-gray-100 rounded-lg border border-gray-300">
             <br/>
            
             <form onSubmit={handleSubmit} className=" max-w-screen-md mx-auto w-full ">
@@ -101,7 +101,7 @@ export default function RefundForm() {
                 <div className="text-red-800 mb-4">{errorMessage}</div>
                 <div className="text-green-500 mb-4">{successMessage}</div>
                  </div>
-                <Button type="submit" disabled={formSubmitted} className="bg-gradient-to-r from-pink-300 via-red-300 to-orange-300 text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-gradient-to-r from-pink-600 via-red-600 to-orange-600 transition duration-300">Submit</Button>
+                <Button type="submit" disabled={formSubmitted} className="bg-custom-gradient text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-custom-gradient transition duration-300">Submit</Button>
             </form>
             
             <br/><br/>

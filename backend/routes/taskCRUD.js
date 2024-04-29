@@ -19,8 +19,13 @@ router.post("/add-task", async (req, res) => {
         // Update order status to "processing"
         await Order.updateOne({ _id: orderId }, { $set: { order_status: "Processing" } });
       });
-    }
 
+      // Update driver's availability to "delivering"
+      await Branch.updateOne(
+        { _id: branch_id, "drivers.driver_id": driver_id },
+        { $set: { "drivers.$.availability": "delivering" } }
+      );
+    }
     await task.save();
     res.json(task);
   } catch (error) {

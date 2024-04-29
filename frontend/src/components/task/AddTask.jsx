@@ -224,7 +224,7 @@ useEffect(() => {
         console.log("Not enough orders found. Triggering fewer five Orders.");
         fewerfiveOrders();
       } 
-    }, 20 * 1000);
+    }, 60* 30 * 1000);
     return () => clearInterval(interval);
   }, [districtOrderCount]);
 

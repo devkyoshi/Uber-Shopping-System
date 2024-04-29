@@ -1,7 +1,6 @@
 import { Card, Typography, Button } from "@material-tailwind/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 // Import Link from React Router
 
 const TABLE_HEAD = [
@@ -32,10 +31,10 @@ export function TaskTable() {
 
     fetchTask();
   }, []);
-
+  
   return (
-    <Card className="h-full w-full overflow-scroll">
-      <table className="w-full min-w-max table-auto text-left">
+    <Card className="h-full overflow-scroll">
+      <table className="w-full table-auto text-left">
         <thead>
           <tr>
             {TABLE_HEAD.map((head) => (

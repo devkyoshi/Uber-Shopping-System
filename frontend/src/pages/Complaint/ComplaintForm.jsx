@@ -1,8 +1,9 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect } from 'react';
 import { SideBar } from '../../components/SideBar';
 import { Button } from '@material-tailwind/react';
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
 export default function ComplaintForm(){
 
@@ -24,6 +25,11 @@ export default function ComplaintForm(){
 
     const [imagePreview, setImagePreview] = useState(null);
     const [uploading, setUploading] = useState(false);
+    const {currentCustomer} = useSelector((state)=>state.customer)
+
+    useEffect(() => {
+      setFormData({ ...formData, customer_id: currentCustomer._id});
+  }, [currentCustomer]);
 
     // Function to handle changes in form inputs
     const handleChange = (e) => {
@@ -53,7 +59,7 @@ export default function ComplaintForm(){
          //Each attribute of the complaint form is stored as a key-value pair in this object.
          // Construct FormData object to send form data to the server
           const formDataToSend = new FormData();
-          formDataToSend.append('customer_id', formData.customer_id);
+          formDataToSend.append('customer_id', currentCustomer._id);
           formDataToSend.append('order_id', formData.order_id);
           formDataToSend.append('payment_id', formData.payment_id);
           formDataToSend.append('complaint_type', formData.complaint_type);
@@ -100,7 +106,7 @@ export default function ComplaintForm(){
                       </div>
                       <div>
                         <label htmlFor="customerId" className="block mb-2 font-bold">Customer ID:</label>
-                        <input type="text" id="customerId" name="customer_id" value={formData.customer_id} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
+                        <input type="text" id="customerId" name="customer_id" value={formData.customer_id} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3 mb-3">
@@ -144,7 +150,7 @@ export default function ComplaintForm(){
                        {imagePreview && <img src={imagePreview} alt="Complaint Preview" style={{maxWidth: '50%', marginTop: '10px'}} />}
                     </div>
                     {/* Button to submit the form */}
-                    <Button type="submit" disabled={uploading} className="bg-custom-gradient text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-gradient-to-r from-pink-600 via-red-600 to-orange-600 transition duration-300">
+                    <Button type="submit" disabled={uploading} className="bg-custom-gradient text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-custom-gradient transition duration-300">
                             {uploading ? 'Uploading...' : 'Submit'}
                     </Button>
                   </form>

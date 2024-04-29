@@ -8,7 +8,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 
 export default function Complaint() {
-  const cusId = useSelector((state) => state.cusId);
+  const {currentCustomer} = useSelector((state)=>state.customer)
   const [complaints, setComplaints] = useState([]);// State to store complaints
   const [searchTerm, setSearchTerm] = useState('');// State for search term
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function Complaint() {
   // Display Previous Complaints
   useEffect(() => {
     axios
-      .get(`http://localhost:8070/Complaint/complaint-all`)
+      .get(`http://localhost:8070/Complaint/complaint-all/${currentCustomer._id}`)
       .then((response) => {
         setComplaints(response.data);
       })
