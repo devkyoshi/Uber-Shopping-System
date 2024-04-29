@@ -31,7 +31,7 @@ const [activeTab,setactiveTab]=useState("add");
      
     },
     {
-      label: "View Driver Task",
+      label: "My Information",
       value: "view",
       icon: EyeIcon,
     

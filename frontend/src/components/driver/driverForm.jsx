@@ -17,7 +17,7 @@ export function DriverForm({ branch_ID, district }) {
     current_handover_money: "",
     vehicle_number: "",
     availability: "Available",
-    available_district: "",
+    available_district: district,
   });
 
   const handleChange = (e) => {
@@ -119,42 +119,11 @@ export function DriverForm({ branch_ID, district }) {
               name="available_district"
               value={district}
               readOnly
+              onChange={handleChange}
               placeholder="Enter Available Districts"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
-            {/* <Select
-              label="Select Available District"
-              className="w-72"
-              name="available_district"
-              value={driverDetails.available_district}
-              onChange={handleChange}
-            >
-              <Option value="Colombo">Colombo</Option>
-              <Option value="Gampaha">Gampaha</Option>
-              <Option value="Kalutara">Kalutara</Option>
-              <Option value="Kandy">Kandy</Option>
-              <Option value="Matale">Matale</Option>
-              <Option value="Nuwara Eliya">Nuwara Eliya</Option>
-              <Option value="Galle">Galle</Option>
-              <Option value="Matara">Matara</Option>
-              <Option value="Hambantota">Hambantota</Option>
-              <Option value="Jaffna">Jaffna</Option>
-              <Option value="Kilinochchi">Kilinochchi</Option>
-              <Option value="Mannar">Mannar</Option>
-              <Option value="Mullaitivu">Mullaitivu</Option>
-              <Option value="Vavuniya">Vavuniya</Option>
-              <Option value="Batticaloa">Batticaloa</Option>
-              <Option value="Ampara">Ampara</Option>
-              <Option value="Trincomalee">Trincomalee</Option>
-              <Option value="Kurunegala">Kurunegala</Option>
-              <Option value="Puttalam">Puttalam</Option>
-              <Option value="Anuradhapura">Anuradhapura</Option>
-              <Option value="Polonnaruwa">Polonnaruwa</Option>
-              <Option value="Badulla">Badulla</Option>
-              <Option value="Monaragala">Monaragala</Option>
-              <Option value="Ratnapura">Ratnapura</Option>
-              <Option value="Kegalle">Kegalle</Option>
-            </Select> */}
+           
 
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Vehicle Number
