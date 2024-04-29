@@ -7,6 +7,7 @@ const Complaint = require("../models/complaint");
 const mongoose = require('mongoose');
 const Refund = require("../models/refund")
 const upload = require('./multerConfig');
+const Order = require('../models/order')
 const fs = require('fs');
 
 /*
@@ -26,6 +27,47 @@ const fs = require('fs');
       // Extract data from request body
       const { customer_id, order_id, payment_id, complaint_type, item_id, resolving_option, quantity, description, complaint_status } = req.body;
       const complaint_img = req.file.path; // Save the file path in the database
+
+      // Find the order by ID
+    const order = await Order.findById(order_id);
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Find the item within the order by its ID
+    const item = order.items.find(item => item.item_id.toString() === item_id);
+
+    if (!item) {
+      return res
+      .status(404)
+      .json({ error: "Item not found in order" });
+    }
+
+    // Extract the quantity of the item from the order
+    const orderQuantity = item.quantity;
+
+    if(orderQuantity>quantity){
+        return res
+        .status(400)
+        .json({ error: "Quantity is larger than the purchased quantity" });
+    }
+
+    // Check if required fields are provided
+    if (
+        !customer_id ||
+        !order_id ||
+        !payment_id ||
+        !complaint_type ||
+        !item_id ||
+        !resolving_option ||
+        !quantity ||
+        !description ||
+        !complaint_status ||
+        !complaint_img
+      ) {
+        return res.status(400).json({ error: "Provide all required fields" });
+      }
   
       // Create new complaint instance
       const newComplaint = new Complaint({

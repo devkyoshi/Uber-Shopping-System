@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ComplaintAdmin from "../pages/Complaint/ComplaintAdmin";
 import Performance from "../pages/Performance"
-import { MenuItem} from "@material-tailwind/react";
+import { MenuItem, Typography} from "@material-tailwind/react";
 
 export default function QualityAdminProfileDetail() {
 
@@ -16,15 +16,20 @@ export default function QualityAdminProfileDetail() {
       <div className="flex space-x-4">
         
         <MenuItem
-          className="wd"
+          className="flex items-center gap-3 rounded-lg "
           onClick={() => handleTabChange('Component1')}
         >
-          Complaint
+        <Typography variant="h6">
+        Complaint
+        </Typography>
         </MenuItem>
         <MenuItem
+          className="flex items-center rounded-lg"
           onClick={() => handleTabChange('Component2')}
         >
+          <Typography variant="h6">
           Performance
+          </Typography>
         </MenuItem>
       </div>
       

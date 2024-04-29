@@ -26,6 +26,8 @@ export default function ComplaintForm(){
     const [imagePreview, setImagePreview] = useState(null);
     const [uploading, setUploading] = useState(false);
     const {currentCustomer} = useSelector((state)=>state.customer)
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
       setFormData({ ...formData, customer_id: currentCustomer._id});
@@ -77,13 +79,24 @@ export default function ComplaintForm(){
           
            // Handle success response
           console.log(response.data);
+          const responseData = await response.json();
 
-          // Navigate to the complaint page upon successful submission
-          navigate(`/complaint`);
-
+          if (response.ok) {
+            setSuccessMessage(responseData);
+            setErrorMessage('');
+            // Set formSubmitted to true to disable the button
+            setFormSubmitted(true);
+            // Navigate to the complaint page upon successful submission
+            navigate(`/complaint`);
+        } else {
+            setSuccessMessage('');
+            setErrorMessage(responseData.message); // Assuming the server sends error messages in the response data
+        }
         } catch (error) {
             // Handle errors
             console.error('Error submitting complaint:', error);
+            setErrorMessage('An error occurred while submitting the complaint.');
+            setSuccessMessage('');
         } finally {
           // Reset uploading state after submission
           setUploading(false);
@@ -149,10 +162,13 @@ export default function ComplaintForm(){
                        <input type="file" id="complaint_img" name="complaint_img" onChange={handleFileChange} required />
                        {imagePreview && <img src={imagePreview} alt="Complaint Preview" style={{maxWidth: '50%', marginTop: '10px'}} />}
                     </div>
+                    <div className="text-red-800 mb-4">{errorMessage}</div>
+                    <div className="text-green-500 mb-4">{successMessage}</div>
                     {/* Button to submit the form */}
                     <Button type="submit" disabled={uploading} className="bg-custom-gradient text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-custom-gradient transition duration-300">
                             {uploading ? 'Uploading...' : 'Submit'}
                     </Button>
+                    
                   </form>
                   <br/>
                 </div>
