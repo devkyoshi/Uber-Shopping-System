@@ -13,13 +13,19 @@ import {
 } from "@heroicons/react/24/solid";
 import AddSupermarket from "../../pages/supermarket/AddSupermarket";
 import ViewSupermarket from "../../pages/supermarket/ViewSupermarket";
+import SettingSupermarketUI from "../../pages/supermarket/SettingSupermarketUI";
+
+
  
 export function SupermarketTab() {
     const[activeTab, setactiveTab] = useState("add");
 
     const tapMapping ={
         add:<AddSupermarket/>,
-        view:<ViewSupermarket/>
+        view:<ViewSupermarket/>,
+        settings:<SettingSupermarketUI/>
+       
+
     }
   const data = [
     {

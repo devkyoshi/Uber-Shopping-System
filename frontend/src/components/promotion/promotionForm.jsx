@@ -22,7 +22,6 @@ export function PromotionForm({ supermarketId }) {
     Items: [] 
   });
   
-
   const handleChange = (e) => {
     if (e && e.target) {
       const { name, value, type, checked } = e.target;
@@ -48,8 +47,6 @@ export function PromotionForm({ supermarketId }) {
     }
   };
   
-  
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -135,155 +132,159 @@ export function PromotionForm({ supermarketId }) {
             Item Type
           </Typography>
 
-
           <List>
-        <ListItem className="p-0">
-          <label
-            htmlFor="vertical-list-react"
-            className="flex w-full cursor-pointer items-center px-3 py-2"
-          >
-            <ListItemPrefix className="mr-3">
-              <Checkbox
-                id="Groceries"
-                ripple={false}
-                className="hover:before:opacity-0"
-                containerProps={{
-                  className: "p-0",
-                }}
-                name="Groceries"
-                checked ={promotionData.item_type === "Groceries"}
-                onChange={handleChange}
-              />
-            </ListItemPrefix>
-            <Typography color="blue-gray" className="font-medium">
-              Groceries
-            </Typography>
-          </label>
-        </ListItem>
-        <ListItem className="p-0">
-          <label
-            htmlFor="vertical-list-vue"
-            className="flex w-full cursor-pointer items-center px-3 py-2"
-          >
-            <ListItemPrefix className="mr-3">
-              <Checkbox
-                id="Electronics"
-                ripple={false}
-                className="hover:before:opacity-0"
-                containerProps={{
-                  className: "p-0",
-                }}
-                name="Electronics"
-                checked ={promotionData.item_type === "Electronics"}
-                onChange={handleChange}
-              />
-            </ListItemPrefix>
-            <Typography color="blue-gray" className="font-medium">
-            Electronics
-            </Typography>
-          </label>
-        </ListItem>
-        <ListItem className="p-0">
-          <label
-            htmlFor="vertical-list-svelte"
-            className="flex w-full cursor-pointer items-center px-3 py-2"
-          >
-            <ListItemPrefix className="mr-3">
-              <Checkbox
-                id="Vegetables"
-                ripple={false}
-                className="hover:before:opacity-0"
-                containerProps={{
-                  className: "p-0",
-                }}
-                name="Vegetables"
-        checked={promotionData.item_type === "Vegetables"}
-        onChange={handleChange}
-              />
-            </ListItemPrefix>
-            <Typography color="blue-gray" className="font-medium">
-              Vegetables
-            </Typography>
-          </label>
-        </ListItem>
-        <ListItem className="p-0">
-          <label
-            htmlFor="vertical-list-svelte"
-            className="flex w-full cursor-pointer items-center px-3 py-2"
-          >
-            <ListItemPrefix className="mr-3">
-              <Checkbox
-                id="Fruits"
-                ripple={false}
-                className="hover:before:opacity-0"
-                containerProps={{
-                  className: "p-0",
-                }}
-                name="Fruits"
-        checked={promotionData.item_type === "Fruits"}
-        onChange={handleChange}
-              />
-            </ListItemPrefix>
-            <Typography color="blue-gray" className="font-medium">
-              Fruits
-            </Typography>
-          </label>
-        </ListItem>
-        <ListItem className="p-0">
-          <label
-            htmlFor="vertical-list-svelte"
-            className="flex w-full cursor-pointer items-center px-3 py-2"
-          >
-            <ListItemPrefix className="mr-3">
-              <Checkbox
-                id="Pharmacy"
-                ripple={false}
-                className="hover:before:opacity-0"
-                containerProps={{
-                  className: "p-0",
-                }}
-                name="item_type"
-        value="Pharmacy"
-        checked={promotionData.item_type === "Pharmacy"}
-        onChange={handleChange}
-              />
-            </ListItemPrefix>
-            <Typography color="blue-gray" className="font-medium">
-              Pharmacy
-            </Typography>
-          </label>
-        </ListItem>
-        <ListItem className="p-0">
-          <label
-            htmlFor="vertical-list-svelte"
-            className="flex w-full cursor-pointer items-center px-3 py-2"
-          >
-            <ListItemPrefix className="mr-3">
-              <Checkbox
-                id="Bakery"
-                ripple={false}
-                className="hover:before:opacity-0"
-                containerProps={{
-                  className: "p-0",
-                }}
-                name="Bakery"
-                checked={promotionData.item_type === "Bakery"}
-                onChange={handleChange}
-              />
-            </ListItemPrefix>
-            <Typography color="blue-gray" className="font-medium">
-              Bakery
-            </Typography>
-          </label>
-        </ListItem>
-      </List>
-         
+            <ListItem className="p-0">
+              <label
+                htmlFor="vertical-list-react"
+                className="flex w-full cursor-pointer items-center px-3 py-2"
+              >
+                <ListItemPrefix className="mr-3">
+                  <Checkbox
+                    id="Groceries"
+                    ripple={false}
+                    className="hover:before:opacity-0"
+                    containerProps={{
+                      className: "p-0",
+                    }}
+                    name="item_type"
+                    value="Groceries"
+                    checked={promotionData.Items.includes("Groceries")}
+                    onChange={handleChange}
+                  />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="font-medium">
+                  Groceries
+                </Typography>
+              </label>
+            </ListItem>
+            <ListItem className="p-0">
+              <label
+                htmlFor="vertical-list-react"
+                className="flex w-full cursor-pointer items-center px-3 py-2"
+              >
+                <ListItemPrefix className="mr-3">
+                  <Checkbox
+                    id="Bakery"
+                    ripple={false}
+                    className="hover:before:opacity-0"
+                    containerProps={{
+                      className: "p-0",
+                    }}
+                    name="item_type"
+                    value="Bakery"
+                    checked={promotionData.Items.includes("Bakery")}
+                    onChange={handleChange}
+                  />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="font-medium">
+                Bakery
+                </Typography>
+              </label>
+            </ListItem>
+            <ListItem className="p-0">
+              <label
+                htmlFor="vertical-list-react"
+                className="flex w-full cursor-pointer items-center px-3 py-2"
+              >
+                <ListItemPrefix className="mr-3">
+                  <Checkbox
+                    id="Pharmacy"
+                    ripple={false}
+                    className="hover:before:opacity-0"
+                    containerProps={{
+                      className: "p-0",
+                    }}
+                    name="item_type"
+                    value="Pharmacy"
+                    checked={promotionData.Items.includes("Pharmacy")}
+                    onChange={handleChange}
+                  />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="font-medium">
+                Pharmacy
+                </Typography>
+              </label>
+            </ListItem>
+            <ListItem className="p-0">
+              <label
+                htmlFor="vertical-list-react"
+                className="flex w-full cursor-pointer items-center px-3 py-2"
+              >
+                <ListItemPrefix className="mr-3">
+                  <Checkbox
+                    id="Fruits"
+                    ripple={false}
+                    className="hover:before:opacity-0"
+                    containerProps={{
+                      className: "p-0",
+                    }}
+                    name="item_type"
+                    value="Fruits"
+                    checked={promotionData.Items.includes("Fruits")}
+                    onChange={handleChange}
+                  />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="font-medium">
+                Fruits
+                </Typography>
+              </label>
+            </ListItem>
+            <ListItem className="p-0">
+              <label
+                htmlFor="vertical-list-react"
+                className="flex w-full cursor-pointer items-center px-3 py-2"
+              >
+                <ListItemPrefix className="mr-3">
+                  <Checkbox
+                    id="Vegetables"
+                    ripple={false}
+                    className="hover:before:opacity-0"
+                    containerProps={{
+                      className: "p-0",
+                    }}
+                    name="item_type"
+                    value="Vegetables"
+                    checked={promotionData.Items.includes("Vegetables")}
+                    onChange={handleChange}
+                  />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="font-medium">
+                Bakery
+                </Typography>
+              </label>
+            </ListItem>
+            <ListItem className="p-0">
+              <label
+                htmlFor="vertical-list-react"
+                className="flex w-full cursor-pointer items-center px-3 py-2"
+              >
+                <ListItemPrefix className="mr-3">
+                  <Checkbox
+                    id="Electronics"
+                    ripple={false}
+                    className="hover:before:opacity-0"
+                    containerProps={{
+                      className: "p-0",
+                    }}
+                    name="item_type"
+                    value="Electronics"
+                    checked={promotionData.Items.includes("Electronics")}
+                    onChange={handleChange}
+                  />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="font-medium">
+                Electronics
+                </Typography>
+              </label>
+            </ListItem>
+            {/* Render other ListItem components similarly */}
+          </List>
         </div>
-
         <Button type="submit" className="mt-6" fullWidth>
           Promotion Add
         </Button>
-      </form></div>
+      </form>
+      </div>
     </Card>
   );
 }

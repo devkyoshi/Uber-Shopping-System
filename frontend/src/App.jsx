@@ -78,7 +78,7 @@ export default function App() {
         <Route path="/payment/:orderId" element={<PaymentUI />} />
         <Route path="/task" element={<TaskUI />} />
         <Route path="/branch" element={<BranchUI />} />
-        <Route path="/item" element={<ItemUI />} />
+        <Route path="/items/:supermarketId" element={<ItemUI />} />
         <Route path="/refund/:complaintId/:orderId" element={<Refund />} />
         <Route path="/orders/:orderId" element={<ViewOrder />} />
         <Route path="/refund/:complaintId" element={<Refund />} />
@@ -92,7 +92,7 @@ export default function App() {
         <Route path="/complaintForm" element={<ComplaintForm />} />
         <Route path="/editComplaint/:complaintId" element={<EditComplaint />} />
         <Route path="/complaint-admin" element={<ComplaintAdmin />} />
-        <Route path="/promotion" element={<PromotionUI />} />
+        <Route path="/promotions/:supermarketId" element={<PromotionUI />} />
         <Route path="/taskdriver" element={<TaskdriverUI />} />
         <Route element={<PrivateRoute />}>
           <Route path="/Customerprofile" element={<Profile />} />

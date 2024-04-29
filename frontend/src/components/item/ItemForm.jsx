@@ -42,19 +42,7 @@ export function ItemForm({ supermarketId }) {
           onSubmit={handleSubmit}
         >
           <div className="mb-1 flex flex-col gap-6">
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Item Type
-            </Typography>
-            <Input
-              size="lg"
-              type="text"
-              placeholder="Electronics"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-              name="item_type"
-            />
+            
 
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Item Name
@@ -125,7 +113,23 @@ export function ItemForm({ supermarketId }) {
                 className: "before:content-none after:content-none",
               }}
               name="item_img"
+
             />
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Item Type
+            </Typography>
+            <Input
+              size="lg"
+              type="text"
+              placeholder="Electronics"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+              name="item_type"
+            />
+            
+            
           </div>
 
           <Button className="mt-6" fullWidth type="submit">
