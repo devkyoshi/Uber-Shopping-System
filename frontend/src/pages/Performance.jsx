@@ -40,12 +40,10 @@ const PerformanceReport = () => {
     }
   };
 
-  return (
-    <div className='main-layout'>
-      {/* Sidebar component */}
-      <SideBar />
 
-      <div className="inner-layout">
+
+  return (
+    <div>
         {/* Title */}
         <Typography variant="h5" color="blue-gray">
           Performance Report
@@ -57,20 +55,20 @@ const PerformanceReport = () => {
         </Typography>
         
         {/* Card containing input fields and download button */}
-        <Card className='bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 border border-gray-300'>
+        <Card className='bg-gray-100 border border-gray-300'>
           <CardBody>
             {/* Input fields for month and year */}
             <div className="flex w-full shrink-0 gap-2 md:w-max">
               <Input
                 label='Month'
-                color='blue-gray'
+                color='black'
                 value={month}
                 className='w-full md:w-72'
                 onChange={(e) => setMonth(e.target.value)}
               />
               <Input
                 label='Year'
-                color='blue-gray'
+                color='black'
                 value={year}
                 className='w-full md:w-72'
                 onChange={(e) => setYear(e.target.value)}
@@ -91,7 +89,7 @@ const PerformanceReport = () => {
             )}
           </CardFooter>
         </Card>
-      </div>
+     
     </div>
   );
 };

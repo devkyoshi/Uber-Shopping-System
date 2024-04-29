@@ -101,7 +101,7 @@ export default function ComplaintAdmin() {
           {complaints.map((complaint, index) => (
             <Card
               key={index}
-              className="p-4 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 border border-gray-300"
+              className="p-4 bg-gray-100 border border-gray-300"
             >
               <CardBody>
                 <div className="grid grid-cols-3 gap-3">

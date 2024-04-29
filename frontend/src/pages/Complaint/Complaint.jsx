@@ -74,7 +74,7 @@ export default function Complaint() {
         <h3 className='text-4xl ml-3 font-semibold'>Prev. Complaints</h3>
         <div className='flex justify-end mt-4 gap-2 '>
           {/* Search input */}
-          <div className="flex w-full shrink-0 md:w-max bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 rounded-xl shadow-md">
+          <div className="flex w-full shrink-0 md:w-max bg-gray-100 rounded-xl shadow-md">
             <Input
               label='Search'
               color='blue-gray'
@@ -87,7 +87,7 @@ export default function Complaint() {
           {/* Button to navigate to new complaint form */}
           <Button
             ripple='light'
-            className='w-30 text-base py-2 px-4 border border-transparent bg-gradient-to-r from-pink-500 via-red-500 to-orange-500'
+            className='w-30 text-base py-2 px-4 border border-transparent bg-custom-gradient'
             onClick={() => navigate(`/complaintForm`)}
           >
             New Complaint
@@ -98,7 +98,7 @@ export default function Complaint() {
         {/* List of filtered complaints */}
           {filteredComplaints.map((Complaints) => (
             <li key={Complaints._id} className='mb-2'>
-              <div className='border border-gray-300 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 p-4 rounded-lg items-center justify-between'>
+              <div className='border border-gray-300 bg-gray-100 p-4 rounded-lg items-center justify-between'>
                 <div className='flex flex-wrap text-center justify-center gap-2'>
                   {/* Order ID */}
                   <strong className='mr-2'>Order ID : </strong>
@@ -106,7 +106,7 @@ export default function Complaint() {
                   {/* Complaint Status */}
                   <strong className=' ml-10 mr-2'>Complaint Status : </strong>
                   <strong>
-                    <div className='border border-gray-200 text-red-900  bg-white px-4 rounded-md shadow-md'>
+                    <div className='border border-gray-200 text-red-600 bg-white px-4 rounded-md shadow-md'>
                       {Complaints.complaint_status}
                     </div>
                   </strong>
@@ -126,7 +126,7 @@ export default function Complaint() {
                       onClick={() => deleteComplaint(Complaints._id)}
                       color='red'
                       ripple='light'
-                      className='w-30 mt-3  py-2 px-4 text-base border border-transparent bg-red-900'
+                      className='w-30 mt-3  py-2 px-4 text-base border border-transparent bg-red-500'
                       size='regular'
                     >
                       Delete
@@ -144,7 +144,7 @@ export default function Complaint() {
                 {Complaints.complaint_status === 'accepted' && Complaints.resolving_option === 'refund' && (
                   <Link
                     to={`/refund/${Complaints._id}/${Complaints.order_id}`}
-                    className=' hover:text-red-00 text-red-800 font-bold hover:underline '
+                    className=' hover:text-red-00 text-red-600 font-bold hover:underline '
                   >
                     Click Here to Submit Bank Details
                   </Link>
