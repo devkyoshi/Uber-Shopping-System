@@ -129,7 +129,7 @@ export default function editComplaint(){
           <SideBar/>
             <div className='inner-layout'>
               <h1 className="text-4xl font-semibold mb-9 ml-3 ">Complaint Form</h1>
-                <div className=" container mx-auto mt-5 bg-gradient-to-r from-pink-50 via-red-50 to-orange-50 rounded-lg border border-gray-300">
+                <div className=" container mx-auto mt-5 bg-gray-100 rounded-lg border border-gray-300">
                 <br/>
                   <form onSubmit={handleSubmit} className=" max-w-screen-md mx-auto w-full ">
                     <div className="grid grid-cols-2 gap-3 mb-3">
@@ -184,7 +184,7 @@ export default function editComplaint(){
                        {imageURL && <img src={imageURL} alt="Complaint Image" style={{ maxWidth: '50%', marginTop: '10px' }} />}
                     </div>
                     {/* Button to submit the form */}
-                    <Button type="submit" disabled={uploading} className="bg-gradient-to-r from-pink-300 via-red-300 to-orange-300 text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-gradient-to-r from-pink-600 via-red-600 to-orange-600 transition duration-300">
+                    <Button type="submit" disabled={uploading} className="bg-custom-gradient text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-custom-gradient transition duration-300">
                             {uploading ? 'Uploading...' : 'Save'}
                     </Button>
                   </form>

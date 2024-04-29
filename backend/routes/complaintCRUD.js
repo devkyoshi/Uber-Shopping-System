@@ -129,17 +129,22 @@ router.delete("/complaint-delete/:complaintID", async (req, res) => {
 
 // ---------------------------------------------READ ALL COMPLAINTS TO CUSTOMER VIEW------------------------------------------------------------------------
 
-router.get("/complaint-all", async (req, res) => {
+router.get("/complaint-all/:id", async (req, res) => {
+    const { id } = req.params;
     try {
         // Fetch all complaint IDs from refunds
         const refundedComplaintIds = await Refund.distinct("complaint_id");
-        const complaint = await Complaint.find({ _id: { $nin: refundedComplaintIds } }).sort({ updated_at: -1 }).select('order_id complaint_status item_id quantity resolving_option');
+        const complaint = await Complaint.find({
+             _id: { $nin: refundedComplaintIds },
+             customer_id: id
+            }).sort({ updated_at: -1 }).select('order_id complaint_status item_id quantity resolving_option');
         res.json(complaint);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "An error occurred while fetching Complaint" });
     }
 });
+
 
 // ---------------------------------------------READ ALL COMPLAINTS TO ADMIN VIEW-------------------------------------------------------------
 
