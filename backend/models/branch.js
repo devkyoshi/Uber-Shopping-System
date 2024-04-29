@@ -7,10 +7,10 @@ const Schema = mongoose.Schema;
 const driverSchema = new mongoose.Schema({
   driver_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Empolyee",
+    ref: "User",
   },
   available_district: {
-    type: String,
+    type: String, 
   },
   current_handover_money: {
     type: Number, // Changed to Number for monetary values

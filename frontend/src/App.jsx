@@ -5,7 +5,6 @@ import OrderForm from "./pages/OrderForm";
 import { Footer } from "./components/Footer";
 import Complaint from "./pages/Complaint/Complaint";
 import PaymentUI from "./pages/payment/PaymentUI";
-import BranchUI from "./pages/Branch/BranchUI";
 import TaskUI from "./pages/Task/TaskUI";
 import ItemUI from "./pages/item/ItemUI";
 import ViewOrder from "./pages/ViewOrder";
@@ -46,6 +45,7 @@ import { NavigationBar } from "./components/NavigationBar";
 import DetailedOrder from "./pages/DetailedOrder";
 import Emp_search from "./pages/Emp_search";
 import Home from "./pages/Home";
+import AllOrdersPg from "./pages/AllOrdersPg";
 
 function NavigationBarFun() {
   const location = useLocation();
@@ -77,7 +77,6 @@ export default function App() {
         <Route path="/customer_register" element={<Register />} />
         <Route path="/payment/:orderId" element={<PaymentUI />} />
         <Route path="/task" element={<TaskUI />} />
-        <Route path="/branch" element={<BranchUI />} />
         <Route path="/items/:supermarketId" element={<ItemUI />} />
         <Route path="/refund/:complaintId/:orderId" element={<Refund />} />
         <Route path="/orders/:orderId" element={<ViewOrder />} />
@@ -135,6 +134,7 @@ export default function App() {
         <Route path="/Emp_Home" element={<Emp_Home />} />
         <Route path="/new" element={<PerformanceReport />} />
         <Route path="/details" element={<DetailedOrder />} />
+        <Route path="allOrders" element={<AllOrdersPg />} /> {/**newly added - table which displays all the orders */}
       </Routes>
 
       <Footer />
