@@ -46,6 +46,7 @@ import { NavigationBar } from "./components/NavigationBar";
 import DetailedOrder from "./pages/DetailedOrder";
 import Emp_search from "./pages/Emp_search";
 import Home from "./pages/Home";
+import AllOrdersPg from "./pages/AllOrdersPg";
 
 function NavigationBarFun() {
   const location = useLocation();
@@ -135,6 +136,7 @@ export default function App() {
         <Route path="/Emp_Home" element={<Emp_Home />} />
         <Route path="/new" element={<PerformanceReport />} />
         <Route path="/details" element={<DetailedOrder />} />
+        <Route path="allOrders" element={<AllOrdersPg />} /> {/**newly added - table which displays all the orders */}
       </Routes>
 
       <Footer />
