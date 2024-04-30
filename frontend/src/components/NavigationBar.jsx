@@ -56,9 +56,10 @@ const navListMenuItems = [
     icon: SunIcon,
   },
   {
-    title: "Support",
+    title: "Complaint",
     description: "Reach out to us for assistance or inquiries",
     icon: GlobeAmericasIcon,
+    path: "/complaint",
   },
   {
     title: "Customer FeedBack",
