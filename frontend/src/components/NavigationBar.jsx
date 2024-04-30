@@ -214,7 +214,7 @@ export function NavigationBar() {
       return response.data.latest_order_id;
     } catch (error) {
       // If an error occurs, log the error and return null
-      console.error("Error fetching latest order:", error);
+      console.log("Error fetching latest order:");
       return null;
     }
   };

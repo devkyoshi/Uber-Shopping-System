@@ -309,7 +309,7 @@ router.get("/latest-order/:customer_id", async (req, res) => {
 });
 
 // Route to get all orders of a certain customer
-router.get("/customer/:customerId/orders", async (req, res) => {
+router.get("/customer/:customerId/orders"), async (req, res) => {
   try {
     const customerId = req.params.customerId;
 
@@ -320,6 +320,17 @@ router.get("/customer/:customerId/orders", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+// Read all orders
+router.get("/orders", async (req, res) => {
+  try {
+      const orders = await Order.find();
+      res.json(orders);
+  } catch (error) {
+      console.error(error); 
+      res.status(500).json({ error: "An error occurred while fetching Orders" });
   }
 });
 
