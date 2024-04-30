@@ -2,6 +2,7 @@ import { Alert, Label, Select, Spinner, TextInput } from "flowbite-react";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "flowbite-react";
+import bgImg from "../../../img/webbg.jpg";
 
 export default function Register() {
   const [formData, setFormData] = useState({});
@@ -52,7 +53,8 @@ export default function Register() {
       className="min-h-screen"
       style={{
         backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundPosition: "center top",
+        backgroundImage: `url(${bgImg})`,
         width: "auto",
         height: "auto",
       }}

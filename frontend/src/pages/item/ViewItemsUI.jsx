@@ -87,7 +87,7 @@ export function ViewItemsUI({ supermarketId }) {
 
   return (
     <Card className="h-full w-full overflow-scroll">
-      <table className="w-full min-w-max table-auto text-left">
+      <table className=" table-auto text-left">
         <thead>
           <tr>
             <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 ">

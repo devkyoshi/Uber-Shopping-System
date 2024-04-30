@@ -29,7 +29,7 @@ export function SupermarketForm() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://localhost:8070/Supermarket/supermarket-add',
+        "http://localhost:8070/Supermarket/supermarket-add",
         {
           sm_name: formData.sm_name,
           sm_location: formData.sm_location,
@@ -47,93 +47,89 @@ export function SupermarketForm() {
 
   return (
     <Card color="transparent" shadow={false}>
-      <Typography variant="h4" color="blue-gray">
+      <Typography variant="h4" color="blue-gray" className="text-center">
         Register Supermarket
       </Typography>
 
-      <form
-        className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
-        onSubmit={handleSubmit}
-      >
-        <div className="mb-1 flex flex-col gap-6">
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Supermarket Name
-          </Typography>
-          <Input
-            size="lg"
-            placeholder="Enter supermarket name"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            name="sm_name"
-            value={formData.sm_name}
-            onChange={handleChange}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Supermarket Location
-          </Typography>
-          <Input
-            size="lg"
-            placeholder="Enter location"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            name="sm_location"
-            value={formData.sm_location}
-            onChange={handleChange}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Latitude
-          </Typography>
-          <Input
-            type="number"
-            size="lg"
-            placeholder="Enter latitude"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            name="sm_latitude"
-            value={formData.sm_latitude}
-            onChange={handleChange}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Longitude
-          </Typography>
-          <Input
-            type="number"
-            size="lg"
-            placeholder="Enter longitude"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            name="sm_longitude"
-            value={formData.sm_longitude}
-            onChange={handleChange}
-          />
-        </div>
-        <Checkbox
-          label={
-            <Typography
-              variant="small"
-              color="gray"
-              className="flex items-center font-normal"
-            >
-              I agree the
-              <a
-                href="#"
-                className="font-medium transition-colors hover:text-gray-900"
-              >
-                &nbsp;Terms and Conditions
-              </a>
+      <div className="item-center justify-center ml-72">
+        <form
+          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+          onSubmit={handleSubmit}
+        >
+          <div className="mb-1 flex flex-col gap-6">
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Supermarket Name
             </Typography>
-          }
-          containerProps={{ className: "-ml-2.5" }}
-          name="agreedTerms"
-          checked={formData.agreedTerms}
-          onChange={handleChange}
-        />
-        <Button type="submit" className="mt-6" fullWidth>
-          Add Supermarket
-        </Button>
-        <Typography color="gray" className="mt-4 text-center font-normal">
-          Already have an account?{" "}
-          <a href="#" className="font-medium text-gray-900">
-            Sign In
-          </a>
-        </Typography>
-      </form>
+            <Input
+              size="lg"
+              placeholder="Enter supermarket name"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              name="sm_name"
+              value={formData.sm_name}
+              onChange={handleChange}
+            />
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Supermarket Location
+            </Typography>
+            <Input
+              size="lg"
+              placeholder="Enter location"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              name="sm_location"
+              value={formData.sm_location}
+              onChange={handleChange}
+            />
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Latitude
+            </Typography>
+            <Input
+              type="number"
+              size="lg"
+              placeholder="Enter latitude"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              name="sm_latitude"
+              value={formData.sm_latitude}
+              onChange={handleChange}
+            />
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Longitude
+            </Typography>
+            <Input
+              type="number"
+              size="lg"
+              placeholder="Enter longitude"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              name="sm_longitude"
+              value={formData.sm_longitude}
+              onChange={handleChange}
+            />
+          </div>
+          <Checkbox
+            label={
+              <Typography
+                variant="small"
+                color="gray"
+                className="flex items-center font-normal"
+              >
+                I agree the
+                <a
+                  href="#"
+                  className="font-medium transition-colors hover:text-gray-900"
+                >
+                  &nbsp;Terms and Conditions
+                </a>
+              </Typography>
+            }
+            containerProps={{ className: "-ml-2.5" }}
+            name="agreedTerms"
+            checked={formData.agreedTerms}
+            onChange={handleChange}
+          />
+          <Button type="submit" className="mt-6" fullWidth>
+            Add Supermarket
+          </Button>
+        </form>
+      </div>
     </Card>
   );
 }

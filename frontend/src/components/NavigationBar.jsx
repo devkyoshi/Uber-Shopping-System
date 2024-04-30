@@ -270,7 +270,7 @@ export function NavigationBar() {
             variant="h6"
             className="mr-4 cursor-pointer py-1.5 lg:ml-2"
           >
-            <Link to="/Customerregister">
+            <Link to="/">
               <div>
                 <span className="logo-span1">Uber </span>
                 <span className="logo-span2">Shopping</span>

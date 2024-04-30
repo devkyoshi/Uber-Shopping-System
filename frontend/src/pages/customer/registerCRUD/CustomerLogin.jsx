@@ -3,6 +3,7 @@ import { React, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
+import bgImg from "../../../img/webbg.jpg";
 import {
   loginStart,
   loginSuccess,
@@ -48,7 +49,8 @@ export default function Login() {
       className="min-h-screen"
       style={{
         backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundPosition: "center top",
+        backgroundImage: `url(${bgImg})`,
         width: "auto",
         height: "auto",
       }}
