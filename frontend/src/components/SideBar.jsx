@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from 'react-router-dom';
-import {useDispatch } from 'react-redux';
-import { signoutSuccess } from '../redux/customer/customerRegisterSlice';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { signoutSuccess } from "../redux/customer/customerRegisterSlice";
 import {
   Card,
   Typography,
@@ -33,24 +33,59 @@ import {
   CubeTransparentIcon,
 } from "@heroicons/react/24/outline";
 
+import axios from "axios";
+import { useSelector } from "react-redux";
+
 export function SideBar() {
   const [open, setOpen] = React.useState(0);
-  const [openAlert, setOpenAlert] = React.useState(true);
   const dispatch = useDispatch();
+  const { currentCustomer } = useSelector((state) => state.customer);
+  const [latestOrderId, setOrderId] = React.useState("");
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
 
+  // Function to fetch the latest order ID of a certain customer
+  const fetchLatestOrder = async (customerId) => {
+    try {
+      // Make a GET request to the backend API endpoint
+      const response = await axios.get(
+        `http://localhost:8070/Order/latest-order/${customerId}`
+      );
+
+      // If the request is successful, return the latest order ID
+      return response.data.latest_order_id;
+    } catch (error) {
+      // If an error occurs, log the error and return null
+      console.error("Error fetching latest order:", error);
+      return null;
+    }
+  };
+
+  const customerId = currentCustomer._id; // Replace with the actual customer ID
+  fetchLatestOrder(customerId)
+    .then((latestOrderId) => {
+      if (latestOrderId) {
+        setOrderId(latestOrderId);
+        console.log("Latest order ID:", latestOrderId);
+      } else {
+        console.log("No orders found for the customer.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+
   const handleSignOut = async () => {
     try {
-      const res = await fetch('/customer/signout', {
-        method:'POST'
+      const res = await fetch("/customer/signout", {
+        method: "POST",
       });
       const data = await res.json();
-      if(!res.ok){
+      if (!res.ok) {
         console.log(data.message);
-      }else{
+      } else {
         dispatch(signoutSuccess());
       }
     } catch (error) {
@@ -151,12 +186,22 @@ export function SideBar() {
                   </ListItemPrefix>
                   Orders
                 </ListItem>
-                <ListItem>
-                  <ListItemPrefix>
-                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Products
-                </ListItem>
+                <Link to={`/orders/${latestOrderId}`}>
+                  <ListItem>
+                    <ListItemPrefix>
+                      <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                    </ListItemPrefix>
+                    Latest Order
+                  </ListItem>
+                </Link>
+                <Link to={`/payment/${latestOrderId}`}>
+                  <ListItem>
+                    <ListItemPrefix>
+                      <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                    </ListItemPrefix>
+                    Make Payment
+                  </ListItem>
+                </Link>
               </List>
             </AccordionBody>
           </Accordion>
@@ -176,24 +221,30 @@ export function SideBar() {
               />
             </ListItemSuffix>
           </ListItem>
-          <Link to='/Customerprofile?tab=profile'><ListItem>
-            <ListItemPrefix>
-              <UserCircleIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Profile
-          </ListItem></Link>
-          <Link to='/feedbackportal?tab=feedback'><ListItem>
-            <ListItemPrefix>
-              <ChatBubbleOvalLeftIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Feedback Portal
-          </ListItem></Link>
-          <Link to='/employeerate?tab=rating'><ListItem>
-            <ListItemPrefix>
-              <StarIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Rate Employees
-          </ListItem></Link>
+          <Link to="/Customerprofile?tab=profile">
+            <ListItem>
+              <ListItemPrefix>
+                <UserCircleIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              Profile
+            </ListItem>
+          </Link>
+          <Link to="/feedbackportal?tab=feedback">
+            <ListItem>
+              <ListItemPrefix>
+                <ChatBubbleOvalLeftIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              Feedback Portal
+            </ListItem>
+          </Link>
+          <Link to="/employeerate?tab=rating">
+            <ListItem>
+              <ListItemPrefix>
+                <StarIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              Rate Employees
+            </ListItem>
+          </Link>
           <hr className="my-2 border-blue-gray-50" />
           <ListItem>
             <ListItemPrefix>
@@ -201,12 +252,14 @@ export function SideBar() {
             </ListItemPrefix>
             Settings
           </ListItem>
-          <Link to={'/Customerlogin'}><ListItem onClick={handleSignOut}>
-            <ListItemPrefix>
-              <PowerIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Log Out
-          </ListItem></Link>
+          <Link to={"/Customerlogin"}>
+            <ListItem onClick={handleSignOut}>
+              <ListItemPrefix>
+                <PowerIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              Log Out
+            </ListItem>
+          </Link>
         </List>
       </Card>
     </div>

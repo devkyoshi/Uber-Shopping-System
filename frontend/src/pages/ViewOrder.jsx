@@ -14,9 +14,7 @@ export default function ViewOrder() {
       <div className="inner-layout bg">
         <div className="flex flex-wrap pb-3 justify-center">
           <OrdersTable orderId={orderId} />
-          <div className="ml-4 pt-3">
-            <DeliveryCard />
-          </div>
+
           <div className="ml-4 pt-3">
             <NoteCard />
           </div>

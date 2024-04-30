@@ -3,9 +3,13 @@ import axios from "axios";
 import { Card, Input, Button } from "@material-tailwind/react";
 
 export default function ViewDriversUI({ branch_ID }) {
+  // State for storing drivers data
   const [drivers, setDrivers] = useState([]);
+  // State for loading indicator
   const [loading, setLoading] = useState(true);
+  // State for tracking editable driver
   const [editableDriverId, setEditableDriverId] = useState(null);
+  // State for storing updated driver data
   const [updatedDriverData, setUpdatedDriverData] = useState({
     available_district: "",
     current_handover_money: "",
@@ -13,6 +17,7 @@ export default function ViewDriversUI({ branch_ID }) {
     availability: "",
   });
 
+  // Fetch drivers data when branch ID changes
   useEffect(() => {
     const fetchDrivers = async () => {
       try {
@@ -31,61 +36,75 @@ export default function ViewDriversUI({ branch_ID }) {
     if (branch_ID && branch_ID.trim() !== "") {
       fetchDrivers();
     }
+    console.log("Fetched drivers:", drivers);
   }, [branch_ID]);
 
+  // Handle click on update button
   const handleUpdateClick = (driverId) => {
     setEditableDriverId(driverId);
-    const selectedDriver = drivers.find((driver) => driver.driver_id === driverId);
+    const selectedDriver = drivers.find((driver) => driver._id === driverId);
+
     if (selectedDriver) {
       setUpdatedDriverData({
-        available_district: selectedDriver.available_district,
-        current_handover_money: selectedDriver.current_handover_money,
-        vehicle_number: selectedDriver.vehicle_number,
-        availability: selectedDriver.availability,
+        ...selectedDriver,
       });
     }
+
+    console.log("Selected driver:", selectedDriver);
   };
 
+  // Handle input change
   const handleInputChange = (e, key) => {
     const { value } = e.target;
-    setUpdatedDriverData({
-      ...updatedDriverData,
+    setUpdatedDriverData((prevState) => ({
+      ...prevState,
       [key]: value,
-    });
+    }));
   };
 
+  // Handle update operation
   const handleUpdate = async (driverId) => {
+    console.log("prev", updatedDriverData);
     try {
       await axios.put(
         `http://localhost:8070/Driver/${branch_ID}/driver-update/${driverId}`,
-        updatedDriverData
+        updatedDriverData,
+        { headers: { "Content-Type": "application/json" } } // Ensure proper content type
       );
-      const updatedDrivers = drivers.map((driver) =>
-        driver.driver_id === driverId ? { ...driver, ...updatedDriverData } : driver
+      setDrivers((prevDrivers) =>
+        prevDrivers.map((driver) =>
+          driver._id === driverId ? updatedDriverData : driver
+        )
       );
-      setDrivers(updatedDrivers);
+
+      console.log("Driver ID prev: ", driverId);
       setEditableDriverId(null);
+      console.log("Updated driver data:", updatedDriverData);
     } catch (error) {
       console.error("Error updating driver:", error);
     }
   };
 
+  // Handle delete operation
   const handleDelete = async (driverId) => {
     try {
       await axios.delete(
         `http://localhost:8070/Driver/${branch_ID}/driver-delete/${driverId}`
       );
-      console.log("Driver", driverId);
-      setDrivers(drivers.filter((driver) => driver.driver_id !== driverId));
+      setDrivers((prevDrivers) =>
+        prevDrivers.filter((driver) => driver._id !== driverId)
+      );
     } catch (error) {
       console.error("Error deleting driver:", error);
     }
   };
 
+  // Render loading indicator if data is still loading
   if (loading) {
     return <div>Loading drivers...</div>;
   }
 
+  // Render UI
   return (
     <Card className="h-full w-full overflow-scroll">
       <table className="w-full min-w-max table-auto text-left">
@@ -102,10 +121,10 @@ export default function ViewDriversUI({ branch_ID }) {
         </thead>
         <tbody>
           {drivers.map((driver) => (
-            <tr key={driver.driver_id}>
-              <td>{driver.driver_id}</td>
+            <tr key={driver._id}>
+              <td>{driver._id}</td>
               <td>
-                {editableDriverId === driver.driver_id ? (
+                {editableDriverId === driver._id ? (
                   <Input
                     type="text"
                     value={updatedDriverData.available_district}
@@ -116,7 +135,7 @@ export default function ViewDriversUI({ branch_ID }) {
                 )}
               </td>
               <td>
-                {editableDriverId === driver.driver_id ? (
+                {editableDriverId === driver._id ? (
                   <Input
                     type="text"
                     value={updatedDriverData.current_handover_money}
@@ -129,7 +148,7 @@ export default function ViewDriversUI({ branch_ID }) {
                 )}
               </td>
               <td>
-                {editableDriverId === driver.driver_id ? (
+                {editableDriverId === driver._id ? (
                   <Input
                     type="text"
                     value={updatedDriverData.vehicle_number}
@@ -140,7 +159,7 @@ export default function ViewDriversUI({ branch_ID }) {
                 )}
               </td>
               <td>
-                {editableDriverId === driver.driver_id ? (
+                {editableDriverId === driver._id ? (
                   <Input
                     type="text"
                     value={updatedDriverData.availability}
@@ -151,16 +170,16 @@ export default function ViewDriversUI({ branch_ID }) {
                 )}
               </td>
               <td>
-                {editableDriverId === driver.driver_id ? (
+                {editableDriverId === driver._id ? (
                   <Button
-                    onClick={() => handleUpdate(driver.driver_id)}
+                    onClick={() => handleUpdate(driver._id)}
                     className="bg-green-700 hover:bg-green-900"
                   >
                     Save
                   </Button>
                 ) : (
                   <Button
-                    onClick={() => handleUpdateClick(driver.driver_id)}
+                    onClick={() => handleUpdateClick(driver._id)}
                     className="hover:bg-black"
                   >
                     Update
@@ -169,7 +188,7 @@ export default function ViewDriversUI({ branch_ID }) {
               </td>
               <td>
                 <Button
-                  onClick={() => handleDelete(driver.driver_id)}
+                  onClick={() => handleDelete(driver._id)}
                   className="bg-red-700 hover:bg-red-900"
                 >
                   Delete

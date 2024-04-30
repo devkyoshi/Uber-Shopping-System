@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Card,
   Input,
   Button,
   Typography,
-  Select,
-  Option,
   Radio,
 } from "@material-tailwind/react";
 
@@ -19,6 +17,13 @@ export function DriverForm({ branch_ID, district }) {
     availability: "Available",
     available_district: district,
   });
+
+  useEffect(() => {
+    setDriverDetails((prevDetails) => ({
+      ...prevDetails,
+      available_district: district,
+    }));
+  }, [district]);
 
   const handleChange = (e) => {
     if (e.target && e.target.name) {
@@ -118,12 +123,11 @@ export function DriverForm({ branch_ID, district }) {
               size="lg"
               name="available_district"
               value={district}
-              readOnly
               onChange={handleChange}
+              readOnly
               placeholder="Enter Available Districts"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
-           
 
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Vehicle Number

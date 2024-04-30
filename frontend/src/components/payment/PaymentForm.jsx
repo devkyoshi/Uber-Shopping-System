@@ -108,6 +108,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
     setPaymentMethod("card");
   };
 
+  //changing button text using state
   const handleSetFormTopic = () => {
     if (currentMode === "create") {
       setButtonName("Make Payment");
@@ -121,6 +122,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
     }
   };
 
+  //handling onchange inputs
   const handleChangeSelect = (value, name) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -130,6 +132,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
     setFormData({ ...formData, [name]: value });
   };
 
+  //delete payment function
   const handleDeletePayment = () => {
     setCurrentMode("delete");
   };
@@ -137,6 +140,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
   useEffect(() => {
     handleSetFormTopic();
     if (currentMode === "create") {
+      //if the mode is create
       const fetchPaymentAmount = async () => {
         try {
           const response = await axios.get(
@@ -153,6 +157,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
     }
 
     if (currentMode === "update") {
+      //if the mode is update
       const fetchPaymentDetails = async () => {
         console.log("currentMode: ", currentMode);
         try {
@@ -207,6 +212,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
       let successMessage = "";
       if (currentMode === "create") {
         if (paymentMade) {
+          //validate whether payment is already done
           // Check if payment has already been made
           setError("Payment has already been made for this order.");
           setLoading(false);
@@ -242,7 +248,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
         console.log("After: ", paymentMade);
       } else if (currentMode === "update") {
         if (cardPaymentDetails && paymentMethod === "card") {
-          successMessage = "You can't update card payments.";
+          successMessage = "You can't update card payments."; //card payments cannot be updated
         } else if (cashPaymentDetails && paymentMethod === "cash") {
           await axios.put(
             `http://localhost:8070/Payment/pay-cash/${orderId}/update-payment/${cashPaymentDetails._id}`,
@@ -492,7 +498,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
                         value={formData.nearest_town}
                         onChange={handleChange}
                         required
-                        placeholder="name@mail.com"
+                        placeholder="Enter nearest town"
                         className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                         labelProps={{
                           className: "before:content-none after:content-none",

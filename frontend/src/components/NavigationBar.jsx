@@ -73,6 +73,8 @@ const navListMenuItems = [
   },
 ];
 
+import axios from "axios";
+
 function NavListMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
@@ -198,6 +200,42 @@ export function NavigationBar() {
   const { currentCustomer } = useSelector((state) => state.customer);
   const dispatch = useDispatch();
   console.log(currentCustomer);
+  const [latestOrderId, setOrderId] = React.useState("");
+
+  // Function to fetch the latest order ID of a certain customer
+  const fetchLatestOrder = async (customerId) => {
+    try {
+      // Make a GET request to the backend API endpoint
+      const response = await axios.get(
+        `http://localhost:8070/Order/latest-order/${customerId}`
+      );
+
+      // If the request is successful, return the latest order ID
+      return response.data.latest_order_id;
+    } catch (error) {
+      // If an error occurs, log the error and return null
+      console.error("Error fetching latest order:", error);
+      return null;
+    }
+  };
+
+  React.useEffect(() => {
+    if (currentCustomer) {
+      const customerId = currentCustomer._id;
+      fetchLatestOrder(customerId)
+        .then((latestOrderId) => {
+          if (latestOrderId) {
+            setOrderId(latestOrderId);
+            console.log("Latest order ID:", latestOrderId);
+          } else {
+            console.log("No orders found for the customer.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, [currentCustomer]);
 
   const handleSignOut = async () => {
     try {
@@ -256,7 +294,7 @@ export function NavigationBar() {
                   <PopoverContent className="w-72">
                     <div className="mb-4 flex items-center gap-4 border-b border-blue-gray-50 pb-4">
                       <Avatar
-                        src="https://docs.material-tailwind.com/img/team-4.jpg"
+                        src="https://docs.material-tailwind.com/img/face-2.jpg"
                         alt="tania andrew"
                       />
                       <div>
@@ -348,6 +386,49 @@ export function NavigationBar() {
                             </svg>
                           </ListItemPrefix>
                           Profile
+                        </ListItem>
+                      </Link>
+
+                      <Link to={`/orders/${latestOrderId}`}>
+                        <ListItem>
+                          <ListItemPrefix>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              class="w-6 h-6"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                              />
+                            </svg>
+                          </ListItemPrefix>
+                          Latest Order
+                        </ListItem>
+                      </Link>
+                      <Link to={`/allOrders/${latestOrderId}`}>
+                        <ListItem>
+                          <ListItemPrefix>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              class="w-6 h-6"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                              />
+                            </svg>
+                          </ListItemPrefix>
+                          My Orders
                         </ListItem>
                       </Link>
                       <Link to={"/Customerlogin"}>

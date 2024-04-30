@@ -217,8 +217,8 @@ export function OrdersTable({ orderId }) {
         </Dialog>
       </Card>
 
-      <div className=" mt-10 ml-96">
-        <Button color="red" onClick={deleteOrder}>
+      <div className=" mt-10 ml-96 inline-flex ">
+        <Button color="red" onClick={deleteOrder} className="mr-10">
           Remove Order
         </Button>
         <Button color="green" onClick={() => makePayment(orderId)}>

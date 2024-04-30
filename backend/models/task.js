@@ -9,14 +9,13 @@ const taskSchema = new Schema({
   },
   driver_id: {
     type: Schema.Types.ObjectId,
-    ref: "Employee",
+    ref: "User",
     required: true,
   },
   district: {
     type: String,
   },
-  
- 
+
   orders: [
     {
       order_id: {

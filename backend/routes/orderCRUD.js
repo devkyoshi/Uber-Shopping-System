@@ -284,4 +284,43 @@ router.post("/order-add", async (req, res) => {
   }
 });
 
+// Route to get the latest order ID of a certain customer
+router.get("/latest-order/:customer_id", async (req, res) => {
+  try {
+    const customerId = req.params.customer_id;
+
+    // Find the latest order for the specified customer
+    const latestOrder = await Order.findOne({ customer_id: customerId })
+      .sort({ order_date: -1 }) // Sort in descending order of order_date to get the latest order first
+      .select("_id"); // Select only the _id field of the order
+
+    if (!latestOrder) {
+      return res
+        .status(404)
+        .json({ message: "No orders found for the customer" });
+    }
+
+    // Return the latest order ID
+    res.json({ latest_order_id: latestOrder._id });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Route to get all orders of a certain customer
+router.get("/customer/:customerId/orders", async (req, res) => {
+  try {
+    const customerId = req.params.customerId;
+
+    // Find all orders associated with the customer ID
+    const orders = await Order.find({ customer_id: customerId });
+
+    res.json(orders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;

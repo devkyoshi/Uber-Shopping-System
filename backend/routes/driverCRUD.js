@@ -10,7 +10,7 @@ const Task = require("../models/task");
 const mongoose = require("mongoose");
 const Order = require("../models/order");
 const Supermarket = require("../models/supermarkets");
-const Customer = require("../models/customer/customer_register_schema")
+const Customer = require("../models/customer/customer_register_schema");
 
 // Add drivers to a specific branch - Gimashi
 router.post("/:branchID/driver-add", async (req, res) => {
@@ -46,8 +46,7 @@ router.post("/:branchID/driver-add", async (req, res) => {
     branch.drivers.push(newDriver);
     await branch.save();
 
-
-//Sends a JSON response indicating successful driver addition.
+    //Sends a JSON response indicating successful driver addition.
     res.json("Driver added to branch");
   } catch (error) {
     console.error(error);
@@ -62,11 +61,11 @@ router.put("/:branchID/driver-update/:driverID", async (req, res) => {
   try {
     const { branchID, driverID } = req.params;
     const {
+      available_district,
       current_handover_money,
       vehicle_number,
       availability,
-      available_district,
-    } = req.body;
+    } = req.body; // Extracting data directly from req.body
 
     const branch = await Branch.findOne({ branch_ID: branchID }); // Find branch by branch_ID
 
@@ -76,19 +75,20 @@ router.put("/:branchID/driver-update/:driverID", async (req, res) => {
 
     const driverIndex = branch.drivers.findIndex((driver) => {
       console.log("Driver object:", driver);
-      return driver.driver_id && driver.driver_id.toString() === driverID;
+      return driver._id && driver._id.toString() === driverID;
     });
 
     if (driverIndex === -1) {
       return res.status(404).json({ error: "Driver not found" });
     }
 
+    // Update the driver properties directly
     branch.drivers[driverIndex] = {
       ...branch.drivers[driverIndex],
+      available_district,
       current_handover_money,
       vehicle_number,
       availability,
-      available_district,
     };
 
     await branch.save();
@@ -103,26 +103,47 @@ router.put("/:branchID/driver-update/:driverID", async (req, res) => {
 });
 
 // Remove a driver from a specific branch - Gimashi
+// router.delete("/:branchID/driver-delete/:driverID", async (req, res) => {
+//   try {
+//     const { branchID, driverID } = req.params;
+
+//     const branch = await Branch.findOne({ branch_ID: branchID }); // Find branch by branch_ID
+
+//     if (!branch) {
+//       return res.status(404).json({ error: "Branch not found" });
+//     }
+
+//     const updatedDrivers = branch.drivers.filter(
+//       (driver) => driver.driver_id !== driverID
+//     );
+
+//     if (updatedDrivers.length === branch.drivers.length) {
+//       return res.status(404).json({ error: "Driver not found in branch" });
+//     }
+
+//     branch.drivers = updatedDrivers;
+//     await branch.save();
+
+//     res.json("Driver deleted from branch");
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({
+//       error: "An error occurred while deleting the driver from the branch",
+//     });
+//   }
+// });
 router.delete("/:branchID/driver-delete/:driverID", async (req, res) => {
   try {
     const { branchID, driverID } = req.params;
 
-    const branch = await Branch.findOne({ branch_ID: branchID }); // Find branch by branch_ID
-
-    if (!branch) {
-      return res.status(404).json({ error: "Branch not found" });
-    }
-
-    const updatedDrivers = branch.drivers.filter(
-      (driver) => driver.driver_id !== driverID
+    const result = await Branch.updateOne(
+      { branch_ID: branchID },
+      { $pull: { drivers: { driver_id: driverID } } }
     );
 
-    if (updatedDrivers.length === branch.drivers.length) {
+    if (result.nModified === 0) {
       return res.status(404).json({ error: "Driver not found in branch" });
     }
-
-    branch.drivers = updatedDrivers;
-    await branch.save();
 
     res.json("Driver deleted from branch");
   } catch (error) {
@@ -132,7 +153,6 @@ router.delete("/:branchID/driver-delete/:driverID", async (req, res) => {
     });
   }
 });
-
 
 // Route to get all drivers in a branch by branch_ID
 router.get("/drivers/:branchId", async (req, res) => {
@@ -241,7 +261,7 @@ router.get("/tasks/:driverId", async (req, res) => {
         // Add task and order information to the array
         detailedOrders.push({
           order_details: orderDetails,
-          customer_details: customerDetails
+          customer_details: customerDetails,
         });
       }
     }
@@ -288,7 +308,6 @@ async function getCustomerDetails(orderId) {
     throw new Error("Failed to fetch order and customer details");
   }
 }
-
 
 // Function to retrieve detailed order information
 async function getOrderDetails(orderId) {

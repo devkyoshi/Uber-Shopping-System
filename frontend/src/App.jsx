@@ -124,17 +124,16 @@ export default function App() {
           path="/announcement/:announcementSlug"
           element={<AnnouncementHomeEach />}
         />
-
         <Route>
           <Route path="/Emp_Home" element={<Emp_Home />} />
         </Route>
-
         <Route path="/performance" element={<PerformanceReport />} />
         <Route path="/replacement" element={<Replacement />} />
         <Route path="/Emp_Home" element={<Emp_Home />} />
         <Route path="/new" element={<PerformanceReport />} />
         <Route path="/details" element={<DetailedOrder />} />
-        <Route path="allOrders" element={<AllOrdersPg />} /> {/**newly added - table which displays all the orders */}
+        <Route path="allOrders/:customerId" element={<AllOrdersPg />} />{" "}
+        {/**newly added - table which displays all the orders */}
       </Routes>
 
       <Footer />
