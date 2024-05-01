@@ -12,7 +12,7 @@ import {
   Textarea,
 } from "@material-tailwind/react";
 
-const TABLE_HEAD = ["Item Name", "Quantity", "Price", "SuperMarket Name"];
+const TABLE_HEAD = ["Item Name", "Quantity","Unit", "Price", "SuperMarket Name"];
 
 export function OrdersTable({ orderId }) {
   const [order, setOrder] = useState(null);
@@ -168,6 +168,15 @@ export function OrdersTable({ orderId }) {
                           className="font-normal"
                         >
                           {quantity}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="paragraph"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {unit}
                         </Typography>
                       </td>
                       <td className={classes}>
