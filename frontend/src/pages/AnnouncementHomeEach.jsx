@@ -62,6 +62,7 @@ export default function AnnouncementHomeEach() {
       <span>{announcement && new Date(announcement.createdAt).toLocaleDateString()}</span>
       
     </div>
+    
     <div
       className='p-3 max-w-2xl mx-auto w-full announcement-content'
       dangerouslySetInnerHTML={{ __html: announcement && announcement.content }}

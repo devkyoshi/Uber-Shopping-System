@@ -55,6 +55,8 @@ function NavigationBarFun() {
     "/Employee_Announcements",
     "/Employee_AnnouncementEdit",
     "/Employee_News",
+    "/Emp_search",
+    "/announcement/:announcementSlug",
   ];
   const isSpecificNavbarActive = specificNavbarRoute.includes(
     location.pathname
