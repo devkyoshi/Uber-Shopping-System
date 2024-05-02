@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
  import { Link } from 'react-router-dom';
  import { HiOutlineExclamationCircle } from 'react-icons/hi';
 //import { set } from 'mongoose';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export default function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
@@ -70,13 +72,36 @@ export default function DashPosts() {
       console.log(error.message);
     }
   };
+  
+  const generatePDF = () => {
+    const input = document.getElementById('reportannounce');
+    html2canvas(input, { scrollY: -window.scrollY, logging: true }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const offsetX = (pdfWidth - imgWidth) / 2;
+      const offsetY = 10;
+      pdf.setFontSize(20);
+      pdf.text('Announcemnt Report', pdfWidth / 2, 20, null, null, 'center');
+      pdf.addImage(imgData, 'PNG', offsetX, offsetY + 30, imgWidth, imgHeight);
+      pdf.save('user_report.pdf');
+    });
+  };
+
 
   return (
    
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500'>
     {currentUser.isAdmin && userAnnouncements.length > 0 ? (
       <>
-      <div className='shadow-md'>
+      <Button className=' mt-5 mb-5' gradientDuoTone='purpleToPink'
+             type='button'
+             
+             style={{ backgroundColor: '#00008B' }}onClick={generatePDF}>Generate PDF</Button>
+      <div id="reportannounce" className='shadow-md'>
   <div className='grid grid-cols-6 bg-gray-100 dark:bg-gray-800'>
     <div className='p-3'>Date updated</div>
     <div className='p-3'>Announcement title</div>

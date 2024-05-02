@@ -17,6 +17,7 @@
     "axios": "^1.6.8",
     "file-saver": "^2.0.5",
     "flowbite-react": "^0.8.0",
+    "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
     "moment": "^2.30.1",
