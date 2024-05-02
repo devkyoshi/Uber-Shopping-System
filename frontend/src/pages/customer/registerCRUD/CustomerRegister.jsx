@@ -14,9 +14,12 @@ export default function Register() {
   };
   function handleKeyPress(event) {
     const keyPressed = event.key;
-    const isLetter = /^[a-zA-Z]$/.test(keyPressed);
-    if (!isLetter) {
-      event.preventDefault();
+    const isLetter = /^[a-zA-Z\s]$/.test(keyPressed);
+    const isBackspace = keyPressed === 'Backspace';
+    const isDelete = keyPressed === 'Delete';
+
+    if (!isLetter && !isBackspace && !isDelete) {
+        event.preventDefault();
     }
   }
   const handleSubmit = async (e) => {

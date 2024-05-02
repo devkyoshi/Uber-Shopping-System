@@ -17,7 +17,7 @@ export default function CustomerAdminProfileDetail() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-          const res = await fetch('/customer/getusers?limit=5')
+          const res = await fetch('/customer/getusers?limit=4')
           const data = await res.json()
           if(res.ok){
             setCustomers(data.users);
@@ -31,7 +31,7 @@ export default function CustomerAdminProfileDetail() {
 
     const fetchFeedbacks = async () => {
       try {
-          const res = await fetch(`/Feedback/getFeedback?limit=5`)
+          const res = await fetch(`/Feedback/getFeedback?limit=4`)
           const data = await res.json()
           if(res.ok){
               setFeedbacks(data.cus_feedback);
@@ -50,7 +50,7 @@ export default function CustomerAdminProfileDetail() {
 
   return (
     <div className='p-3 md:mx-auto'>
-      <div className='flex-wrap flex gap-10 justify-center mt-10'>
+      <div className='flex-wrap flex gap-10 justify-center mt-5'>
       <div className='flex flex-col p-3 gap-4 md:w-96 w-full rounded-md shadow-md'>
         <div className='flex justify-between'>
           <div>
@@ -84,8 +84,8 @@ export default function CustomerAdminProfileDetail() {
           </div>
       </div>
       </div>
-      <div className='flex flex-wrap gap-10 mt-10 py-3 mx-auto justify-center'>
-        <div className='flex flex-col w-full md:w-auto shadow-md p-3 rounded-md'>
+      <div className='flex flex-wrap gap-10 mt-5 py-3 mx-auto justify-center'>
+        <div className='flex flex-col w-full md:w-auto shadow-md p-2 rounded-md'>
           <div className='flex justify-between p-3 text-sm font-semibold'>
             <h1 className='text-center p-2'>Recent Users</h1>
             {/* <Button outline gradientDuoTone='pinkToOrange'><Link to={'/AdminLogin?tab=showfeedbacks'}>See all</Link></Button> */}
@@ -122,7 +122,7 @@ export default function CustomerAdminProfileDetail() {
             {customers && customers.map((customer, index) => (
                 <tr style={{backgroundColor: '#FFFFFF'}} key={customer._id}>
                     <td style={{padding: '12px'}}>
-                        <img src='https://th.bing.com/th/id/OIP.eU8MYLNMRBadK-YgTT6FJQHaHw?rs=1&pid=ImgDetMain' alt='user' style={{width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', backgroundColor: '#D1D5DB'}} />
+                        <img src='https://th.bing.com/th/id/OIP.eU8MYLNMRBadK-YgTT6FJQHaHw?rs=1&pid=ImgDetMain' alt='user' style={{width: '40px', height: '30px', borderRadius: '50%', objectFit: 'cover', backgroundColor: '#D1D5DB'}} />
                     </td>
                     <td style={{padding: '12px', fontWeight: 'bold', color: '#4B5563'}}>
                         {customer.cus_username}

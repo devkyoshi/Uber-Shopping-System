@@ -175,6 +175,7 @@ export default function ShowCustomerFeedbacks() {
                         }}
                     />
                     <AiOutlineSearch
+                        onClick={handleSubmit}
                         style={{
                             position: 'absolute',
                             top: '50%',

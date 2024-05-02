@@ -48,6 +48,11 @@ export default function ProfileDetail() {
       setUpdateUserFailure("Can't keep fields empty.");
       return;
     }
+    if(formData.cus_age<18){
+      dispatch(updateFailure());
+      setUpdateUserFailure("You should be atleast 18 years old.");
+      return;
+    }
     try {
       dispatch(updateStart());
       const res = await fetch(`/customer/update/${currentCustomer._id}`, {
@@ -72,6 +77,18 @@ export default function ProfileDetail() {
       setUpdateUserFailure(error.message);
     }
   };
+
+  function handleKeyPress(event) {
+    const keyPressed = event.key;
+    const isLetter = /^[a-zA-Z\s]$/.test(keyPressed);
+    const isBackspace = keyPressed === 'Backspace';
+    const isDelete = keyPressed === 'Delete';
+
+    if (!isLetter && !isBackspace && !isDelete) {
+        event.preventDefault();
+    }
+  }
+
   const handleDelete = async () => {
     setShowModal(false);
     try {
@@ -127,22 +144,23 @@ export default function ProfileDetail() {
     };
   }, [updateUserSuccess, updateUserFailure]);
   return (
-    <div className="max-w-lg mx-auto p-3 w-full">
+    <div className="mx-auto w-full">
       <style>
         {`
           #Cus_CNumber::-webkit-inner-spin-button,
           #Cus_CNumber::-webkit-outer-spin-button {-webkit-appearance: none;margin: 0;}
         `}
       </style>
-      <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
+      <h1 className="mb-5 text-center font-semibold text-3xl">Profile</h1>
       <form onSubmit={handleSubmit} className="flex  flex-col gap-2">
-        <div className="mb-6 w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full">
+        <div className="mb-2 w-24 h-24 self-center cursor-pointer shadow-md overflow-hidden rounded-full">
           <img
             src="https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png"
             alt="user"
             className="rounded-full w-full h-full object-cover border-8 border-[lightgray]"
           />
         </div>
+        <div className="flex flex-row gap-10"><div className="flex flex-col flex-1 gap-2">
         <Label value="Username" />
         <TextInput
           onChange={handleChange}
@@ -165,17 +183,26 @@ export default function ProfileDetail() {
           type="password"
           id="cus_Password"
           placeholder="Password"
-        ></TextInput>
+        ></TextInput></div><div className="flex flex-col flex-1 gap-2">
         <Label value="Full name" />
         <TextInput
+          onKeyDown={handleKeyPress}
           onChange={handleChange}
           type="text"
           id="cus_name"
           placeholder="Full name"
           defaultValue={currentCustomer.cus_name}
         ></TextInput>
+          <Label value="Contact number" />
+            <TextInput
+              onChange={handleChange}
+              type="number"
+              id="cus_cnumber"
+              placeholder="Contact number"
+              defaultValue={currentCustomer.cus_cnumber}
+            ></TextInput>
         <div className="flex flex-row gap-2">
-          <div className="flex flex-col flex-1">
+          {/* <div className="flex flex-col flex-1">
             <Label value="Contact number" />
             <TextInput
               onChange={handleChange}
@@ -184,8 +211,8 @@ export default function ProfileDetail() {
               placeholder="Contact number"
               defaultValue={currentCustomer.cus_cnumber}
             ></TextInput>
-          </div>
-          <div className="flex flex-col flex-1">
+          </div> */}
+          <div className="flex flex-col flex-1 gap-2">
             <Label value="Gender" />
             <Select
               defaultValue={currentCustomer.cus_gender}
@@ -201,7 +228,7 @@ export default function ProfileDetail() {
               <option value="Other">Other</option>
             </Select>
           </div>
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 gap-2">
             <Label value="Age" />
             <TextInput
               onChange={handleChange}
@@ -211,7 +238,7 @@ export default function ProfileDetail() {
               defaultValue={currentCustomer.cus_age}
             ></TextInput>
           </div>
-        </div>
+        </div></div><div className="flex flex-col flex-1 gap-3">
         <Label value="Address" />
         <textarea
           onChange={handleChange}
@@ -221,7 +248,7 @@ export default function ProfileDetail() {
           defaultValue={currentCustomer.cus_address}
         ></textarea>
         <div className="flex  flex-row gap-2">
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 gap-2">
             <Label value="Latitude" />
             <TextInput
               className="flex flex-1"
@@ -231,7 +258,7 @@ export default function ProfileDetail() {
               defaultValue={currentCustomer.cus_latitude}
             />
           </div>
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 gap-2">
             <Label value="Longtitude" />
             <TextInput
               className="flex flex-1"
@@ -241,14 +268,15 @@ export default function ProfileDetail() {
               defaultValue={currentCustomer.cus_longtitude}
             />
           </div>
-        </div>
+        </div></div></div>
         {/* <Button type='submit' gradientDuoTone='pinkToOrange' outline disabled={loading}>{loading ? 'Loading...' : 'Save changes'}</Button> */}
 
         <button
-          className="mt-4"
+          className="mt-10 mx-auto"
           type="submit"
           disabled={loading}
           style={{
+            width: "21.5rem",
             padding: "0.5rem 1rem",
             fontSize: "1rem",
             borderRadius: "0.375rem",
