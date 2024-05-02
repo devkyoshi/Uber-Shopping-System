@@ -51,7 +51,7 @@ export default function Employee_Signin() {
 }}>
   <div className='flex p-3 max-w-sm mx-auto flex-col md:flex-row md:items-center gap-2 '>
 
-     <div className='flex-1 mt-40 ' >
+     <div className='flex-1 mt-10 ' >
      <Link to='/' className='font-bold dark:text-white text-4xl'>
       <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white '>Uber Delivery</span>
     Login</Link>
@@ -72,30 +72,7 @@ export default function Employee_Signin() {
               <TextInput type='password' placeholder='Password' id='password'onChange={handleChange}/>
             </div>
 
-                          <button
-                              type='submit' 
-                              disabled={loading} 
-                              style={{
-                                padding: '0.5rem 1rem',
-                                fontSize: '1rem',
-                                borderRadius: '0.375rem',
-                                color: 'linear-gradient(90deg, #EC4899, #FFB037)',
-                                background: 'transparent',
-                                border: '1px solid #EC4899',
-                                outline: 'none',
-                                opacity: loading ? '0.7' : '1',
-                                pointerEvents: loading ? 'none' : 'auto',
-                                cursor: loading ? 'not-allowed' : 'pointer'
-                              }}
-                              onMouseEnter={(e) => { 
-                              e.target.style.background = 'linear-gradient(90deg, #EC4899, #FFB037)';
-                              e.target.style.color = 'white';
-                              }}
-                              onMouseLeave={(e) => { 
-                              e.target.style.background = 'transparent';
-                              e.target.style.color = 'black';
-                              }}
-              >
+                          <button>
                 Login
               </button>
 

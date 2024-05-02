@@ -98,10 +98,20 @@ export default function DashProfile() {
           console.log(error.message);
         }
       };
+      function handleKeyPress(event) {
+        const keyPressed = event.key;
+        const isLetter = /^[a-zA-Z\s]$/.test(keyPressed);
+        const isBackspace = keyPressed === 'Backspace';
+        const isDelete = keyPressed === 'Delete';
+    
+        if (!isLetter && !isBackspace && !isDelete) {
+            event.preventDefault();
+        }
+      }
   return (
-    <div className='max-w-lg mx-auto p-3 w-full'>
-        <h1 className='my-7 text-center font-semibold text-3xl'>Profile</h1>
-        <form onSubmit={handleSubmit}  className='flex flex-col mb-7 gap-4 '>
+    <div className='mt-0 w-full'>
+        <h1 className='mt-2 text-center font-semibold text-3xl'>Profile</h1>
+        <form onSubmit={handleSubmit}  className='flex flex-col mb-2 gap-4 '>
         
             <div className='w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full' 
  >
@@ -109,7 +119,9 @@ export default function DashProfile() {
              />
                         
             </div>
-            <Label value='My Name' />
+            <div className="flex flex-row gap-2 ml-5 mr-5">
+            <div className="flex flex-col flex-1 gap-2">
+               <Label value='Username' />
             <TextInput
           type='text'
           id='username'
@@ -118,7 +130,7 @@ export default function DashProfile() {
           onChange={handleChange}
         />
 
-<Label value='My Email' />
+<Label value='Email' />
         <TextInput
           type='email'
           id='email'
@@ -126,20 +138,23 @@ export default function DashProfile() {
           defaultValue={currentUser.email}
           onChange={handleChange}
         />
-        <Label value='My Password' />
+        <Label value='Password' />
         <TextInput
           type='password'
           id='password'
           placeholder='**********'
           onChange={handleChange}
         />
-        <Label value='Name' />
+            </div>
+            <div className="flex flex-col flex-1 gap-2">
+                 <Label value='Name' />
   <TextInput
   type='text'
   id='Emp_Name'
   placeholder='Employee Name'
   defaultValue={currentUser.Emp_Name}
   onChange={handleChange}
+  onKeyDown={handleKeyPress}
 />
 <Label value='Age' />
 <TextInput
@@ -156,10 +171,14 @@ export default function DashProfile() {
   placeholder='Employee Gender'
   defaultValue={currentUser.Emp_Gender}
   onChange={handleChange}
+  onKeyDown={handleKeyPress}
 />
+            </div>
+            <div className="flex flex-col flex-1 gap-2">
+                  
 <Label value='Tel. Number' />
 <TextInput
-  type='tel'
+  type='number'
   id='Emp_CNumber'
   placeholder='Employee Contact Number'
   defaultValue={currentUser.Emp_CNumber}
@@ -173,6 +192,11 @@ export default function DashProfile() {
   defaultValue={currentUser.Emp_Address}
   onChange={handleChange}
 />
+            </div>
+            </div>
+           
+           
+ 
 
 
 <Button type='submit'  gradientDuoTone='purpleToPink'
