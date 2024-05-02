@@ -33,6 +33,9 @@ export default function Register() {
     ) {
       return setErrorMesseage("Please fill out all fields.");
     }
+    if(formData.cus_age < 18){
+      return setErrorMesseage("You should be atleast 18 years old to register");
+    }
     try {
       setLoading(true);
       setErrorMesseage(null);
@@ -73,7 +76,7 @@ export default function Register() {
         `}
       </style>
       <div className="p-3 max-w-3xl ml-10 md:flex-row md:items-center gap-5">
-        <div className="flex-1 mt-20 mb-20">
+        <div className="flex-1 mt-16 mb-20">
           <Link
             to="/Customerlogin"
             className="font-bold dark:text-white text-4xl"
@@ -91,7 +94,7 @@ export default function Register() {
         <div className="flex-1 mt-20 mb-20">
           {/*right*/}
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <div className="flex flex-row gap-4"><div><div>
+            <div className="flex flex-row gap-4"><div className="flex flex-1 flex-col gap-4"><div>
               <Label value="Your full name" />
               <TextInput
                 type="text"
@@ -118,7 +121,7 @@ export default function Register() {
                 id="cus_username"
                 onChange={handleChange}
               />
-            </div></div><div>
+            </div></div><div className="flex flex-2 flex-col gap-4">
             <div>
               <Label value="Your password" />
               <TextInput
@@ -177,6 +180,7 @@ export default function Register() {
               type="submit"
               disabled={loading}
               style={{
+                width: "46.5rem",
                 padding: "0.6rem 1rem",
                 fontSize: "0.9rem",
                 fontWeight: "bold",
@@ -200,7 +204,7 @@ export default function Register() {
             </button>
           </form>
           <div className="flex gap-2 text-sm mt-5">
-            <span className="text-white">Already have an account?</span>
+            <span className="text-black">Already have an account?</span>
             <Link to="/Customerlogin" className="text-blue-900">
               Login
             </Link>

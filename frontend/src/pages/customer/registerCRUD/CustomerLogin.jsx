@@ -55,7 +55,7 @@ export default function Login() {
         height: "auto",
       }}
     >
-      <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center mt-20 gap-5">
+      <div className="p-3 ml-20 md:flex-row md:items-center gap-5">
         <div className="flex-1 mt-36">
           <Link
             to="/Customerregister"
@@ -70,7 +70,7 @@ export default function Login() {
             Please login to see all of our latest products for the best prices
           </p>
         </div>
-        <div className="flex-1 mt-36">
+        <div className="flex-1 mt-10 max-w-2xl">
           {/*right*/}
           <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
             <div>
