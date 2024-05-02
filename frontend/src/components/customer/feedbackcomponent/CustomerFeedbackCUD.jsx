@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Feedback from './CustomerFeedbackRead'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
+import ShowCustomerFeedbacks from '../../../adminview/customer/ShowCustomerFeedbacks'
 
 export default function CustomerFeedbackPortal() {
     const { currentCustomer } = useSelector(state => state.customer)

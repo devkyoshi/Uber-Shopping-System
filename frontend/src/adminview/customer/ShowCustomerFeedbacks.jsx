@@ -6,6 +6,8 @@ import { FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export default function ShowCustomerFeedbacks() {
     const { currentCustomer } = useSelector((state) => state.customer);
@@ -84,6 +86,24 @@ export default function ShowCustomerFeedbacks() {
         }
     }, [currentCustomer._id])
 
+    const generatePDF = () => {
+        const input = document.getElementById('feedbackTable');
+        html2canvas(input, { scrollY: -window.scrollY, logging: true }).then((canvas) => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF();
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = pdf.internal.pageSize.getHeight();
+          const imgWidth = pdfWidth;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+          const offsetX = (pdfWidth - imgWidth) / 2;
+          const offsetY = 10;
+          pdf.setFontSize(20);
+          pdf.text('Feedback Report', pdfWidth / 2, 20, null, null, 'center');
+          pdf.addImage(imgData, 'PNG', offsetX, offsetY + 30, imgWidth, imgHeight);
+          pdf.save('feedback_report.pdf');
+        });
+      };
+
     const handleShowMore = async () => {
         const startIndex = feedbacks.length;
         const urlParams = new URLSearchParams(location.search);
@@ -155,8 +175,33 @@ export default function ShowCustomerFeedbacks() {
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 mt-5'>
       {currentCustomer.adminType === 'customer' && feedbacks.length > 0 ? (
         <>
+            <div className='flex justify-between'>
+            {!searchData.searchTerm && (<button className="mb-10"
+                    style={{
+                        padding: "0.5rem 1rem",
+                        fontSize: "1rem",
+                        borderRadius: "0.375rem",
+                        color: "linear-gradient(90deg, #EC4899, #FFB037)",
+                        background: "transparent",
+                        border: "1px solid #EC4899",
+                        outline: "none",
+                        opacity: loading ? "0.7" : "1",
+                        pointerEvents: loading ? "none" : "auto",
+                        cursor: loading ? "not-allowed" : "pointer",
+                    }}
+                    onMouseEnter={(e) => {
+                        e.target.style.background =
+                        "linear-gradient(90deg, #EC4899, #FFB037)";
+                        e.target.style.color = "white";
+                    }}
+                    onMouseLeave={(e) => {
+                        e.target.style.background = "transparent";
+                        e.target.style.color = "black";
+                    }} onClick={generatePDF}>
+                    Download PDF
+            </button>)}
             <form onSubmit={handleSubmit} className='mb-10' style={{textAlign: 'right'}}>
-                <div style={{ position: 'relative' }}>
+                <div style={{ position: 'absolute', right: 190 }}>
                     <input
                         className='shadow-md'
                         type='text'
@@ -169,7 +214,7 @@ export default function ShowCustomerFeedbacks() {
                             borderWidth: '1px',
                             borderColor: '#e5e7eb',
                             backgroundColor: '#f9fafb',
-                            width: '25%',
+                            width: '100%',
                             fontSize: '1rem',
                             outline: 'none',
                         }}
@@ -185,7 +230,7 @@ export default function ShowCustomerFeedbacks() {
                         }}
                     />
                 </div>
-            </form>
+            </form></div>
             {searchData.searchTerm && (
             <div className='p-7'>
                 <form className='flex flex-row' style={{textAlign: 'left'}} onSubmit={handleSearch}>
@@ -287,7 +332,7 @@ export default function ShowCustomerFeedbacks() {
                 ))}
             </Table> */}
             {!searchData.searchTerm && (
-            <table style={{borderCollapse: 'collapse', width: '100%', borderSpacing: 0}} className='shadow-md mt-2'>
+            <table id='feedbackTable' style={{borderCollapse: 'collapse', width: '100%', borderSpacing: 0}} className='shadow-md mt-2'>
                 <thead>
                     <tr style={{backgroundColor: '#F3F4F6', borderBottom: '1px solid #E5E7EB'}}>
                     <th style={{padding: '10px', textAlign: 'left'}}>Date updated</th>
@@ -302,7 +347,7 @@ export default function ShowCustomerFeedbacks() {
                 {feedbacks.map((feedback) => (
                     <tr style={{backgroundColor: '#FFFFFF', borderBottom: '1px solid #E5E7EB'}} key={feedback._id}>
                     <td style={{padding: '10px'}}>{new Date(feedback.updatedAt).toLocaleDateString()}</td>
-                    {/* <td style={{padding: '10px', fontWeight: 'bold', color: '#4B5563'}}>{feedback.cus_id}</td> */}
+                    {/* <td style={{padding: '10px', fontWeight: 'bold', color: '#4B5563'}}>{feedbackCustomer.cus_username}</td> */}
                     <td style={{padding: '10px'}}>{feedback.cus_feedback}</td>
                     <td style={{padding: '10px'}}>
                         <div style={{display: 'flex', justifyContent: 'center', gap: '10px'}}>

@@ -6,6 +6,8 @@ import { useSelector } from 'react-redux'
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useLocation, useNavigate } from 'react-router-dom';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export default function ShowCustomers() {
     const { currentCustomer } = useSelector((state) => state.customer);
@@ -84,6 +86,24 @@ export default function ShowCustomers() {
         }
     }, [currentCustomer._id])
 
+    const generatePDF = () => {
+        const input = document.getElementById('userTable');
+        html2canvas(input, { scrollY: -window.scrollY, logging: true }).then((canvas) => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF();
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = pdf.internal.pageSize.getHeight();
+          const imgWidth = pdfWidth;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+          const offsetX = (pdfWidth - imgWidth) / 2;
+          const offsetY = 10;
+          pdf.setFontSize(20);
+          pdf.text('User Report', pdfWidth / 2, 20, null, null, 'center');
+          pdf.addImage(imgData, 'PNG', offsetX, offsetY + 30, imgWidth, imgHeight);
+          pdf.save('user_report.pdf');
+        });
+      };
+
     const handleShowMore = async () => {
         const startIndex = customers.length;
         const urlParams = new URLSearchParams(location.search);
@@ -154,8 +174,33 @@ export default function ShowCustomers() {
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 mt-5'>
       {currentCustomer.adminType === 'customer' && customers.length > 0 ? (
         <>
+            <div className='mb-10 flex justify-between'>
+            {!searchData.searchTerm && (<button className="mb-10"
+                    style={{
+                        padding: "0.5rem 1rem",
+                        fontSize: "1rem",
+                        borderRadius: "0.375rem",
+                        color: "linear-gradient(90deg, #EC4899, #FFB037)",
+                        background: "transparent",
+                        border: "1px solid #EC4899",
+                        outline: "none",
+                        opacity: loading ? "0.7" : "1",
+                        pointerEvents: loading ? "none" : "auto",
+                        cursor: loading ? "not-allowed" : "pointer",
+                    }}
+                    onMouseEnter={(e) => {
+                        e.target.style.background =
+                        "linear-gradient(90deg, #EC4899, #FFB037)";
+                        e.target.style.color = "white";
+                    }}
+                    onMouseLeave={(e) => {
+                        e.target.style.background = "transparent";
+                        e.target.style.color = "black";
+                    }} onClick={generatePDF}>
+                    Download PDF
+            </button>)}
             <form onSubmit={handleSubmit} className='mb-10' style={{textAlign: 'right'}}>
-                <div style={{ position: 'relative' }}>
+                <div style={{ position: 'absolute', right: 80 }}>
                     <input
                         className='shadow-md'
                         type='text'
@@ -168,7 +213,7 @@ export default function ShowCustomers() {
                             borderWidth: '1px',
                             borderColor: '#e5e7eb',
                             backgroundColor: '#f9fafb',
-                            width: '30%',
+                            width: '100%',
                             fontSize: '1rem',
                             outline: 'none',
                         }}
@@ -184,7 +229,7 @@ export default function ShowCustomers() {
                         }}
                     />
                 </div>
-            </form>
+            </form></div>
             {searchData.searchTerm && (
             <div className='p-7'>
                 <form className='flex flex-row gap-2' style={{textAlign: 'left'}} onSubmit={handleSearch}>
@@ -286,7 +331,7 @@ export default function ShowCustomers() {
                 ))}
             </Table> */}
             {!searchData.searchTerm && (
-            <table className='shadow-md mt-2' style={{borderCollapse: 'collapse', width: '100%', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}}>
+            <table id='userTable' className='shadow-md mt-2' style={{borderCollapse: 'collapse', width: '100%', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}}>
                 <thead>
                 <tr style={{backgroundColor: '#F3F4F6', borderBottom: '1px solid #D1D5DB'}}>
                     <th style={{padding: '10px', textAlign: 'left'}}>Date created</th>
