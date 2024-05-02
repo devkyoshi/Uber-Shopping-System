@@ -12,6 +12,13 @@ export default function Register() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
+  function handleKeyPress(event) {
+    const keyPressed = event.key;
+    const isLetter = /^[a-zA-Z]$/.test(keyPressed);
+    if (!isLetter) {
+      event.preventDefault();
+    }
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -65,7 +72,7 @@ export default function Register() {
           #Cus_CNumber::-webkit-outer-spin-button {-webkit-appearance: none;margin: 0;}
         `}
       </style>
-      <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
+      <div className="p-3 max-w-3xl ml-10 md:flex-row md:items-center gap-5">
         <div className="flex-1 mt-20 mb-20">
           <Link
             to="/Customerlogin"
@@ -84,10 +91,11 @@ export default function Register() {
         <div className="flex-1 mt-20 mb-20">
           {/*right*/}
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <div>
+            <div className="flex flex-row gap-4"><div><div>
               <Label value="Your full name" />
               <TextInput
                 type="text"
+                onKeyDown={handleKeyPress}
                 placeholder="name"
                 id="cus_name"
                 onChange={handleChange}
@@ -110,7 +118,7 @@ export default function Register() {
                 id="cus_username"
                 onChange={handleChange}
               />
-            </div>
+            </div></div><div>
             <div>
               <Label value="Your password" />
               <TextInput
@@ -158,7 +166,7 @@ export default function Register() {
                 id="cus_address"
                 onChange={handleChange}
               ></textarea>
-            </div>
+            </div></div></div>
             {/* <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}>{
                 loading ? (
                   <><Spinner size='sm'/><span className='pl-3'>Loading...</span></>

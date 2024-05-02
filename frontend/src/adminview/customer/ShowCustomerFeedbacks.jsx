@@ -290,7 +290,7 @@ export default function ShowCustomerFeedbacks() {
                 <thead>
                     <tr style={{backgroundColor: '#F3F4F6', borderBottom: '1px solid #E5E7EB'}}>
                     <th style={{padding: '10px', textAlign: 'left'}}>Date updated</th>
-                    <th style={{padding: '10px', textAlign: 'left'}}>User ID</th>
+                    {/* <th style={{padding: '10px', textAlign: 'left'}}>User ID</th> */}
                     <th style={{padding: '10px', textAlign: 'left'}}>Feedback details</th>
                     <th style={{padding: '10px', textAlign: 'left'}}>Number of likes</th>
                     <th style={{padding: '10px', textAlign: 'left'}}>Number of dislikes</th>
@@ -301,7 +301,7 @@ export default function ShowCustomerFeedbacks() {
                 {feedbacks.map((feedback) => (
                     <tr style={{backgroundColor: '#FFFFFF', borderBottom: '1px solid #E5E7EB'}} key={feedback._id}>
                     <td style={{padding: '10px'}}>{new Date(feedback.updatedAt).toLocaleDateString()}</td>
-                    <td style={{padding: '10px', fontWeight: 'bold', color: '#4B5563'}}>{feedback.cus_id}</td>
+                    {/* <td style={{padding: '10px', fontWeight: 'bold', color: '#4B5563'}}>{feedback.cus_id}</td> */}
                     <td style={{padding: '10px'}}>{feedback.cus_feedback}</td>
                     <td style={{padding: '10px'}}>
                         <div style={{display: 'flex', justifyContent: 'center', gap: '10px'}}>
