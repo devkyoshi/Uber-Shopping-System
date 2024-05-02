@@ -119,6 +119,7 @@ export default function DashProfile() {
              />
                         
             </div>
+            
             <div className="flex flex-row gap-2 ml-5 mr-5">
             <div className="flex flex-col flex-1 gap-2">
                <Label value='Username' />
