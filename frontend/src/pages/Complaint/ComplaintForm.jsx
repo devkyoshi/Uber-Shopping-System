@@ -54,12 +54,10 @@ export default function ComplaintForm(){
 
     // Function to handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
+      e.preventDefault();
+      try {
           setUploading(true);
-
-         //Each attribute of the complaint form is stored as a key-value pair in this object.
-         // Construct FormData object to send form data to the server
+  
           const formDataToSend = new FormData();
           formDataToSend.append('customer_id', currentCustomer._id);
           formDataToSend.append('order_id', formData.order_id);
@@ -70,68 +68,62 @@ export default function ComplaintForm(){
           formDataToSend.append('complaint_img', formData.complaint_img);
           formDataToSend.append('quantity', formData.quantity);
           formDataToSend.append('description', formData.description);
-          
+  
           const response = await axios.post('http://localhost:8070/Complaint/complaint-add', formDataToSend, {
-                headers: {
-                    'Content-Type': 'multipart/form-data' // Ensure correct content type for FormData
-                },
-            });
-          
-           // Handle success response
-          console.log(response.data);
-          const responseData = await response.json();
-
-          if (response.ok) {
-            setSuccessMessage(responseData);
-            setErrorMessage('');
-            // Set formSubmitted to true to disable the button
-            setFormSubmitted(true);
-            // Navigate to the complaint page upon successful submission
-            navigate(`/complaint`);
-        } else {
-            setSuccessMessage('');
-            setErrorMessage(responseData.message); // Assuming the server sends error messages in the response data
-        }
-        } catch (error) {
-            // Handle errors
-            console.error('Error submitting complaint:', error);
-            setErrorMessage('An error occurred while submitting the complaint.');
-            setSuccessMessage('');
-        } finally {
-          // Reset uploading state after submission
-          setUploading(false);
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              },
+          });
+  
+          console.log(response.data); // Log the response to see what it contains
+  
+          if (response.status === 200) { // Check status code directly
+              setSuccessMessage(response.data); // Set success message
+              setErrorMessage(''); // Clear error message
+              navigate(`/complaint`); // Navigate to complaint page
+          } else {
+              setSuccessMessage(''); // Clear success message
+              setErrorMessage(response.data.error); // Set error message from response
+          }
+      } catch (error) {
+          console.error('Error submitting complaint:', error);
+          setErrorMessage('An error occurred while submitting the complaint.');
+          setSuccessMessage('');
+      } finally {
+          setUploading(false); // Reset uploading state after submission
       }
-    };
+  };
+  
 
 
     return(
         <div className='main-layout'>
           <SideBar/>
             <div className='inner-layout'>
-              <h1 className="text-4xl font-semibold mb-9 ml-3 ">Complaint Form</h1>
+              <h1 className="text-4xl font-semibold mb-4 ml-3 ">Complaint Form</h1>
                 <div className=" container mx-auto mt-5 bg-gray-100 rounded-lg border border-gray-300">
                 <br/>
                   <form onSubmit={handleSubmit} className=" max-w-screen-md mx-auto w-full ">
-                    <div className="grid grid-cols-2 gap-3 mb-3">
+                    <div className="grid grid-cols-2 gap-7 mb-3">
                       <div>
+                        <div className="mb-3">
                         <label htmlFor="orderId" className="block mb-2 font-bold">Order ID:</label>
-                        <input type="text" id="orderId" name="order_id" value={formData.order_id} onChange={handleChange} className="w-full p-2 bg-red-45 border border-gray-400 rounded-md" required />
-                      </div>
-                      <div>
+                        <input type="text" id="orderId" name="order_id" value={formData.order_id} onChange={handleChange} className="w-full p-1 bg-red-45 border border-gray-400 rounded-md" required />
+                        </div>
+                        <div className="mb-3">
                         <label htmlFor="customerId" className="block mb-2 font-bold">Customer ID:</label>
-                        <input type="text" id="customerId" name="customer_id" value={formData.customer_id} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required readOnly />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3 mb-3">
-                      <div>
+                        <input type="text" id="customerId" name="customer_id" value={formData.customer_id} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required readOnly />
+                        </div>
+                        <div className="mb-3">
                         <label htmlFor="paymentId" className="block mb-2 font-bold">Payment ID:</label>
-                        <input type="text" id="paymentId" name="payment_id" value={formData.payment_id} onChange={handleChange} className="w-full p-2 bg-red-45 border border-gray-400 rounded-md" required />
-                      </div>
-                      <div>
+                        <input type="text" id="paymentId" name="payment_id" value={formData.payment_id} onChange={handleChange} className="w-full p-1 bg-red-45 border border-gray-400 rounded-md" required />
+                        </div>
+                        <div className="mb-3">
                         <label htmlFor="itemId" className="block mb-2 font-bold">Item ID:</label>
-                        <input type="text" id="itemId" name="item_id" value={formData.item_id} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
+                        <input type="text" id="itemId" name="item_id" value={formData.item_id} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required />
+                        </div>
                       </div>
-                    </div>
+                    <div >
                     <div className="mb-3">
                        <label htmlFor="complaintType" className="block mb-2 font-bold">Complaint Type:</label>
                        <select id="complaintType" name="complaint_type" value={formData.complaint_type} onChange={handleChange} className="w-full p-2 bg-white border border-gray-400 rounded-md" required>
@@ -161,6 +153,8 @@ export default function ComplaintForm(){
                        <label htmlFor="complaint_img" className="block mb-2 font-bold">Complaint Image :</label>
                        <input type="file" id="complaint_img" name="complaint_img" onChange={handleFileChange} required />
                        {imagePreview && <img src={imagePreview} alt="Complaint Preview" style={{maxWidth: '50%', marginTop: '10px'}} />}
+                    </div>
+                    </div>
                     </div>
                     <div className="text-red-800 mb-4">{errorMessage}</div>
                     <div className="text-green-500 mb-4">{successMessage}</div>

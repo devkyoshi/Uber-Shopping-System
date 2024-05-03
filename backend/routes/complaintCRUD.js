@@ -53,7 +53,7 @@ const fs = require('fs');
         .json({ error: "Quantity is larger than the purchased quantity" });
     }
 
-    /* Check if required fields are provided
+     //Check if required fields are provided
     if (
         !customer_id ||
         !order_id ||
@@ -63,11 +63,10 @@ const fs = require('fs');
         !resolving_option ||
         !quantity ||
         !description ||
-        !complaint_status ||
         !complaint_img
       ) {
         return res.status(400).json({ error: "Provide all required fields" });
-      }*/
+      }
   
       // Create new complaint instance
       const newComplaint = new Complaint({
@@ -87,7 +86,8 @@ const fs = require('fs');
 
       // Save the new complaint
       await newComplaint.save();
-      res.json("Complaint Added");
+      res.json({ message: "Complaint Added" });
+
 
     } catch (error) {
       console.error(error);
