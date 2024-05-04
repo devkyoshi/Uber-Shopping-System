@@ -40,18 +40,27 @@ export function AddBranch() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSelectChange = (selectedOption) => {
-    if (selectedOption) {
-      setFormData({ ...formData, district: selectedOption.value });
+    // Apply handleChange only for the branch_name field
+    if (name === "branch_ID") {
+      const filteredValue = value.replace(/[^a-zA-Z0-9\s]/g, '');
+      setFormData({
+        ...formData,
+        [name]: filteredValue
+      });
+    } else if (name === "branch_name" || name === "branch_Location") {
+      const filteredValue = value.replace(/[^a-zA-Z\s]/g, '');
+      setFormData({
+        ...formData,
+        [name]: filteredValue,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
     }
   };
-
+  
   const handleBlur = () => {
     if (inputValue) {
       setFormData({ ...formData, district: inputValue });
@@ -67,7 +76,6 @@ export function AddBranch() {
       branch_Location: formData.branch_Location.toLowerCase(),
     };
 
-    // Check for duplicate branch ID or branch Name and Location
     const isExists = branches.some(
       (branch) =>
         branch.branch_ID === formData.branch_ID ||
@@ -82,21 +90,20 @@ export function AddBranch() {
     }
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:8070/Branch/branch-add",
-        formDataLowerCase // Use formDataLowerCase here
+        formDataLowerCase
       );
-      console.log(response.data);
       setFormData({
         branch_ID: "",
         branch_name: "",
         branch_Location: "",
         district: "",
       });
-      setErrorMessage("Branch added successfully!");
+      setErrorMessage(window.confirm("Branch added successfully!"));
     } catch (error) {
       console.error("Error:", error);
-      setErrorMessage("Error adding branch. Please try again.");
+      setErrorMessage(window.confirm("Please Fill the Feilds"));
     }
   };
 
@@ -121,7 +128,6 @@ export function AddBranch() {
             </Typography>
             <Input
               size="lg"
-              required
               value={formData.branch_ID}
               onChange={handleChange}
               name="branch_ID"
@@ -158,17 +164,19 @@ export function AddBranch() {
               id="district"
               name="district"
               value={{ label: formData.district, value: formData.district }}
-              onChange={handleSelectChange}
+              onChange={(selectedOption) => setFormData({ ...formData, district: selectedOption.value })}
               onBlur={handleBlur}
               options={districts.map((district) => ({
                 label: district,
                 value: district,
               }))}
-              placeholder="Enter or select district"
               inputValue={inputValue}
-              onInputChange={(newInputValue) => setInputValue(newInputValue)}
-              isClearable={false}
+              onInputChange={(newInputValue) => {
+                const filteredValue = newInputValue.replace(/[^a-zA-Z\s]/g, '');
+                setInputValue(filteredValue);
+              }}
             />
+
           </div>
 
           {errorMessage && (

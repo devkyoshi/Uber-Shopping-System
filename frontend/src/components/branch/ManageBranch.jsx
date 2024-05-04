@@ -81,6 +81,42 @@ export function ManageBranch() {
         setBranches(updatedBranches);
     };
 
+    const [editMode, setEditMode] = useState({});
+
+    const toggleEditMode = (branchId) => {
+        setEditMode(prevState => ({
+            ...prevState,
+            [branchId]: !prevState[branchId]
+        }));
+    };
+
+    const renderSaveOrEditButton = (branchId) => {
+        if (editMode[branchId]) {
+            return (
+                <Button color="green" onClick={() => { handleSave(branchId); toggleEditMode(branchId); }}>
+                    Save
+                </Button>
+            );
+        } else {
+            return (
+                <Button color="blue" onClick={() => toggleEditMode(branchId)}>
+                    Update
+                </Button>
+            );
+        }
+    };
+
+    const handleSave = async (branchId) => {
+        const updatedBranch = branches.find(branch => branch._id === branchId);
+        try {
+            await handleUpdate(updatedBranch);
+            resetToOriginalValues(branchId);
+        } catch (error) {
+            console.error("Error saving branch:", error);
+            setErrorMessage("Error saving branch");
+        }
+    };
+
     return (
         <Card className="h-full w-full overflow-scroll">
             <table className="w-full min-w-max table-auto text-left">
@@ -156,6 +192,7 @@ export function ManageBranch() {
                                     type="text"
                                     value={branch.branch_ID}
                                     onChange={(e) => handleInputChange(e, branch._id, 'branch_ID')}
+                                    disabled={!editMode[branch._id]}
                                 />
                             </td>
                             <td className="p-4">
@@ -163,7 +200,7 @@ export function ManageBranch() {
                                     type="text"
                                     value={branch.branch_name}
                                     onChange={(e) => handleInputChange(e, branch._id, 'branch_name')}
-                                    
+                                    disabled={!editMode[branch._id]}
                                 />
                             </td>
                             <td className="p-4">
@@ -171,6 +208,7 @@ export function ManageBranch() {
                                     type="text"
                                     value={branch.branch_Location}
                                     onChange={(e) => handleInputChange(e, branch._id, 'branch_Location')}
+                                    disabled={!editMode[branch._id]}
                                 />
                             </td>
                             <td className="p-4">
@@ -178,12 +216,11 @@ export function ManageBranch() {
                                     type="text"
                                     value={branch.district}
                                     onChange={(e) => handleInputChange(e, branch._id, 'district')}
+                                    disabled={!editMode[branch._id]}
                                 />
                             </td>
                             <td className="p-4">
-                                <Button color="blue" onClick={() => { handleUpdate(branch); resetToOriginalValues(branch._id); }}>
-                                    Update
-                                </Button>
+                                {renderSaveOrEditButton(branch._id)}
                             </td>
                             <td className="p-4">
                                 <Button color="red" onClick={() => handleDelete(branch._id)} className="ml-2">
