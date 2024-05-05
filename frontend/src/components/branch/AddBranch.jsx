@@ -123,7 +123,7 @@ export function AddBranch() {
           onSubmit={handleSubmit}
         >
           <div className="flex flex-row gap-10">
-            <div className="flex flex-col flex-1 gap-2">
+          <div className="flex flex-col flex-1 gap-2">
               <Typography variant="h6" color="blue-gray" className="mb-2">
                 Branch ID
               </Typography>

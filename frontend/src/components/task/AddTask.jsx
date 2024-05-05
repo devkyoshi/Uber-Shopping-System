@@ -15,7 +15,14 @@ const AddTask = () => {
         if (response && response.data && Array.isArray(response.data)) {
           console.log("Response received:", response);
 
-          const orders = response.data.filter(order => order.order_status === "pending");
+          const payedOrders = response.data.filter(order => {
+            return (
+              (order.cash_payment?.payment_method === "cash" || order.card_payment?.payment_method === "card")
+            );
+          });
+          console.log('payed orders', payedOrders)
+          
+          const orders = payedOrders.filter(order => order.order_status === "pending");
           console.log("Filtered orders:", orders);
 
           // Group orders by district

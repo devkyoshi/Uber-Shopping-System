@@ -26,34 +26,53 @@ export function ManageTask() {
         }
     };
 
-    const handleDelete = async (taskId) => {
+    const handleDelete = async (taskId, orderCount) => {
         console.log('taskId', taskId);
         try {
-            await axios.delete(`http://localhost:8070/Task/delete-task/${taskId}`);
-            console.log("Task deleted successfully");
-            fetchTasks();
-            const confirmDelete = window.confirm(`Are you sure you want to delete Task ${taskId} ? Order details are also removed!`);
-            if (!confirmDelete) {
-                return;
+            const confirmDelete = window.confirm(`Are you sure you want to delete Task ${taskId} ? There are ${orderCount} orders associated with this task.`);
+            if (confirmDelete) {
+                await axios.delete(`http://localhost:8070/Task/delete-task/${taskId}`);
+                console.log("Task deleted successfully");
+                fetchTasks();
             }
         } catch (error) {
             console.error("Error deleting task:", error);
             setErrorMessage("Error deleting task");
         }
     };
+    
 
     const handleInputChange = (e, taskId, fieldName) => {
-        console.log('taskId', taskId)
+        const { value } = e.target;
+        let filteredValue = value;
+    
+        // Apply input validation based on the field name
+        switch (fieldName) {
+            
+            case "branch_id":
+                filteredValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
+                break;
+            case "driver_id":
+                filteredValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
+                break;
+            case "district":
+                filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
+                break;
+            default:
+                break;
+        }
+    
         setTasks(prevTasks => {
             return prevTasks.map(task => {
                 if (task.task_id === taskId) {
-                    console.log(`Updating ${fieldName} for task ID: ${task.task_id} to value: ${e.target.value}`);
-                    return { ...task, [fieldName]: e.target.value };
+                    console.log(`Updating ${fieldName} for task ID: ${task.task_id} to value: ${filteredValue}`);
+                    return { ...task, [fieldName]: filteredValue };
                 }
                 return task;
             });
         });
     };
+    
 
     const handleEdit = (taskId) => {
         setEditTaskId(taskId); // Set the task ID being edited
@@ -170,7 +189,7 @@ export function ManageTask() {
                                     type="text"
                                     value={task.task_id}
                                     onChange={(e) => handleInputChange(e, task.task_id, 'task_id')}
-                                    readOnly={editTaskId !== task.task_id} // Disable input if not in edit mode
+                                    readOnly // Disable input if not in edit mode
                                 />
                             </td>
                             <td className="p-4">
@@ -217,7 +236,7 @@ export function ManageTask() {
                                 )}
                             </td>
                             <td className="p-4">
-                                <Button color="red" onClick={() => handleDelete(task.task_id)} className="ml-2">
+                                <Button color="red" onClick={() => handleDelete(task.task_id, task.orders.length)} className="ml-2">
                                     Delete
                                 </Button>
                             </td>

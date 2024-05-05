@@ -56,18 +56,29 @@ export function ManageBranch() {
     };
 
     const handleInputChange = (e, branchId, fieldName) => {
+        const { value } = e.target;
+        let filteredValue = value;
+    
+        // Apply different validation based on the field name
+        if (fieldName === "branch_ID" || fieldName === "branch_Location") {
+            // Allow only alphanumeric characters and spaces
+            filteredValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
+        } else if (fieldName === "branch_name"  || fieldName === "district" ) {
+            // Allow only alphabets and spaces
+            filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
+        }
+    
         const updatedBranches = branches.map(branch => {
             if (branch._id === branchId) {
                 return { 
                     ...branch,
-                    [fieldName]: e.target.value 
+                    [fieldName]: filteredValue 
                 };
             }
             return branch;
         });
         setBranches(updatedBranches);
     };
-
     const resetToOriginalValues = (branchId) => {
         const updatedBranches = branches.map(branch => {
             if (branch._id === branchId) {
