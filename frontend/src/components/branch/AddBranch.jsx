@@ -42,13 +42,13 @@ export function AddBranch() {
     const { name, value } = e.target;
     // Apply handleChange only for the branch_name field
     if (name === "branch_ID") {
-      const filteredValue = value.replace(/[^a-zA-Z0-9\s]/g, '');
+      const filteredValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
       setFormData({
         ...formData,
-        [name]: filteredValue
+        [name]: filteredValue,
       });
     } else if (name === "branch_name" || name === "branch_Location") {
-      const filteredValue = value.replace(/[^a-zA-Z\s]/g, '');
+      const filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
       setFormData({
         ...formData,
         [name]: filteredValue,
@@ -60,7 +60,7 @@ export function AddBranch() {
       });
     }
   };
-  
+
   const handleBlur = () => {
     if (inputValue) {
       setFormData({ ...formData, district: inputValue });
@@ -100,10 +100,10 @@ export function AddBranch() {
         branch_Location: "",
         district: "",
       });
-      setErrorMessage(window.confirm("Branch added successfully!"));
+      setErrorMessage("Branch added successfully!");
     } catch (error) {
       console.error("Error:", error);
-      setErrorMessage(window.confirm("Please Fill the Feilds"));
+      setErrorMessage("Please Fill the Fields");
     }
   };
 
@@ -117,66 +117,72 @@ export function AddBranch() {
         Make Branch
       </Typography>
 
-      <div className="ml-48 pl-36">
+      <div className="flex">
         <form
-          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+          className="mt-8 mb-2 max-w-screen-lg"
           onSubmit={handleSubmit}
         >
-          <div className="mb-1 flex flex-col gap-5">
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Branch ID
-            </Typography>
-            <Input
-              size="lg"
-              value={formData.branch_ID}
-              onChange={handleChange}
-              name="branch_ID"
-              placeholder="Enter Branch ID"
-              className="!border-t-blue-gray-200 focus:!border-t-gray-900 -mb-3"
-            />
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Branch Name
-            </Typography>
-            <Input
-              size="lg"
-              value={formData.branch_name}
-              onChange={handleChange}
-              name="branch_name"
-              placeholder="Enter Branch Name"
-              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-            />
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Branch Location
-            </Typography>
-            <Input
-              type="text"
-              size="lg"
-              value={formData.branch_Location}
-              onChange={handleChange}
-              name="branch_Location"
-              placeholder="Enter Branch Location"
-              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-            />
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              District
-            </Typography>
-            <Select
-              id="district"
-              name="district"
-              value={{ label: formData.district, value: formData.district }}
-              onChange={(selectedOption) => setFormData({ ...formData, district: selectedOption.value })}
-              onBlur={handleBlur}
-              options={districts.map((district) => ({
-                label: district,
-                value: district,
-              }))}
-              inputValue={inputValue}
-              onInputChange={(newInputValue) => {
-                const filteredValue = newInputValue.replace(/[^a-zA-Z\s]/g, '');
-                setInputValue(filteredValue);
-              }}
-            />
-
+          <div className="flex flex-row gap-10">
+            <div className="flex flex-col flex-1 gap-2">
+              <Typography variant="h6" color="blue-gray" className="mb-2">
+                Branch ID
+              </Typography>
+              <Input
+                size="lg"
+                value={formData.branch_ID}
+                onChange={handleChange}
+                name="branch_ID"
+                placeholder="Enter Branch ID"
+                className="mb-4"
+              />
+              <Typography variant="h6" color="blue-gray" className="mb-2">
+                District
+              </Typography>
+              <Select
+                id="district"
+                name="district"
+                value={{ label: formData.district, value: formData.district }}
+                onChange={(selectedOption) =>
+                  setFormData({ ...formData, district: selectedOption.value })
+                }
+                onBlur={handleBlur}
+                options={districts.map((district) => ({
+                  label: district,
+                  value: district,
+                }))}
+                inputValue={inputValue}
+                onInputChange={(newInputValue) => {
+                  const filteredValue = newInputValue.replace(/[^a-zA-Z\s]/g, "");
+                  setInputValue(filteredValue);
+                }}
+                className="mb-4"
+              />
+            </div>
+            <div className="flex flex-col">
+              <Typography variant="h6" color="blue-gray" className="mb-2">
+                Branch Name
+              </Typography>
+              <Input
+                size="lg"
+                value={formData.branch_name}
+                onChange={handleChange}
+                name="branch_name"
+                placeholder="Enter Branch Name"
+                className="mb-4"
+              />
+              <Typography variant="h6" color="blue-gray" className="mb-2">
+                Branch Location
+              </Typography>
+              <Input
+                type="text"
+                size="lg"
+                value={formData.branch_Location}
+                onChange={handleChange}
+                name="branch_Location"
+                placeholder="Enter Branch Location"
+                className="mb-4"
+              />
+            </div>
           </div>
 
           {errorMessage && (

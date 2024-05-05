@@ -10,6 +10,7 @@ import {
 export function ManageTask() {
     const [tasks, setTasks] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
+    const [editTaskId, setEditTaskId] = useState(""); // State to track which task is being edited
 
     useEffect(() => {
         fetchTasks();
@@ -19,7 +20,6 @@ export function ManageTask() {
         try {
             const response = await axios.get("http://localhost:8070/Task/tasks");
             setTasks(response.data);
-
         } catch (error) {
             console.error("Error fetching tasks:", error);
             setErrorMessage("Error fetching tasks");
@@ -32,15 +32,10 @@ export function ManageTask() {
             await axios.delete(`http://localhost:8070/Task/delete-task/${taskId}`);
             console.log("Task deleted successfully");
             fetchTasks();
-
-            if (taskId.length > 0) {
-                const confirmDelete = window.confirm(`Are you sure you want to delete Task ${taskId} ? Order details are also removed!`);
-                
-                if (confirmDelete) {
-                    return;
-                }
+            const confirmDelete = window.confirm(`Are you sure you want to delete Task ${taskId} ? Order details are also removed!`);
+            if (!confirmDelete) {
+                return;
             }
-
         } catch (error) {
             console.error("Error deleting task:", error);
             setErrorMessage("Error deleting task");
@@ -48,22 +43,29 @@ export function ManageTask() {
     };
 
     const handleInputChange = (e, taskId, fieldName) => {
-        const updatedTasks = tasks.map(task => {
-            if (task._id === taskId) {
-                console.log(`Updating ${fieldName} for task ID: ${taskId} to value: ${e.target.value}`);
-                return { ...task, [fieldName]: e.target.value };
-            }
-            return task;
+        console.log('taskId', taskId)
+        setTasks(prevTasks => {
+            return prevTasks.map(task => {
+                if (task.task_id === taskId) {
+                    console.log(`Updating ${fieldName} for task ID: ${task.task_id} to value: ${e.target.value}`);
+                    return { ...task, [fieldName]: e.target.value };
+                }
+                return task;
+            });
         });
-        setTasks(updatedTasks);
     };
 
-    const handleUpdate = async (updatedTask) => {
+    const handleEdit = (taskId) => {
+        setEditTaskId(taskId); // Set the task ID being edited
+    };
+
+    const handleSave = async (updatedTask) => {
         try {
             // Make a PUT request to update the task
-            console.log("Ín function", updatedTask);
+            console.log("In function", updatedTask);
             await axios.put(`http://localhost:8070/Task/update-task/${updatedTask.task_id}`, updatedTask);
             console.log("Task updated successfully");
+            setEditTaskId(""); // Reset edit task ID after saving
             fetchTasks(); // Fetch updated task list
         } catch (error) {
             console.error("Error updating task:", error);
@@ -106,6 +108,7 @@ export function ManageTask() {
                         <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <Typography
                                 variant="small"
+                                readOnly
                                 color="blue-gray"
                                 style={{ fontWeight: "bolder" }}
                                 className="font-normal leading-none opacity-70 text-center"
@@ -127,6 +130,7 @@ export function ManageTask() {
                         <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <Typography
                                 variant="small"
+                                readOnly
                                 color="blue-gray"
                                 style={{ fontWeight: "bolder" }}
                                 className="font-normal leading-none opacity-70 text-center"
@@ -137,6 +141,7 @@ export function ManageTask() {
                         <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <Typography
                                 variant="small"
+                                readOnly
                                 color="blue-gray"
                                 style={{ fontWeight: "bolder" }}
                                 className="font-normal leading-none opacity-70 text-center"
@@ -146,7 +151,8 @@ export function ManageTask() {
                         </th>
                         <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <Typography
-                               variant="small"
+                                variant="small"
+                                readOnly
                                 color="blue-gray"
                                 style={{ fontWeight: "bolder" }}
                                 className="font-normal leading-none opacity-70 text-center"
@@ -162,32 +168,33 @@ export function ManageTask() {
                             <td className="p-4">
                                 <Input
                                     type="text"
-                                    readOnly
                                     value={task.task_id}
-                                    onChange={(e) => handleInputChange(e, task._id, 'task_id')}
+                                    onChange={(e) => handleInputChange(e, task.task_id, 'task_id')}
+                                    readOnly={editTaskId !== task.task_id} // Disable input if not in edit mode
                                 />
                             </td>
                             <td className="p-4">
                                 <Input
                                     type="text"
-                                    readOnly
                                     value={task.branch_id}
-                                    onChange={(e) => handleInputChange(e, task._id, 'branch_id')}
+                                    onChange={(e) => handleInputChange(e, task.task_id, 'branch_id')}
+                                    readOnly={editTaskId !== task.task_id} // Disable input if not in edit mode
                                 />
                             </td>
                             <td className="p-4">
                                 <Input
                                     type="text"
-                                    readOnly
                                     value={task.driver_id}
-                                    onChange={(e) => handleInputChange(e, task._id, 'driver_id')}
+                                    onChange={(e) => handleInputChange(e, task.task_id, 'driver_id')}
+                                    readOnly={editTaskId !== task.task_id} // Disable input if not in edit mode
                                 />
                             </td>
                             <td className="p-4">
                                 <Input
                                     type="text"
                                     value={task.district}
-                                    onChange={(e) => handleInputChange(e, task._id, 'district')}
+                                    onChange={(e) => handleInputChange(e, task.task_id, 'district')}
+                                    readOnly={editTaskId !== task.task_id} // Disable input if not in edit mode
                                 />
                             </td>
                             <td className="p-4">
@@ -199,9 +206,15 @@ export function ManageTask() {
                                 </ul>
                             </td>
                             <td className="p-4">
-                                <Button color="blue" onClick={() => handleUpdate(task)}>
-                                    Update
-                                </Button>
+                                {editTaskId === task.task_id ? (
+                                    <Button color="green" onClick={() => handleSave(task)}>
+                                        Save
+                                    </Button>
+                                ) : (
+                                    <Button color="blue" onClick={() => handleEdit(task.task_id)}>
+                                        Update
+                                    </Button>
+                                )}
                             </td>
                             <td className="p-4">
                                 <Button color="red" onClick={() => handleDelete(task.task_id)} className="ml-2">
