@@ -228,7 +228,7 @@ export default function ProfileDetail() {
               <option value="Other">Other</option>
             </Select>
           </div>
-          <div className="flex flex-col flex-1 gap-2">
+          {/* <div className="flex flex-col flex-1 gap-2">
             <Label value="Age" />
             <TextInput
               onChange={handleChange}
@@ -237,8 +237,18 @@ export default function ProfileDetail() {
               placeholder="Age"
               defaultValue={currentCustomer.cus_age}
             ></TextInput>
-          </div>
-        </div></div><div className="flex flex-col flex-1 gap-3">
+          </div> */}
+        </div></div><div className="flex flex-col flex-1 gap-2">
+        
+        <Label value="Age" />
+        <TextInput
+          onChange={handleChange}
+          type="number"
+          id="cus_age"
+          placeholder="Age"
+          defaultValue={currentCustomer.cus_age}
+        ></TextInput>
+        
         <Label value="Address" />
         <textarea
           onChange={handleChange}
@@ -247,12 +257,12 @@ export default function ProfileDetail() {
           placeholder="Address"
           defaultValue={currentCustomer.cus_address}
         ></textarea>
-        <div className="flex  flex-row gap-2">
+        {/* <div className="flex  flex-row gap-2">
           <div className="flex flex-col flex-1 gap-2">
             <Label value="Latitude" />
             <TextInput
               className="flex flex-1"
-              /*onChange={handleChange}*/ type="number"
+              type="number"
               placeholder="Latitude"
               id="cus_latitude"
               defaultValue={currentCustomer.cus_latitude}
@@ -262,13 +272,13 @@ export default function ProfileDetail() {
             <Label value="Longtitude" />
             <TextInput
               className="flex flex-1"
-              /*onChange={handleChange}*/ type="number"
+              type="number"
               placeholder="Longtitude"
               id="cus_longtitude"
               defaultValue={currentCustomer.cus_longtitude}
             />
           </div>
-        </div></div></div>
+        </div>*/}</div></div>
         {/* <Button type='submit' gradientDuoTone='pinkToOrange' outline disabled={loading}>{loading ? 'Loading...' : 'Save changes'}</Button> */}
 
         <button
