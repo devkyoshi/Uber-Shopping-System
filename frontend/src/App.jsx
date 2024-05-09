@@ -134,7 +134,7 @@ export default function App() {
         <Route path="/Emp_Home" element={<Emp_Home />} />
         <Route path="/new" element={<PerformanceReport />} />
         <Route path="/details" element={<DetailedOrder />} />
-        <Route path="allOrders/:customerId" element={<AllOrdersPg />} />{" "}
+        <Route path="allOrders/:customerId" element={<AllOrdersPg />} />
         {/**newly added - table which displays all the orders */}
       </Routes>
 

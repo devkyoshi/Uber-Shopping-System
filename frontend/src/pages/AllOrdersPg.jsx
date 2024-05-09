@@ -9,7 +9,7 @@ export default function AllOrdersPg() {
   return (
     <div>
       <div className="main-layout bg">
-        <SideBar />
+        
         <div className="inner-layout">
           <AllOrders customerId={customerId} />
         </div>
