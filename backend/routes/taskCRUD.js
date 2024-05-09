@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const Task = require("../models/task");
 const Order = require("../models/order");
+ const Branch = require("../models/branch")
 const mongoose = require("mongoose");
 
 // Add a new task(new) - Sarindu
@@ -17,15 +18,19 @@ router.post("/add-task", async (req, res) => {
         task.orders.push({ order_id: orderId });
 
         // Update order status to "processing"
-        await Order.updateOne({ _id: orderId }, { $set: { order_status: "Processing" } });
-      });
-
-      // Update driver's availability to "delivering"
-      // await Branch.updateOne(
-      //   { _id: branch_id, "drivers.driver_id": driver_id },
-      //   { $set: { "drivers.$.availability": "delivering" } }
-      // );
+        await Order.updateOne({ _id: orderId }, { $set: { order_status: "Processing" } }); 
+      });     
     }
+
+    // Update driver's availability to "delivering"
+    // Ensure to use the correct field for branch identifier
+    console.log("Before updating driver availability:", driver_id, branch_id);
+    const updateResult = await Branch.updateOne(
+      { branch_ID: branch_id, "drivers.driver_id": driver_id }, // Use branch_ID instead of _id
+      { $set: { "drivers.$.availability": "delivering" } }
+    );
+    console.log("Driver availability update result:", updateResult);
+    
     await task.save();
     res.json(task);
   } catch (error) {
@@ -33,6 +38,7 @@ router.post("/add-task", async (req, res) => {
     res.status(500).json({ error: "An error occurred while adding the task" });
   }
 });
+
 
 
  ///// update task - manage task

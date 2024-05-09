@@ -22,20 +22,25 @@ const OrderTable = () => {
       try {
         const response = await axios.get('http://localhost:8070/Order/orders');
         console.log('API Response:', response.data); // Log the response data
-
+  
         const filteredOrders = response.data.filter(order => order.order_status === 'pending');
+  
+        // Filter out orders with empty district
+        const ordersWithDistrict = filteredOrders.filter(order => {
+          return order.cash_payment?.district || order.card_payment?.district;
+        });
         
         // Sort orders by district and then by order_id
-        const sortedOrders = filteredOrders.sort((a, b) => {
+        const sortedOrders = ordersWithDistrict.sort((a, b) => {
           const districtA = a.cash_payment ? a.cash_payment.district : (a.card_payment ? a.card_payment.district : '');
           const districtB = b.cash_payment ? b.cash_payment.district : (b.card_payment ? b.card_payment.district : '');
-
+  
           if (districtA === districtB) {
             return a._id - b._id; // Sort by _id if districts are the same
           } 
           return districtA.localeCompare(districtB);
         });
-
+  
         setOrders(sortedOrders);
         setLoading(false); // Set loading to false after fetching and setting orders
         console.log('sorted Order', sortedOrders);
@@ -45,9 +50,10 @@ const OrderTable = () => {
         setLoading(false); // Set loading to false if there's an error
       }
     };
-
+  
     fetchOrders();
   }, []);
+  
 
   if (loading) {
     return <p>Loading...</p>;
