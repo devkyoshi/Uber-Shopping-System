@@ -151,7 +151,8 @@ export default function ViewPaymentUI({ orderId }) {
                     <strong>Email:</strong> {cardPaymentDetails.email}
                   </li>
                   <li style={{ marginBottom: "5px" }}>
-                    <strong>Amount:</strong> {cardPaymentDetails.payment_amount}
+                    <strong>Amount: Rs. </strong>{" "}
+                    {cardPaymentDetails.payment_amount}
                   </li>
                   <li style={{ marginBottom: "5px" }}>
                     <strong>Account Holder:</strong>{" "}

@@ -33,6 +33,33 @@ router.post("/create-order", async (req, res) => {
   }
 });
 
+//update order - additional notes
+router.put("/update/:orderId", async (req, res) => {
+  const { orderId } = req.params;
+  const { additionalNotes } = req.body;
+
+  try {
+    // Find the order by its ID
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Update additional notes
+    order.additional_notes = additionalNotes;
+
+    // Save the updated order
+    await order.save();
+
+    res
+      .status(200)
+      .json({ message: "Additional notes updated successfully", order: order });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Delete an existing Orders
 router.delete("/order-delete/:orderID", async (req, res) => {
   try {
@@ -120,57 +147,30 @@ router.get("/details/:OrderID", async (req, res) => {
   }
 });
 
-//update order - additional notes
-router.put("/update/:orderId", async (req, res) => {
-  const { orderId } = req.params;
-  const { additionalNotes } = req.body;
+// // Add delivery details to order
+// router.post("/add-delivery/:orderId", async (req, res) => {
+//   try {
+//     const orderId = req.params.orderId;
+//     const { distance, costPerkm } = req.body;
+//     const charges = distance * costPerkm;
 
-  try {
-    // Find the order by its ID
-    const order = await Order.findById(orderId);
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
+//     const order = await Order.findById(orderId);
+//     if (!order) {
+//       return res.status(404).json({ error: "Order not found" });
+//     }
 
-    // Update additional notes
-    order.additional_notes = additionalNotes;
+//     order.delivery.push({ charges, distance, costPerkm });
 
-    // Save the updated order
-    await order.save();
+//     await order.save();
 
-    res
-      .status(200)
-      .json({ message: "Additional notes updated successfully", order: order });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// Add delivery details to order
-router.post("/add-delivery/:orderId", async (req, res) => {
-  try {
-    const orderId = req.params.orderId;
-    const { distance, costPerkm } = req.body;
-    const charges = distance * costPerkm;
-
-    const order = await Order.findById(orderId);
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
-
-    order.delivery.push({ charges, distance, costPerkm });
-
-    await order.save();
-
-    res.json("Delivery details added to the order successfully");
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while adding details to the order" });
-  }
-});
+//     res.json("Delivery details added to the order successfully");
+//   } catch (error) {
+//     console.error(error);
+//     res
+//       .status(500)
+//       .json({ error: "An error occurred while adding details to the order" });
+//   }
+// });
 
 // Update delivery details to order
 router.put("/:orderId/update-delivery/:deliveryId", async (req, res) => {
@@ -309,28 +309,29 @@ router.get("/latest-order/:customer_id", async (req, res) => {
 });
 
 // Route to get all orders of a certain customer
-router.get("/customer/:customerId/orders"), async (req, res) => {
-  try {
-    const customerId = req.params.customerId;
+router.get("/customer/:customerId/orders"),
+  async (req, res) => {
+    try {
+      const customerId = req.params.customerId;
 
-    // Find all orders associated with the customer ID
-    const orders = await Order.find({ customer_id: customerId });
+      // Find all orders associated with the customer ID
+      const orders = await Order.find({ customer_id: customerId });
 
-    res.json(orders);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-}
+      res.json(orders);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
 
 // Read all orders
 router.get("/orders", async (req, res) => {
   try {
-      const orders = await Order.find();
-      res.json(orders);
+    const orders = await Order.find();
+    res.json(orders);
   } catch (error) {
-      console.error(error); 
-      res.status(500).json({ error: "An error occurred while fetching Orders" });
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while fetching Orders" });
   }
 });
 

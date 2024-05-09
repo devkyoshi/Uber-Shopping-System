@@ -100,6 +100,34 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
 
   const [paymentMade, setPaymentMade] = useState(false);
 
+  //Luhn Algorithm - test
+  function isValidCardNumber(cardNumber) {
+    // Remove all non-digit characters
+    cardNumber = cardNumber.replace(/\D/g, "");
+
+    // Convert the card number string into an array of digits
+    const cardDigits = cardNumber.split("").map(Number);
+
+    // Double every second digit starting from the right
+    for (let i = cardDigits.length - 2; i >= 0; i -= 2) {
+      let doubleDigit = cardDigits[i] * 2;
+
+      // If doubling results in a two-digit number, subtract 9
+      if (doubleDigit > 9) {
+        doubleDigit -= 9;
+      }
+
+      // Replace the digit in the array with the doubled value
+      cardDigits[i] = doubleDigit;
+    }
+
+    // Sum all the digits
+    const sum = cardDigits.reduce((acc, digit) => acc + digit, 0);
+
+    // If the sum modulo 10 equals 0, the card number is valid
+    return sum % 10 === 0;
+  }
+
   const handleSetPaymentMethodCash = () => {
     setPaymentMethod("cash");
   };
@@ -127,9 +155,25 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
     setFormData({ ...formData, [name]: value });
   };
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({ ...formData, [name]: value });
+  // };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    // Convert email input value to lowercase before updating the state
+    if (name === "email") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value.toLowerCase(),
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
   };
 
   //delete payment function
@@ -207,6 +251,18 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
     e.preventDefault();
     try {
       setLoading(true);
+
+      // // Validate card number - test
+      if (
+        paymentMethod === "card" &&
+        !isValidCardNumber(formData.account_number)
+      ) {
+        setError("Invalid card number");
+        setAlertMessage("Add a valid Card Number");
+        setLoading(false);
+        setShowAlert(true);
+        return;
+      }
 
       console.log("Before: ", paymentMade);
       let successMessage = "";
