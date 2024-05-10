@@ -6,6 +6,8 @@ import {
   Button,
   Typography,
   Radio,
+  Option,
+  Select,
 } from "@material-tailwind/react";
 
 export function DriverForm({ branch_ID, district }) {
@@ -18,12 +20,23 @@ export function DriverForm({ branch_ID, district }) {
     available_district: district,
   });
 
+  const [availableDrivers, setAvailableDrivers] = useState([]);
+
   useEffect(() => {
-    setDriverDetails((prevDetails) => ({
-      ...prevDetails,
-      available_district: district,
-    }));
-  }, [district]);
+    fetchAvailableDrivers();
+  }, []);
+
+  const fetchAvailableDrivers = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8070/Driver/available-drivers"
+      );
+      setAvailableDrivers(response.data);
+    } catch (error) {
+      console.error("Error fetching available drivers:", error);
+      // handle error
+    }
+  };
 
   const handleChange = (e) => {
     if (e.target && e.target.name) {
@@ -102,18 +115,22 @@ export function DriverForm({ branch_ID, district }) {
               placeholder="Enter Current Hand Over Money"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
+
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Driver ID
             </Typography>
-            <Input
-              type="text"
-              size="lg"
+            <Select
               name="driver_id"
               value={driverDetails.driver_id}
               onChange={handleChange}
-              placeholder="Enter Driver ID"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-            />
+            >
+              {availableDrivers.map((driver) => (
+                <Option key={driver._id} value={driver._id}>
+                  {driver.username}
+                </Option>
+              ))}
+            </Select>
 
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Available District

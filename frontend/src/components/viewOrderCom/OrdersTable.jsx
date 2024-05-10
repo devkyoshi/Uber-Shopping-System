@@ -12,13 +12,14 @@ import {
   Textarea,
 } from "@material-tailwind/react";
 
-const TABLE_HEAD = ["Item Name", "Quantity", "Unit" ,"Price", "SuperMarket Name"];
+const TABLE_HEAD = ["Item Name", "Quantity", "Price", "SuperMarket Name"];
 
 export function OrdersTable({ orderId }) {
   const [order, setOrder] = useState(null);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  console.log("OrderID: ", orderId);
 
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
@@ -90,21 +91,26 @@ export function OrdersTable({ orderId }) {
   return (
     <div className="w-full">
       <div>
-        <Typography
-          variant="h3"
-          color="black"
-          className="font-bold ml-10"
-        >
-          My Order | <span className="text-gray-500">Order ID: </span><span className="text-gray-500">{orderId}</span>
+        <Typography variant="h3" color="black" className="font-bold ml-10">
+          My Order | <span className="text-gray-500">Order ID: </span>
+          <span className="text-gray-500">{orderId}</span>
         </Typography>
 
         {/**notice about update and deletion */}
         <div className="border border-black size-max ml-10 mt-6 text-gray-600 bg-gray-200 rounded-lg">
-          <p className="mt-3 ml-3 font-light">When <b className="font-semibold">deleting</b> an item, make sure to do it whithin <b className="font-semibold">30 minutes</b> to avoid any issues.And also,</p>
-          <p className="mb-3 ml-3 mr-3 font-light">When <b className="font-semibold">editing </b>an item, ensure to comlete the changes whithin <b className="font-semibold">30 minutes</b> to avoid any issues.</p>   
+          <p className="mt-3 ml-3 font-light">
+            When <b className="font-semibold">deleting</b> an item, make sure to
+            do it whithin <b className="font-semibold">30 minutes</b> to avoid
+            any issues.And also,
+          </p>
+          <p className="mb-3 ml-3 mr-3 font-light">
+            When <b className="font-semibold">editing </b>an item, ensure to
+            comlete the changes whithin{" "}
+            <b className="font-semibold">30 minutes</b> to avoid any issues.
+          </p>
         </div>
       </div>
-      
+
       <Card className="mb-8">
         <div className="ml-10 mt-6 mb-10 mr-10">
           {/* <Typography>
@@ -114,7 +120,9 @@ export function OrdersTable({ orderId }) {
 
           <form onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="message" className="font-extrabold"><b>Additional Notes</b></label>
+              <label htmlFor="message" className="font-extrabold">
+                <b>Additional Notes</b>
+              </label>
               <Textarea
                 id="message"
                 name="message"
@@ -124,8 +132,10 @@ export function OrdersTable({ orderId }) {
               />
             </div>
             <div className="flex justify-between">
-              <Button type="submit" className="ml-auto">Add Note</Button>
-            </div> 
+              <Button type="submit" className="ml-auto">
+                Add Note
+              </Button>
+            </div>
           </form>
         </div>
       </Card>
@@ -154,7 +164,7 @@ export function OrdersTable({ orderId }) {
           <tbody>
             {order &&
               order.items.map(
-                ({ item_name, quantity, unit ,price, sm_name }, index) => {
+                ({ item_name, quantity, unit, price, sm_name }, index) => {
                   const isLast = index === order.items.length - 1;
                   const classes = isLast
                     ? "p-4"
@@ -182,17 +192,6 @@ export function OrdersTable({ orderId }) {
                         </Typography>
                       </td>
 
-                      {/**newly added "unit" here - between quantity and price */}
-                      <td className={classes}>
-                        <Typography
-                          variant="paragraph"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {unit}
-                        </Typography>
-                      </td>
-                      
                       <td className={classes}>
                         <Typography
                           variant="paragraph"
@@ -226,7 +225,6 @@ export function OrdersTable({ orderId }) {
             order.<br></br>
           </DialogBody>
           <DialogFooter>
-
             <Button
               variant="text"
               color="red"
@@ -239,21 +237,26 @@ export function OrdersTable({ orderId }) {
             <Button variant="gradient" color="green" onClick={deleteOrder}>
               <span>Confirm</span>
             </Button>
-            
           </DialogFooter>
         </Dialog>
       </Card>
 
       <div className="flex justify-between mt-3 space-x-2">
-        <Button color="white" onClick={deleteOrder} className="ml-auto text-red-500 border border-red-500 hover:text-red-700">
+        <Button
+          color="white"
+          onClick={deleteOrder}
+          className="ml-auto text-red-500 border border-red-500 hover:text-red-700"
+        >
           Remove Order
         </Button>
-        <Button color="black" onClick={() => makePayment(orderId)} className="text-white">
+        <Button
+          color="black"
+          onClick={() => makePayment(orderId)}
+          className="text-white"
+        >
           Make Payment
         </Button>
       </div>
-      
-      
     </div>
   );
 }

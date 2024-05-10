@@ -1,26 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
+  Card,
+  Typography,
+  Button,
+  Input,
   Popover,
+  ListItemSuffix,
   PopoverHandler,
   PopoverContent,
-  Button,
-  Typography,
+  Chip,
+  ListItem,
 } from "@material-tailwind/react";
 
 const TaskTable = () => {
-  const [tasks, setTasks] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const [taskDetails, setTaskDetails] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8070/Driver/tasks/6614cd0282951fe76eb0ecea`
+          `http://localhost:8070/Driver/tasks/662fe2f00d54745907efd9e0` //should change
         );
-        console.log(response.data);
-        setTasks(response.data);
-        setOrders(response.data.orders);
+        console.log("Driver details: ", response.data);
+        setTaskDetails(response.data);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
@@ -29,104 +32,265 @@ const TaskTable = () => {
     fetchData();
   }, []);
 
+  const handlePickupSubmit = async (orderId, pickupImageUrl) => {
+    try {
+      console.log("Order Id:", orderId, pickupImageUrl);
+      await axios.put(`http://localhost:8070/Driver/update-pickup/${orderId}`, {
+        status: "Picked Up",
+        pickupImageUrl,
+      });
+      console.log("Picked Up");
+      // Refresh task details after pickup update
+      const updatedTaskDetails = await axios.get(
+        `http://localhost:8070/Driver/tasks/662fe2f00d54745907efd9e0`
+      );
+
+      setTaskDetails(updatedTaskDetails.data);
+    } catch (error) {
+      console.error("Error updating pickup:", error);
+    }
+  };
+
+  const handleDeliverySubmit = async (orderId, deliveryImgUrl) => {
+    try {
+      console.log("Order Id:", orderId, deliveryImgUrl);
+      await axios.put(
+        `http://localhost:8070/Driver/update-delivery/${orderId}`,
+        {
+          status: "Delivered",
+          deliveryImgUrl,
+        }
+      );
+      console.log("Delivered");
+      // Refresh task details after delivery update
+      const updatedTaskDetails = await axios.get(
+        `http://localhost:8070/Driver/tasks/662fe2f00d54745907efd9e0`
+      );
+
+      setTaskDetails(updatedTaskDetails.data);
+    } catch (error) {
+      console.error("Error updating delivery:", error);
+    }
+  };
+
   return (
     <div className="p-4">
-      <h1 className="text-2xl mb-4">Task Table</h1>
-      <table className="w-full border-collapse border border-gray-300">
-        <thead className="bg-gray-200">
-          <tr>
-            <th className="border border-gray-300 px-4 py-2">Customer Details</th>
-            <th className="border border-gray-300 px-4 py-2">Order Details</th>
-            <th className="border border-gray-300 px-4 py-2">Address</th>
-            <th className="border border-gray-300 px-4 py-2">PickUp</th>
-            <th className="border border-gray-300 px-4 py-2">Delivery</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((order) => (
-            <tr key={order.order_details.order_id}>
-              {/* <td className="border border-gray-300 px-4 py-2">
-                {tasks.driver_id}
-              </td> */}
-              <td className="border border-gray-300 px-4 py-2">
-                {order.district}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                <Popover>
-                  <PopoverHandler>
-                    <Button color="indigo">More Info</Button>
-                  </PopoverHandler>
-                  <PopoverContent className="z-[999] grid w-[28rem] grid-cols-2 overflow-hidden p-0">
-                    <div className="p-4">
-                      <table className="w-full border-collapse border border-gray-300">
-                        <thead className="bg-gray-200">
-                          <tr>
-                            <th className="border border-gray-300 px-4 py-2">Item Name</th>
-                            <th className="border border-gray-300 px-4 py-2">Item Price</th>
-                            <th className="border border-gray-300 px-4 py-2">Item Quantity</th>
-                            <th className="border border-gray-300 px-4 py-2">SuperMarket</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {order.order_details.items.map((item) => (
-                            <tr key={item.item_id}>
-                              <td className="border border-gray-300 px-4 py-2">{item.item_name}</td>
-                              <td className="border border-gray-300 px-4 py-2">{item.price}</td>
-                              <td className="border border-gray-300 px-4 py-2">{item.quantity}</td>
-                              <td className="border border-gray-300 px-4 py-2">{item.sm_name}</td>
-                            </tr>
-                          ))}
-                          
-                        </tbody>
-                      </table>
+      {taskDetails && (
+        <>
+          <h1 className="text-2xl mb-4 text-center">Task Progress</h1>
+          <div>
+            <Card className="p-5">
+              <Typography
+                variant="h5"
+                color="blue-gray"
+                className="mb-2 text-center"
+              >
+                Task Details
+              </Typography>
+              <Typography className="inline-flex gap-5 justify-between">
+                <div>
+                  <span>Task ID:</span> {taskDetails[0].task_id}
+                </div>
+                <div>
+                  <span>Branch:</span> {taskDetails[0].branch_id}
+                </div>
+                <div>
+                  <span>District:</span> {taskDetails[0].district}
+                </div>
+              </Typography>
+            </Card>
+          </div>
+          <Typography
+            variant="h5"
+            color="blue-gray"
+            className="text-center mt-5 text-2xl"
+          >
+            Orders
+          </Typography>
+          <div className="mt-8 grid grid-cols-3 gap-4">
+            {taskDetails[0].orders && taskDetails[0].orders.length > 0 && (
+              <>
+                {taskDetails[0].orders.map((order, index) => (
+                  <Card key={index} className="flex flex-col">
+                    <div
+                      className={`${
+                        order.order_details.cash_payment !== undefined
+                          ? "bg-green-600"
+                          : "bg-orange-600"
+                      } p-3 rounded-t-lg`}
+                    >
+                      <Typography
+                        variant="h6"
+                        color="white"
+                        className="text-center"
+                      >
+                        {order.order_details.cash_payment !== undefined
+                          ? "Cash Payment"
+                          : "Card Payment"}
+                      </Typography>
                     </div>
-                  </PopoverContent>
-                </Popover>
-              </td>
-              <td>
-                address
-              </td>
-              <td>
-              <Popover>
-                  <PopoverHandler>
-                    <Button color="indigo">Pick Up</Button>
-                  </PopoverHandler>
-                  <PopoverContent className="z-[999] grid w-[28rem] grid-cols-2 overflow-hidden p-0">
-                    <div className="p-4">
-                    <input type="file" onChange={(e) => setPickupImageUrl(e.target.files[0])} />
-      <Button
-        color="indigo"
-        onClick={() => handleUploadPickup(order.order_id, pickupImageUrl)}
-      >
-        Upload Pickup Image
-      </Button>
-                       
+                    <div className="mt-5 ml-5 mr-5">
+                      <Chip
+                        value={order.order_details.order_status}
+                        className={`mb-5 ${
+                          order.order_details.order_status === "Processing"
+                            ? "bg-yellow-500"
+                            : order.order_details.order_status === "Picked Up"
+                            ? "bg-gray-500"
+                            : order.order_details.order_status === "Delivered"
+                            ? "bg-green-500"
+                            : "bg-gray-500"
+                        }`}
+                      />
                     </div>
-                  </PopoverContent>
-                </Popover>
-              </td>
-              <td>
-              <Popover>
-                  <PopoverHandler>
-                    <Button color="indigo">Delivery </Button>
-                  </PopoverHandler>
-                  <PopoverContent className="z-[999] grid w-[28rem] grid-cols-2 overflow-hidden p-0">
-                    <div className="p-4">
-                    <input type="file" onChange={(e) => setDeliveryImageUrl(e.target.files[0])} />
-      <Button
-        color="indigo"
-        onClick={() => handleUploadDelivery(order.order_id, deliveryImageUrl)}
-      >
-        Upload Delivery Image
-      </Button>
+                    <div className="mt-auto p-5">
+                      <span>Customer Name:</span>{" "}
+                      <Typography>
+                        {order.order_details.customer_name}
+                      </Typography>
+                      <span>Address:</span>
+                      <Typography>{order.order_details.address}</Typography>
+                      <span>Contact Number:</span>
+                      <Typography>
+                        0{order.order_details.contact_number}
+                      </Typography>
+                      <div className="inline-flex gap-2 mt-5 item-center justify-center">
+                        <Popover
+                          animate={{
+                            mount: { scale: 1, y: 0 },
+                            unmount: { scale: 0, y: 25 },
+                          }}
+                        >
+                          <PopoverHandler>
+                            <Button
+                              size="sm"
+                              className="bg-gray-200 text-black"
+                            >
+                              Item
+                            </Button>
+                          </PopoverHandler>
+                          <PopoverContent className="z-50 p-5">
+                            <Typography className="text-center">
+                              Item to be delivered
+                            </Typography>
+                            {order.items.map((item, itemIndex) => (
+                              <ListItem key={itemIndex} className="gap-3">
+                                <div>
+                                  <p>{item.item_name}</p>
+                                  <p>Rs. {item.price}</p>
+                                </div>
+                                <ListItemSuffix>
+                                  <Chip
+                                    value={item.quantity}
+                                    size="sm"
+                                    color="green"
+                                    className="rounded-full"
+                                  />
+                                </ListItemSuffix>
+                              </ListItem>
+                            ))}
+                          </PopoverContent>
+                        </Popover>
+                        <Popover
+                          animate={{
+                            mount: { scale: 1, y: 0 },
+                            unmount: { scale: 0, y: 25 },
+                          }}
+                        >
+                          <PopoverHandler>
+                            <Button
+                              size="sm"
+                              className="bg-green-200 text-black"
+                            >
+                              Pickup
+                            </Button>
+                          </PopoverHandler>
+                          <PopoverContent className="z-50">
+                            <div>
+                              <form
+                                onSubmit={(e) => {
+                                  e.preventDefault();
+                                  const pickupImageUrl =
+                                    e.target.pickupUrl.value;
+                                  handlePickupSubmit(
+                                    order.order_details.order_id,
+                                    pickupImageUrl
+                                  );
+                                }}
+                                className="relative flex w-full max-w-[24rem] mt-4"
+                              >
+                                <Input
+                                  label="Pick Up"
+                                  name="pickupUrl"
+                                  className="pr-20"
+                                  containerProps={{
+                                    className: "min-w-0",
+                                  }}
+                                />
+                                <Button
+                                  size="sm"
+                                  type="submit"
+                                  className="!absolute right-1 top-1 rounded"
+                                >
+                                  Pick Up
+                                </Button>
+                              </form>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                        <Popover
+                          animate={{
+                            mount: { scale: 1, y: 0 },
+                            unmount: { scale: 0, y: 25 },
+                          }}
+                        >
+                          <PopoverHandler>
+                            <Button size="sm" className="bg-red-500">
+                              Delivery
+                            </Button>
+                          </PopoverHandler>
+                          <PopoverContent className="z-50">
+                            <div>
+                              <form
+                                onSubmit={(e) => {
+                                  e.preventDefault();
+                                  const DeliveryImageUrl =
+                                    e.target.deliveryUrl.value;
+                                  handleDeliverySubmit(
+                                    order.order_details.order_id,
+                                    DeliveryImageUrl
+                                  );
+                                }}
+                                className="relative flex w-full max-w-[24rem] mt-4"
+                              >
+                                <Input
+                                  label="Deliver"
+                                  name="deliveryUrl"
+                                  className="pr-20"
+                                  containerProps={{
+                                    className: "min-w-0",
+                                  }}
+                                />
+                                <Button
+                                  size="sm"
+                                  type="submit"
+                                  className="!absolute right-1 top-1 rounded"
+                                >
+                                  Deliver
+                                </Button>
+                              </form>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
                     </div>
-                  </PopoverContent>
-                </Popover>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  </Card>
+                ))}
+              </>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
@@ -16,66 +16,67 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    Emp_Name : {
-        type : String,
-        required : true
-    },
-    Emp_Age:{
-        type : Number,
-        required: true
-    },   
-    Emp_Gender:{
-        type : String,
-        required: true
-    },
-    Emp_CNumber :{
-        type : Number,
-        required : true
-    },
-    Emp_Address :{
-        type : String,
-        required : true
-    },
-    profilePhoto: { 
+    Emp_Name: {
       type: String,
-      default: '' 
+      required: true,
     },
-     Emp_Level: {
-    type: String,
-    default:'Level 2'
+    Emp_Age: {
+      type: Number,
+      required: true,
     },
-    
-    isAdmin:
-    {
-      type:Boolean,
-      default:false,
+    Emp_Gender: {
+      type: String,
+      required: true,
+    },
+    Emp_CNumber: {
+      type: Number,
+      required: true,
+    },
+    Emp_Address: {
+      type: String,
+      required: true,
+    },
+    profilePhoto: {
+      type: String,
+      default: "",
+    },
+    Emp_Level: {
+      type: String,
+      default: "Level 2",
+    },
+    Emp_type: {
+      type: String,
+      default: "available_employee",
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
     salary: {
       type: Number,
-      default: 20000 
+      default: 20000,
     },
     bonuses: {
       type: Number,
-      default: 0
+      default: 0,
     },
     benefits: {
       type: String,
-      default:'none noob' 
+      default: "none noob",
     },
-    Emp_areofservice:{
+    Emp_areofservice: {
       type: String,
-      default:'Colombo' 
+      default: "Colombo",
     },
-    Emp_transport:{
+    Emp_transport: {
       type: String,
-      default:'None' 
+      default: "None",
     },
-  
-},
+  },
   { timestamps: true }
 );
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
 
