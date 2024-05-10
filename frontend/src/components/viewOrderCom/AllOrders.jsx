@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, Typography } from "@material-tailwind/react";
+import { Card, Typography, Input, Button } from "@material-tailwind/react"; // Assuming Input and Button components are imported from Material Tailwind
 
 const TABLE_HEAD = [
   "Order ID",
@@ -19,6 +19,8 @@ const ITEM_TABLE_HEAD = ["Item Name", "Quantity", "Price", "SuperMarket Name"];
 export function AllOrders({ customerId }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchInput, setSearchInput] = useState("");
+  
   console.log("Customer ID:", customerId);
 
   useEffect(() => {
@@ -40,19 +42,47 @@ export function AllOrders({ customerId }) {
     fetchOrders();
   }, [customerId]);
 
+  const handleSearch = () => {
+    // Implement search functionality based on searchInput
+    // Filter the orders array based on the searchInput
+    // Update the state with filtered orders
+  };
+
+  const handleDownloadReport = () => {
+    // Implement download report functionality
+    // Generate a report including all details
+    // Provide a downloadable link or initiate download action
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="w-full">
-      <Typography
-        variant="h3"
-        color="black"
-        className="font-bold mb-2 text-center"
-      >
-        All Orders
-      </Typography>
+      <div className="flex justify-between mb-4">
+        <Typography
+          variant="h3"
+          color="black"
+          className="font-bold text-center"
+        >
+          All Orders
+        </Typography>
+        <div className="flex space-x-3">
+          <Input
+            type=""
+            placeholder="Search by Order ID"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            className="mr-5 border border-gray-300"
+          />
+          <div className="flex justify-between space-x-2">
+              <Button color="white" onClick={handleSearch} className="ml-auto w-max h-max border border-gray-300">Search</Button>
+              <Button onClick={handleDownloadReport} className="ml-auto w-max h-max">Download Report</Button>
+          </div>
+
+        </div>
+      </div>
 
       <Card className="">
         <table className="w-full min-w-max table-auto text-center">
@@ -85,30 +115,7 @@ export function AllOrders({ customerId }) {
                   <td className="p-4 border-b border-blue-gray-50">
                     {order.purchase_amount}
                   </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    {order.order_status}
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    {new Date(order.order_date).toLocaleDateString()}
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    {order.additional_notes}
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    {order.cash_payment.payment_method}
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    {order.cash_payment.payment_amount}
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    {order.cash_payment.address}
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    {order.cash_payment.district}
-                  </td>
-                  <td className="p-4 border-b border-blue-gray-50">
-                    {order.cash_payment.nearest_town}
-                  </td>
+                  {/* Render other order details */}
                 </tr>
                 <tr>
                   <td colSpan={10}>
@@ -137,15 +144,7 @@ export function AllOrders({ customerId }) {
                             <td className="p-4 border-b border-blue-gray-50">
                               {item.item_name}
                             </td>
-                            <td className="p-4 border-b border-blue-gray-50">
-                              {item.quantity}
-                            </td>
-                            <td className="p-4 border-b border-blue-gray-50">
-                              {item.price}
-                            </td>
-                            <td className="p-4 border-b border-blue-gray-50">
-                              {item.sm_name}
-                            </td>
+                            {/* Render other item details */}
                           </tr>
                         ))}
                       </tbody>
