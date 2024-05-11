@@ -7,10 +7,11 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
   Typography,
   Button,
   Spinner,
+  List,
+  ListItem,
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
@@ -53,7 +54,75 @@ export default function ViewPaymentUI({ orderId }) {
   if (loading) {
     return (
       <div>
-        <Spinner />
+        <div className="flex animate-pulse flex-wrap items-center gap-8">
+          <div className="grid h-36 w-36 place-items-center rounded-lg bg-gray-300">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="h-12 w-12 text-gray-500"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+              />
+            </svg>
+          </div>
+          <div className="w-max">
+            <Typography
+              as="div"
+              variant="h1"
+              className="mb-4 h-3 w-56 rounded-full bg-gray-300"
+            >
+              &nbsp;
+            </Typography>
+            <Typography
+              as="div"
+              variant="paragraph"
+              className="mb-2 h-2 w-72 rounded-full bg-gray-300"
+            >
+              &nbsp;
+            </Typography>
+            <Typography
+              as="div"
+              variant="paragraph"
+              className="mb-2 h-2 w-72 rounded-full bg-gray-300"
+            >
+              &nbsp;
+            </Typography>
+            <Typography
+              as="div"
+              variant="paragraph"
+              className="mb-2 h-2 w-72 rounded-full bg-gray-300"
+            >
+              &nbsp;
+            </Typography>
+            <Typography
+              as="div"
+              variant="paragraph"
+              className="mb-2 h-2 w-72 rounded-full bg-gray-300"
+            >
+              &nbsp;
+            </Typography>
+            <Typography
+              as="div"
+              variant="paragraph"
+              className="mb-2 h-2 w-72 rounded-full bg-gray-300"
+            >
+              &nbsp;
+            </Typography>
+            <Typography
+              as="div"
+              variant="paragraph"
+              className="mb-2 h-2 w-72 rounded-full bg-gray-300"
+            >
+              &nbsp;
+            </Typography>
+          </div>
+        </div>
       </div>
     );
   }
@@ -72,13 +141,19 @@ export default function ViewPaymentUI({ orderId }) {
 
   return (
     <div className="ml-5 pl-24">
-      <figure className="relative h-96 w-full">
-        <img
-          className="h-full w-full rounded-xl object-cover object-center"
-          src={imageUrl}
-          alt="payment image"
-        />
-        <figcaption className="absolute bottom-8 left-2/4 flex w-[calc(100%-4rem)] -translate-x-2/4 justify-between rounded-xl border border-white bg-white/75 py-4 px-6 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
+      <Card className="w-full max-w-[48rem] flex-row">
+        <CardHeader
+          shadow={false}
+          floated={false}
+          className="m-0 w-2/5 shrink-0 rounded-r-none"
+        >
+          <img
+            src={imageUrl}
+            alt="card-image"
+            className="h-full w-full object-cover"
+          />
+        </CardHeader>
+        <CardBody>
           <div>
             <div className="mb-3 flex-row items-center justify-between">
               <Typography
@@ -102,15 +177,12 @@ export default function ViewPaymentUI({ orderId }) {
             <Typography color="blue-gray">
               {cashPaymentDetails && (
                 <div style={{ marginBottom: "20px" }}>
-                  <h3>Cash Payment Details:</h3>
+                  <Typography variant="h5">Cash Payment Details:</Typography>
                 </div>
               )}
-              <ul style={{ listStyleType: "none", padding: "0" }}>
+              <List style={{ listStyleType: "none", padding: "0" }}>
                 {cashPaymentDetails && (
                   <>
-                    <li style={{ marginBottom: "5px" }}>
-                      <strong>Payment Method:</strong> Cash Payment
-                    </li>
                     <li style={{ marginBottom: "5px" }}>
                       <strong>Email:</strong> {cashPaymentDetails.email}
                     </li>
@@ -137,18 +209,15 @@ export default function ViewPaymentUI({ orderId }) {
                     </li>
                   </>
                 )}
-              </ul>
+              </List>
               {cardPaymentDetails && (
                 <div style={{ marginBottom: "20px" }}>
-                  <h3>Card Payment Details:</h3>
+                  <Typography variant="h5">Card Payment Details:</Typography>
                 </div>
               )}
               <ul style={{ listStyleType: "none", padding: "0" }}>
                 {cardPaymentDetails && (
                   <>
-                    <li style={{ marginBottom: "5px" }}>
-                      <strong>Payment Method:</strong> Card Payment
-                    </li>
                     <li style={{ marginBottom: "5px" }}>
                       <strong>Email:</strong> {cardPaymentDetails.email}
                     </li>
@@ -176,11 +245,8 @@ export default function ViewPaymentUI({ orderId }) {
               Confirm Payment
             </Button>
           </div>
-          <Typography variant="h5" color="blue-gray">
-            Growth
-          </Typography>
-        </figcaption>
-      </figure>
+        </CardBody>
+      </Card>
     </div>
   );
 }

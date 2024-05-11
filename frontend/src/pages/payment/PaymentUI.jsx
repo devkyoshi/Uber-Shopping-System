@@ -10,7 +10,6 @@ export default function PaymentUI() {
       <SideBar />
       <div className="inner-layout">
         <div>
-          {/* TODO:this should be changed: Order ID should be passed */}
           <PaymentTab orderId={orderId} />
         </div>
       </div>

@@ -14,6 +14,10 @@ import {
   TabPanel,
   Select,
   Option,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
 import { CreditCardIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 import { AlertBox } from "./AlertBox";
@@ -75,6 +79,7 @@ function formatExpires(value) {
 export default function PaymentForm({ orderId, mode, total_payment }) {
   const [type, setType] = React.useState("card");
   const [payment_amount, setTotalAmount] = useState(null);
+  const [open, setOpen] = React.useState(false);
   const [currentMode, setCurrentMode] = useState(mode);
   const [formTopic, setFormTopic] = useState("");
   const [buttonName, setButtonName] = useState("");
@@ -99,6 +104,8 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
   });
 
   const [paymentMade, setPaymentMade] = useState(false);
+
+  const handleOpen = () => setOpen(!open);
 
   //Luhn Algorithm - To validate correct card number
   function isValidCardNumber(cardNumber) {
@@ -308,6 +315,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
       } else if (currentMode === "update") {
         if (cardPaymentDetails && paymentMethod === "card") {
           successMessage = "You can't update card payments."; //card payments cannot be updated
+          handleOpen();
         } else if (cashPaymentDetails && paymentMethod === "cash") {
           await axios.put(
             `http://localhost:8070/Payment/pay-cash/${orderId}/update-payment/${cashPaymentDetails._id}`,
@@ -318,6 +326,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
       } else if (currentMode === "delete") {
         if (cardPaymentDetails && paymentMethod === "card") {
           successMessage = "You can't delete card payments.";
+          handleOpen();
         } else if (cashPaymentDetails && paymentMethod === "cash") {
           await axios.delete(
             `http://localhost:8070/Payment/pay-cash/${orderId}/delete-payment/${cashPaymentDetails._id}`
@@ -453,8 +462,6 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
 
                     <div className="inline-flex gap-4">
                       {" "}
-                      {/* Reduce the gap here */}
-                      {/*card number*/}
                       <div className="flex flex-col w-1/3">
                         <Typography
                           variant="small"
@@ -810,6 +817,28 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
       </Card>
 
       {showAlert && <AlertBox message={alertMessage} />}
+
+      <Dialog
+        open={open}
+        handler={handleOpen}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+      >
+        <DialogHeader className="text-center">
+          You Can't Update or Remove Card Payments
+        </DialogHeader>
+        <DialogBody>
+          You cant update or remove card payments when its already made. if you
+          have issues, please contact your bank for assistance.
+        </DialogBody>
+        <DialogFooter>
+          <Button variant="gradient" color="green" onClick={handleOpen}>
+            <span>OK</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </div>
   );
 }

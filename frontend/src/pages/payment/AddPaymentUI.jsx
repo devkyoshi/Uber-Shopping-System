@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PaymentForm from "../../components/payment/PaymentForm";
 import axios from "axios";
+import { Typography } from "@material-tailwind/react";
 
 export default function AddPaymentUI({ orderId }) {
   const [error, setError] = useState(null);
@@ -25,12 +26,12 @@ export default function AddPaymentUI({ orderId }) {
   return (
     <div>
       <div className="ml-24">
-        <h2 className="ml-24 pl-24">
+        <Typography variant="h5" className="text-center mb-2">
           Total Amount To be Paid:{" "}
           <span style={{ fontWeight: "bold", color: "#87A922" }}>
             Rs. {payment_amount}
           </span>
-        </h2>
+        </Typography>
         <PaymentForm orderId={orderId} mode={"create"} />
       </div>
     </div>
