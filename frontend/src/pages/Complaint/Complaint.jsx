@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { Button ,Input} from '@material-tailwind/react';
+import { Button ,Input, Typography} from '@material-tailwind/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SideBar } from '../../components/SideBar';
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -99,18 +99,33 @@ export default function Complaint() {
           {filteredComplaints.map((Complaints) => (
             <li key={Complaints._id} className='mb-2'>
               <div className='border border-gray-300 bg-gray-100 p-4 rounded-lg items-center justify-between'>
-                <div className='flex flex-wrap text-center justify-center gap-2'>
-                  
-                  {/* Order ID */}
-                  <div className='mr-2'>Order ID : </div>
-                  {Complaints.order_id}
-                  {/* Complaint Status */}
-                  <div className=' ml-10 mr-2'>Complaint Status : </div>
-                  <strong>
-                  <div className={`border border-gray-200 px-4 rounded-md shadow-md ${Complaints.complaint_status === 'accepted' ? 'text-green-800 bg-green-100' : 'text-red-600 bg-red-100'}`}>
+              <div className='flex flex-wrap text-center gap-'> 
+              <div className='flex items-center gap-5'>
+              {/* Customer Name */}
+              <div className='mr-1'>
+                <Typography>Customer Name : </Typography>
+              </div>
+              <div>
+                <Typography variant='h6'>{currentCustomer.cus_name}</Typography>
+              </div>
+              {/* Complaint Status */}
+              <div className='ml-8 mr-1'>
+                <Typography>Complaint Status : </Typography>
+              </div>
+              <div className='mr-4'>
+                <Typography variant='h6' className={`border border-gray-200 px-4 rounded-md shadow-md ${Complaints.complaint_status === 'Resolved' ? 'text-green-800 bg-green-100' : Complaints.complaint_status === 'accepted' ? 'text-yellow-800 bg-yellow-100' : 'text-red-800 bg-red-100'}`}>
                   {Complaints.complaint_status}
-                  </div>
-                  </strong>
+                </Typography>
+              </div>
+              {/* Quantity */}
+              <div className='mr-2'>
+                <Typography>Quantity : </Typography>
+              </div>
+              <div>
+                <Typography variant='h6'>{Complaints.quantity}</Typography>
+               </div>
+               </div>
+
 
                   {/* Edit and Delete buttons */}
                   <div className='ml-auto flex'>
@@ -135,20 +150,27 @@ export default function Complaint() {
                     </Button>
                   </div>
                 </div>
-                {/* Item ID and Quantity */}
-                <div className='flex flex-wrap text-center mb-1 gap-4'>
-                  <div className='mr-2'>Item ID : </div>
-                  {Complaints.item_id}
-                  <div className='ml-10 mr-2'>Quantity : </div>
-                  {Complaints.quantity}
+                {/* Item ID and Order ID */}
+                <div className='grid grid-rows-2 mb-1 gap-2'>
+                <div className='flex items-center'>
+                    {/* Order ID */}
+                      <Typography className='mr-2'>Order ID : </Typography>
+                      <Typography>{Complaints.order_id}</Typography>
                 </div>
+                <div className='flex items-center'>
+                     {/* Item ID */}
+                      <Typography className='mr-2'>Item ID : </Typography>
+                      <Typography>{Complaints.item_id}</Typography>
+                </div>
+                </div>
+
                 {/* Link to submit bank details for accepted complaints with refund option */}
                 {Complaints.complaint_status === 'accepted' && Complaints.resolving_option === 'refund' && (
                   <Link
                     to={`/refund/${Complaints._id}/${Complaints.order_id}`}
                     className=' hover:text-red-00 text-red-600 font-bold hover:underline '
                   >
-                    Click Here to Submit Bank Details
+                    <Typography>Click Here to Submit Bank Details</Typography>
                   </Link>
                 )}
               </div>
