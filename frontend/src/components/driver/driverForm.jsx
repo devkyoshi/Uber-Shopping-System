@@ -12,7 +12,7 @@ import {
 
 export function DriverForm({ branch_ID, district }) {
   const [driverDetails, setDriverDetails] = useState({
-    branchID: "",
+    branchID: branch_ID,
     driver_id: "",
     current_handover_money: "",
     vehicle_number: "",
@@ -45,9 +45,15 @@ export function DriverForm({ branch_ID, district }) {
     }
   };
 
+  const handleSelectChange = (value, name) => {
+    console.log("handleselect passed: ", value, name);
+    setDriverDetails({ ...driverDetails, [name]: value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("Sending data to mongo db: ", driverDetails);
       const response = await axios.post(
         `http://localhost:8070/Driver/${branch_ID}/driver-add`,
         driverDetails
@@ -58,6 +64,8 @@ export function DriverForm({ branch_ID, district }) {
       // handle error
     }
   };
+
+  console.log("Available Drivers: ", availableDrivers);
 
   return (
     <Card color="transparent" shadow={false}>
@@ -122,7 +130,7 @@ export function DriverForm({ branch_ID, district }) {
             <Select
               name="driver_id"
               value={driverDetails.driver_id}
-              onChange={handleChange}
+              onChange={(value) => handleSelectChange(value, "driver_id")}
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             >
               {availableDrivers.map((driver) => (

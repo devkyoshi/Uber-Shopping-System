@@ -100,7 +100,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
 
   const [paymentMade, setPaymentMade] = useState(false);
 
-  //Luhn Algorithm - test
+  //Luhn Algorithm - To validate correct card number
   function isValidCardNumber(cardNumber) {
     // Remove all non-digit characters
     cardNumber = cardNumber.replace(/\D/g, "");
@@ -155,10 +155,13 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
     setFormData({ ...formData, [name]: value });
   };
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
+  //validation to prevent user entering symbols except @
+  const handleKeyPress = (e) => {
+    // If the pressed key is not a letter, digit, or '@', prevent the default action
+    if (!/[a-zA-Z0-9@]/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -337,15 +340,15 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
   };
 
   return (
-    <div className="pt-5 pl-20" style={{ width: "35rem" }}>
-      <Card className="w-full h-full max-w-[30rem]">
+    <div>
+      <Card>
         <CardHeader
           color="gray"
           floated={false}
           shadow={false}
           className="m-0 grid place-items-center px-4 py-4 text-center"
         >
-          <div className="mb-4 h-20 p-6 text-white">
+          <div className="mb-4 h-10  text-white">
             {type === "card" ? (
               <CreditCardIcon className="h-10 w-10 text-white" />
             ) : (
@@ -394,92 +397,26 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
                     Card Details
                   </Typography>
                   <div className="mt-5 flex flex-col gap-4 pr-5">
-                    <div>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="mb-2 font-medium"
-                      >
-                        Your Email
-                      </Typography>
-                      <Input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        placeholder="name@mail.com"
-                        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                      />
-                    </div>
-                    <div className="my-3">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="mb-2 font-medium"
-                      >
-                        Card Details
-                      </Typography>
-                      <Input
-                        id="account_number"
-                        name="account_number"
-                        maxLength={19}
-                        value={formatCardNumber(formData.account_number)}
-                        onChange={handleChange}
-                        required
-                        icon={
-                          <CreditCardIcon className="absolute left-0 h-4 w-4 text-blue-gray-300" />
-                        }
-                        placeholder="0000 0000 0000 0000"
-                        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                      />
-                      <div className="my-4 flex items-center gap-4">
+                    <div className="inline-flex  gap-4">
+                      <div className="w-full md:w-1/2">
                         <div>
                           <Typography
                             variant="small"
                             color="blue-gray"
                             className="mb-2 font-medium"
                           >
-                            Expires
+                            Your Email
                           </Typography>
                           <Input
-                            maxLength={5}
-                            name="exp"
-                            required
-                            value={formatExpires(formData.exp)}
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
                             onChange={handleChange}
-                            containerProps={{ className: "min-w-[72px]" }}
-                            placeholder="00/00"
-                            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                            labelProps={{
-                              className:
-                                "before:content-none after:content-none",
-                            }}
-                          />
-                        </div>
-                        <div>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="mb-2 font-medium"
-                          >
-                            CVC
-                          </Typography>
-                          <Input
-                            maxLength={4}
-                            name="cvc"
+                            onKeyPress={handleKeyPress}
                             required
-                            value={formData.cvc}
-                            onChange={handleChange}
-                            containerProps={{ className: "min-w-[72px]" }}
-                            placeholder="000"
+                            style={{ width: "300px" }}
+                            placeholder="name@mail.com"
                             className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                             labelProps={{
                               className:
@@ -488,79 +425,168 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
                           />
                         </div>
                       </div>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="mb-2 font-medium"
-                      >
-                        Holder Name
-                      </Typography>
-                      <Input
-                        type="text"
-                        name="account_holder"
-                        value={formData.account_holder}
-                        onChange={handleChange}
-                        placeholder="Your Name"
-                        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                      />
+                      <div className="w-full md:w-1/2">
+                        <div className="flex flex-col">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="mb-2 font-medium"
+                          >
+                            Holder Name
+                          </Typography>
+                          <Input
+                            type="text"
+                            name="account_holder"
+                            value={formData.account_holder}
+                            onKeyPress={handleKeyPress}
+                            onChange={handleChange}
+                            placeholder="Your Name"
+                            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                            labelProps={{
+                              className:
+                                "before:content-none after:content-none",
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="mb-2 font-medium"
-                      >
-                        District
-                      </Typography>
-                      <Select
-                        id="district"
-                        name="district"
-                        value={formData.district}
-                        onChange={(value) =>
-                          handleChangeSelect(value, "district")
-                        }
-                        required
-                        placeholder="Select a district"
-                        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        menuProps={{ className: "h-48" }}
-                      >
-                        {districts.map((district, index) => (
-                          <Option key={index} value={district}>
-                            <div className="flex items-center gap-x-2">
-                              {district}
-                            </div>
-                          </Option>
-                        ))}
-                      </Select>
+
+                    <div className="inline-flex gap-4">
+                      {" "}
+                      {/* Reduce the gap here */}
+                      {/*card number*/}
+                      <div className="flex flex-col w-1/3">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="mb-2 font-medium"
+                        >
+                          Card Number
+                        </Typography>
+                        <Input
+                          id="account_number"
+                          name="account_number"
+                          maxLength={19}
+                          value={formatCardNumber(formData.account_number)}
+                          onKeyPress={handleKeyPress}
+                          onChange={handleChange}
+                          required
+                          icon={
+                            <CreditCardIcon className="absolute left-0 h-4 w-4 text-blue-gray-300" />
+                          }
+                          placeholder="0000 0000 0000 0000"
+                          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                          labelProps={{
+                            className: "before:content-none after:content-none",
+                          }}
+                        />
+                      </div>
+                      {/*exp*/}
+                      <div className="flex flex-col w-1/3">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="mb-2 font-medium"
+                        >
+                          Expires
+                        </Typography>
+                        <Input
+                          maxLength={5}
+                          name="exp"
+                          required
+                          value={formatExpires(formData.exp)}
+                          onChange={handleChange}
+                          onKeyPress={handleKeyPress}
+                          placeholder="00/00"
+                          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                          labelProps={{
+                            className: "before:content-none after:content-none",
+                          }}
+                        />
+                      </div>
+                      {/*cvc*/}
+                      <div className="flex flex-col w-1/3">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="mb-2 font-medium"
+                        >
+                          CVC
+                        </Typography>
+                        <Input
+                          maxLength={3}
+                          name="cvc"
+                          required
+                          value={formData.cvc}
+                          onChange={handleChange}
+                          onKeyPress={handleKeyPress}
+                          placeholder="000"
+                          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                          labelProps={{
+                            className: "before:content-none after:content-none",
+                          }}
+                        />
+                      </div>
                     </div>
-                    <div>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="mb-2 font-medium"
-                      >
-                        Nearest Town
-                      </Typography>
-                      <Input
-                        type="nearest_town"
-                        id="nearest_town"
-                        name="nearest_town"
-                        value={formData.nearest_town}
-                        onChange={handleChange}
-                        required
-                        placeholder="Enter nearest town"
-                        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                      />
+
+                    <div className="inline-flex gap-4">
+                      <div className="flex flex-col w-1/2">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="mb-2 font-medium"
+                        >
+                          District
+                        </Typography>
+                        <Select
+                          id="district"
+                          name="district"
+                          value={formData.district}
+                          onChange={(value) =>
+                            handleChangeSelect(value, "district")
+                          }
+                          required
+                          placeholder="Select a district"
+                          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                          labelProps={{
+                            className: "before:content-none after:content-none",
+                          }}
+                          menuProps={{ className: "h-48" }}
+                        >
+                          {districts.map((district, index) => (
+                            <Option key={index} value={district}>
+                              <div className="flex items-center gap-x-2">
+                                {district}
+                              </div>
+                            </Option>
+                          ))}
+                        </Select>
+                      </div>
+                      <div className="flex flex-col w-1/2">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="mb-2 font-medium"
+                        >
+                          Nearest Town
+                        </Typography>
+                        <Input
+                          type="nearest_town"
+                          id="nearest_town"
+                          name="nearest_town"
+                          value={formData.nearest_town}
+                          onChange={handleChange}
+                          onKeyPress={handleKeyPress}
+                          required
+                          placeholder="Enter nearest town"
+                          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                          labelProps={{
+                            className: "before:content-none after:content-none",
+                          }}
+                        />
+                      </div>
                     </div>
+
                     <Button
                       title="Submit"
                       size="lg"
@@ -593,7 +619,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
               </TabPanel>
               <TabPanel value="paypal" className="p-0">
                 <form
-                  className="mt-12 flex flex-col gap-4 pr-5"
+                  className="mt-6 flex flex-col gap-4 pr-5"
                   onSubmit={handleSubmit}
                 >
                   <div>
@@ -617,6 +643,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
+                      onKeyPress={handleKeyPress}
                       required
                       placeholder="name@mail.com"
                       className="!border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -625,105 +652,131 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
                       }}
                     />
                   </div>
-                  <div className="my-6">
-                    <Typography
-                      variant="paragraph"
-                      color="blue-gray"
-                      className="mb-4 font-medium"
-                    >
-                      Billing Address
-                    </Typography>
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="mb-2 font-medium"
-                    >
-                      District
-                    </Typography>
-                    <Select
-                      id="district"
-                      name="district"
-                      value={formData.district}
-                      onChange={(value) =>
-                        handleChangeSelect(value, "district")
-                      }
-                      required
-                      placeholder="Select a district"
-                      className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                      labelProps={{
-                        className: "before:content-none after:content-none",
-                      }}
-                      menuProps={{ className: "h-48" }}
-                    >
-                      {districts.map((district, index) => (
-                        <Option key={index} value={district}>
-                          <div className="flex items-center gap-x-2">
-                            {district}
-                          </div>
-                        </Option>
-                      ))}
-                    </Select>
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="mb-2 font-medium pt-4"
-                    >
-                      Nearest Town
-                    </Typography>
-                    <Input
-                      type="text"
-                      id="nearest_town"
-                      name="nearest_town"
-                      value={formData.nearest_town}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter Your Nearest Town"
-                      className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                      labelProps={{
-                        className: "before:content-none after:content-none",
-                      }}
-                    />
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="mb-2 font-medium pt-4"
-                    >
-                      Address
-                    </Typography>
-                    <Input
-                      type="text"
-                      id="address"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter Your Address"
-                      className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                      labelProps={{
-                        className: "before:content-none after:content-none",
-                      }}
-                    />
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="mt-4 -mb-2 font-medium"
-                    >
-                      Postal Code
-                    </Typography>
-                    <Input
-                      id="postal_code"
-                      name="postal_code"
-                      value={formData.postal_code}
-                      onChange={handleChange}
-                      required
-                      placeholder="00000"
-                      className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                      labelProps={{
-                        className: "before:content-none after:content-none",
-                      }}
-                      containerProps={{ className: "mt-4" }}
-                    />
+
+                  <Typography
+                    variant="paragraph"
+                    color="blue-gray"
+                    className=" font-medium"
+                  >
+                    Billing Address
+                  </Typography>
+
+                  <div className="inline-flex gap-3">
+                    {/* District */}
+                    <div className="w-full md:w-1/3 ">
+                      <div className="flex flex-col">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="mb-2 font-medium"
+                        >
+                          District
+                        </Typography>
+                        <Select
+                          id="district"
+                          name="district"
+                          value={formData.district}
+                          onChange={(value) =>
+                            handleChangeSelect(value, "district")
+                          }
+                          required
+                          placeholder="Select a district"
+                          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                          labelProps={{
+                            className: "before:content-none after:content-none",
+                          }}
+                          menuProps={{ className: "h-48" }}
+                        >
+                          {districts.map((district, index) => (
+                            <Option key={index} value={district}>
+                              <div className="flex items-center gap-x-2">
+                                {district}
+                              </div>
+                            </Option>
+                          ))}
+                        </Select>
+                      </div>
+                    </div>
+
+                    {/* Nearest Town */}
+                    <div className="w-full md:w-1/3 ">
+                      <div className="flex flex-col">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="mb-2 font-medium"
+                        >
+                          Nearest Town
+                        </Typography>
+                        <Input
+                          type="text"
+                          id="nearest_town"
+                          name="nearest_town"
+                          value={formData.nearest_town}
+                          onKeyPress={handleKeyPress}
+                          onChange={handleChange}
+                          required
+                          placeholder="Enter Your Nearest Town"
+                          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                          labelProps={{
+                            className: "before:content-none after:content-none",
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Postal Code */}
+                    <div className="w-full md:w-1/3  ">
+                      <div className="flex flex-col">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="mb-2 font-medium"
+                        >
+                          Postal Code
+                        </Typography>
+                        <Input
+                          id="postal_code"
+                          name="postal_code"
+                          value={formData.postal_code}
+                          onChange={handleChange}
+                          onKeyPress={handleKeyPress}
+                          required
+                          placeholder="00000"
+                          className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                          labelProps={{
+                            className: "before:content-none after:content-none",
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
+                  <div className="w-full">
+                    <div className="flex flex-col">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="mb-2 font-medium"
+                      >
+                        Address
+                      </Typography>
+                      <Input
+                        type="text"
+                        id="address"
+                        name="address"
+                        value={formData.address}
+                        onChange={handleChange}
+                        onKeyPress={handleKeyPress}
+                        required
+                        placeholder="Enter Your Address"
+                        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+                    </div>
+                  </div>
+
                   <Button
                     size="lg"
                     onClick={handleSetPaymentMethodCash}
