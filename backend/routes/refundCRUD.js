@@ -5,7 +5,7 @@ const Refund = require("../models/refund");
 const mongoose = require("mongoose");
 const Order = require("../models/order");
 const Complaint = require("../models/complaint");
-const Revenue = require("../models/revenue");
+// const Revenue = require("../models/revenue");
 
 /*          "customer_id":"6607f3c6de3ed9ef425cf30d",
             "order_id":"66120fc9f7b97eacbe3cb331",
@@ -83,18 +83,18 @@ router.post("/refund-add", async (req, res) => {
     });
 
     //Starts: Prasad H.G.A.T (I added this part to get refund amounts to revenue)
-    let revenue = await Revenue.findOne();
-    if (!revenue) {
-      revenue = new Revenue({
-        total_revenue: amount,
-        refunds: [{ _id: paymentId, time_stamp: Date.now() }],
-      });
-    } else {
-      // Add the refund amount to the existing total revenue
-      revenue.total_revenue -= amount;
-      // Record refund details
-      revenue.refunds.push({ _id: refundId, time_stamp: Date.now() });
-    }
+    // let revenue = await Revenue.findOne();
+    // if (!revenue) {
+    //   revenue = new Revenue({
+    //     total_revenue: amount,
+    //     refunds: [{ _id: paymentId, time_stamp: Date.now() }],
+    //   });
+    // } else {
+    //   // Add the refund amount to the existing total revenue
+    //   revenue.total_revenue -= amount;
+    //   // Record refund details
+    //   revenue.refunds.push({ _id: refundId, time_stamp: Date.now() });
+    // }
     //Ends: Prasad H.G.A.T (I added this part to get refund amounts to revenue)
 
     // Save the refund object to the database
