@@ -55,6 +55,19 @@ const fs = require('fs');
         .json({ error: "Quantity is larger than the purchased quantity"});
     }
 
+
+    // Check if the customer has already submitted a complaint for this item
+    const existingComplaint = await Complaint.findOne({
+        customer_id,
+        order_id,
+        item_id,
+        complaint_status: { $ne: "Resolved" } // Exclude resolved complaints
+    });
+
+    if (existingComplaint) {
+        return res.status(400).json({ error: "You have already submitted a complaint for this item" });
+    }
+
      //Check if required fields are provided
     if (
         !customer_id ||

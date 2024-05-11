@@ -100,16 +100,18 @@ export default function Complaint() {
             <li key={Complaints._id} className='mb-2'>
               <div className='border border-gray-300 bg-gray-100 p-4 rounded-lg items-center justify-between'>
                 <div className='flex flex-wrap text-center justify-center gap-2'>
+                  
                   {/* Order ID */}
-                  <strong className='mr-2'>Order ID : </strong>
+                  <div className='mr-2'>Order ID : </div>
                   {Complaints.order_id}
                   {/* Complaint Status */}
-                  <strong className=' ml-10 mr-2'>Complaint Status : </strong>
+                  <div className=' ml-10 mr-2'>Complaint Status : </div>
                   <strong>
-                    <div className='border border-gray-200 text-red-600 bg-white px-4 rounded-md shadow-md'>
-                      {Complaints.complaint_status}
-                    </div>
+                  <div className={`border border-gray-200 px-4 rounded-md shadow-md ${Complaints.complaint_status === 'accepted' ? 'text-green-800 bg-green-100' : 'text-red-600 bg-red-100'}`}>
+                  {Complaints.complaint_status}
+                  </div>
                   </strong>
+
                   {/* Edit and Delete buttons */}
                   <div className='ml-auto flex'>
                     <Button
@@ -134,7 +136,7 @@ export default function Complaint() {
                   </div>
                 </div>
                 {/* Item ID and Quantity */}
-                <div className='flex flex-wrap text-center mb-4 gap-4'>
+                <div className='flex flex-wrap text-center mb-1 gap-4'>
                   <div className='mr-2'>Item ID : </div>
                   {Complaints.item_id}
                   <div className='ml-10 mr-2'>Quantity : </div>
