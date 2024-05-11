@@ -1,9 +1,10 @@
 import React,{useState,useEffect } from 'react';
 import { SideBar } from '../../components/SideBar';
-import { Button } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
 import { useSelector } from 'react-redux';
+
 
 export default function ComplaintForm(){
 
@@ -30,7 +31,7 @@ export default function ComplaintForm(){
     const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
-      setFormData({ ...formData, customer_id: currentCustomer._id});
+      setFormData({ ...formData, customer_id: currentCustomer.cus_name});
   }, [currentCustomer]);
 
     // Function to handle changes in form inputs
@@ -74,21 +75,16 @@ export default function ComplaintForm(){
                   'Content-Type': 'multipart/form-data'
               },
           });
+          setSuccessMessage(response.data.message);
+          navigate('/complaint')
   
-          console.log(response.data); // Log the response to see what it contains
-  
-          if (response.status === 200) { // Check status code directly
-              setSuccessMessage(response.data); // Set success message
-              setErrorMessage(''); // Clear error message
-              navigate(`/complaint`); // Navigate to complaint page
-          } else {
-              setSuccessMessage(''); // Clear success message
-              setErrorMessage(response.data.error); // Set error message from response
-          }
+          
       } catch (error) {
-          console.error('Error submitting complaint:', error);
-          setErrorMessage('An error occurred while submitting the complaint.');
-          setSuccessMessage('');
+        if (error.response) {
+          setErrorMessage(error.response.data.error);
+        } else {
+          setErrorMessage('An error occurred, please try again later.');
+        }
       } finally {
           setUploading(false); // Reset uploading state after submission
       }
@@ -101,32 +97,32 @@ export default function ComplaintForm(){
           <SideBar/>
             <div className='inner-layout'>
               <h1 className="text-4xl font-semibold mb-4 ml-3 ">Complaint Form</h1>
-                <div className=" container mx-auto mt-5 bg-gray-100 rounded-lg border border-gray-300">
+                <div className=" container mx-auto mt-5 bg-gray-100 rounded-lg border border-gray-300 p-4">
                 <br/>
-                  <form onSubmit={handleSubmit} className=" max-w-screen-md mx-auto w-full ">
+                  <form onSubmit={handleSubmit} className=" max-w-screen-md mx-auto space-y-7">
                     <div className="grid grid-cols-2 gap-7 mb-3">
                       <div>
                         <div className="mb-3">
-                        <label htmlFor="orderId" className="block mb-2 font-bold">Order ID:</label>
+                        <Typography htmlFor="orderId" className="block mb-2 font-bold">Order ID:</Typography>
                         <input type="text" id="orderId" name="order_id" value={formData.order_id} onChange={handleChange} className="w-full p-1 bg-red-45 border border-gray-400 rounded-md" required />
                         </div>
                         <div className="mb-3">
-                        <label htmlFor="customerId" className="block mb-2 font-bold">Customer ID:</label>
+                        <Typography htmlFor="customerId" className="block mb-2 font-bold">Customer Name:</Typography>
                         <input type="text" id="customerId" name="customer_id" value={formData.customer_id} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required readOnly />
                         </div>
                         <div className="mb-3">
-                        <label htmlFor="paymentId" className="block mb-2 font-bold">Payment ID:</label>
+                        <Typography htmlFor="paymentId" className="block mb-2 font-bold">Payment ID:</Typography>
                         <input type="text" id="paymentId" name="payment_id" value={formData.payment_id} onChange={handleChange} className="w-full p-1 bg-red-45 border border-gray-400 rounded-md" required />
                         </div>
                         <div className="mb-3">
-                        <label htmlFor="itemId" className="block mb-2 font-bold">Item ID:</label>
+                        <Typography htmlFor="itemId" className="block mb-2 font-bold">Item ID:</Typography>
                         <input type="text" id="itemId" name="item_id" value={formData.item_id} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required />
                         </div>
                       </div>
                     <div >
                     <div className="mb-3">
-                       <label htmlFor="complaintType" className="block mb-2 font-bold">Complaint Type:</label>
-                       <select id="complaintType" name="complaint_type" value={formData.complaint_type} onChange={handleChange} className="w-full p-2 bg-white border border-gray-400 rounded-md" required>
+                       <Typography htmlFor="complaintType" className="block mb-2 font-bold">Complaint Type:</Typography>
+                       <select id="complaintType" name="complaint_type" value={formData.complaint_type} onChange={handleChange} className="w-full p-1 bg-white border border-gray-400 rounded-md" required>
                          <option value="">---Select Complaint Type---</option>
                          <option value="Expired">Item is expired</option>
                          <option value="Damaged">Item is damaged</option>
@@ -134,23 +130,23 @@ export default function ComplaintForm(){
                        </select>
                     </div>
                     <div className="mb-3">
-                       <label htmlFor="resolvingOption" className="block mb-2 font-bold">Resolving Option:</label>
-                       <select id="resolving_option" name="resolving_option" value={formData.resolving_option} onChange={handleChange} className="w-full p-2 bg-white border border-gray-400 rounded-md" required>
+                       <Typography htmlFor="resolvingOption" className="block mb-2 font-bold">Resolving Option:</Typography>
+                       <select id="resolving_option" name="resolving_option" value={formData.resolving_option} onChange={handleChange} className="w-full p-1 bg-white border border-gray-400 rounded-md" required>
                          <option value="">---Select Resolving Option---</option>
                          <option value="refund">Refund</option>
                          <option value="replacement">Replacement</option>
                        </select>
                     </div>
                     <div className="mb-3">
-                       <label htmlFor="quantity" className="block mb-2 font-bold">Quantity :</label>
-                       <input type="text" id="quantity" name="quantity" value={formData.quantity} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
+                       <Typography htmlFor="quantity" className="block mb-2 font-bold">Quantity :</Typography>
+                       <input type="text" id="quantity" name="quantity" value={formData.quantity} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required />
                     </div>
                     <div className="mb-3">
-                       <label htmlFor="description" className="block mb-2 font-bold">Description :</label>
-                       <textarea type="text" id="description" name="description" value={formData.description} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
+                       <Typography htmlFor="description" className="block mb-2 font-bold">Description :</Typography>
+                       <textarea type="text" id="description" name="description" value={formData.description} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required />
                     </div>
                     <div className="mb-3">
-                       <label htmlFor="complaint_img" className="block mb-2 font-bold">Complaint Image :</label>
+                       <Typography htmlFor="complaint_img" className="block mb-2 font-bold">Complaint Image :</Typography>
                        <input type="file" id="complaint_img" name="complaint_img" onChange={handleFileChange} required />
                        {imagePreview && <img src={imagePreview} alt="Complaint Preview" style={{maxWidth: '50%', marginTop: '10px'}} />}
                     </div>
