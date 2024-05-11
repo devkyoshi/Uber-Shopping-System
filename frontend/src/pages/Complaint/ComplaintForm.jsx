@@ -55,10 +55,18 @@ export default function ComplaintForm(){
 
     // Function to handle form submission
     const handleSubmit = async (e) => {
+
+      // Prevent default form submission behavior
       e.preventDefault();
+
+      // Validate form inputs before submission
+      if (!isValidForm()) return;
+
       try {
+          // Set uploading state to true during form submission
           setUploading(true);
-  
+
+          // Prepare form data for submission
           const formDataToSend = new FormData();
           formDataToSend.append('customer_id', currentCustomer._id);
           formDataToSend.append('order_id', formData.order_id);
@@ -69,17 +77,24 @@ export default function ComplaintForm(){
           formDataToSend.append('complaint_img', formData.complaint_img);
           formDataToSend.append('quantity', formData.quantity);
           formDataToSend.append('description', formData.description);
-  
+
+
+          // Send form data to server
           const response = await axios.post('http://localhost:8070/Complaint/complaint-add', formDataToSend, {
               headers: {
                   'Content-Type': 'multipart/form-data'
               },
           });
+
+          // Display success message upon successful submission
           setSuccessMessage(response.data.message);
+
+           // Redirect user to complaint page after submission
           navigate('/complaint')
   
           
       } catch (error) {
+        // Handle errors during form submission
         if (error.response) {
           setErrorMessage(error.response.data.error);
         } else {
@@ -89,6 +104,39 @@ export default function ComplaintForm(){
           setUploading(false); // Reset uploading state after submission
       }
   };
+
+  const isValidForm = () => {
+    // Implement form validation logic 
+    if (!formData.order_id || !formData.payment_id || !formData.complaint_type || !formData.item_id || !formData.resolving_option || !formData.quantity || !formData.description || !formData.complaint_img) {
+      setErrorMessage('Please fill in all required fields.');
+      return false;
+    }
+  
+    if (!Number(formData.quantity)) {
+      setErrorMessage('Quantity must be a number.');
+      return false;
+    }
+
+    return true; // Return true if the form is valid
+  };
+
+  //reset button
+  const resetForm = () => {
+    setFormData({
+      customer_id: '',
+      order_id: '',
+      payment_id: '',
+      complaint_type: '',
+      item_id: '',
+      resolving_option: '',
+      complaint_img: '',
+      quantity: '',
+      description: ''
+    });
+    setImagePreview(null);
+    setErrorMessage('');
+    setSuccessMessage('');
+  };
   
 
 
@@ -96,19 +144,19 @@ export default function ComplaintForm(){
         <div className='main-layout'>
           <SideBar/>
             <div className='inner-layout'>
-              <h1 className="text-4xl font-semibold mb-4 ml-3 ">Complaint Form</h1>
+              <Typography className="text-4xl font-semibold mb-3 ml-3 ">Complaint Form</Typography>
                 <div className=" container mx-auto mt-5 bg-gray-100 rounded-lg border border-gray-300 p-4">
                 <br/>
                   <form onSubmit={handleSubmit} className=" max-w-screen-md mx-auto space-y-7">
-                    <div className="grid grid-cols-2 gap-7 mb-3">
+                    <div className="grid grid-cols-2 gap-10 mb-1">
                       <div>
+                       <div className="mb-3">
+                        <Typography htmlFor="customerId" className="block mb-2 font-bold">Customer Name:</Typography>
+                        <input type="text" id="customerId" name="customer_id" value={formData.customer_id} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required readOnly />
+                        </div>
                         <div className="mb-3">
                         <Typography htmlFor="orderId" className="block mb-2 font-bold">Order ID:</Typography>
                         <input type="text" id="orderId" name="order_id" value={formData.order_id} onChange={handleChange} className="w-full p-1 bg-red-45 border border-gray-400 rounded-md" required />
-                        </div>
-                        <div className="mb-3">
-                        <Typography htmlFor="customerId" className="block mb-2 font-bold">Customer Name:</Typography>
-                        <input type="text" id="customerId" name="customer_id" value={formData.customer_id} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required readOnly />
                         </div>
                         <div className="mb-3">
                         <Typography htmlFor="paymentId" className="block mb-2 font-bold">Payment ID:</Typography>
@@ -116,8 +164,21 @@ export default function ComplaintForm(){
                         </div>
                         <div className="mb-3">
                         <Typography htmlFor="itemId" className="block mb-2 font-bold">Item ID:</Typography>
-                        <input type="text" id="itemId" name="item_id" value={formData.item_id} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required />
+                        <input type="text" id="itemId" name="item_id" value={formData.item_id} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md  " required />
                         </div>
+                        <div className="mb-3">
+                        <Typography htmlFor="quantity" className="block mb-2 font-bold">Quantity :</Typography>
+                        <input type="text" id="quantity" name="quantity" value={formData.quantity} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md " required />
+                        </div>
+                        <Typography>{errorMessage && <div className="text-red-800 mb-4">{errorMessage}</div>}</Typography>
+                        <Typography>{successMessage && <div className="text-green-500 mb-4">{successMessage}</div>}</Typography>
+                        {/* Button to submit the form */}
+                        <Button type="submit" disabled={uploading} className="bg-custom-gradient text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-custom-gradient transition duration-300">
+                          {uploading ? 'Uploading...' : 'Submit'}
+                        </Button>
+                        <Button onClick={resetForm} className="bg-red-500 text-white py-2 px-4 w-30 mt-3 ml-3 text-base border border-transparent rounded-md hover:bg-red-600 transition duration-300">
+                           Reset
+                        </Button>
                       </div>
                     <div >
                     <div className="mb-3">
@@ -138,26 +199,17 @@ export default function ComplaintForm(){
                        </select>
                     </div>
                     <div className="mb-3">
-                       <Typography htmlFor="quantity" className="block mb-2 font-bold">Quantity :</Typography>
-                       <input type="text" id="quantity" name="quantity" value={formData.quantity} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required />
-                    </div>
-                    <div className="mb-3">
                        <Typography htmlFor="description" className="block mb-2 font-bold">Description :</Typography>
-                       <textarea type="text" id="description" name="description" value={formData.description} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required />
+                       <textarea type="text" id="description" name="description" value={formData.description} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
                     </div>
                     <div className="mb-3">
-                       <Typography htmlFor="complaint_img" className="block mb-2 font-bold">Complaint Image :</Typography>
-                       <input type="file" id="complaint_img" name="complaint_img" onChange={handleFileChange} required />
+                       <Typography htmlFor="complaint_img" id="complaintImgLabel" className="block mb-2 font-bold">Complaint Image :</Typography>
+                       <input type="file" id="complaint_img" name="complaint_img" onChange={handleFileChange} required aria-labelledby="complaintImgLabel" />
                        {imagePreview && <img src={imagePreview} alt="Complaint Preview" style={{maxWidth: '50%', marginTop: '10px'}} />}
                     </div>
                     </div>
                     </div>
-                    <div className="text-red-800 mb-4">{errorMessage}</div>
-                    <div className="text-green-500 mb-4">{successMessage}</div>
-                    {/* Button to submit the form */}
-                    <Button type="submit" disabled={uploading} className="bg-custom-gradient text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-custom-gradient transition duration-300">
-                            {uploading ? 'Uploading...' : 'Submit'}
-                    </Button>
+                   
                     
                   </form>
                   <br/>

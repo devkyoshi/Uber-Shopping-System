@@ -119,6 +119,39 @@ router.put("/complaint-update/:complaintID",  upload.single('complaint_img') ,as
             fs.unlinkSync(complaint.complaint_img);
         }
 
+        // Check if required fields are provided
+        if (
+            !customer_id ||
+            !order_id ||
+            !payment_id ||
+            !complaint_type ||
+            !item_id ||
+            !resolving_option ||
+            !quantity ||
+            !description
+        ) {
+            return res.status(400).json({ error: "Provide all required fields" });
+        }
+
+        // Find the order by ID
+        const order = await Order.findById(order_id);
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        // Find the item within the order by its ID
+        const item = order.items.find(item => item.item_id.toString() === item_id);
+        if (!item) {
+            return res.status(404).json({ error: "Item not found in order" });
+        }
+
+        // Extract the quantity of the item from the order
+        const orderQuantity = item.quantity;
+        if (orderQuantity < quantity) {
+            return res.status(400).json({ error: "Quantity is larger than the purchased quantity" });
+        }
+
+
         // Update the complaint
         const updatedComplaint = await Complaint.findByIdAndUpdate(complaintID, {
             customer_id,
