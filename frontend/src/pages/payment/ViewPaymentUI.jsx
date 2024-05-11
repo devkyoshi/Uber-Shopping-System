@@ -71,111 +71,116 @@ export default function ViewPaymentUI({ orderId }) {
   }
 
   return (
-    <div className="ml-24 pl-24">
-      <Card className="w-full max-w-[26rem] shadow-lg">
-        <CardHeader floated={false} color="blue-gray">
-          <img src={imageUrl} alt="Payment" />
-          <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
-        </CardHeader>
-        <CardBody>
-          <div className="mb-3 flex-row items-center justify-between">
-            <Typography
-              variant="h5"
-              color="blue-gray"
-              className="font-medium pl-10 ml-5"
-              style={{ fontWeight: "bold" }}
-            >
-              Payment Details for Order
-            </Typography>
-            <div className="items-center ml-10">
-              Order ID:{" "}
-              <span
-                style={{ fontWeight: "bold", color: "#ff6666" }}
-                className=""
+    <div className="ml-5 pl-24">
+      <figure className="relative h-96 w-full">
+        <img
+          className="h-full w-full rounded-xl object-cover object-center"
+          src={imageUrl}
+          alt="payment image"
+        />
+        <figcaption className="absolute bottom-8 left-2/4 flex w-[calc(100%-4rem)] -translate-x-2/4 justify-between rounded-xl border border-white bg-white/75 py-4 px-6 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
+          <div>
+            <div className="mb-3 flex-row items-center justify-between">
+              <Typography
+                variant="h5"
+                color="blue-gray"
+                className="font-medium pl-10 ml-5"
+                style={{ fontWeight: "bold" }}
               >
-                {orderId}
-              </span>
+                Payment Details for Order
+              </Typography>
+              <div className="items-center ml-10">
+                Order ID:{" "}
+                <span
+                  style={{ fontWeight: "bold", color: "#ff6666" }}
+                  className=""
+                >
+                  {orderId}
+                </span>
+              </div>
             </div>
-          </div>
-          <Typography color="blue-gray">
-            {cashPaymentDetails && (
-              <div style={{ marginBottom: "20px" }}>
-                <h3>Cash Payment Details:</h3>
-              </div>
-            )}
-            <ul style={{ listStyleType: "none", padding: "0" }}>
+            <Typography color="blue-gray">
               {cashPaymentDetails && (
-                <>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Payment Method:</strong> Cash Payment
-                  </li>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Email:</strong> {cashPaymentDetails.email}
-                  </li>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Amount: Rs. </strong>{" "}
-                    {cashPaymentDetails.payment_amount}
-                  </li>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>District:</strong> {cashPaymentDetails.district}
-                  </li>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Address:</strong> {cashPaymentDetails.address}
-                  </li>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Postal Code:</strong>{" "}
-                    {cashPaymentDetails.postal_code}
-                  </li>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Paid Time:</strong> {cashPaymentDetails.paid_time}
-                  </li>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Payment Status:</strong>{" "}
-                    {cashPaymentDetails.payment_status}
-                  </li>
-                </>
+                <div style={{ marginBottom: "20px" }}>
+                  <h3>Cash Payment Details:</h3>
+                </div>
               )}
-            </ul>
-            {cardPaymentDetails && (
-              <div style={{ marginBottom: "20px" }}>
-                <h3>Card Payment Details:</h3>
-              </div>
-            )}
-            <ul style={{ listStyleType: "none", padding: "0" }}>
+              <ul style={{ listStyleType: "none", padding: "0" }}>
+                {cashPaymentDetails && (
+                  <>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Payment Method:</strong> Cash Payment
+                    </li>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Email:</strong> {cashPaymentDetails.email}
+                    </li>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Amount: Rs. </strong>{" "}
+                      {cashPaymentDetails.payment_amount}
+                    </li>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>District:</strong> {cashPaymentDetails.district}
+                    </li>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Address:</strong> {cashPaymentDetails.address}
+                    </li>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Postal Code:</strong>{" "}
+                      {cashPaymentDetails.postal_code}
+                    </li>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Paid Time:</strong> {cashPaymentDetails.paid_time}
+                    </li>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Payment Status:</strong>{" "}
+                      {cashPaymentDetails.payment_status}
+                    </li>
+                  </>
+                )}
+              </ul>
               {cardPaymentDetails && (
-                <>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Payment Method:</strong> Card Payment
-                  </li>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Email:</strong> {cardPaymentDetails.email}
-                  </li>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Amount: Rs. </strong>{" "}
-                    {cardPaymentDetails.payment_amount}
-                  </li>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Account Holder:</strong>{" "}
-                    {cardPaymentDetails.account_holder}
-                  </li>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Payment Status:</strong>{" "}
-                    {cardPaymentDetails.payment_status}
-                  </li>
-                  <li style={{ marginBottom: "5px" }}>
-                    <strong>Paid Time:</strong> {cardPaymentDetails.paid_time}
-                  </li>
-                </>
+                <div style={{ marginBottom: "20px" }}>
+                  <h3>Card Payment Details:</h3>
+                </div>
               )}
-            </ul>
+              <ul style={{ listStyleType: "none", padding: "0" }}>
+                {cardPaymentDetails && (
+                  <>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Payment Method:</strong> Card Payment
+                    </li>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Email:</strong> {cardPaymentDetails.email}
+                    </li>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Amount: Rs. </strong>{" "}
+                      {cardPaymentDetails.payment_amount}
+                    </li>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Account Holder:</strong>{" "}
+                      {cardPaymentDetails.account_holder}
+                    </li>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Payment Status:</strong>{" "}
+                      {cardPaymentDetails.payment_status}
+                    </li>
+                    <li style={{ marginBottom: "5px" }}>
+                      <strong>Paid Time:</strong> {cardPaymentDetails.paid_time}
+                    </li>
+                  </>
+                )}
+              </ul>
+            </Typography>
+
+            <Button size="lg" fullWidth={true} onClick={() => navigate("/")}>
+              Confirm Payment
+            </Button>
+          </div>
+          <Typography variant="h5" color="blue-gray">
+            Growth
           </Typography>
-        </CardBody>
-        <CardFooter className="pt-3">
-          <Button size="lg" fullWidth={true} onClick={() => navigate("/")}>
-            Confirm Payment
-          </Button>
-        </CardFooter>
-      </Card>
+        </figcaption>
+      </figure>
     </div>
   );
 }
