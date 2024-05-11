@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate  } from 'react-router-dom';
-import { Button } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import { SideBar } from '../../components/SideBar';
 
 export default function RefundForm() {
@@ -43,7 +43,7 @@ export default function RefundForm() {
                 body: JSON.stringify(formData)
             });
             const responseData = await response.json();
-            console.log(responseData);
+            
             if (response.ok) {
                 setSuccessMessage(responseData);
                 setErrorMessage('');
@@ -66,37 +66,43 @@ export default function RefundForm() {
     <div className='main-layout'>
         <SideBar/>
      <div className="inner-layout">
-     <h1 className="text-4xl font-semibold mb-9 ml-3 ">Refund Form</h1>
+     <Typography variant="h3" style={{ color: 'var(--logo-green1)' }} className="ml-3">Refund Form</Typography>
         <div className=" container mx-auto mt-5 bg-gray-100 rounded-lg border border-gray-300">
             <br/>
-           
             <form onSubmit={handleSubmit} className=" max-w-screen-md mx-auto w-full ">
-                <div className="grid grid-cols-2 gap-3 mb-3">
+                <div className="grid grid-cols-2 gap-10 mb-3">
                   <div>
-                    <label htmlFor="orderId" className="block mb-2 font-bold">Order ID:</label>
-                    <input type="text" id="orderId" name="order_id" value={formData.order_id} onChange={handleChange} className="w-full p-2 bg-red-45 border border-gray-400 rounded-md" required />
+                    <div className="mb-3">
+                    <Typography htmlFor="orderId" className="block mb-2 font-bold">Order ID:</Typography>
+                    <input type="text" id="orderId" name="order_id" value={formData.order_id} onChange={handleChange} className="w-full p-1 bg-red-45 border border-gray-400 rounded-md" required />
+                    </div>
+                    <div className="mb-3">
+                    <Typography htmlFor="complaintId" className="block mb-2 font-bold">Complaint ID:</Typography>
+                    <input type="text" id="complaintId" name="complaint_id" value={formData.complaint_id} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required />
+                    </div>
+                    <div className="mb-3">
+                    <Typography htmlFor="amount" className="block mb-2 font-bold">Amount:</Typography>
+                    <input type="Number" id="amount" name="amount" value={formData.amount} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" />
+                    </div>
                   </div>
                   <div>
-                    <label htmlFor="complaintId" className="block mb-2 font-bold">Complaint ID:</label>
-                    <input type="text" id="complaintId" name="complaint_id" value={formData.complaint_id} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
+                  <div className="mb-3">
+                    <Typography htmlFor="accountHolder" className="block mb-2 font-bold">Account Holder:</Typography>
+                    <input type="text" id="accountHolder" name="account_holder" value={formData.account_holder} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required />
+                  </div>
+                  <div className="mb-3">
+                    <Typography htmlFor="accountSortCode" className="block mb-2 font-bold">Account Sort Code:</Typography>
+                    <input type="text" id="accountSortCode" name="account_sort_code" value={formData.account_sort_code} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required />
+                  </div>
+                  <div className="mb-3">
+                    <Typography htmlFor="accountNumber" className="block mb-2 font-bold">Account Number:</Typography>
+                    <input type="text" id="accountNumber" name="account_number" value={formData.account_number} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required />
+                  </div>
+
                   </div>
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="accountHolder" className="block mb-2 font-bold">Account Holder:</label>
-                    <input type="text" id="accountHolder" name="account_holder" value={formData.account_holder} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="accountSortCode" className="block mb-2 font-bold">Account Sort Code:</label>
-                    <input type="text" id="accountSortCode" name="account_sort_code" value={formData.account_sort_code} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="accountNumber" className="block mb-2 font-bold">Account Number:</label>
-                    <input type="text" id="accountNumber" name="account_number" value={formData.account_number} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="amount" className="block mb-2 font-bold">Amount:</label>
-                    <input type="Number" id="amount" name="amount" value={formData.amount} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" />
-                </div>
+                
+                
                 <div className='flex justify-end'>
                 <div className="text-red-800 mb-4">{errorMessage}</div>
                 <div className="text-green-500 mb-4">{successMessage}</div>

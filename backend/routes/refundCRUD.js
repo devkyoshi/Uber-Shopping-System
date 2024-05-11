@@ -90,11 +90,14 @@ router.post("/refund-add", async (req, res) => {
         refunds: [{ _id: paymentId, time_stamp: Date.now() }],
       });
     } else {
-      // Add the refund amount to the existing total revenue
+
+      // Subtract the refund amount from the existing total revenue
       revenue.total_revenue -= amount;
+      
       // Record refund details
       revenue.refunds.push({ _id: refundId, time_stamp: Date.now() });
     }
+
     //Ends: Prasad H.G.A.T (I added this part to get refund amounts to revenue)
 
     // Save the refund object to the database
@@ -102,6 +105,7 @@ router.post("/refund-add", async (req, res) => {
 
     // Return a success message with a reference to the newly created refund
     res.json("Refund Added");
+
   } catch (error) {
     console.error(error);
     res
