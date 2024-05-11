@@ -32,7 +32,9 @@ const fs = require('fs');
     const order = await Order.findById(order_id);
 
     if (!order) {
-      return res.status(404).json({ error: "Order not found" });
+      return res
+      .status(404)
+      .json({ error: "Order not found" });
     }
 
     // Find the item within the order by its ID
@@ -47,10 +49,10 @@ const fs = require('fs');
     // Extract the quantity of the item from the order
     const orderQuantity = item.quantity;
 
-    if(orderQuantity>quantity){
+    if(orderQuantity<quantity){
         return res
         .status(400)
-        .json({ error: "Quantity is larger than the purchased quantity" });
+        .json({ error: "Quantity is larger than the purchased quantity"});
     }
 
      //Check if required fields are provided
