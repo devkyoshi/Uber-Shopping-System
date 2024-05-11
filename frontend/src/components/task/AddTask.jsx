@@ -6,7 +6,7 @@ const AddTask = () => {
   const [districtOrderCount, setDistrictOrderCount] = useState([]);
   const [driversByDistrict, setDriversByDistrict] = useState([]);
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -56,165 +56,136 @@ const AddTask = () => {
   }, [message]); // Empty dependency array to run once on component mount
 
   
-useEffect(() => {
-  const fetchDriver =async() => {
-    try {
+  useEffect(() => {
+    const fetchDriver =async() => {
+      try {
 
-      // get available drivers from  all branches
-      const response = await axios.get("http://localhost:8070/Driver/drivers");
-      console.log('response:', response.data);
-      const drivers = response.data.filter(driver => driver.availability === "Available");
-      console.log('filter:', drivers); 
-      
-      if (drivers.length === 0) {
-        setError("No available driver found");
-        return;
-      }
-
-      //  available drivers are allocate as the district level
-      const driversByDistrict = {};
-      drivers.forEach(driver => {
-        if (!driver.available_district) {
-          console.error("District information missing for Driver:", driver);
+        // get available drivers from  all branches
+        const response = await axios.get("http://localhost:8070/Driver/drivers");
+        console.log('response:', response.data);
+        const drivers = response.data.filter(driver => driver.availability === "Available");
+        console.log('filter:', drivers); 
+        
+        if (drivers.length === 0) {
+          setError("No available driver found");
           return;
         }
-        if (!driversByDistrict[driver.available_district]) {
-          driversByDistrict[driver.available_district] = [];
-        }
-        driversByDistrict[driver.available_district].push(driver);
-      });
-      console.log("Drivers allocate as the district:", driversByDistrict);
-      setDriversByDistrict(driversByDistrict);
 
-    } catch (error) {
+        //  available drivers are allocate as the district level
+        const driversByDistrict = {};
+        drivers.forEach(driver => {
+          if (!driver.available_district) {
+            console.error("District information missing for Driver:", driver);
+            return;
+          }
+          if (!driversByDistrict[driver.available_district]) {
+            driversByDistrict[driver.available_district] = [];
+          }
+          driversByDistrict[driver.available_district].push(driver);
+        });
+        console.log("Drivers allocate as the district:", driversByDistrict);
+        setDriversByDistrict(driversByDistrict);
 
-      console.error("Error fetching drivers:", error); // Log the error
-      setError("Error fetching drivers. Please try again."); // Set error state
-      
-    }
-  };
-  fetchDriver();
-}, [message]);
+      } catch (error) {
+
+        console.error("Error fetching drivers:", error); // Log the error
+        setError("Error fetching drivers. Please try again."); // Set error state
+        
+      }
+    };
+    fetchDriver();
+  }, [message]);
 
   const fiveOrders = async () => {
     try {
-        //get the first five orders from order array
-      const districtWithFiveOrders = Object.keys(OrdersByDistrict).find(district => OrdersByDistrict[district].length >= 5);
-      const firstFiveOrders = OrdersByDistrict[districtWithFiveOrders].slice(0, 5);
-      
-        // Check for available drivers matching order districts
         const matchingDistricts = Object.keys(OrdersByDistrict).filter(district =>
-          Object.keys(driversByDistrict).includes(district) &&
-          driversByDistrict[district].length > 0
+            Object.keys(driversByDistrict).includes(district) &&
+            driversByDistrict[district].length > 0
         );
-        console.log('matching districts:', matchingDistricts);
-  
+
         if (matchingDistricts.length === 0) {
-          setError("No available driver found for the order districts");
-          return;
-        } 
-  
-        // Get driver IDs for matching districts
-        const matchingDriverIds = matchingDistricts.reduce((acc, available_district) => {
-          const driversForDistrict = driversByDistrict[available_district];
-          const driverIdsForDistrict = driversForDistrict.map(driver => driver._id);
-          return [...acc, ...driverIdsForDistrict];
-        }, []);
-  
-        console.log('Matching driver IDs:', matchingDriverIds);
-  
-        const randomDistrict = matchingDistricts[Math.floor(Math.random() * matchingDistricts.length)];
-        const randomDriversInDistrict = driversByDistrict[randomDistrict];
-        const randomDriver = randomDriversInDistrict[Math.floor(Math.random() * randomDriversInDistrict.length)];
-  
-        console.log('randomDriver', randomDriver);
-  
-        if (!randomDriver) {
-          setError("No available driver found for the selected district");
-          return;
+            setError("No available driver found for any order district");
+            return;
         }
-  
-        const taskData = {
-          driver_id: randomDriver.driver_id,
-          branch_id: randomDriver.branch_ID,
-          district: randomDistrict,
-          orderIds: firstFiveOrders.map(order => order._id)
-        };
-        
-        console.log('Task Data:', taskData);
-        console.log('Task Data123:', taskData.driver_id, taskData.branch_id, taskData.district, taskData.orderIds);
-      
-        await axios.post("http://localhost:8070/Task/add-task", taskData);
-        
-        setMessage("Task added successfully");
-        
-      console.log('firstFiveOrder', firstFiveOrders);
-      } catch (error) {
-          console.error("Error sending data to backend:", error);
-          setError("Error occurred while adding task");
-      }
-    };
 
-    const fewerfiveOrders = async () => {
-      try {
+        for (const district of matchingDistricts) {
+            const ordersInDistrict = OrdersByDistrict[district];
+            if (ordersInDistrict.length < 5) continue; // Skip districts with fewer than 5 orders
 
-          //get the first five orders from order array
-        const districtWithFiveOrders = Object.keys(OrdersByDistrict).find(district => OrdersByDistrict[district].length < 5);
-        const firstFiveOrders = OrdersByDistrict[districtWithFiveOrders];
-        
-        // Check for available drivers matching order districts
-      const matchingDistricts = Object.keys(OrdersByDistrict).filter(district =>
-        Object.keys(driversByDistrict).includes(district) &&
-        driversByDistrict[district].length > 0
-      );
-      console.log('matching districts:', matchingDistricts);
+            const randomDriver = getRandomDriverInDistrict(district);
+            if (!randomDriver) {
+                setError(`No available driver found for ${district}`);
+                continue;
+            }
 
-      if (matchingDistricts.length === 0) {
-        setError("No available driver found for the order districts");
-        return;
-      } 
+            const firstFiveOrders = ordersInDistrict.slice(0, 5);
+            const taskData = {
+                driver_id: randomDriver.driver_id,
+                branch_id: randomDriver.branch_ID,
+                district: district,
+                orderIds: firstFiveOrders.map(order => order._id)
+            };
 
-      // Get driver IDs for matching districts
-      const matchingDriverIds = matchingDistricts.reduce((acc, available_district) => {
-        const driversForDistrict = driversByDistrict[available_district];
-        const driverIdsForDistrict = driversForDistrict.map(driver => driver._id);
-        return [...acc, ...driverIdsForDistrict];
-      }, []);
-
-      console.log('Matching driver IDs:', matchingDriverIds);
-
-      const randomDistrict = matchingDistricts[Math.floor(Math.random() * matchingDistricts.length)];
-      const randomDriversInDistrict = driversByDistrict[randomDistrict];
-      const randomDriver = randomDriversInDistrict[Math.floor(Math.random() * randomDriversInDistrict.length)];
-
-      console.log('randomDriver', randomDriver);
-
-      if (!randomDriver) {
-        setError("No available driver found for the selected district");
-        return;
-      }
-
-      const taskData = {
-        driver_id: randomDriver.driver_id,
-        branch_id: randomDriver.branch_ID,
-        district: randomDistrict,
-        orderIds: firstFiveOrders.map(order => order._id)
-      };
-      
-      console.log('Task Data:', taskData);
-      console.log('Task Data123:', taskData.driver_id, taskData.branch_id, taskData.district, taskData.orderIds);
-    
-      await axios.post("http://localhost:8070/Task/add-task", taskData);
-     
-      setMessage("Task added successfully");
-  
-        console.log('fewer five Order', firstFiveOrders);
-        } catch (error) {
-            console.error("Error sending data to backend:", error);
-            setError("Error occurred while adding task");
+            await axios.post("http://localhost:8070/Task/add-task", taskData);
         }
-      };
 
+        setMessage("Tasks added successfully");
+    } catch (error) {
+        console.error("Error sending data to backend:", error);
+        setError("Error occurred while adding tasks");
+    }
+  };
+
+  const getRandomDriverInDistrict = (district) => {
+    const driversInDistrict = driversByDistrict[district];
+    return driversInDistrict.length > 0 ? driversInDistrict[Math.floor(Math.random() * driversInDistrict.length)] : null;
+  };
+
+  const fewerfiveOrders = async () => {
+    try {
+        const matchingDistricts = Object.keys(OrdersByDistrict).filter(district =>
+            Object.keys(driversByDistrict).includes(district) &&
+            driversByDistrict[district].length > 0
+        );
+
+        console.log('matchingDistricts', matchingDistricts)
+        if (matchingDistricts.length === 0) {
+            setError("No available driver found for any order district");
+            return;
+        }
+
+        for (const district of matchingDistricts) {
+            const ordersInDistrict = OrdersByDistrict[district];
+            if (ordersInDistrict.length < 5) continue; // Skip districts with fewer than 5 orders
+
+            const randomDriver = getRandomDriverInDistricts(district);
+            if (!randomDriver) {
+                setError(`No available driver found for ${district}`);
+                continue;
+            }
+
+            const firstFiveOrders = ordersInDistrict.slice(0, 5);
+            const taskData = {
+                driver_id: randomDriver.driver_id,
+                branch_id: randomDriver.branch_ID,
+                district: district,
+                orderIds: firstFiveOrders.map(order => order._id)
+            };
+
+            await axios.post("http://localhost:8070/Task/add-task", taskData);
+        }
+
+        setMessage("Tasks added successfully");
+    } catch (error) {
+        console.error("Error sending data to backend:", error);
+        setError("Error occurred while adding tasks");
+    }
+  };
+
+  const getRandomDriverInDistricts = (district) => {
+      const driversInDistrict = driversByDistrict[district];
+      return driversInDistrict.length > 0 ? driversInDistrict[Math.floor(Math.random() * driversInDistrict.length)] : null;
+  };
 
   useEffect(() => {
     if(Object.values(districtOrderCount).some(count => count >= 5)){

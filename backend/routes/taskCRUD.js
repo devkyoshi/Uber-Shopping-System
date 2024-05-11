@@ -24,12 +24,10 @@ router.post("/add-task", async (req, res) => {
 
     // Update driver's availability to "delivering"
     // Ensure to use the correct field for branch identifier
-    console.log("Before updating driver availability:", driver_id, branch_id);
     const updateResult = await Branch.updateOne(
       { branch_ID: branch_id, "drivers.driver_id": driver_id }, // Use branch_ID instead of _id
       { $set: { "drivers.$.availability": "delivering" } }
     );
-    console.log("Driver availability update result:", updateResult);
     
     await task.save();
     res.json(task);
@@ -38,6 +36,84 @@ router.post("/add-task", async (req, res) => {
     res.status(500).json({ error: "An error occurred while adding the task" });
   }
 });
+
+
+
+
+// Route to find a driver by their driver_id across all branches
+router.post('/orders/:driverId', async (req, res) => {
+  try {
+    const { driverId } = req.params;
+
+    // Find the driver by their ID to get their district and branch ID
+    const driverBranch = await Branch.findOne({ 'drivers.driver_id': driverId });
+    if (!driverBranch) {
+      return res.status(404).json({ message: 'Driver not found' });
+    }
+    const branchId = driverBranch.branch_ID;
+    console.log("Branch ID:", branchId);
+
+
+    const availbleDriver = driverBranch.drivers.find(driver => driver.availability === "Available");
+    console.log('availbleDriver',availbleDriver)
+    if (!availbleDriver) {
+      return res.status(404).json({ message: 'Driver not available' });
+    }
+
+    const driverDistrict = availbleDriver.available_district;
+    const driverBranchID = branchId;
+    console.log('driverBranchid', branchId)
+
+    // Find orders where order_district matches driver's district and status is 'Processing'
+    const orders = await Order.find({ order_district: driverDistrict, order_status: 'pending' });
+
+    // Filter orders based on payment method
+    const filteredOrders = orders.filter(order => {
+      console.log('Checking order:', order);
+      const isCash = order.cash_payment?.payment_method === "cash";
+      const isCard = order.card_payment?.payment_method === "card";
+      return isCash || isCard;
+    });
+    
+    const limitedOrders = filteredOrders.slice(0, 5);
+    // If no matching orders are found
+    if (filteredOrders.length === 0) {
+      return res.status(404).json({ message: 'No orders found for this driver\'s district' });
+    }
+
+    // Extract orderIds
+    const orderIds = limitedOrders.map(order => order._id);
+
+    // Prepare the document to save to the database
+    const dataToSave = {
+      driver_id: driverId,
+      branch_id: branchId,
+      district: driverDistrict,
+      orders: orderIds.map(orderId => ({ order_id: orderId })),
+    };
+
+    // Save the document to the database
+    const savedData = await Task.create(dataToSave);
+    
+    // Update order status for all orders in orderIds array to "Processing"
+    await Order.updateMany({ _id: { $in: orderIds } }, { $set: { order_status: "Processing" } });
+    
+    // Update driver's availability to "delivering"
+    await Branch.updateOne(
+      { branch_ID: driverBranchID, "drivers.driver_id": driverId },
+      { $set: { "drivers.$.availability": "delivering" } }
+    );
+
+    // If saved successfully, return the saved data
+    res.json(savedData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+ 
+
 
 
 
@@ -656,6 +732,8 @@ router.get("/:taskId/get-order/:orderId", async (req, res) => {
   //     res.status(500).json({ message: 'Server Error' });
   //   }
   // });
+  
+
   
 
 module.exports = router;

@@ -14,7 +14,7 @@ import DriverTable from "./DriverTable";
 import AddTask from "./AddTask";
 
 export function TaskTab({taskId}) {
-  const [activeTab, setactiveTab] = useState("add");
+  const [activeTab, setactiveTab] = useState("view");
 
   const tapMapping = {
     add: <AddTask />,
@@ -25,11 +25,6 @@ export function TaskTab({taskId}) {
   };
 
   const data = [ 
-    {
-      label: "Add Task",
-      value: "add",
-      icon: PlusCircleIcon,
-    },
     {
       label: "View Task",
       value: "view",
