@@ -144,7 +144,8 @@ export default function ComplaintForm(){
         <div className='main-layout'>
           <SideBar/>
             <div className='inner-layout'>
-              <Typography className="text-4xl font-semibold mb-3 ml-3 ">Complaint Form</Typography>
+            <Typography variant="h3" style={{ color: 'var(--logo-green1)' }} className="ml-3">Complaint Form</Typography>
+
                 <div className=" container mx-auto mt-5 bg-gray-100 rounded-lg border border-gray-300 p-4">
                 <br/>
                   <form onSubmit={handleSubmit} className=" max-w-screen-md mx-auto space-y-7">

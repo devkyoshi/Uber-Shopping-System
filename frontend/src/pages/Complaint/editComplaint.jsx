@@ -148,7 +148,7 @@ export default function editComplaint(){
         <div className='main-layout'>
           <SideBar/>
             <div className='inner-layout'>
-              <h1 className="text-4xl font-semibold mb-9 ml-3 ">Complaint Form</h1>
+              <Typography variant="h3" style={{ color: 'var(--logo-green1)' }} className="ml-3">Complaint Form</Typography>
                 <div className=" container mx-auto mt-5 bg-gray-100 rounded-lg border border-gray-300">
                 <br/>
                   <form onSubmit={handleSubmit} className="max-w-screen-md mx-auto space-y-7 ">
