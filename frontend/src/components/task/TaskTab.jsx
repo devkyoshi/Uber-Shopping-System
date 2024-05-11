@@ -8,28 +8,20 @@ import {
 } from "@material-tailwind/react";
 import { PlusCircleIcon, EyeIcon, CogIcon } from "@heroicons/react/24/solid";
 import { ManageTask } from "./ManageTask";
-import { TaskTable } from "./TaskTable";
 import OrderTable from "./OrderTable";
 import DriverTable from "./DriverTable";
-import AddTask from "./AddTask";
 
 export function TaskTab({taskId}) {
-  const [activeTab, setactiveTab] = useState("view");
+  const [activeTab, setactiveTab] = useState("manage");
 
   const tapMapping = {
-    add: <AddTask />,
-    view: <TaskTable />,
     manage: <ManageTask />,
     orders: <OrderTable/>,
     drivers: <DriverTable/>
   };
 
   const data = [ 
-    {
-      label: "View Task",
-      value: "view",
-      icon: EyeIcon,
-    },
+   
     {
       label: "Manage Task",
       value: "manage",

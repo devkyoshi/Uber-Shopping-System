@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 const Task = require("../models/task");
 const Order = require("../models/order");
- const Branch = require("../models/branch")
+const Branch = require("../models/branch")
+const User = require("../models/user.model")
 const mongoose = require("mongoose");
 
 // Add a new task(new) - Sarindu
@@ -45,26 +46,38 @@ router.post('/orders/:driverId', async (req, res) => {
   try {
     const { driverId } = req.params;
 
-    // Find the driver by their ID to get their district and branch ID
+    // Find all branches
+    const branches = await Branch.find();
+
+    let isDriverFound = false;
+    let branchId; // Store the branch ID if the driver is found
+
+    // Iterate through each branch to find the driver
+    for (const branch of branches) {
+      const driver = branch.drivers.find(driver => driver.driver_id.toString() === driverId && driver.availability === "Available");
+      if (driver) {
+        isDriverFound = true;
+        branchId = branch._id; // Store the branch ID
+        break;
+      }
+    }
+
+    if (!isDriverFound) {
+      return res.status(404).json({ message: 'Driver not found or not available in any branch' });
+    }
+    console.log("driverId", driverId)
     const driverBranch = await Branch.findOne({ 'drivers.driver_id': driverId });
-    if (!driverBranch) {
-      return res.status(404).json({ message: 'Driver not found' });
-    }
-    const branchId = driverBranch.branch_ID;
-    console.log("Branch ID:", branchId);
 
+    const branchIds = driverBranch.branch_ID;
 
-    const availbleDriver = driverBranch.drivers.find(driver => driver.availability === "Available");
-    console.log('availbleDriver',availbleDriver)
-    if (!availbleDriver) {
-      return res.status(404).json({ message: 'Driver not available' });
-    }
+    const driver = await User.findById(driverId);
+    const driverName = driver ? driver.Emp_Name : "Driver Name Not Found";
 
-    const driverDistrict = availbleDriver.available_district;
+    const driverDistrict = driverBranch.district;
     const driverBranchID = branchId;
-    console.log('driverBranchid', branchId)
+    console.log("driverId", driverName)
 
-    // Find orders where order_district matches driver's district and status is 'Processing'
+    // Find orders where order_district matches driver's district and status is 'pending'
     const orders = await Order.find({ order_district: driverDistrict, order_status: 'pending' });
 
     // Filter orders based on payment method
@@ -77,7 +90,7 @@ router.post('/orders/:driverId', async (req, res) => {
     
     const limitedOrders = filteredOrders.slice(0, 5);
     // If no matching orders are found
-    if (filteredOrders.length === 0) {
+    if (limitedOrders.length === 0) {
       return res.status(404).json({ message: 'No orders found for this driver\'s district' });
     }
 
@@ -87,7 +100,8 @@ router.post('/orders/:driverId', async (req, res) => {
     // Prepare the document to save to the database
     const dataToSave = {
       driver_id: driverId,
-      branch_id: branchId,
+      branch_id: branchIds,
+      driver_name: driverName,
       district: driverDistrict,
       orders: orderIds.map(orderId => ({ order_id: orderId })),
     };
@@ -100,7 +114,7 @@ router.post('/orders/:driverId', async (req, res) => {
     
     // Update driver's availability to "delivering"
     await Branch.updateOne(
-      { branch_ID: driverBranchID, "drivers.driver_id": driverId },
+      { _id: driverBranchID, "drivers.driver_id": driverId },
       { $set: { "drivers.$.availability": "delivering" } }
     );
 
@@ -111,11 +125,6 @@ router.post('/orders/:driverId', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
-
- 
-
-
-
 
  ///// update task - manage task
 router.put("/update-task/:taskId", async (req, res) => {
@@ -163,6 +172,45 @@ router.put("/update-task/:taskId", async (req, res) => {
   }
 });
 
+router.get("/:branch_ID/driver-all", async (req, res) => {
+  try {
+    const { branch_ID } = req.params;
+
+    // Find branch data
+    const branchData = await Branch.findOne({ branch_ID });
+    if (!branchData) {
+      return res.status(404).json({ error: "Branch not found" });
+    }
+
+    // Filter drivers based on availability
+    const availableDrivers = branchData.drivers.filter(driver => driver.availability === "Available");
+    if (availableDrivers.length === 0) {
+      return res.status(404).json({ error: "No available drivers found" });
+    }
+
+    // Extract driver IDs
+    const driverIds = availableDrivers.map(driver => driver.driver_id);
+
+    // Fetch user data for the filtered drivers
+    const drivers = await User.find({ _id: { $in: driverIds } });
+
+    // Extract relevant information for each driver
+    const driverInfo = drivers.map(driver => ({
+      driverName: driver ? driver.Emp_Name : "Driver Name Not Found",
+      driverId: driver ? driver._id : null,
+      // Include other relevant driver information here
+    }));
+
+    res.json(driverInfo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "An error occurred while fetching drivers from the branch",
+    });
+  }
+});
+
+
 
 
 
@@ -209,10 +257,6 @@ router.put("/add-pickup/:taskId/:orderId", async (req, res) => {
       .json({ error: "An error occurred while updating the order" });
   }
 });
-
-
-
-
 
 
 // Update pickup details within a task - Gimashi
@@ -513,6 +557,7 @@ router.get("/tasks", async (req, res) => {
       task_id: task._id,
       branch_id: task.branch_id,
       driver_id: task.driver_id,
+      driver_name: task.driver_name,
       district: task.district,
       orders: task.orders
     }));

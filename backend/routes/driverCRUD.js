@@ -211,33 +211,41 @@ router.get("/:branchID/driver-all", async (req, res) => {
 // get all drivers [from all branches]
 router.get("/drivers", async (req, res) => {
   try {
-    const driversWithBranchID = await Branch.aggregate([
-      { $unwind: "$drivers" },
-      {
-        $lookup: {
-          from: "drivers", // Assuming the name of the drivers collection is "drivers"
-          localField: "drivers.driver_id",
-          foreignField: "_id", // Assuming the driver_id is the _id in the drivers collection
-          as: "driver_info",
-        },
+    const branches = await Branch.find().populate({
+      path: "drivers",
+      select: "driver_id branch_ID available_district availability",
+      populate: {
+        path: "driver_id",
+        select: "Emp_Name",
       },
-      {
-        $project: {
-          _id: 0, // Exclude _id
-          driver_id: "$drivers.driver_id",
-          branch_ID: "$branch_ID",
-          available_district: "$drivers.available_district",
-          availability: "$drivers.availability",
-        },
-      },
-    ]);
+    });
 
-    res.json(driversWithBranchID);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server Error" });
+    console.log("Branches:", branches);
+
+    const driversData = branches.reduce((acc, branch) => {
+      branch.drivers.forEach((driver) => {
+        console.log("Driver:", driver);
+        if (driver.driver_id && driver.driver_id.Emp_Name) {
+          acc.push({
+            driver_id: driver.driver_id._id,
+            Emp_Name: driver.driver_id.Emp_Name,
+            branch_ID: branch.branch_ID,
+            available_district: driver.available_district,
+            availability: driver.availability,
+          });
+        }
+      });
+      return acc;
+    }, []);
+
+    res.json(driversData);
+  } catch (error) {
+    console.error("Error fetching drivers:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
 
 //get driver tasks and order details
 router.get("/tasks/:driverId", async (req, res) => {
