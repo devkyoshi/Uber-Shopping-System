@@ -69,11 +69,10 @@ router.post("/refund-add", async (req, res) => {
       return res.status(400).json({ message: "Amount must a positive number" });
     }
 
-    const refundId = new ObjectId(); // Generate new ObjectId for refund
+    // const refundId = new ObjectId(); // Generate new ObjectId for refund
 
     // Create a new refund object
     const newRefund = new Refund({
-      _id: refundId,
       order_id,
       complaint_id,
       account_holder,
