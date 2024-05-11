@@ -113,11 +113,6 @@ export function OrdersTable({ orderId }) {
 
       <Card className="mb-8">
         <div className="ml-10 mt-6 mb-10 mr-10">
-          {/* <Typography>
-            Purchase Amount: Rs. {order.order_details.purchase_amount}
-          </Typography>
-          <Typography>Order Date: {order.order_details.order_date}</Typography> */}
-
           <form onSubmit={handleSubmit}>
             <div>
               <label htmlFor="message" className="font-extrabold">

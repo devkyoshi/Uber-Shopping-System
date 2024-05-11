@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+
 import {
   Card,
   Typography,
@@ -13,19 +15,21 @@ import {
   ListItem,
 } from "@material-tailwind/react";
 
-const TaskTable = () => {
+const TaskTable = ({ user_id }) => {
   const [taskDetails, setTaskDetails] = useState("");
+  const { currentUser } = useSelector((state) => state.user);
+  console.log("userid: ", currentUser._id);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8070/Driver/tasks/662fe2f00d54745907efd9e0` //should change
+          `http://localhost:8070/Driver/tasks/${currentUser._id}`
         );
         console.log("Driver details: ", response.data);
         setTaskDetails(response.data);
       } catch (error) {
-        console.error("Error fetching tasks:", error);
+        console.log("Error fetching tasks:", error);
       }
     };
 
@@ -75,7 +79,18 @@ const TaskTable = () => {
 
   return (
     <div className="p-4">
-      {taskDetails && (
+      {!taskDetails || taskDetails.length === 0 ? (
+        <div className="text-center">
+          <Card>
+            <Typography variant="h2" color="blue-gray" className="mb-2">
+              Welcome {currentUser.Emp_Name} !
+              <Typography className="text-2xl mb-4 text-center">
+                No task assigned for the driver yet
+              </Typography>
+            </Typography>
+          </Card>
+        </div>
+      ) : (
         <>
           <h1 className="text-2xl mb-4 text-center">Task Progress</h1>
           <div>
