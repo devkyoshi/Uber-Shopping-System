@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Card, Typography } from "@material-tailwind/react";
 
 export function ViewBranch({ branchID }) {
@@ -12,7 +12,9 @@ export function ViewBranch({ branchID }) {
 
   const fetchBranch = async () => {
     try {
-      const response = await axios.get(`http://localhost:8070/Branch/branch/${branchID}`);
+      const response = await axios.get(
+        `http://localhost:8070/Branch/branch/${branchID}`
+      );
       console.log("API Response:", response.data);
       setBranch(response.data);
     } catch (error) {
@@ -23,14 +25,17 @@ export function ViewBranch({ branchID }) {
 
   return (
     <Card color="transparent" shadow={false}>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <Typography variant="h4" color="blue-gray">
           My Branch
         </Typography>
       </div>
 
       {errorMessage && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mt-4" role="alert">
+        <div
+          className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mt-4"
+          role="alert"
+        >
           <p>{errorMessage}</p>
         </div>
       )}
@@ -60,7 +65,7 @@ export function ViewBranch({ branchID }) {
                     Branch Longitude: {Branch.branch_Longitude}
                   </Typography> */}
                 </div>
-              </div>  
+              </div>
             </Card>
           </li>
         </ul>
@@ -68,4 +73,3 @@ export function ViewBranch({ branchID }) {
     </Card>
   );
 }
-

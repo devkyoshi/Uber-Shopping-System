@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Card, Typography, Button } from "@material-tailwind/react";
+import { Card, Typography, Button, Input } from "@material-tailwind/react";
 import { Branch_Download } from "./Branch_Download";
 
 const TABLE_HEAD = [
@@ -37,7 +37,10 @@ export function BranchTable() {
 
   useEffect(() => {
     // Filter branch list based on search term
-    const filteredList = branchList.filter(branch => (branch.branch_ID.toLowerCase().includes(searchTerm.toLowerCase()) ||(branch.branch_name.toLowerCase().includes(searchTerm.toLowerCase())))
+    const filteredList = branchList.filter(
+      (branch) =>
+        branch.branch_ID.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        branch.branch_name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredBranchList(filteredList);
   }, [branchList, searchTerm]);
@@ -47,20 +50,23 @@ export function BranchTable() {
   };
 
   return (
-    <Card className="h-full w-full overflow-scroll">
-      <div className="flex justify-end p-4">
-        <input
-          type="text"
-          placeholder="Search by Branch ID OR Name"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          className="px-4 py-2 border border-gray-300 rounded-md"
-        />
+    <Card className="h-full w-full overflow-scroll p-4">
+      <div className="inline-flex justify-end p-4">
+        <div className="mr-5">
+          <Input
+            label="Search Branch"
+            size="lg"
+            placeholder="Search by Branch ID OR Name"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="px-4 py-2 border border-gray-300 rounded-md "
+          />
+        </div>
         <div>
-          <Branch_Download data_branch = {filteredBranchList}/>
+          <Branch_Download data_branch={filteredBranchList} />
         </div>
       </div>
-      <table className="w-full min-w-max table-auto text-center">
+      <table className="w-full min-w-max table-auto text-center ">
         <thead>
           <tr>
             {TABLE_HEAD.map((head) => (
