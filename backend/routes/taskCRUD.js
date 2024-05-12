@@ -127,43 +127,40 @@ router.post('/orders/:driverId', async (req, res) => {
 });
 
  ///// update task - manage task
-router.put("/update-task/:taskId", async (req, res) => {
+ router.put("/update-task/:taskId", async (req, res) => {
   try {
     const { taskId } = req.params;
-    const { driver_id, branch_id, district, orderIds } = req.body;
+    const { driver_id, branch_id } = req.body;
 
     // Find the task by ID
-    let task = await Task.findById(taskId);
-
+    const task = await Task.findById(taskId);
     if (!task) {
       return res.status(404).json({ error: "Task not found" });
     }
 
     // Update task properties if provided in the request body
-    if (driver_id) {
-      task.driver_id = driver_id;
-    }
-    if (branch_id) {
-      task.branch_id = branch_id;
-    }
-    if (district) {
-      task.district = district;
+    if (!driver_id) {
+      return res.status(400).json({ error: "Driver ID is required" });
     }
 
-    // Update orderIds if provided, and update order status to "Processing"
-    if (orderIds && Array.isArray(orderIds)) {
-      // Clear existing orders
-      task.orders = [];
-
-      // Update order status to "Processing" for each order
-      for (const orderId of orderIds) {
-        task.orders.push({ order_id: orderId });
-        await Order.updateOne({ _id: orderId }, { $set: { order_status: "Processing" } });
-      }
+    // Find the driver by driver_id to get the driver_name
+    const driverUser = await User.findById(driver_id);
+    if (!driverUser) {
+      return res.status(404).json({ error: "Driver not found" });
     }
+
+    // Update driver name on the task
+    task.driver_id = driver_id;
+    task.driver_name = driverUser.Emp_Name;
+
+    const updateResult = await Branch.updateOne(
+      { branch_ID: branch_id, "drivers.driver_id": driver_id }, // Use branch_ID instead of _id
+      { $set: { "drivers.$.availability": "delivering" } }
+    );
+   
 
     // Save the updated task
-    task = await task.save();
+    await task.save();
 
     res.json(task);
   } catch (error) {
@@ -171,6 +168,8 @@ router.put("/update-task/:taskId", async (req, res) => {
     res.status(500).json({ error: "An error occurred while updating the task" });
   }
 });
+
+
 
 router.get("/:branch_ID/driver-all", async (req, res) => {
   try {

@@ -12,8 +12,9 @@ import {
 export function ManageTask() {
     const [tasks, setTasks] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
-    const [editTaskId, setEditTaskId] = useState("");
-    const [driverId, setDriverId] = useState("");
+    const [editTaskId, setEditTaskId] = useState(""); // State to track which task is being edited
+    const [availableDrivers, setAvailableDrivers] = useState([]);
+    const [selectedDriverId, setSelectedDriverId] = useState("");
 
     useEffect(() => {
         fetchTasks();
@@ -29,9 +30,8 @@ export function ManageTask() {
         }
     };
 
-   
-  
     const handleDelete = async (taskId, orderCount) => {
+        console.log('taskId', taskId);
         try {
             const confirmDelete = window.confirm(`Are you sure you want to delete Task ${taskId} ? There are ${orderCount} orders associated with this task.`);
             if (confirmDelete) {
@@ -44,57 +44,36 @@ export function ManageTask() {
             setErrorMessage("Error deleting task");
         }
     };
-    
-    const handleInputChange = (e, taskId, fieldName) => {
-        const { value } = e.target;
-        let filteredValue = value;
-    
-        // Apply input validation based on the field name
-        switch (fieldName) {
-            case "branch_id":
-            case "driver_id":
-                filteredValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
-                break;
-            case "district":
-                filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
-                break;
-            default:
-                break;
+
+    const handleBranchId = async (branchId) => {
+        try {
+            const response = await axios.get(`http://localhost:8070/Task/${branchId}/driver-all`);
+            setAvailableDrivers(response.data); 
+
+        } catch (error) {
+
         }
-    
-        setTasks(prevTasks => {
-            return prevTasks.map(task => {
-                if (task.task_id === taskId) {
-                    console.log(`Updating ${fieldName} for task ID: ${task.task_id} to value: ${filteredValue}`);
-                    return { ...task, [fieldName]: filteredValue };
-                }
-                return task;
-            });
-        });
     };
-    
-    const handleEdit = (taskId) => {
-        setEditTaskId(taskId); // Set the task ID being edited
+
+    const handleEdit = (taskId, branchId) => {
+        setEditTaskId(taskId);
+        handleBranchId(branchId);
+        console.log("Branch ID:", branchId);
     };
 
     const handleSave = async (updatedTask) => {
         try {
+            updatedTask.driver_id = selectedDriverId;
             // Make a PUT request to update the task
             console.log("In function", updatedTask);
             await axios.put(`http://localhost:8070/Task/update-task/${updatedTask.task_id}`, updatedTask);
-            window.alert("Task update successfully!");
+            window.alert("Task updated successfully");
             setEditTaskId(""); // Reset edit task ID after saving
             fetchTasks(); // Fetch updated task list
         } catch (error) {
             console.error("Error updating task:", error);
             setErrorMessage("Error updating task");
         }
-    };
-    console.log("availableDrivers",tasks)
-
-    const handleSelectChange = (value, name) => {
-        console.log("handleselect passed: ", value, name);
-        setDriverId(value);
     };
 
     return (
@@ -178,63 +157,63 @@ export function ManageTask() {
                 <tbody>
                     {tasks.map(task => (
                         <tr key={task._id} className="mb-4">
-                            <td>
+                            <td className="p-4">
                                 <Input
                                     type="text"
                                     value={task.branch_id}
-                                    onChange={(e) => handleInputChange(e, task.task_id, 'branch_id')}
-                                    readOnly={editTaskId !== task.task_id} // Disable input if not in edit mode
+                                    readOnly // Disable input if not in edit mode
                                 />
                             </td>
-                            <td>
+                            <td className="p-4">
                                 {editTaskId === task.task_id ? (
-                                    <Select
-                                        name="driver_id"
-                                        value={task.driver_id}
-                                        onChange={(value) => handleSelectChange(value, "driver_id")}
-                                        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                                    >
-                                        {availableDrivers.map((driver) => (
-                                            <Option key={driver._id} value={driver._id}>
-                                                {driver.Emp_Name}
-                                            </Option>
-                                        ))}
-                                    </Select>
-                                ) : (
-                                    <Input
-                                        type="text"
-                                        value={task.driver_name}
-                                        readOnly
-                                    />
-                                )}
+                                         <Select
+                                            name="driver_id"
+                                            value={selectedDriverId} // Use selectedDriverId state
+                                            onChange={(value) => setSelectedDriverId(value)} // Update selected driver ID
+                                            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+>
+                                         {availableDrivers.map((driver) => (
+                                             <Option key={driver.driverId} value={driver.driverId}>
+                                                 {driver.driverName}
+                                             </Option>
+                                         ))}
+                                     </Select>
+                                    ) : (
+                                        <Input
+                                            type="text"
+                                            value={task.driver_name}
+                                            readOnly={editTaskId !== task.task_id} // Disable input if not in edit mode
+                                        />
+                                    )}
+                                
                             </td>
-                            <td>
+                            <td className="p-4">
                                 <Input
                                     type="text"
                                     value={task.district}
-                                    onChange={(e) => handleInputChange(e, task.task_id, 'district')}
-                                    readOnly={editTaskId !== task.task_id} // Disable input if not in edit mode
+                                    readOnly // Disable input if not in edit mode
                                 />
                             </td>
-                            <td>
+                            <td className="p-4">
+                                {/* Display order IDs as a list */}
                                 <ul>
                                     {task.orders.map((order, index) => (
                                         <li key={index}>{order.order_id._id}</li>
                                     ))}
                                 </ul>
                             </td>
-                            <td>
+                            <td className="p-4">
                                 {editTaskId === task.task_id ? (
                                     <Button color="green" onClick={() => handleSave(task)}>
                                         Save
                                     </Button>
                                 ) : (
-                                    <Button color="blue" onClick={() => handleEdit(task.task_id)}>
+                                    <Button color="blue" onClick={() => handleEdit(task.task_id, task.branch_id)}>
                                         Update
                                     </Button>
                                 )}
                             </td>
-                            <td>
+                            <td className="p-4">
                                 <Button color="red" onClick={() => handleDelete(task.task_id, task.orders.length)} className="ml-2">
                                     Delete
                                 </Button>
