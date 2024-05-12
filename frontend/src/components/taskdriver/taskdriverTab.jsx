@@ -6,37 +6,29 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
-import {
-  PlusCircleIcon,
-  EyeIcon
-} from "@heroicons/react/24/solid";
+import { PlusCircleIcon, EyeIcon } from "@heroicons/react/24/solid";
 import AddTaskDriverUI from "../../pages/taskdriver/AddTaskDriverUI";
-import ViewTaskDriverUI from "../../pages/taskdriver/ViewTaskDriverUI";
+import DriverComplaintForm from "../../pages/taskdriver/ViewTaskDriverUI";
 
- 
-export function TaskDriverTab() {
-const [activeTab,setactiveTab]=useState("add");
+export function TaskDriverTab(user_id) {
+  const [activeTab, setactiveTab] = useState("add");
 
   const tapMapping = {
-    add: <AddTaskDriverUI />,
-    view: <ViewTaskDriverUI/>
+    add: <AddTaskDriverUI user_id={user_id} />,
+    view: <DriverComplaintForm />,
   };
-
 
   const data = [
     {
       label: "Task Progress",
       value: "add",
       icon: PlusCircleIcon,
-     
     },
     {
       label: "My Information",
       value: "view",
       icon: EyeIcon,
-    
     },
-   
   ];
 
   const handleTab = (value) => {
@@ -47,7 +39,7 @@ const [activeTab,setactiveTab]=useState("add");
     <Tabs value={activeTab}>
       <TabsHeader>
         {data.map(({ label, value, icon }) => (
-         <Tab key={value} value={value} onClick={() => handleTab(value)}>
+          <Tab key={value} value={value} onClick={() => handleTab(value)}>
             <div className="flex items-center gap-2">
               {React.createElement(icon, { className: "w-5 h-5" })}
               {label}
