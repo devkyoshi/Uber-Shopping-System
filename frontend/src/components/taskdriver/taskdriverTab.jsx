@@ -8,7 +8,7 @@ import {
 } from "@material-tailwind/react";
 import { PlusCircleIcon, EyeIcon } from "@heroicons/react/24/solid";
 import AddTaskDriverUI from "../../pages/taskdriver/AddTaskDriverUI";
-import DriverComplaintForm from "../../pages/taskdriver/DriverComplaintForm";
+import DriverReportIssueForm from "../../pages/taskdriver/DriverReportIssueForm";
 import axios from "axios";
 
 export function TaskDriverTab({ user_id }) {
@@ -16,7 +16,7 @@ export function TaskDriverTab({ user_id }) {
 
   const tapMapping = {
     add: <AddTaskDriverUI user_id={user_id} />,
-    view: <DriverComplaintForm />,
+    view: <DriverReportIssueForm />,
   };
 
   const data = [

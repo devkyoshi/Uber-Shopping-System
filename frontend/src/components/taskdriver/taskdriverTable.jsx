@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import {useNavigate } from 'react-router-dom';
 
 import {
   Card,
@@ -19,6 +20,7 @@ const TaskTable = ({ user_id }) => {
   const [taskDetails, setTaskDetails] = useState("");
   const { currentUser } = useSelector((state) => state.user);
   console.log("userid: ", currentUser._id);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -193,7 +195,8 @@ const TaskTable = ({ user_id }) => {
                                 <div>
                                   <p>{item.item_name}</p>
                                   <p>Rs. {item.price}</p>
-                                  <Button size="sm"> Report</Button>{" "}
+                                  <p className="mb-5">{item.sm_name}</p>
+                                  <Button size="sm" onClick={() => navigate(`/ReportIssueForm/${item.item_name}/${item.sm_name}`)}> Report</Button>
                                   {/**Chanmi menna methana :) */}
                                 </div>
                                 <ListItemSuffix>
