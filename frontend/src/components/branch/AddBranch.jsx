@@ -119,47 +119,47 @@ export function AddBranch() {
         </Typography>
 
         <div className="flex">
-          <form
-            className="mt-8 mb-2 max-w-screen-lg"
-            onSubmit={handleSubmit}
-          >
-            <div className="flex flex-row gap-52 p-l-10">
+          <form className="mt-8 mb-2 w-full" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-2 gap-8 ">
+              <div className="flex flex-col gap-2">
+                <Typography variant="h6" color="blue-gray" className="mb-2">
+                  Branch ID
+                </Typography>
+                <Input
+                  size="lg"
+                  value={formData.branch_ID}
+                  onChange={handleChange}
+                  name="branch_ID"
+                  placeholder="Enter Branch ID"
+                  className="mb-4"
+                />
+                <Typography variant="h6" color="blue-gray" className="mb-2">
+                  District
+                </Typography>
+                <Select
+                  id="district"
+                  name="district"
+                  value={{ label: formData.district, value: formData.district }}
+                  onChange={(selectedOption) =>
+                    setFormData({ ...formData, district: selectedOption.value })
+                  }
+                  onBlur={handleBlur}
+                  options={districts.map((district) => ({
+                    label: district,
+                    value: district,
+                  }))}
+                  inputValue={inputValue}
+                  onInputChange={(newInputValue) => {
+                    const filteredValue = newInputValue.replace(
+                      /[^a-zA-Z\s]/g,
+                      ""
+                    );
+                    setInputValue(filteredValue);
+                  }}
+                  className="mb-4"
+                />
+              </div>
               <div className="flex flex-col flex-1 gap-2">
-                  <Typography variant="h6" color="blue-gray" className="mb-2">
-                    Branch ID
-                  </Typography>
-                  <Input
-                    size="lg"
-                    value={formData.branch_ID}
-                    onChange={handleChange}
-                    name="branch_ID"
-                    placeholder="Enter Branch ID"
-                    className="mb-4"
-                  />
-                  <Typography variant="h6" color="blue-gray" className="mb-2">
-                    District
-                  </Typography>
-                  <Select
-                    id="district"
-                    name="district"
-                    value={{ label: formData.district, value: formData.district }}
-                    onChange={(selectedOption) =>
-                      setFormData({ ...formData, district: selectedOption.value })
-                    }
-                    onBlur={handleBlur}
-                    options={districts.map((district) => ({
-                      label: district,
-                      value: district,
-                    }))}
-                    inputValue={inputValue}
-                    onInputChange={(newInputValue) => {
-                      const filteredValue = newInputValue.replace(/[^a-zA-Z\s]/g, "");
-                      setInputValue(filteredValue);
-                    }}
-                    className="mb-4"
-                  />
-                </div>
-                <div className="flex flex-col flex-1 gap-2">
                 <Typography variant="h6" color="blue-gray" className="mb-2">
                   Branch Name
                 </Typography>

@@ -10,12 +10,7 @@ export function Branch_Download({ data_branch }) {
     const doc = new jsPDF();
 
     // Set table headers
-    const headers = [
-      "Branch ID",
-      "Banch Name",
-      "Branch Location",
-      "District",
-    ];
+    const headers = ["Branch ID", "Banch Name", "Branch Location", "District"];
 
     // Convert data to table format
     const tableData = data_branch.map((branch) => [
@@ -55,7 +50,7 @@ export function Branch_Download({ data_branch }) {
   };
 
   return (
-    <Button className="flex items-center gap-3" onClick={downloadPDF} size="sm">
+    <Button className="flex items-center gap-3" onClick={downloadPDF}>
       <ArrowDownTrayIcon strokeWidth={2} className="h-4 w-4" /> Download PDF
     </Button>
   );
