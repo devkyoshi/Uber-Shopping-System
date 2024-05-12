@@ -64,9 +64,9 @@ export function OrdersTable({ orderId }) {
   // handling deletion
   const deleteOrder = async () => {
     const confirmDelete = window.confirm(
-      "Are you sure want to delete this order?"
+      "Are you sure you want to delete this order?"
     );
-
+  
     if (confirmDelete) {
       try {
         await axios.delete(
@@ -77,10 +77,12 @@ export function OrdersTable({ orderId }) {
       }
     } else {
       console.error("Deletion canceled!");
+      return; // Exit the function if deletion is canceled
     }
     setOpen(false); // Close the dialog after deletion
     navigate("/");
   };
+  
 
   const makePayment = (orderId) => {
     navigate(`/payment/${orderId}`);
