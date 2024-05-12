@@ -462,4 +462,91 @@ router.get("/card/:customerId", async (req, res) => {
   }
 });
 
+// Route to get payment statistics
+router.get("/payment-stats", async (req, res) => {
+  try {
+    const totalCardPayments = await Order.countDocuments({
+      "card_payment.payment_method": "card",
+    });
+    const totalCashPayments = await Order.countDocuments({
+      "cash_payment.payment_method": "cash",
+    });
+
+    const totalCardAmount = await Order.aggregate([
+      { $match: { "card_payment.payment_method": "card" } },
+      {
+        $group: { _id: null, total: { $sum: "$card_payment.payment_amount" } },
+      },
+    ]);
+    const totalCashAmount = await Order.aggregate([
+      { $match: { "cash_payment.payment_method": "cash" } },
+      {
+        $group: { _id: null, total: { $sum: "$cash_payment.payment_amount" } },
+      },
+    ]);
+
+    const paymentPerDay = await Order.aggregate([
+      {
+        $project: {
+          day: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: "$card_payment.paid_time",
+            },
+          },
+          amount: "$card_payment.payment_amount",
+        },
+      },
+      { $group: { _id: "$day", total: { $sum: "$amount" } } },
+    ]);
+
+    const allPayments = await Order.find(
+      {
+        $or: [
+          { "card_payment.payment_amount": { $exists: true } },
+          { "cash_payment.payment_amount": { $exists: true } },
+        ],
+      },
+      {
+        "card_payment.paid_time": 1,
+        "card_payment.payment_method": 1,
+        "card_payment.payment_amount": 1,
+        "cash_payment.paid_time": 1,
+        "cash_payment.payment_method": 1,
+        "cash_payment.payment_amount": 1,
+      }
+    ).lean();
+
+    const paymentsWithTimestamp = allPayments.map((order) => {
+      let timestamp = null;
+      let paymentMethod = null;
+      let amount = null;
+
+      if (order.card_payment && order.card_payment.paid_time) {
+        timestamp = order.card_payment.paid_time;
+        paymentMethod = order.card_payment.payment_method;
+        amount = order.card_payment.payment_amount;
+      } else if (order.cash_payment && order.cash_payment.paid_time) {
+        timestamp = order.cash_payment.paid_time;
+        paymentMethod = order.cash_payment.payment_method;
+        amount = order.cash_payment.payment_amount;
+      }
+
+      return { timestamp, paymentMethod, amount };
+    });
+
+    res.json({
+      totalCardPayments,
+      totalCashPayments,
+      totalCardAmount: totalCardAmount[0]?.total || 0,
+      totalCashAmount: totalCashAmount[0]?.total || 0,
+      paymentPerDay,
+      paymentsWithTimestamp,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 module.exports = router;

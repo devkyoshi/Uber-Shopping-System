@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import {
   Card,
@@ -48,7 +48,7 @@ const TaskTable = ({ user_id }) => {
       console.log("Picked Up");
       // Refresh task details after pickup update
       const updatedTaskDetails = await axios.get(
-        `http://localhost:8070/Driver/tasks/662fe2f00d54745907efd9e0`
+        `http://localhost:8070/Driver/tasks/${currentUser._id}`
       );
 
       setTaskDetails(updatedTaskDetails.data);
@@ -70,7 +70,7 @@ const TaskTable = ({ user_id }) => {
       console.log("Delivered");
       // Refresh task details after delivery update
       const updatedTaskDetails = await axios.get(
-        `http://localhost:8070/Driver/tasks/662fe2f00d54745907efd9e0`
+        `http://localhost:8070/Driver/tasks/${currentUser._id}`
       );
 
       setTaskDetails(updatedTaskDetails.data);
@@ -266,7 +266,17 @@ const TaskTable = ({ user_id }) => {
                                   <p>{item.item_name}</p>
                                   <p>Rs. {item.price}</p>
                                   <p className="mb-5">{item.sm_name}</p>
-                                  <Button size="sm" onClick={() => navigate(`/ReportIssueForm/${item.item_name}/${item.sm_name}`)}> Report</Button>
+                                  <Button
+                                    size="sm"
+                                    onClick={() =>
+                                      navigate(
+                                        `/ReportIssueForm/${item.item_name}/${item.sm_name}`
+                                      )
+                                    }
+                                  >
+                                    {" "}
+                                    Report
+                                  </Button>
                                   {/**Chanmi menna methana :) */}
                                 </div>
                                 <ListItemSuffix>

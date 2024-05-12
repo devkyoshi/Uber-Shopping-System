@@ -302,7 +302,7 @@ router.get("/tasks/:driverId", async (req, res) => {
         if (!supermarket) {
           return res
             .status(404)
-            .json({ error: "Supermarket not found for item" });
+            .json({ error: "Supermarket not found for item", item_Id });
         }
 
         // Find the specific item within the supermarket

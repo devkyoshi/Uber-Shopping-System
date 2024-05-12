@@ -187,7 +187,7 @@ export function TransactionsTable({
   ];
 
   return (
-    <Card className="h-full w-full" style={{ width: "900px" }}>
+    <Card className="h-full w-full p-5" style={{ width: "900px" }}>
       <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
           <div className="pl-2">
@@ -212,7 +212,7 @@ export function TransactionsTable({
         </div>
       </CardHeader>
       <CardBody className="overflow-scroll px-0">
-        <table className="w-full min-w-max table-auto m-5 text-center">
+        <table className="w-full min-w-max table-auto text-center">
           <thead>
             <tr>
               {TABLE_HEAD.map((head) => (
