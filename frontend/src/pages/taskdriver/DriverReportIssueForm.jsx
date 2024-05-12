@@ -28,9 +28,10 @@ export default function DriverComplaintForm() {
   <div  className="min-h-screen flex flex-col md:flex-row">
   <div className='md:w-56' >
    <DashSidebar/>
+   </div>
     <div className="inner-layout mt-5 ml-2 mr-5">
       issuegvhvjhbjhbj
-    </div>
+    
     </div>
     </div>
  )
