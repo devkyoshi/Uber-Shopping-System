@@ -72,6 +72,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "None",
     },
+    Avg_rating: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

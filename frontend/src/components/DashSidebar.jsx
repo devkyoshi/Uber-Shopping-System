@@ -5,6 +5,7 @@ import {
   HiChartPie,
   HiChatAlt,
   HiKey,
+  
   HiArrowSmRight,
   HiBadgeCheck,
   HiOutlineUserGroup,
@@ -64,6 +65,20 @@ export default function DashSidebar() {
               </Sidebar.Item>
             </Link>
           )}
+           {currentUser.isAdmin && (
+            <Link to="/Dashboard?tab=ManageEmp_salary">
+              <Sidebar.Item
+                active={tab === "ManageEmp_salary"}
+                icon={HiCurrencyDollar}
+                label={""}
+                labelColor={tab === "ManageEmp_salary" ? "dark" : "none"}
+                as="div"
+              >
+                Finance Details
+              </Sidebar.Item>
+            </Link>
+          )}
+          
 
           <Link to="/Dashboard?tab=profile">
             <Sidebar.Item

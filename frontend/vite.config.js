@@ -17,6 +17,10 @@ export default defineConfig({
         target: "http://localhost:8070",
         secure: false,
       },
+      "/Rating": {
+        target: "http://localhost:8070",
+        secure: false,
+      },
       '/api': {
         target: 'http://localhost:8070',
         secure: false,
