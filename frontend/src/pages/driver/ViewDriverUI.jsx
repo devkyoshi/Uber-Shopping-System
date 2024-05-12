@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Input, Button } from "@material-tailwind/react";
 
+
+
 export default function ViewDriversUI({ branch_ID }) {
   // State for storing drivers data
   const [drivers, setDrivers] = useState([]);
@@ -16,7 +18,15 @@ export default function ViewDriversUI({ branch_ID }) {
     vehicle_number: "",
     availability: "",
   });
+ // State for search query
+ const [searchQuery, setSearchQuery] = useState("");
+ // State for entered driver ID
+ const [driverIdInput, setDriverIdInput] = useState("");
+ // State for selected driver details
+ const [selectedDriver, setSelectedDriver] = useState(null);
 
+
+ 
   // Fetch drivers data when branch ID changes
   useEffect(() => {
     const fetchDrivers = async () => {
@@ -99,6 +109,27 @@ export default function ViewDriversUI({ branch_ID }) {
     }
   };
 
+  
+
+// Handle search for specific driver ID
+const handleSearchDriverId = () => {
+  const selectedDriver = drivers.find((driver) => driver._id === driverIdInput);
+  if (selectedDriver) {
+    setSelectedDriver(selectedDriver);
+  } else {
+    setSelectedDriver(null);
+  }
+};
+
+// Filter drivers based on search query
+const filteredDrivers = drivers.filter((driver) =>
+driver._id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+driver.available_district.toLowerCase().includes(searchQuery.toLowerCase()) ||
+driver.current_handover_money.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+driver.vehicle_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
+driver.availability.toLowerCase().includes(searchQuery.toLowerCase())
+);
+
   // Render loading indicator if data is still loading
   if (loading) {
     return <div>Loading drivers...</div>;
@@ -106,24 +137,40 @@ export default function ViewDriversUI({ branch_ID }) {
 
   // Render UI
   return (
-    <Card className="h-full w-full overflow-scroll">
-      <table className="w-full min-w-max table-auto text-left">
+    <Card className="h-full w-full overflow-scroll p-5 ">
+      
+        {/* Search bar section */}
+  <div className="w-full md:w-1/4 mt-4 md:mt-0 md:ml-auto mb-5">
+    <Input
+      
+      value={searchQuery}
+      label="search"
+      onChange={(e) => setSearchQuery(e.target.value)}
+    />
+  </div>
+     
+      
+      <table  className="w-full  table-auto text-left mb-5">
         <thead>
           <tr>
-            <th>Driver ID</th>
-            <th>Available District</th>
-            <th>Current Handover Money</th>
-            <th>Vehicle Number</th>
-            <th>Availability</th>
-            <th>Update</th>
-            <th>Delete</th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Driver ID</th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Available District</th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Current Handover Money</th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Vehicle Number</th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Availability</th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Update</th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Delete</th>
           </tr>
+
+
+           
         </thead>
-        <tbody>
-          {drivers.map((driver) => (
-            <tr key={driver._id}>
-              <td>{driver._id}</td>
-              <td>
+        <tbody className="text-center ">
+          
+          {filteredDrivers.map((driver) => (
+            <tr key={driver._id} >
+              <td className="p-4 border-b border-blue-gray-50">{driver._id}</td>
+              <td className="p-4 border-b border-blue-gray-50">
                 {editableDriverId === driver._id ? (
                   <Input
                     type="text"
@@ -134,7 +181,7 @@ export default function ViewDriversUI({ branch_ID }) {
                   driver.available_district
                 )}
               </td>
-              <td>
+              <td className="p-4 border-b border-blue-gray-50">
                 {editableDriverId === driver._id ? (
                   <Input
                     type="text"
@@ -147,7 +194,7 @@ export default function ViewDriversUI({ branch_ID }) {
                   driver.current_handover_money
                 )}
               </td>
-              <td>
+              <td className="p-4 border-b border-blue-gray-50">
                 {editableDriverId === driver._id ? (
                   <Input
                     type="text"
@@ -158,7 +205,7 @@ export default function ViewDriversUI({ branch_ID }) {
                   driver.vehicle_number
                 )}
               </td>
-              <td>
+              <td className="p-4 border-b border-blue-gray-50">
                 {editableDriverId === driver._id ? (
                   <Input
                     type="text"
@@ -169,7 +216,7 @@ export default function ViewDriversUI({ branch_ID }) {
                   driver.availability
                 )}
               </td>
-              <td>
+              <td className="p-4 border-b border-blue-gray-50">
                 {editableDriverId === driver._id ? (
                   <Button
                     onClick={() => handleUpdate(driver._id)}
@@ -179,6 +226,7 @@ export default function ViewDriversUI({ branch_ID }) {
                   </Button>
                 ) : (
                   <Button
+                  size="sm"
                     onClick={() => handleUpdateClick(driver._id)}
                     className="hover:bg-black"
                   >
@@ -186,8 +234,9 @@ export default function ViewDriversUI({ branch_ID }) {
                   </Button>
                 )}
               </td>
-              <td>
+              <td className="p-4 border-b border-blue-gray-50">
                 <Button
+                 size="sm"
                   onClick={() => handleDelete(driver._id)}
                   className="bg-red-700 hover:bg-red-900"
                 >
@@ -201,3 +250,5 @@ export default function ViewDriversUI({ branch_ID }) {
     </Card>
   );
 }
+
+

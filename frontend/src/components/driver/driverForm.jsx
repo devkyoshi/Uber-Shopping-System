@@ -12,7 +12,7 @@ import {
 
 export function DriverForm({ branch_ID, district }) {
   const [driverDetails, setDriverDetails] = useState({
-    branchID: branch_ID,
+    branchID: "",
     driver_id: "",
     current_handover_money: "",
     vehicle_number: "",
@@ -38,22 +38,24 @@ export function DriverForm({ branch_ID, district }) {
     }
   };
 
+  const handleKeyPress = (e) => {
+    // If the pressed key is not a letter, digit, or '@', prevent the default action
+    if (!/[a-zA-Z0-9]/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   const handleChange = (e) => {
     if (e.target && e.target.name) {
       const { name, value } = e.target;
+      
       setDriverDetails({ ...driverDetails, [name]: value });
     }
-  };
-
-  const handleSelectChange = (value, name) => {
-    console.log("handleselect passed: ", value, name);
-    setDriverDetails({ ...driverDetails, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("Sending data to mongo db: ", driverDetails);
       const response = await axios.post(
         `http://localhost:8070/Driver/${branch_ID}/driver-add`,
         driverDetails
@@ -65,20 +67,20 @@ export function DriverForm({ branch_ID, district }) {
     }
   };
 
-  console.log("Available Drivers: ", availableDrivers);
-
   return (
+    <div className="mx-auto w-full">
     <Card color="transparent" shadow={false}>
-      <Typography variant="h4" color="blue-gray" className="text-center">
+      <Typography variant="h4" color="blue-gray" className="text-center pt-8 pb-3">
         Add Driver
       </Typography>
 
-      <div className="ml-48 pl-10">
+      <div className="flex">
         <form
           onSubmit={handleSubmit}
-          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+          className="mt-8 mb-2 max-w-screen-lg"
         >
-          <div className="mb-1 flex flex-col gap-6">
+          <div className="flex flex-row gap-8 p-l-10">
+          <div className="flex flex-col flex-1 gap-2">
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Branch ID
             </Typography>
@@ -89,6 +91,7 @@ export function DriverForm({ branch_ID, district }) {
               readOnly
               value={branch_ID}
               placeholder="Branch ID"
+              style={{ width: '360px' }}
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
 
@@ -120,17 +123,20 @@ export function DriverForm({ branch_ID, district }) {
               name="current_handover_money"
               value={driverDetails.current_handover_money}
               onChange={handleChange}
+              onKeyPress={handleKeyPress}
               placeholder="Enter Current Hand Over Money"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
-
+       </div>
+           <div className="flex flex-col flex-1 gap-2">
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Driver ID
             </Typography>
             <Select
               name="driver_id"
               value={driverDetails.driver_id}
-              onChange={(value) => handleSelectChange(value, "driver_id")}
+              onChange={handleChange}
+              style={{ width: '360px' }}
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             >
               {availableDrivers.map((driver) => (
@@ -167,12 +173,14 @@ export function DriverForm({ branch_ID, district }) {
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
           </div>
-
-          <Button type="submit" className="mt-6" fullWidth>
+          </div>
+          <Button type="submit" className="mt-6" fullWidth  >
             Add Driver
           </Button>
         </form>
+
       </div>
     </Card>
+    </div>
   );
 }
