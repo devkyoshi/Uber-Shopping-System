@@ -130,7 +130,7 @@ export function DriverForm({ branch_ID, district }) {
        </div>
            <div className="flex flex-col flex-1 gap-2">
             <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Driver ID
+              Driver Name
             </Typography>
             <Select
               name="driver_id"
