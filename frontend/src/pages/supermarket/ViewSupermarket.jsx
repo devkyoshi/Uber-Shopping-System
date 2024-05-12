@@ -8,6 +8,11 @@ export default function ViewSupermarketsUI() {
   const [supermarkets, setSupermarkets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [editableSupermarketId, setEditableSupermarketId] = useState(null);
+  const [updatedSupermarketData, setUpdatedSupermarketData] = useState({
+    sm_name: "",
+    sm_location: "",
+  });
 
   useEffect(() => {
     const fetchSupermarkets = async () => {
@@ -24,6 +29,58 @@ export default function ViewSupermarketsUI() {
 
     fetchSupermarkets();
   }, []);
+
+  const handleUpdateClick = (supermarketId) => {
+    setEditableSupermarketId(supermarketId);
+    const selectedSupermarket = supermarkets.find(
+      (supermarket) => supermarket._id === supermarketId
+    );
+    if (selectedSupermarket) {
+      setUpdatedSupermarketData({
+        sm_name: selectedSupermarket.sm_name,
+        sm_location: selectedSupermarket.sm_location,
+      });
+    }
+  };
+
+  const handleInputChange = (e, key) => {
+    const { value } = e.target;
+    setUpdatedSupermarketData({
+      ...updatedSupermarketData,
+      [key]: value,
+    });
+  };
+
+  const handleUpdate = async (supermarketId) => {
+    try {
+      await axios.put(
+        `http://localhost:8070/Supermarket/supermarket-update/${supermarketId}`,
+        updatedSupermarketData
+      );
+      // Fetch updated supermarkets after successful update
+      const response = await axios.get(
+        "http://localhost:8070/Supermarket/supermarkets"
+      );
+      setSupermarkets(response.data);
+      setEditableSupermarketId(null);
+    } catch (error) {
+      console.error("Error updating supermarket:", error);
+    }
+  };
+
+  const handleDelete = async (supermarketId) => {
+    try {
+      await axios.delete(
+        `http://localhost:8070/Supermarket/supermarket-delete/${supermarketId}`
+      );
+      // Filter out the deleted supermarket from the supermarkets array
+      setSupermarkets(
+        supermarkets.filter((supermarket) => supermarket._id !== supermarketId)
+      );
+    } catch (error) {
+      console.error("Error deleting supermarket:", error);
+    }
+  };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -127,19 +184,56 @@ export default function ViewSupermarketsUI() {
 
             return (
               <tr key={supermarket._id}>
-                <td className={classes}>{supermarket.sm_name}</td>
-                <td className={classes}>{supermarket.sm_location}</td>
-                <td
-                  className={`${classes} bg-blue-gray-50/50`}
-                  style={{ textAlign: "center" }}
-                >
-                  <Button className="hover:bg-black">Update</Button>
+                <td className={classes}>
+                  {editableSupermarketId === supermarket._id ? (
+                    <Input
+                      type="text"
+                      value={updatedSupermarketData.sm_name}
+                      onChange={(e) => handleInputChange(e, "sm_name")}
+                    />
+                  ) : (
+                    supermarket.sm_name
+                  )}
+                </td>
+                <td className={classes}>
+                  {editableSupermarketId === supermarket._id ? (
+                    <Input
+                      type="text"
+                      value={updatedSupermarketData.sm_location}
+                      onChange={(e) => handleInputChange(e, "sm_location")}
+                    />
+                  ) : (
+                    supermarket.sm_location
+                  )}
                 </td>
                 <td
                   className={`${classes} bg-blue-gray-50/50`}
                   style={{ textAlign: "center" }}
                 >
-                  <Button className="bg-red-700 hover:bg-red-900">
+                  {editableSupermarketId === supermarket._id ? (
+                    <Button
+                      onClick={() => handleUpdate(supermarket._id)}
+                      className="bg-green-700 hover:bg-green-900"
+                    >
+                      Save
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleUpdateClick(supermarket._id)}
+                      className="hover:bg-black"
+                    >
+                      Update
+                    </Button>
+                  )}
+                </td>
+                <td
+                  className={`${classes} bg-blue-gray-50/50`}
+                  style={{ textAlign: "center" }}
+                >
+                  <Button
+                    onClick={() => handleDelete(supermarket._id)}
+                    className="bg-red-700 hover:bg-red-900"
+                  >
                     Delete
                   </Button>
                 </td>
