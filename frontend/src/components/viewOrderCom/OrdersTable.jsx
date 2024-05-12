@@ -161,7 +161,7 @@ export function OrdersTable({ orderId }) {
           <tbody>
             {order &&
               order.items.map(
-                ({ item_name, quantity, unit, price, sm_name }, index) => {
+                ({ item_name, quantity, price, sm_name }, index) => {
                   const isLast = index === order.items.length - 1;
                   const classes = isLast
                     ? "p-4"
