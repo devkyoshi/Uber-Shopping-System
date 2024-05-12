@@ -106,6 +106,7 @@ export default function DashPosts() {
     <div className='p-3'>Date updated</div>
     <div className='p-3'>Announcement title</div>
     <div className='p-3'>Post image</div>
+    
     <div className='p-3'>Announcement Category</div>
     <div className='p-3'>Delete Announcement</div>
     <div className='p-3'>Edit Announcement</div>

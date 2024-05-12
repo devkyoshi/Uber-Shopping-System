@@ -39,6 +39,26 @@ export default function EmployeeRegistration() {
       setLoading(false);
     }
   };
+  function handleKeyPress(event) {
+    const keyPressed = event.key;
+    const isLetter = /^[a-zA-Z\s]$/.test(keyPressed);
+    const isBackspace = keyPressed === "Backspace";
+    const isDelete = keyPressed === "Delete";
+
+    if (!isLetter && !isBackspace && !isDelete) {
+      event.preventDefault();
+    }
+  }
+  function handleKeyPress2(event) {
+    const keyPressed = event.key;
+    const isNumber = /^[0-9]$/.test(keyPressed);
+    const isBackspace = keyPressed === "Backspace";
+    const isDelete = keyPressed === "Delete";
+
+    if (!isNumber && !isBackspace && !isDelete) {
+      event.preventDefault();
+    }
+}
 
   return (
     <div className=' p-3 max-w-3xl mx-auto  md:items-start gap-2'>
@@ -53,15 +73,24 @@ export default function EmployeeRegistration() {
       
       <form className='flex flex-col md:w-1/2' onSubmit={handleSubmit}>
         <Label value='Name' />
-        <TextInput type='name' placeholder='Eg: kamal' id='Emp_Name' onChange={handleChange} style={{ height: '40px', padding: '10px' }} />
+        <TextInput type='name' placeholder='Eg: kamal' id='Emp_Name' onChange={handleChange}  onKeyDown={handleKeyPress} style={{ height: '40px', padding: '10px' }} />
         <Label value='Age' />
         <TextInput type='age' placeholder='Eg: 30' id='Emp_Age' onChange={handleChange} style={{ height: '40px', padding: '10px' }} />
         <Label value='Gender' />
-        <TextInput type='gender' placeholder='Eg: Male /Female /Other' id='Emp_Gender' onChange={handleChange} style={{ height: '40px', padding: '10px' }} />
-        <Label value='Address' />
+<select
+  id='Emp_Gender'
+  
+  onChange={handleChange}
+  style={{ height: '40px', padding: '10px', width: '100%' }}
+>
+  <option value='Male'>Male</option>
+  <option value='Female'>Female</option>
+  <option value='Other'>Other</option>
+</select>
+<Label value='Address' />
         <TextInput type='address' placeholder='Eg: 123 Main St, City, Country' id='Emp_Address' onChange={handleChange} style={{ height: '40px', padding: '10px' }} />
         <Label value='Contact Number' />
-        <TextInput type='tel' placeholder='Eg: 123-456-7890' id='Emp_CNumber' onChange={handleChange} />
+        <TextInput type='tel' placeholder='Eg: 123-456-7890' id='Emp_CNumber' onChange={handleChange} onKeyDown={handleKeyPress2} />
       </form>
       
       <form className='flex flex-col md:w-1/2' onSubmit={handleSubmit}>
@@ -72,17 +101,39 @@ export default function EmployeeRegistration() {
         <Label value='Password' />
         <TextInput type='password' placeholder='Password' id='password' onChange={handleChange} style={{ height: '40px', padding: '10px' }}/>
         <Label value='Employee Area Of Service' />
-        <TextInput type='text' placeholder='district' id='Emp_areofservice' onChange={handleChange}style={{ height: '40px', padding: '10px' }} />
-        <Label value='Employee transport method' />
-        <TextInput type='text' placeholder='Vehicle' id='Emp_transport' onChange={handleChange}style={{ height: '40px', padding: '10px' }} />
-      </form>
+<select
+  id='Emp_areofservice'
+  onChange={handleChange}
+  style={{ height: '40px', padding: '10px', width: '100%' }}
+>
+  <option value='Colombo'>Colombo</option>
+  <option value='Gampaha'>Gampaha</option>
+  <option value='Kalutara'>Kalutara</option>
+  <option value='Kandy'>Kandy</option>
+  <option value='Matale'>Matale</option>
+  <option value='Galle'>Galle</option>
+  <option value='Matara'>Matara</option>
+  <option value='Hambantota'>Hambantota</option>
+  <option value='Jaffna'>Jaffna</option>
+</select>
+<Label value='Employee Transport Method' />
+<select
+  id='Emp_transport'
+  onChange={handleChange}
+  style={{ height: '40px', padding: '10px', width: '100%' }}
+>
+  <option value='Car'>Car</option>
+  <option value='Van'>Van</option>
+  <option value='Bike'>Bike</option>
+  <option value='Three Wheeler'>Three Wheeler</option>
+</select>
+ </form>
       
       
     </div>
-    <Button type='submit'  gradientDuoTone='purpleToPink'
-             
-              className='w-auto h-10 mx-auto mt-5'
-              style={{ width: 'cover', margin: 'auto', backgroundColor: '#00008B' }} onClick={handleSubmit}>
+    <Button type='submit'   gradientDuoTone="purpleToPink"
+  className="w-40 h-10 mx-auto text-white"
+  style={{ background: 'linear-gradient(to right, #8A2BE2, #FF69B4)', border: 'none', borderRadius: '0.375rem', cursor: 'pointer' }} onClick={handleSubmit}>
         Register
       </Button>
       <div >

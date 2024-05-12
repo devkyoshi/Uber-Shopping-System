@@ -20,7 +20,7 @@ export default function Emp_Home() {
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
-      const res = await fetch("/api/announcement/getannouncement");
+      const res = await fetch("/api/announcement/getannouncement?limit=6");
       const data = await res.json();
       setAnnouncements(data.announcements);
     };

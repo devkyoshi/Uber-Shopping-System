@@ -54,146 +54,117 @@ export default function Employee_level() {
   };
 
   return (
-    <div className="max-w-lg  p-3 w-full flex flex-row  gap-17">
-      <div className="gap-2 ml-5 mr-5  w-70 pr-11 pl-11">
-        <Typography
-          variant="h3"
-          className="mb-5 mt-5 text-center blue-gray-900"
-        >
-          User Level
-        </Typography>
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-          <div className="px-4 py-5 sm:px-6">
-            <Typography variant="h5" className=" text-gray-800">
-              {currentUser.username}
-            </Typography>
-            <Typography className="mt-1 max-w-2xl text-sm text-gray-500">
-              {currentUser.email}
-            </Typography>
-          </div>
-          <div className="border-t border-gray-200">
-            <dl>
-              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+    <div className="flex flex-row gap-8">
+    <div className="flex flex-col gap-4 max-w-lg">
+      <div className="p-3 bg-gray-100 rounded-lg">
+        <h3 className="text-lg font-bold text-center text-blue-gray-900">User Level</h3>
+        <div className="bg-white shadow-md rounded-lg p-4">
+          <p className="text-gray-800">{currentUser.username}</p>
+          <p className="text-sm text-gray-500">{currentUser.email}</p>
+          <div className="border-t border-gray-200 mt-4">
+            <dl className="divide-y divide-gray-200">
+              <div className="py-3">
                 <dt className="text-sm font-medium text-gray-500">Level</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
-                  {currentUser.Emp_Level}
-                </dd>
+                <dd className="mt-1 text-sm text-gray-900">{currentUser.Emp_Level}</dd>
               </div>
-              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">
-                  Salary Details
-                </dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
-                  <ul className="divide-y divide-gray-200">
-                    <li className="py-2 flex justify-between items-center">
-                      <span className="flex-1">
-                        Amount = LKR {currentUser.salary}/={" "}
-                      </span>
-                    </li>
-                    <li className="py-2 flex justify-between items-center">
-                      <span className="flex-1">
-                        bonus = {currentUser.bonuses}%
-                      </span>
-                    </li>
-                    <li className="py-2 flex justify-between items-center">
-                      <span className="flex-1">
-                        bonus = {currentUser.benefits}
-                      </span>
-                    </li>
-                  </ul>
+              <div className="py-3">
+                <dt className="text-sm font-medium text-gray-500">Salary Details</dt>
+                <dd className="mt-1 text-sm text-gray-900">
+                  Amount = LKR {currentUser.salary}/=
+                  <br />
                 </dd>
               </div>
             </dl>
           </div>
         </div>
       </div>
+    </div>
+  
+    <div className="flex flex-col gap-4">
+      <div className="p-3 bg-gray-100 rounded-lg">
+        <h3 className="text-lg font-bold text-blue-gray-800">Delivery Information</h3>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div className="bg-white shadow-md rounded-lg p-4">
+            <h3 className="text-lg font-medium text-gray-900">{currentUser.username}</h3>
+            <p className="text-sm text-gray-500">Delivery Person</p>
+            <div className="border-t border-gray-200 mt-4">
+              <dl className="divide-y divide-gray-200">
+                <div className="py-3">
+                  <dt className="text-sm font-medium text-gray-500">Experience</dt>
+                  <dd className="mt-1 text-sm text-gray-900">3 years</dd>
+                </div>
+                <div className="py-3">
+                  <dt className="text-sm font-medium text-gray-500">Number of Deliveries</dt>
+                  <dd className="mt-1 text-sm text-gray-900">500+</dd>
+                </div>
+                <div className="py-3">
+  <dt className="text-sm font-medium text-gray-500">Vehicle</dt>
+  <dd className="mt-1">
+    <select
+      id="Emp_transport"
+      defaultValue={currentUser.Emp_transport}
+      onChange={handleChange}
+      className="input-field"
+    >
+      <option value="car">Car</option>
+      <option value="van">Van</option>
+      <option value="bike">Bike</option>
+      <option value="three_wheeler">Three Wheeler</option>
+    </select>
+  </dd>
+</div>
 
-      <div className="gap-2 ml-5 mr-5">
-        <Typography variant="h3" className="mb-5 mt-5" color="blue-gray-800">
-          Delivery Information
-        </Typography>
-        <form onSubmit={handleSubmit} className="flex flex-col mb-7 gap-4">
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg w-full">
-            <div className="px-4 py-5 sm:px-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                {currentUser.username}
-              </h3>
-              <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                Delivery Person
-              </p>
-            </div>
-            <div className="border-t border-gray-200">
-              <dl>
-                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium text-gray-500 ml-0 mr-8">
-                    Experience
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 ml-10">
-                    3 years
-                  </dd>
-                </div>
-                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium text-gray-500">
-                    Number of Deliveries
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 ml-10">
-                    500+
-                  </dd>
-                </div>
-                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium text-gray-500">Vehicle</dt>
-                  <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 ">
-                    <TextInput
-                      type="text"
-                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                      placeholder="Enter your vehicle"
-                      id="Emp_transport"
-                      defaultValue={currentUser.Emp_transport}
-                      onChange={handleChange}
-                    />
-                  </dd>
-                </div>
-                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium text-gray-500">
-                    Areas Covered
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
-                    <TextInput
-                      type="text"
-                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                      placeholder="Enter cities (separated by commas)"
-                      id="Emp_areofservice"
-                      onChange={handleChange}
-                      defaultValue={currentUser.Emp_areofservice}
-                      name="city"
-                    />
-                  </dd>
-                </div>
+<div className="py-3">
+  <dt className="text-sm font-medium text-gray-500">Areas Covered</dt>
+  <dd className="mt-1">
+    <select
+      id="Emp_areofservice"
+      defaultValue={currentUser.Emp_areofservice}
+      onChange={handleChange}
+      className="input-field"
+      name="city"
+    >
+      <option value="Colombo">Colombo</option>
+      <option value="Gampaha">Gampaha</option>
+      <option value="Kalutara">Kalutara</option>
+      <option value="Kandy">Kandy</option>
+      <option value="Matale">Matale</option>
+      <option value="Galle">Galle</option>
+      <option value="Matara">Matara</option>
+      <option value="Hambantota">Hambantota</option>
+      <option value="Jaffna">Jaffna</option>
+    </select>
+  </dd>
+</div>
+
               </dl>
             </div>
           </div>
-          <Button type="submit" gradientDuoTone="purpleToBlue" outline>
-            Update
-          </Button>
+          <button
+  type="submit"
+  gradientDuoTone="purpleToPink"
+  className="w-40 h-10 mx-auto text-white"
+  style={{ background: 'linear-gradient(to right, #8A2BE2, #FF69B4)', border: 'none', borderRadius: '0.375rem', cursor: 'pointer' }}
+>
+  Update
+</button>
+ {updateUserSuccess && (
+      <div className="mt-5 bg-green-100 rounded-lg p-3  whitespace-normal">{updateUserSuccess}</div>
+    )}
+  
+    {updateUserError && (
+      <div className="mt-5 bg-red-100 rounded-lg p-3">{updateUserError}</div>
+    )}
+  
+    {error && (
+      <div className="mt-5 bg-red-100 rounded-lg p-3">{error}</div>
+    )}
         </form>
       </div>
-
-      {updateUserSuccess && (
-        <Alert color="success" className="mt-5">
-          {updateUserSuccess}
-        </Alert>
-      )}
-
-      {updateUserError && (
-        <Alert color="failure" className="mt-5">
-          {updateUserError}
-        </Alert>
-      )}
-      {error && (
-        <Alert color="failure" className="mt-5">
-          {error}
-        </Alert>
-      )}
     </div>
+  
+   
+  </div>
+  
   );
 }
