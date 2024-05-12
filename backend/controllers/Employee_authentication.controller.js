@@ -7,7 +7,7 @@ const register = async (req, res, next) => {
     const { username, email, password, Emp_Name, Emp_Age, Emp_Gender, Emp_CNumber, Emp_Address ,profilePhoto,Emp_transport,Emp_areofservice} = req.body;
 
     // Check if any required field is missing or empty
-    if (!username || !email || !password || !Emp_Name || !Emp_Age || !Emp_Gender || !Emp_CNumber || !Emp_Address ||!Emp_transport || !Emp_areofservice || username === '' || email === '' || password === '' || Emp_Name === '' || Emp_Age === '' || Emp_Gender === '' || Emp_CNumber === '' || Emp_Address === '') {
+    if (!username || !email || !password || !Emp_Name || !Emp_Age || !Emp_Gender || !Emp_CNumber || !Emp_Address ||!Emp_transport ||  username === '' || email === '' || password === '' || Emp_Name === '' || Emp_Age === '' || Emp_Gender === '' || Emp_CNumber === '' || Emp_Address === '') {
         next(errorHandler(400, 'All fields are required'));
     }
 
