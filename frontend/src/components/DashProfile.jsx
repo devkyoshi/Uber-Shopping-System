@@ -171,15 +171,17 @@ export default function DashProfile() {
               defaultValue={currentUser.Emp_Age}
               onChange={handleChange}
             />
-            <Label value="Gender" />
-            <TextInput
-              type="text"
-              id="Emp_Gender"
-              placeholder="Employee Gender"
-              defaultValue={currentUser.Emp_Gender}
-              onChange={handleChange}
-              onKeyDown={handleKeyPress}
-            />
+           <Label value='Gender' />
+<select
+  id='Emp_Gender'
+  defaultValue={currentUser.Emp_Gender}
+  onChange={handleChange}
+  style={{ height: '40px', padding: '10px', width: '100%' }}
+>
+  <option value='Male'>Male</option>
+  <option value='Female'>Female</option>
+  <option value='Other'>Other</option>
+</select>
           </div>
           <div className="flex flex-col flex-1 gap-2">
             <Label value="Tel. Number" />
@@ -209,8 +211,8 @@ export default function DashProfile() {
         >
           Update
         </Button>
-
-        {currentUser.isAdmin && (
+<div>
+   {currentUser.isAdmin && (
           <Link to={"/Employee_Announcements"}>
             <Button
               gradientDuoTone="purpleToPink"
@@ -222,6 +224,8 @@ export default function DashProfile() {
             </Button>
           </Link>
         )}
+</div>
+       
       </form>
       <div className="text-red-500 flex justify-between mt-5">
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
