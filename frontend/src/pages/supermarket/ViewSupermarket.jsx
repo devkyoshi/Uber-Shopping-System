@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Typography, Input, Button } from "@material-tailwind/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import jsPDF from "jspdf";
 
 export default function ViewSupermarketsUI() {
   const [supermarkets, setSupermarkets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const [editableSupermarketId, setEditableSupermarketId] = useState(null);
   const [updatedSupermarketData, setUpdatedSupermarketData] = useState({
     sm_name: "",
@@ -14,7 +17,9 @@ export default function ViewSupermarketsUI() {
   useEffect(() => {
     const fetchSupermarkets = async () => {
       try {
-        const response = await axios.get("http://localhost:8070/Supermarket/supermarkets");
+        const response = await axios.get(
+          "http://localhost:8070/Supermarket/supermarkets"
+        );
         setSupermarkets(response.data);
         setLoading(false);
       } catch (error) {
@@ -27,7 +32,9 @@ export default function ViewSupermarketsUI() {
 
   const handleUpdateClick = (supermarketId) => {
     setEditableSupermarketId(supermarketId);
-    const selectedSupermarket = supermarkets.find((supermarket) => supermarket._id === supermarketId);
+    const selectedSupermarket = supermarkets.find(
+      (supermarket) => supermarket._id === supermarketId
+    );
     if (selectedSupermarket) {
       setUpdatedSupermarketData({
         sm_name: selectedSupermarket.sm_name,
@@ -51,7 +58,9 @@ export default function ViewSupermarketsUI() {
         updatedSupermarketData
       );
       // Fetch updated supermarkets after successful update
-      const response = await axios.get("http://localhost:8070/Supermarket/supermarkets");
+      const response = await axios.get(
+        "http://localhost:8070/Supermarket/supermarkets"
+      );
       setSupermarkets(response.data);
       setEditableSupermarketId(null);
     } catch (error) {
@@ -65,10 +74,33 @@ export default function ViewSupermarketsUI() {
         `http://localhost:8070/Supermarket/supermarket-delete/${supermarketId}`
       );
       // Filter out the deleted supermarket from the supermarkets array
-      setSupermarkets(supermarkets.filter((supermarket) => supermarket._id !== supermarketId));
+      setSupermarkets(
+        supermarkets.filter((supermarket) => supermarket._id !== supermarketId)
+      );
     } catch (error) {
       console.error("Error deleting supermarket:", error);
     }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredSupermarkets = supermarkets.filter((supermarket) =>
+    supermarket.sm_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const generateReport = () => {
+    const doc = new jsPDF();
+    doc.text("Supermarkets Report", 15, 10);
+    doc.autoTable({
+      html: "#supermarkets-table",
+      columns: [
+        { header: "Name", dataKey: "name" },
+        { header: "Location", dataKey: "location" },
+      ],
+    });
+    doc.save("supermarkets_report.pdf");
   };
 
   if (loading) {
@@ -77,7 +109,30 @@ export default function ViewSupermarketsUI() {
 
   return (
     <Card className="h-full w-full overflow-scroll">
-      <table className="w-full min-w-max table-auto text-left">
+      <div className="inline-flex justify-end">
+        <div className="mb-4 mt-5">
+          <Input
+            placeholder="Search supermarket by name"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            size="regular"
+            outline={true}
+            icon={<MagnifyingGlassIcon />}
+          />
+        </div>
+        <div className="ml-5">
+          <Button
+            className=" w-15 mt-5 bg-green-700 hover:bg-green-900"
+            onClick={generateReport}
+          >
+            Generate PDF Report
+          </Button>
+        </div>
+      </div>
+      <table
+        id="supermarkets-table"
+        className="w-full min-w-max table-auto text-left"
+      >
         <thead>
           <tr>
             <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 ">
@@ -123,7 +178,7 @@ export default function ViewSupermarketsUI() {
           </tr>
         </thead>
         <tbody>
-          {supermarkets.map((supermarket, index) => {
+          {filteredSupermarkets.map((supermarket, index) => {
             const isLast = index === supermarkets.length - 1;
             const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 

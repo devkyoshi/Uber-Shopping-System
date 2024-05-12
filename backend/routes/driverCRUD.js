@@ -47,6 +47,9 @@ router.post("/:branchID/driver-add", async (req, res) => {
     branch.drivers.push(newDriver);
     await branch.save();
 
+    // Search for the user by driver_id and update Emp_type to "driver"
+    await User.findOneAndUpdate({ _id: driver_id }, { Emp_type: "driver" });
+
     //Sends a JSON response indicating successful driver addition.
     res.json("Driver added to branch");
   } catch (error) {
@@ -244,8 +247,6 @@ router.get("/drivers", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-
 
 //get driver tasks and order details
 router.get("/tasks/:driverId", async (req, res) => {

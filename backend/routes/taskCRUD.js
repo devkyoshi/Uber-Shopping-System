@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router();
 const Task = require("../models/task");
 const Order = require("../models/order");
-const Branch = require("../models/branch")
-const User = require("../models/user.model")
+const Branch = require("../models/branch");
+const User = require("../models/user.model");
 const mongoose = require("mongoose");
 
 // Add a new task(new) - Sarindu
@@ -19,8 +19,11 @@ router.post("/add-task", async (req, res) => {
         task.orders.push({ order_id: orderId });
 
         // Update order status to "processing"
-        await Order.updateOne({ _id: orderId }, { $set: { order_status: "Processing" } }); 
-      });     
+        await Order.updateOne(
+          { _id: orderId },
+          { $set: { order_status: "Processing" } }
+        );
+      });
     }
 
     // Update driver's availability to "delivering"
@@ -29,7 +32,7 @@ router.post("/add-task", async (req, res) => {
       { branch_ID: branch_id, "drivers.driver_id": driver_id }, // Use branch_ID instead of _id
       { $set: { "drivers.$.availability": "delivering" } }
     );
-    
+
     await task.save();
     res.json(task);
   } catch (error) {
@@ -38,11 +41,8 @@ router.post("/add-task", async (req, res) => {
   }
 });
 
-
-
-
 // Route to find a driver by their driver_id across all branches
-router.post('/orders/:driverId', async (req, res) => {
+router.post("/orders/:driverId", async (req, res) => {
   try {
     const { driverId } = req.params;
 
@@ -54,7 +54,11 @@ router.post('/orders/:driverId', async (req, res) => {
 
     // Iterate through each branch to find the driver
     for (const branch of branches) {
-      const driver = branch.drivers.find(driver => driver.driver_id.toString() === driverId && driver.availability === "Available");
+      const driver = branch.drivers.find(
+        (driver) =>
+          driver.driver_id.toString() === driverId &&
+          driver.availability === "Available"
+      );
       if (driver) {
         isDriverFound = true;
         branchId = branch._id; // Store the branch ID
@@ -63,10 +67,14 @@ router.post('/orders/:driverId', async (req, res) => {
     }
 
     if (!isDriverFound) {
-      return res.status(404).json({ message: 'Driver not found or not available in any branch' });
+      return res
+        .status(404)
+        .json({ message: "Driver not found or not available in any branch" });
     }
-    console.log("driverId", driverId)
-    const driverBranch = await Branch.findOne({ 'drivers.driver_id': driverId });
+    console.log("driverId", driverId);
+    const driverBranch = await Branch.findOne({
+      "drivers.driver_id": driverId,
+    });
 
     const branchIds = driverBranch.branch_ID;
 
@@ -75,27 +83,32 @@ router.post('/orders/:driverId', async (req, res) => {
 
     const driverDistrict = driverBranch.district;
     const driverBranchID = branchId;
-    console.log("driverId", driverName)
+    console.log("driverId", driverName);
 
     // Find orders where order_district matches driver's district and status is 'pending'
-    const orders = await Order.find({ order_district: driverDistrict, order_status: 'pending' });
+    const orders = await Order.find({
+      order_district: driverDistrict,
+      order_status: "pending",
+    });
 
     // Filter orders based on payment method
-    const filteredOrders = orders.filter(order => {
-      console.log('Checking order:', order);
+    const filteredOrders = orders.filter((order) => {
+      console.log("Checking order:", order);
       const isCash = order.cash_payment?.payment_method === "cash";
       const isCard = order.card_payment?.payment_method === "card";
       return isCash || isCard;
     });
-    
+
     const limitedOrders = filteredOrders.slice(0, 5);
     // If no matching orders are found
     if (limitedOrders.length === 0) {
-      return res.status(404).json({ message: 'No orders found for this driver\'s district' });
+      return res
+        .status(404)
+        .json({ message: "No orders found for this driver's district" });
     }
 
     // Extract orderIds
-    const orderIds = limitedOrders.map(order => order._id);
+    const orderIds = limitedOrders.map((order) => order._id);
 
     // Prepare the document to save to the database
     const dataToSave = {
@@ -103,15 +116,18 @@ router.post('/orders/:driverId', async (req, res) => {
       branch_id: branchIds,
       driver_name: driverName,
       district: driverDistrict,
-      orders: orderIds.map(orderId => ({ order_id: orderId })),
+      orders: orderIds.map((orderId) => ({ order_id: orderId })),
     };
 
     // Save the document to the database
     const savedData = await Task.create(dataToSave);
-    
+
     // Update order status for all orders in orderIds array to "Processing"
-    await Order.updateMany({ _id: { $in: orderIds } }, { $set: { order_status: "Processing" } });
-    
+    await Order.updateMany(
+      { _id: { $in: orderIds } },
+      { $set: { order_status: "Processing" } }
+    );
+
     // Update driver's availability to "delivering"
     await Branch.updateOne(
       { _id: driverBranchID, "drivers.driver_id": driverId },
@@ -122,12 +138,12 @@ router.post('/orders/:driverId', async (req, res) => {
     res.json(savedData);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
- ///// update task - manage task
- router.put("/update-task/:taskId", async (req, res) => {
+///// update task - manage task
+router.put("/update-task/:taskId", async (req, res) => {
   try {
     const { taskId } = req.params;
     const { driver_id, branch_id } = req.body;
@@ -157,7 +173,6 @@ router.post('/orders/:driverId', async (req, res) => {
       { branch_ID: branch_id, "drivers.driver_id": driver_id }, // Use branch_ID instead of _id
       { $set: { "drivers.$.availability": "delivering" } }
     );
-   
 
     // Save the updated task
     await task.save();
@@ -165,11 +180,11 @@ router.post('/orders/:driverId', async (req, res) => {
     res.json(task);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "An error occurred while updating the task" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the task" });
   }
 });
-
-
 
 router.get("/:branch_ID/driver-all", async (req, res) => {
   try {
@@ -182,19 +197,21 @@ router.get("/:branch_ID/driver-all", async (req, res) => {
     }
 
     // Filter drivers based on availability
-    const availableDrivers = branchData.drivers.filter(driver => driver.availability === "Available");
+    const availableDrivers = branchData.drivers.filter(
+      (driver) => driver.availability === "Available"
+    );
     if (availableDrivers.length === 0) {
       return res.status(404).json({ error: "No available drivers found" });
     }
 
     // Extract driver IDs
-    const driverIds = availableDrivers.map(driver => driver.driver_id);
+    const driverIds = availableDrivers.map((driver) => driver.driver_id);
 
     // Fetch user data for the filtered drivers
     const drivers = await User.find({ _id: { $in: driverIds } });
 
     // Extract relevant information for each driver
-    const driverInfo = drivers.map(driver => ({
+    const driverInfo = drivers.map((driver) => ({
       driverName: driver ? driver.Emp_Name : "Driver Name Not Found",
       driverId: driver ? driver._id : null,
       // Include other relevant driver information here
@@ -208,11 +225,6 @@ router.get("/:branch_ID/driver-all", async (req, res) => {
     });
   }
 });
-
-
-
-
-
 
 // Add pickup details within a task(new) - Gimashi
 router.put("/add-pickup/:taskId/:orderId", async (req, res) => {
@@ -257,7 +269,6 @@ router.put("/add-pickup/:taskId/:orderId", async (req, res) => {
   }
 });
 
-
 // Update pickup details within a task - Gimashi
 router.put("/update-pickup/:taskId/:orderId", async (req, res) => {
   try {
@@ -301,11 +312,6 @@ router.put("/update-pickup/:taskId/:orderId", async (req, res) => {
   }
 });
 
-
-
-
-
-
 // Delete pickup within a task
 router.delete("/delete-pickup/:taskId/:orderId", async (req, res) => {
   try {
@@ -341,10 +347,6 @@ router.delete("/delete-pickup/:taskId/:orderId", async (req, res) => {
       .json({ error: "An error occurred while deleting the order" });
   }
 });
-
-
-
-
 
 // Add delivered details within a task -  Gimashi
 router.put("/add-delivered/:taskId/:orderId", async (req, res) => {
@@ -389,10 +391,6 @@ router.put("/add-delivered/:taskId/:orderId", async (req, res) => {
   }
 });
 
-
-
-
-
 // Update delivered details within a task - Gimashi
 router.put("/update-delivered/:taskId/:orderId", async (req, res) => {
   try {
@@ -436,10 +434,6 @@ router.put("/update-delivered/:taskId/:orderId", async (req, res) => {
   }
 });
 
-
-
-
-
 // Delete delivered details within a task - Gimashi
 router.delete("/delete-delivered/:taskId/:orderId", async (req, res) => {
   try {
@@ -473,16 +467,11 @@ router.delete("/delete-delivered/:taskId/:orderId", async (req, res) => {
     res.json(task);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        error: "An error occurred while deleting the delivered details",
-      });
+    res.status(500).json({
+      error: "An error occurred while deleting the delivered details",
+    });
   }
 });
-
-
-
 
 // Delete a task
 router.delete("/delete-task/:taskId", async (req, res) => {
@@ -503,10 +492,6 @@ router.delete("/delete-task/:taskId", async (req, res) => {
   }
 });
 
-
-
-
-
 // Get a specific task
 router.get("/get-task/:taskId", async (req, res) => {
   try {
@@ -526,10 +511,6 @@ router.get("/get-task/:taskId", async (req, res) => {
   }
 });
 
-
-
-
-
 // Get all tasks
 router.get("/get-all-tasks", async (req, res) => {
   try {
@@ -543,22 +524,20 @@ router.get("/get-all-tasks", async (req, res) => {
   }
 });
 
-
-
 // use for task table
 router.get("/tasks", async (req, res) => {
   try {
     // Fetch all tasks and populate the orders field
-    const tasks = await Task.find().populate('orders.order_id');
+    const tasks = await Task.find().populate("orders.order_id");
 
     // Map tasks to include task_id along with other fields
-    const tasksWithId = tasks.map(task => ({
+    const tasksWithId = tasks.map((task) => ({
       task_id: task._id,
       branch_id: task.branch_id,
       driver_id: task.driver_id,
       driver_name: task.driver_name,
       district: task.district,
-      orders: task.orders
+      orders: task.orders,
     }));
 
     res.json(tasksWithId);
@@ -567,8 +546,6 @@ router.get("/tasks", async (req, res) => {
     res.status(500).json({ error: "An error occurred while fetching tasks" });
   }
 });
-
-
 
 // Add order details to a specific task
 router.post("/:taskId/add-order", async (req, res) => {
@@ -608,10 +585,6 @@ router.post("/:taskId/add-order", async (req, res) => {
     });
   }
 });
-
-
-
-
 
 // Update order details for a specific task
 router.put("/:taskId/update-order/:orderId", async (req, res) => {
@@ -653,9 +626,6 @@ router.put("/:taskId/update-order/:orderId", async (req, res) => {
   }
 });
 
-
-
-
 // Remove order from a specific task
 router.delete("/:taskId/remove-order/:orderId", async (req, res) => {
   try {
@@ -683,10 +653,6 @@ router.delete("/:taskId/remove-order/:orderId", async (req, res) => {
   }
 });
 
-
-
-
-
 // Get all orders for a specific task
 router.get("/:taskId/get-all-orders", async (req, res) => {
   try {
@@ -705,10 +671,6 @@ router.get("/:taskId/get-all-orders", async (req, res) => {
     });
   }
 });
-
-
-
-
 
 // Get a specific order from a specific task
 router.get("/:taskId/get-order/:orderId", async (req, res) => {
@@ -734,50 +696,45 @@ router.get("/:taskId/get-order/:orderId", async (req, res) => {
   }
 });
 
+// using for task view - driver UI
 
+// router.get('/:taskId/details', async (req, res) => {
+//   try {
+//     const { taskId } = req.params;
 
-  // using for task view - driver UI
+//     // Find the task by ID and populate the orders field
+//     const task = await Task.findById(taskId).populate({
+//       path: 'orders',
+//       populate: {
+//         path: 'order_id',
+//         populate: {
+//           path: 'customer_id',
+//         select: ' phone nearest_town', // Select only required fields
+//         },
+//         select: 'order_id status', // Select only required fields
+//       },
+//     });
 
-  // router.get('/:taskId/details', async (req, res) => {
-  //   try {
-  //     const { taskId } = req.params;
-  
-  //     // Find the task by ID and populate the orders field
-  //     const task = await Task.findById(taskId).populate({
-  //       path: 'orders',
-  //       populate: {
-  //         path: 'order_id',
-  //         populate: {
-  //           path: 'customer_id',
-  //         select: ' phone nearest_town', // Select only required fields
-  //         },
-  //         select: 'order_id status', // Select only required fields
-  //       },
-  //     });
-   
-  //     // Check if the task exists
-  //     if (!task) {
-  //       return res.status(404).json({ message: 'Task not found' });
-  //     }
-  
-  //     // Extract customer details, nearest town, customer name, and order ID from the populated task
-  //     const taskDetails = {
-  //       customer: task.orders.map(order => ({
-  //         //name: order.order_id.customer_id.name,
-  //         phone: order.order_id.customer_id.phone,
-  //         nearest_town: order.order_id.customer_id.nearest_town,
-  //         orderId: order.order_id._id,
-  //       })),
-  //     };
-  
-  //     res.json(taskDetails);
-  //   } catch (err) {
-  //     console.error(err);
-  //     res.status(500).json({ message: 'Server Error' });
-  //   }
-  // });
-  
+//     // Check if the task exists
+//     if (!task) {
+//       return res.status(404).json({ message: 'Task not found' });
+//     }
 
-  
+//     // Extract customer details, nearest town, customer name, and order ID from the populated task
+//     const taskDetails = {
+//       customer: task.orders.map(order => ({
+//         //name: order.order_id.customer_id.name,
+//         phone: order.order_id.customer_id.phone,
+//         nearest_town: order.order_id.customer_id.nearest_town,
+//         orderId: order.order_id._id,
+//       })),
+//     };
+
+//     res.json(taskDetails);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: 'Server Error' });
+//   }
+// });
 
 module.exports = router;

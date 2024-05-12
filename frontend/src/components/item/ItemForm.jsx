@@ -30,106 +30,116 @@ export function ItemForm({ supermarketId }) {
     }
   };
 
+  const handleKeyPress = (e) => {
+    // If the pressed key is not a letter, digit, or '@', prevent the default action
+    if (!/[a-zA-Z0-9]/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray" className="text-center">
         Add Item
       </Typography>
 
-      <div className="ml-48 pl-10">
-        <form
-          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
-          onSubmit={handleSubmit}
-        >
-          <div className="mb-1 flex flex-col gap-6">
-            
+      <div className="items-center justify-center">
+        <form className="mt-8 mb-2 sm:w-full" onSubmit={handleSubmit}>
+          <div className="flex flex-wrap justify-between w-full">
+            {/* First Column */}
+            <div className="w-full md:w-1/2">
+              <div className="mb-1 flex flex-col gap-6">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Item Name
+                </Typography>
+                <Input
+                  onKeyPress={handleKeyPress}
+                  size="lg"
+                  type="text"
+                  placeholder="Item 01"
+                  className="w-full md:w-4/5 !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                  name="item_name"
+                />
 
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Item Name
-            </Typography>
-            <Input
-              size="lg"
-              type="text"
-              placeholder="Item 01"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-              name="item_name"
-            />
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Item Price
+                </Typography>
+                <Input
+                  size="lg"
+                  type="text"
+                  placeholder="Rs.10.00"
+                  className="w-full md:w-4/5  !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                  name="price"
+                />
 
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Item Price
-            </Typography>
-            <Input
-              size="lg"
-              type="text"
-              placeholder="Rs.10.00"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-              name="price"
-            />
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Available Quantity
+                </Typography>
+                <Input
+                  size="lg"
+                  type="number"
+                  placeholder="45"
+                  className="w-full md:w-4/5  !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                  name="available_quantity"
+                />
+              </div>
+            </div>
 
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Available Quantity
-            </Typography>
-            <Input
-              size="lg"
-              type="number"
-              placeholder="45"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-              name="available_quantity"
-            />
+            {/* Second Column */}
+            <div className="w-full md:w-1/2">
+              <div className="mb-1 flex flex-col gap-6">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Description
+                </Typography>
+                <Input
+                  size="lg"
+                  type="text"
+                  placeholder="Hari lassani"
+                  className="w-full md:w-4/5  !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                  name="description"
+                />
 
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Description
-            </Typography>
-            <Input
-              size="lg"
-              type="text"
-              placeholder="Hari lassani"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-              name="description"
-            />
-
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Item Image
-            </Typography>
-            <Input
-              size="lg"
-              type="text"
-              //   this should change to file
-              placeholder="Upload Item image"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-              name="item_img"
-
-            />
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Item Type
-            </Typography>
-            <Input
-              size="lg"
-              type="text"
-              placeholder="Electronics"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-              name="item_type"
-            />
-            
-            
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Item Image
+                </Typography>
+                <Input
+                  size="lg"
+                  type="text"
+                  //   this should change to file
+                  placeholder="Upload Item image"
+                  className="w-full md:w-4/5  !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                  name="item_img"
+                />
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Item Type
+                </Typography>
+                <Input
+                  size="lg"
+                  type="text"
+                  placeholder="Electronics"
+                  className="w-full md:w-4/  !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                  name="item_type"
+                />
+              </div>
+            </div>
           </div>
 
           <Button className="mt-6" fullWidth type="submit">

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 export default function CustomerRateTab() {
   const { currentCustomer } = useSelector(state => state.customer)
   const [employees, setEmployees] = useState([]);
+  const [ratings, setRatings] = useState([]);
   const [showMore,setShowMore] = useState(true);
   const [currentRating, setCurrentRating] = useState(0);
 
@@ -23,23 +24,40 @@ export default function CustomerRateTab() {
   };
 
   useEffect(() => {
-    const getfeedbacks = async () => {
+    const getemployeesAndRatings = async () => {
         try {
             const res = await fetch('/Rating/getemployees');
             const data = await res.json();
-            if(res.ok){
+            if (res.ok) {
                 setEmployees(data.employees);
-                if(data.employees.length < 9){
+                if (data.employees.length < 9) {
                     setShowMore(false);
                 }
+                const ratingsData = {};
+                for (const employee of data.employees) {
+                    await getratings(employee._id, ratingsData);
+                }
+                setRatings(ratingsData);
             }
         } catch (error) {
             console.log(error.message);
         }
     }
 
-    getfeedbacks();
-  },[currentCustomer._id])
+    getemployeesAndRatings();
+}, [currentCustomer._id]);
+
+    const getratings = async (emp_ID, ratingsData) => {
+        try {
+            const res = await fetch(`/Rating/getratings/${emp_ID}`);
+            const ratingData = await res.json();
+            if(res.ok){
+              ratingsData[emp_ID] = ratingData.rating;
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
 
   const renderStarRating = (emp_ID,emp_rating,currentRating, onRatingChange) => {
     const handleClick = async (starIndex) => {
@@ -53,7 +71,23 @@ export default function CustomerRateTab() {
         });
         const data = await res.json();
         if(res.ok) {
-          onRatingChange(data.cus_rating);
+          try {
+            const res = await fetch('/Rating/getemployees');
+            const data = await res.json();
+            if (res.ok) {
+                setEmployees(data.employees);
+                if (data.employees.length < 9) {
+                    setShowMore(false);
+                }
+                const ratingsData = {};
+                for (const employee of data.employees) {
+                    await getratings(employee._id, ratingsData);
+                }
+                setRatings(ratingsData);
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
         }
       } catch (error) {
         console.log(error.message)
@@ -70,9 +104,6 @@ export default function CustomerRateTab() {
     }
     return stars;  
   };
-
-  
-
   return (
     <div>
       <h1 className="text-4xl font-bold text-center mt-5 mb-11">Give Employee Rating</h1>
@@ -107,15 +138,20 @@ export default function CustomerRateTab() {
                 </thead>
                 <tbody>
                 {
-                    employees.map((employee,index) => (
-                      <tr style={{backgroundColor: '#FFFFFF', marginBottom: index < employees.length - 1 ? '10px' : 0}} key={employee._id}>
-                        <td style={{padding: '10px'}}>{new Date(employee.createdAt).toLocaleDateString()}</td>
-                        <td className='flex' style={{padding: '10px'}}><img src="https://www.366icons.com/media/01/profile-avatar-account-icon-16699.png" alt={employee._id} style={{borderRadius: '9999px', width: '40px', height: '50px', objectFit: 'cover', backgroundColor: '#D1D5DB'}}/>
-                          <div><p className='ml-5' style={{fontWeight: 'bold', color: '#4B5563'}}>{employee.username}</p>
-                          <p className='ml-5'>Average rating: {employee.Avg_rating}</p></div></td>
-                          <td>{renderStarRating(employee._id,employee.rating,currentRating, setCurrentRating)}</td>
-                      </tr>
-                    ))
+                  employees.map((employee, index) => (
+                    <tr style={{ backgroundColor: '#FFFFFF', marginBottom: index < employees.length - 1 ? '10px' : 0 }} key={employee._id}>
+                      <td style={{ padding: '10px' }}>{new Date(employee.createdAt).toLocaleDateString()}</td>
+                      <td className='flex' style={{ padding: '10px' }}>
+                        <img src="https://www.366icons.com/media/01/profile-avatar-account-icon-16699.png" alt={employee._id} style={{ borderRadius: '9999px', width: '40px', height: '50px', objectFit: 'cover', backgroundColor: '#D1D5DB' }} />
+                        <div>
+                          <p className='ml-5' style={{ fontWeight: 'bold', color: '#4B5563' }}>{employee.username}</p>
+                          <p className='ml-5'>Average rating: {employee.Avg_rating}</p>
+                        </div>
+                      </td>
+                      <td>
+                        {ratings[employee._id] && renderStarRating(employee._id, ratings[employee._id].cus_rating, currentRating, setCurrentRating)}
+                      </td>
+                    </tr>))
                 }</tbody></table>
             </>
         )}

@@ -28,6 +28,14 @@ export default function QualityAdminProfileDetail() {
           onClick={() => handleTabChange('Component2')}
         >
           <Typography variant="h6">
+          Issues
+          </Typography>
+        </MenuItem>
+        <MenuItem
+          className="flex items-center rounded-lg"
+          onClick={() => handleTabChange('Component2')}
+        >
+          <Typography variant="h6">
           Performance
           </Typography>
         </MenuItem>
@@ -36,7 +44,7 @@ export default function QualityAdminProfileDetail() {
       <div className="mt-5">
         {activeTab === 'Component1' ? <ComplaintAdmin /> : null}
         {activeTab === 'Component2' ? <Performance /> : null}
-       
+        {activeTab === 'Component3' ? <Performance /> : null}
       </div>
     </div>
   );
