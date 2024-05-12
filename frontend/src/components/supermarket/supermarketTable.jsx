@@ -11,7 +11,9 @@ export function SupermarketTable({ data }) {
   useEffect(() => {
     const fetchSupermarkets = async () => {
       try {
-        const response = await axios.get("http://localhost:8070/Supermarket/supermarkets");
+        const response = await axios.get(
+          "http://localhost:8070/Supermarket/supermarkets"
+        );
         setSupermarkets(response.data);
         setLoading(false);
       } catch (error) {
@@ -32,7 +34,10 @@ export function SupermarketTable({ data }) {
         <thead>
           <tr>
             {TABLE_HEAD.map((head) => (
-              <th key={head} className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+              <th
+                key={head}
+                className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+              >
                 <Typography
                   variant="small"
                   color="blue-gray"
@@ -46,19 +51,36 @@ export function SupermarketTable({ data }) {
         </thead>
         <tbody>
           {supermarkets.map(({ sm_name, sm_location }, index) => (
-            <tr key={index} className={index % 2 === 0 ? "even:bg-blue-gray-50/50" : ""}>
+            <tr
+              key={index}
+              className={index % 2 === 0 ? "even:bg-blue-gray-50/50" : ""}
+            >
               <td className="p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal">
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  className="font-normal"
+                >
                   {sm_name}
                 </Typography>
               </td>
               <td className="p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal">
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  className="font-normal"
+                >
                   {sm_location}
                 </Typography>
               </td>
               <td className="p-4">
-                <Typography as="a" href="#" variant="small" color="blue-gray" className="font-medium">
+                <Typography
+                  as="a"
+                  href="#"
+                  variant="small"
+                  color="blue-gray"
+                  className="font-medium"
+                >
                   Edit
                 </Typography>
               </td>
