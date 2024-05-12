@@ -72,7 +72,9 @@ export default function Employee_Signin() {
               <TextInput type='password' placeholder='Password' id='password'onChange={handleChange}/>
             </div>
 
-                          <button>
+                          <button  type='submit'   gradientDuoTone="purpleToPink"
+  className="w-40 h-10 mx-auto text-white"
+  style={{ background: 'linear-gradient(to right, #8A2BE2, #FF69B4)', border: 'none', borderRadius: '0.375rem', cursor: 'pointer' }} >
                 Login
               </button>
 

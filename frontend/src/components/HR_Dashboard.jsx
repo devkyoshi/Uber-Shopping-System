@@ -178,6 +178,7 @@ export default function DashboardComp() {
               alt="announcement"
               className="w-14 h-10 rounded-md bg-gray-500 "
             />
+
           </td>
           <td className="w-auto pt-3 pb-3 pl-3 pr-3">{announcement.title}</td>
           <td className="w-auto pt-3 pb-3 pl-3 pr-3">{announcement.category}</td>

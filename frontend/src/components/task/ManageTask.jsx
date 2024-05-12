@@ -5,12 +5,16 @@ import {
     Typography,
     Button,
     Input,
+    Select,
+    Option
 } from "@material-tailwind/react";
 
 export function ManageTask() {
     const [tasks, setTasks] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [editTaskId, setEditTaskId] = useState(""); // State to track which task is being edited
+    const [availableDrivers, setAvailableDrivers] = useState([]);
+    const [selectedDriverId, setSelectedDriverId] = useState("");
 
     useEffect(() => {
         fetchTasks();
@@ -40,50 +44,30 @@ export function ManageTask() {
             setErrorMessage("Error deleting task");
         }
     };
-    
 
-    const handleInputChange = (e, taskId, fieldName) => {
-        const { value } = e.target;
-        let filteredValue = value;
-    
-        // Apply input validation based on the field name
-        switch (fieldName) {
-            
-            case "branch_id":
-                filteredValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
-                break;
-            case "driver_id":
-                filteredValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
-                break;
-            case "district":
-                filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
-                break;
-            default:
-                break;
+    const handleBranchId = async (branchId) => {
+        try {
+            const response = await axios.get(`http://localhost:8070/Task/${branchId}/driver-all`);
+            setAvailableDrivers(response.data); 
+
+        } catch (error) {
+
         }
-    
-        setTasks(prevTasks => {
-            return prevTasks.map(task => {
-                if (task.task_id === taskId) {
-                    console.log(`Updating ${fieldName} for task ID: ${task.task_id} to value: ${filteredValue}`);
-                    return { ...task, [fieldName]: filteredValue };
-                }
-                return task;
-            });
-        });
     };
-    
 
-    const handleEdit = (taskId) => {
-        setEditTaskId(taskId); // Set the task ID being edited
+    const handleEdit = (taskId, branchId) => {
+        setEditTaskId(taskId);
+        handleBranchId(branchId);
+        console.log("Branch ID:", branchId);
     };
 
     const handleSave = async (updatedTask) => {
         try {
+            updatedTask.driver_id = selectedDriverId;
             // Make a PUT request to update the task
             console.log("In function", updatedTask);
             await axios.put(`http://localhost:8070/Task/update-task/${updatedTask.task_id}`, updatedTask);
-            console.log("Task updated successfully");
+            window.alert("Task updated successfully");
             setEditTaskId(""); // Reset edit task ID after saving
             fetchTasks(); // Fetch updated task list
         } catch (error) {
@@ -102,17 +86,6 @@ export function ManageTask() {
             <table className="w-full min-w-max table-auto text-left">
                 <thead>
                     <tr>
-                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                            <Typography
-                                variant="small"
-                                readOnly
-                                color="blue-gray"
-                                style={{ fontWeight: "bolder" }}
-                                className="font-normal leading-none opacity-70 text-center"
-                            >
-                                Task ID
-                            </Typography>
-                        </th>
                         <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <Typography
                                 variant="small"
@@ -187,33 +160,38 @@ export function ManageTask() {
                             <td className="p-4">
                                 <Input
                                     type="text"
-                                    value={task.task_id}
-                                    onChange={(e) => handleInputChange(e, task.task_id, 'task_id')}
+                                    value={task.branch_id}
                                     readOnly // Disable input if not in edit mode
                                 />
                             </td>
                             <td className="p-4">
-                                <Input
-                                    type="text"
-                                    value={task.branch_id}
-                                    onChange={(e) => handleInputChange(e, task.task_id, 'branch_id')}
-                                    readOnly={editTaskId !== task.task_id} // Disable input if not in edit mode
-                                />
-                            </td>
-                            <td className="p-4">
-                                <Input
-                                    type="text"
-                                    value={task.driver_id}
-                                    onChange={(e) => handleInputChange(e, task.task_id, 'driver_id')}
-                                    readOnly={editTaskId !== task.task_id} // Disable input if not in edit mode
-                                />
+                                {editTaskId === task.task_id ? (
+                                         <Select
+                                            name="driver_id"
+                                            value={selectedDriverId} // Use selectedDriverId state
+                                            onChange={(value) => setSelectedDriverId(value)} // Update selected driver ID
+                                            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+>
+                                         {availableDrivers.map((driver) => (
+                                             <Option key={driver.driverId} value={driver.driverId}>
+                                                 {driver.driverName}
+                                             </Option>
+                                         ))}
+                                     </Select>
+                                    ) : (
+                                        <Input
+                                            type="text"
+                                            value={task.driver_name}
+                                            readOnly={editTaskId !== task.task_id} // Disable input if not in edit mode
+                                        />
+                                    )}
+                                
                             </td>
                             <td className="p-4">
                                 <Input
                                     type="text"
                                     value={task.district}
-                                    onChange={(e) => handleInputChange(e, task.task_id, 'district')}
-                                    readOnly={editTaskId !== task.task_id} // Disable input if not in edit mode
+                                    readOnly // Disable input if not in edit mode
                                 />
                             </td>
                             <td className="p-4">
@@ -230,7 +208,7 @@ export function ManageTask() {
                                         Save
                                     </Button>
                                 ) : (
-                                    <Button color="blue" onClick={() => handleEdit(task.task_id)}>
+                                    <Button color="blue" onClick={() => handleEdit(task.task_id, task.branch_id)}>
                                         Update
                                     </Button>
                                 )}

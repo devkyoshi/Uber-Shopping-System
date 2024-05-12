@@ -100,6 +100,8 @@ app.use('/api/announcement', announcementroutes);
 //price comparison - adding supermarkets in to the list 
 const comparisonRouter = require('./routes/comparisonCRUD'); 
 app.use('/comparison', comparisonRouter);
+const customerRatingRouter = require("./routes/customer/customer.rating.routes.js");
+app.use("/Rating",customerRatingRouter)
 
 
 

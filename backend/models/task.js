@@ -12,6 +12,10 @@ const taskSchema = new Schema({
     ref: "User",
     required: true,
   },
+  driver_name: {
+    type: String,
+    ref: "User",
+  },
   district: {
     type: String,
   },

@@ -10,6 +10,7 @@ import AdminPage from '../components/AdminPage';
 import Announcements from '../components/Announcements';
 import DashUsers from '../components/DashUsers';
 import HR_Dashboard from '../components/HR_Dashboard';
+import ManageEmp_salary from '../components/ManageEmp_salary';
 
 import React from 'react'
 
@@ -39,6 +40,7 @@ export default function Dashboard() {
     {tab === 'Announcements' && <Announcements />}
     {tab === 'DashUsers' && <DashUsers />}
     {tab === 'HR_Dashboard' && <HR_Dashboard />}
+    {tab === 'ManageEmp_salary' && <ManageEmp_salary />}
     
     
     

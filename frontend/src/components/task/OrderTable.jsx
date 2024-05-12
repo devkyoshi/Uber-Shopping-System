@@ -92,7 +92,7 @@ const OrderTable = () => {
                 <Typography
                   variant="small"
                   color="blue-gray"
-                  className="font-normal"
+                  className="font-normal text-center"
                 >
                   {order._id}
                 </Typography>
@@ -101,7 +101,7 @@ const OrderTable = () => {
                 <Typography
                   variant="small"
                   color="blue-gray"
-                  className="font-normal"
+                  className="font-normal text-center"
                 >
                   {order.order_status}
                 </Typography>
@@ -110,7 +110,7 @@ const OrderTable = () => {
                 <Typography
                   variant="small"
                   color="blue-gray"
-                  className="font-normal"
+                  className="font-normal text-center"
                 >
                   {order.order_district}
                 </Typography>
@@ -120,7 +120,7 @@ const OrderTable = () => {
                 <Typography
                   variant="small"
                   color="blue-gray"
-                  className="font-normal"
+                  className="font-normal text-center"
                 >
                   {new Date(order.order_date).toLocaleString()}
                 </Typography>   

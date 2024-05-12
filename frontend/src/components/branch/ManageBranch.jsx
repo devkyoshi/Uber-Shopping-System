@@ -47,7 +47,7 @@ export function ManageBranch() {
     const handleUpdate = async (updatedBranch) => {
         try {
             const response = await axios.put(`http://localhost:8070/Branch/branch-update/${updatedBranch._id}`, updatedBranch);
-            console.log("Branch updated successfully:", response.data);
+            window.alert("Branch updated successfully:");
             setRefresh(true);
         } catch (error) {
             console.error("Error updating branch:", error);

@@ -108,93 +108,95 @@ export function AddBranch() {
   };
 
   return (
-    <Card color="transparent" shadow={false}>
-      <Typography
-        variant="h4"
-        color="blue-gray"
-        className="text-center pt-8 pb-3"
-      >
-        Make Branch
-      </Typography>
-
-      <div className="flex">
-        <form
-          className="mt-8 mb-2 max-w-screen-lg"
-          onSubmit={handleSubmit}
+    <div className="mx-auto w-full">
+      <Card color="transparent" shadow={false}>
+        <Typography
+          variant="h4"
+          color="blue-gray"
+          className="text-center pt-8 pb-3"
         >
-          <div className="flex flex-row gap-10">
-          <div className="flex flex-col flex-1 gap-2">
-              <Typography variant="h6" color="blue-gray" className="mb-2">
-                Branch ID
-              </Typography>
-              <Input
-                size="lg"
-                value={formData.branch_ID}
-                onChange={handleChange}
-                name="branch_ID"
-                placeholder="Enter Branch ID"
-                className="mb-4"
-              />
-              <Typography variant="h6" color="blue-gray" className="mb-2">
-                District
-              </Typography>
-              <Select
-                id="district"
-                name="district"
-                value={{ label: formData.district, value: formData.district }}
-                onChange={(selectedOption) =>
-                  setFormData({ ...formData, district: selectedOption.value })
-                }
-                onBlur={handleBlur}
-                options={districts.map((district) => ({
-                  label: district,
-                  value: district,
-                }))}
-                inputValue={inputValue}
-                onInputChange={(newInputValue) => {
-                  const filteredValue = newInputValue.replace(/[^a-zA-Z\s]/g, "");
-                  setInputValue(filteredValue);
-                }}
-                className="mb-4"
-              />
-            </div>
-            <div className="flex flex-col">
-              <Typography variant="h6" color="blue-gray" className="mb-2">
-                Branch Name
-              </Typography>
-              <Input
-                size="lg"
-                value={formData.branch_name}
-                onChange={handleChange}
-                name="branch_name"
-                placeholder="Enter Branch Name"
-                className="mb-4"
-              />
-              <Typography variant="h6" color="blue-gray" className="mb-2">
-                Branch Location
-              </Typography>
-              <Input
-                type="text"
-                size="lg"
-                value={formData.branch_Location}
-                onChange={handleChange}
-                name="branch_Location"
-                placeholder="Enter Branch Location"
-                className="mb-4"
-              />
-            </div>
-          </div>
+          Make Branch
+        </Typography>
 
-          {errorMessage && (
-            <Typography variant="p" color="red" className="mt-2">
-              {errorMessage}
-            </Typography>
-          )}
-          <Button type="submit" className="mt-6" fullWidth>
-            Add Branch
-          </Button>
-        </form>
-      </div>
-    </Card>
+        <div className="flex">
+          <form
+            className="mt-8 mb-2 max-w-screen-lg"
+            onSubmit={handleSubmit}
+          >
+            <div className="flex flex-row gap-52 p-l-10">
+              <div className="flex flex-col flex-1 gap-2">
+                  <Typography variant="h6" color="blue-gray" className="mb-2">
+                    Branch ID
+                  </Typography>
+                  <Input
+                    size="lg"
+                    value={formData.branch_ID}
+                    onChange={handleChange}
+                    name="branch_ID"
+                    placeholder="Enter Branch ID"
+                    className="mb-4"
+                  />
+                  <Typography variant="h6" color="blue-gray" className="mb-2">
+                    District
+                  </Typography>
+                  <Select
+                    id="district"
+                    name="district"
+                    value={{ label: formData.district, value: formData.district }}
+                    onChange={(selectedOption) =>
+                      setFormData({ ...formData, district: selectedOption.value })
+                    }
+                    onBlur={handleBlur}
+                    options={districts.map((district) => ({
+                      label: district,
+                      value: district,
+                    }))}
+                    inputValue={inputValue}
+                    onInputChange={(newInputValue) => {
+                      const filteredValue = newInputValue.replace(/[^a-zA-Z\s]/g, "");
+                      setInputValue(filteredValue);
+                    }}
+                    className="mb-4"
+                  />
+                </div>
+                <div className="flex flex-col flex-1 gap-2">
+                <Typography variant="h6" color="blue-gray" className="mb-2">
+                  Branch Name
+                </Typography>
+                <Input
+                  size="lg"
+                  value={formData.branch_name}
+                  onChange={handleChange}
+                  name="branch_name"
+                  placeholder="Enter Branch Name"
+                  className="mb-4"
+                />
+                <Typography variant="h6" color="blue-gray" className="mb-2">
+                  Branch Location
+                </Typography>
+                <Input
+                  type="text"
+                  size="lg"
+                  value={formData.branch_Location}
+                  onChange={handleChange}
+                  name="branch_Location"
+                  placeholder="Enter Branch Location"
+                  className="mb-4"
+                />
+              </div>
+            </div>
+
+            {errorMessage && (
+              <Typography variant="p" color="red" className="mt-2">
+                {errorMessage}
+              </Typography>
+            )}
+            <Button type="submit" className="mt-6" fullWidth>
+              Add Branch
+            </Button>
+          </form>
+        </div>
+      </Card>
+    </div>
   );
 }
