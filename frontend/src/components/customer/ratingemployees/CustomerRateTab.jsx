@@ -71,7 +71,23 @@ export default function CustomerRateTab() {
         });
         const data = await res.json();
         if(res.ok) {
-          onRatingChange(data.cus_rating);
+          try {
+            const res = await fetch('/Rating/getemployees');
+            const data = await res.json();
+            if (res.ok) {
+                setEmployees(data.employees);
+                if (data.employees.length < 9) {
+                    setShowMore(false);
+                }
+                const ratingsData = {};
+                for (const employee of data.employees) {
+                    await getratings(employee._id, ratingsData);
+                }
+                setRatings(ratingsData);
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
         }
       } catch (error) {
         console.log(error.message)
