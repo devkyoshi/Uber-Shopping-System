@@ -8,7 +8,7 @@ import {
 } from "@material-tailwind/react";
 import { PlusCircleIcon, EyeIcon } from "@heroicons/react/24/solid";
 import AddTaskDriverUI from "../../pages/taskdriver/AddTaskDriverUI";
-import DriverComplaintForm from "../../pages/taskdriver/ViewTaskDriverUI";
+import DriverComplaintForm from "../../pages/taskdriver/DriverComplaintForm";
 
 export function TaskDriverTab(user_id) {
   const [activeTab, setactiveTab] = useState("add");
@@ -25,7 +25,7 @@ export function TaskDriverTab(user_id) {
       icon: PlusCircleIcon,
     },
     {
-      label: "My Information",
+      label: "Make Complaint",
       value: "view",
       icon: EyeIcon,
     },
