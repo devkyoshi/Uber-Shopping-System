@@ -113,7 +113,9 @@ export default function Complaint() {
                 <Typography>Complaint Status : </Typography>
               </div>
               <div className='mr-4'>
-                <Typography variant='h6' className={`border border-gray-200 px-4 rounded-md shadow-md ${Complaints.complaint_status === 'Resolved' ? 'text-green-800 bg-green-100' : Complaints.complaint_status === 'accepted' ? 'text-yellow-800 bg-yellow-100' : 'text-red-800 bg-red-100'}`}>
+                <Typography variant='h6' className={`border border-gray-200 px-4 rounded-md shadow-md ${Complaints.complaint_status === 'Resolved' ? 'text-green-800 bg-green-100' : 
+                 Complaints.complaint_status === 'accepted' ? 'text-yellow-800 bg-yellow-100' :
+                  'text-red-800 bg-red-100'}`}>
                   {Complaints.complaint_status}
                 </Typography>
               </div>
@@ -154,13 +156,13 @@ export default function Complaint() {
                 <div className='grid grid-rows-2 mb-1 gap-2'>
                 <div className='flex items-center'>
                     {/* Order ID */}
-                      <Typography className='mr-2'>Order ID : </Typography>
-                      <Typography>{Complaints.order_id}</Typography>
+                      <Typography color="blue-gray" className='mr-2 text-gray-400'>Order ID : </Typography>
+                      <Typography color="blue-gray" className='text-gray-400'>{Complaints.order_id}</Typography>
                 </div>
                 <div className='flex items-center'>
                      {/* Item ID */}
-                      <Typography className='mr-2'>Item ID : </Typography>
-                      <Typography>{Complaints.item_id}</Typography>
+                      <Typography color="blue-gray" className='mr-2 text-gray-400'>Item ID : </Typography>
+                      <Typography color="blue-gray" className='text-gray-400'>{Complaints.item_id}</Typography>
                 </div>
                 </div>
 
