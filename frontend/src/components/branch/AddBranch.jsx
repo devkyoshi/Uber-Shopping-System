@@ -100,10 +100,10 @@ export function AddBranch() {
         branch_Location: "",
         district: "",
       });
-      setErrorMessage("Branch added successfully!");
+      window.alert("Branch added successfully!");
     } catch (error) {
       console.error("Error:", error);
-      setErrorMessage("Please Fill the Fields");
+      window.alert("Please Fill the Fields");
     }
   };
 
@@ -133,31 +133,40 @@ export function AddBranch() {
                   placeholder="Enter Branch ID"
                   className="mb-4"
                 />
-                <Typography variant="h6" color="blue-gray" className="mb-2">
-                  District
-                </Typography>
-                <Select
-                  id="district"
-                  name="district"
-                  value={{ label: formData.district, value: formData.district }}
-                  onChange={(selectedOption) =>
-                    setFormData({ ...formData, district: selectedOption.value })
-                  }
-                  onBlur={handleBlur}
-                  options={districts.map((district) => ({
-                    label: district,
-                    value: district,
-                  }))}
-                  inputValue={inputValue}
-                  onInputChange={(newInputValue) => {
-                    const filteredValue = newInputValue.replace(
-                      /[^a-zA-Z\s]/g,
-                      ""
-                    );
-                    setInputValue(filteredValue);
-                  }}
-                  className="mb-4"
-                />
+                <div className="mt-10">
+                  <Typography variant="h6" color="blue-gray" className="mb-2">
+                    District
+                  </Typography>
+                  <Select
+                    id="district"
+                    name="district"
+                    value={{
+                      label: formData.district,
+                      value: formData.district,
+                    }}
+                    onChange={(selectedOption) =>
+                      setFormData({
+                        ...formData,
+                        district: selectedOption.value,
+                      })
+                    }
+                    onBlur={handleBlur}
+                    options={districts.map((district) => ({
+                      label: district,
+                      value: district,
+                    }))}
+                    inputValue={inputValue}
+                    onInputChange={(newInputValue) => {
+                      const filteredValue = newInputValue.replace(
+                        /[^a-zA-Z\s]/g,
+                        ""
+                      );
+                      setInputValue(filteredValue);
+                    }}
+                    className="mb-4"
+                    size="lg"
+                  />
+                </div>
               </div>
               <div className="flex flex-col flex-1 gap-2">
                 <Typography variant="h6" color="blue-gray" className="mb-2">
@@ -171,18 +180,20 @@ export function AddBranch() {
                   placeholder="Enter Branch Name"
                   className="mb-4"
                 />
-                <Typography variant="h6" color="blue-gray" className="mb-2">
-                  Branch Location
-                </Typography>
-                <Input
-                  type="text"
-                  size="lg"
-                  value={formData.branch_Location}
-                  onChange={handleChange}
-                  name="branch_Location"
-                  placeholder="Enter Branch Location"
-                  className="mb-4"
-                />
+                <div className="mt-10">
+                  <Typography variant="h6" color="blue-gray" className="mb-2">
+                    Branch Location
+                  </Typography>
+                  <Input
+                    type="text"
+                    size="lg"
+                    value={formData.branch_Location}
+                    onChange={handleChange}
+                    name="branch_Location"
+                    placeholder="Enter Branch Location"
+                    className="mb-4"
+                  />
+                </div>
               </div>
             </div>
 
@@ -191,7 +202,7 @@ export function AddBranch() {
                 {errorMessage}
               </Typography>
             )}
-            <Button type="submit" className="mt-6" fullWidth>
+            <Button type="submit" className="mt-16" size="md" fullWidth>
               Add Branch
             </Button>
           </form>

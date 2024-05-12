@@ -56,7 +56,7 @@ export function BranchTable() {
           <Input
             label="Search Branch"
             size="lg"
-            placeholder="Search by Branch ID OR Name"
+            placeholder="ID OR Name"
             value={searchTerm}
             onChange={handleSearchChange}
             className="px-4 py-2 border border-gray-300 rounded-md "
