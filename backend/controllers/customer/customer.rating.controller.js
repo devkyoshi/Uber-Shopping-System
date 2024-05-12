@@ -66,4 +66,18 @@ const rateEmployees = async(req, res, next) => {
     }
 };
 
-module.exports = { getEmployees, rateEmployees }
+const getRatings = async(req,res, next) => {
+    try {
+        const emp_id = req.params.emp_ID
+        const cus_id = req.customer.id;
+        const rating = await Rating.findOne({ emp_id, cus_id })
+            .sort({ createdAt: -1 })
+            .limit(1);
+
+        res.status(200).json({rating});
+    }catch(error){
+        next(error)
+    }
+}
+
+module.exports = { getEmployees, rateEmployees, getRatings }
