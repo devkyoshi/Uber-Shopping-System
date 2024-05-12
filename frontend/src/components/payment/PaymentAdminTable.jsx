@@ -12,7 +12,6 @@ import {
   Input,
   Alert,
 } from "@material-tailwind/react";
-import { PencilIcon } from "@heroicons/react/24/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { DownloadButton } from "./DownloadButton";
 
