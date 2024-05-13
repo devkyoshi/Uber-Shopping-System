@@ -31,11 +31,6 @@ export function ItemTab({ supermarketId }) {
       value: "view",
       icon: EyeIcon,
     },
-    {
-      label: "Settings",
-      value: "settings",
-      icon: CogIcon,
-    },
   ];
 
   const handleTab = (value) => {

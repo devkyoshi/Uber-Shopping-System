@@ -73,6 +73,7 @@ export function SupermarketForm() {
                   Supermarket Name
                 </Typography>
                 <Input
+                  required
                   type="text"
                   size="lg" // Change text box size to xl
                   placeholder="Enter supermarket name"

@@ -15,36 +15,29 @@ import AddSupermarket from "../../pages/supermarket/AddSupermarket";
 import ViewSupermarket from "../../pages/supermarket/ViewSupermarket";
 import SettingSupermarketUI from "../../pages/supermarket/SettingSupermarketUI";
 
-
- 
 export function SupermarketTab() {
-    const[activeTab, setactiveTab] = useState("add");
+  const [activeTab, setactiveTab] = useState("add");
 
-    const tapMapping ={
-        add:<AddSupermarket/>,
-        view:<ViewSupermarket/>,
-        settings:<SettingSupermarketUI/>
-       
-
-    }
+  const tapMapping = {
+    add: <AddSupermarket />,
+    view: <ViewSupermarket />,
+    settings: <SettingSupermarketUI />,
+  };
   const data = [
     {
       label: "Register",
       value: "add",
       icon: Square3Stack3DIcon,
-     
     },
     {
       label: "View Supermarket",
       value: "view",
       icon: UserCircleIcon,
-      
     },
     {
-      label: "Settings",
+      label: "Item & Promotion",
       value: "settings",
       icon: Cog6ToothIcon,
-      
     },
   ];
   const handleTab = (value) => {
@@ -63,7 +56,7 @@ export function SupermarketTab() {
         ))}
       </TabsHeader>
       <TabsBody>
-          <TabPanel value={activeTab}>{tapMapping[activeTab]}</TabPanel>
+        <TabPanel value={activeTab}>{tapMapping[activeTab]}</TabPanel>
       </TabsBody>
     </Tabs>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Typography, Input, Button } from "@material-tailwind/react";
 
-export default function ViewPromotionUI({ supermarketId })  {
+export default function ViewPromotionUI({ supermarketId }) {
   const [promotions, setPromotions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editablePromotionId, setEditablePromotionId] = useState(null);
@@ -16,7 +16,9 @@ export default function ViewPromotionUI({ supermarketId })  {
   useEffect(() => {
     const fetchPromotions = async () => {
       try {
-        const response = await axios.get(`http://localhost:8070/Promotion/${supermarketId}/promotions`);
+        const response = await axios.get(
+          `http://localhost:8070/Promotion/${supermarketId}/promotions`
+        );
         setPromotions(response.data);
         setLoading(false);
       } catch (error) {
@@ -29,7 +31,9 @@ export default function ViewPromotionUI({ supermarketId })  {
 
   const handleUpdateClick = (promotionId) => {
     setEditablePromotionId(promotionId);
-    const selectedPromotion = promotions.find((promotion) => promotion._id === promotionId);
+    const selectedPromotion = promotions.find(
+      (promotion) => promotion._id === promotionId
+    );
     if (selectedPromotion) {
       setUpdatedPromotionData({
         promotion_name: selectedPromotion.promotion_name,
@@ -55,7 +59,9 @@ export default function ViewPromotionUI({ supermarketId })  {
         updatedPromotionData
       );
       // Fetch updated promotions after successful update
-      const response = await axios.get(`http://localhost:8070/Promotion/${supermarketId}/promotions`);
+      const response = await axios.get(
+        `http://localhost:8070/Promotion/${supermarketId}/promotions`
+      );
       setPromotions(response.data);
       setEditablePromotionId(null);
     } catch (error) {
@@ -65,9 +71,13 @@ export default function ViewPromotionUI({ supermarketId })  {
 
   const handleDelete = async (promotionId) => {
     try {
-      await axios.delete(`http://localhost:8070/Promotion/${supermarketId}/promotion-delete/${promotionId}`);
+      await axios.delete(
+        `http://localhost:8070/Promotion/${supermarketId}/promotion-delete/${promotionId}`
+      );
       // Filter out the deleted promotion from the promotions array
-      setPromotions(promotions.filter((promotion) => promotion._id !== promotionId));
+      setPromotions(
+        promotions.filter((promotion) => promotion._id !== promotionId)
+      );
     } catch (error) {
       console.error("Error deleting promotion:", error);
     }
@@ -193,13 +203,25 @@ export default function ViewPromotionUI({ supermarketId })  {
               </td>
               <td className="border-b border-blue-gray-100 p-4">
                 {editablePromotionId === promotion._id ? (
-                  <Button onClick={() => handleUpdate(promotion._id)}>Save</Button>
+                  <Button onClick={() => handleUpdate(promotion._id)}>
+                    Save
+                  </Button>
                 ) : (
-                  <Button onClick={() => handleUpdateClick(promotion._id)}>Update</Button>
+                  <Button
+                    onClick={() => handleUpdateClick(promotion._id)}
+                    className="hover:bg-black"
+                  >
+                    Update
+                  </Button>
                 )}
               </td>
               <td className="border-b border-blue-gray-100 p-4">
-                <Button onClick={() => handleDelete(promotion._id)}>Delete</Button>
+                <Button
+                  onClick={() => handleDelete(promotion._id)}
+                  className="bg-red-700 hover:bg-red-900"
+                >
+                  Delete
+                </Button>
               </td>
             </tr>
           ))}
