@@ -411,7 +411,7 @@ export function NavigationBar() {
                           Latest Order
                         </ListItem>
                       </Link>
-                      <Link to={`/allOrders/${latestOrderId}`}>
+                      <Link to={`/allOrders/${currentCustomer._id}`}>
                         <ListItem>
                           <ListItemPrefix>
                             <svg

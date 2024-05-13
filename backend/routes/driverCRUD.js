@@ -296,9 +296,16 @@ router.get("/tasks/:driverId", async (req, res) => {
           "items._id": item_Id,
         });
         if (!supermarket) {
-          return res
-            .status(404)
-            .json({ error: "Supermarket not found for item", item_Id });
+          itemsDetails.push({
+            item_name: "Unidentified",
+            price: "Unidentified",
+            sm_name: "Supermarket Removed",
+            quantity: orderItem.quantity,
+          });
+          continue; // Continue to the next iteration
+          // return res
+          //   .status(404)
+          //   .json({ error: "Supermarket not found for item", item_Id });
         }
 
         // Find the specific item within the supermarket
@@ -306,9 +313,16 @@ router.get("/tasks/:driverId", async (req, res) => {
           (item) => item._id.toString() === item_Id.toString()
         );
         if (!item) {
-          return res
-            .status(404)
-            .json({ error: "Item not found in the supermarket" });
+          itemsDetails.push({
+            item_name: "Unidentified",
+            price: "Unidentified",
+            sm_name: supermarket.sm_name,
+            quantity: orderItem.quantity,
+          });
+          continue; // Continue to the next iteration
+          // return res
+          //   .status(404)
+          //   .json({ error: "Item not found in the supermarket" });
         }
 
         // Push relevant item details along with quantity to itemsDetails array

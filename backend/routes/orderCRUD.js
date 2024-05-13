@@ -9,6 +9,7 @@ const Order = require("../models/order");
 const mongoose = require("mongoose");
 const Supermarket = require("../models/supermarkets");
 const DeliveryData = require("../models/delivery");
+const Customer = require("../models/customer/customer_register_schema");
 
 //Create new order
 router.post("/create-order", async (req, res) => {
@@ -268,21 +269,39 @@ router.get("/latest-order/:customer_id", async (req, res) => {
   }
 });
 
-// Route to get all orders of a certain customer
-router.get("/customer/:customerId/orders"),
-  async (req, res) => {
-    try {
-      const customerId = req.params.customerId;
+// Route to get all orders for a certain customer
+// router.get("/orders/:customerId", async (req, res) => {
+//   const customerId = req.params.customerId;
 
-      // Find all orders associated with the customer ID
-      const orders = await Order.find({ customer_id: customerId });
+//   try {
+//     // Fetch customer details
+//     const customer = await Customer.findById(customerId);
 
-      res.json(orders);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal server error" });
-    }
-  };
+//     if (!customer) {
+//       return res.status(404).json({ error: "Customer not found" });
+//     }
+
+//     // Fetch orders for the customer
+//     const orders = await Order.find({ customer_id: customerId });
+
+//     res.json({ customer, orders });
+//   } catch (error) {
+//     console.error("Error fetching orders:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+
+router.get("/orders/:customerId", async (req, res) => {
+  const customerId = req.params.customerId;
+
+  try {
+    const orders = await Order.find({ customer_id: customerId });
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // Read all orders
 router.get("/orders", async (req, res) => {

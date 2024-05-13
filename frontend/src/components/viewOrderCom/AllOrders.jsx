@@ -19,23 +19,21 @@ const ITEM_TABLE_HEAD = ["Item Name", "Quantity", "Price", "SuperMarket Name"];
 export function AllOrders({ customerId }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [searchInput, setSearchInput] = useState("");
-  
+
   console.log("Customer ID:", customerId);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        setLoading(true);
         const response = await axios.get(
-          `http://localhost:8070/Order/customer/${customerId}/orders`
+          `http://localhost:8070/Order/orders/${customerId}`
         );
         setOrders(response.data);
-        console.log("Order details", response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching orders:", error);
-        setLoading(false);
       }
     };
 
@@ -77,10 +75,20 @@ export function AllOrders({ customerId }) {
             className="mr-5 border border-gray-300"
           />
           <div className="flex justify-between space-x-2">
-              <Button color="white" onClick={handleSearch} className="ml-auto w-max h-max border border-gray-300">Search</Button>
-              <Button onClick={handleDownloadReport} className="ml-auto w-max h-max">Download Report</Button>
+            <Button
+              color="white"
+              onClick={handleSearch}
+              className="ml-auto w-max h-max border border-gray-300"
+            >
+              Search
+            </Button>
+            <Button
+              onClick={handleDownloadReport}
+              className="ml-auto w-max h-max"
+            >
+              Download Report
+            </Button>
           </div>
-
         </div>
       </div>
 
@@ -156,6 +164,31 @@ export function AllOrders({ customerId }) {
           </tbody>
         </table>
       </Card>
+
+      <div>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                {/* Add more table headers as needed */}
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>{order._id}</td>
+                  <td>{new Date(order.order_date).toLocaleDateString()}</td>
+                  {/* Add more table cells for additional order details */}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }
