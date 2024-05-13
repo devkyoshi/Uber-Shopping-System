@@ -43,22 +43,22 @@ const rateEmployees = async(req, res, next) => {
         await newRating.save();
 
         const ratingStats = await Rating.aggregate([
-            { $match: { emp_id: new mongoose.Types.ObjectId(emp_id) } },
-            {
-                $group: {
-                    _id: '$emp_id',
-                    totalRatings: { $sum: '$cus_rating' },
-                    ratingCount: { $sum: 1 }
-                }
-            }
+            { $match: { emp_id: emp_id } },
         ]);
 
-        let averageRating = 0;
-        if (ratingStats.length > 0) {
-            averageRating = ratingStats[0].totalRatings / ratingStats[0].ratingCount;
+        let totalRating = 0;
+        let count = 0;
+        ratingStats.forEach((rating) => {
+            totalRating += rating.cus_rating;
+            count++;
+        });
+
+        let averageRating = null;
+        if (count > 0) {
+            averageRating = totalRating / count;
         }
 
-        await Employee.findByIdAndUpdate(emp_id, { Avg_rating: averageRating })
+        await Employee.updateOne({ _id: emp_id }, { $set: { Avg_rating: averageRating } });
 
         res.status(200).json(newRating);
     } catch (error) {
