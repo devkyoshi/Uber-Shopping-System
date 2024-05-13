@@ -32,7 +32,7 @@ export function ItemForm({ supermarketId }) {
 
   const handleKeyPress = (e) => {
     // If the pressed key is not a letter, digit, or '@', prevent the default action
-    if (!/[a-zA-Z0-9]/.test(e.key)) {
+    if (!/[a-zA-Z0-9@]/.test(e.key)) {
       e.preventDefault();
     }
   };
@@ -53,6 +53,7 @@ export function ItemForm({ supermarketId }) {
                   Item Name
                 </Typography>
                 <Input
+                  required
                   onKeyPress={handleKeyPress}
                   size="lg"
                   type="text"
@@ -68,6 +69,7 @@ export function ItemForm({ supermarketId }) {
                   Item Price
                 </Typography>
                 <Input
+                  required
                   size="lg"
                   type="text"
                   placeholder="Rs.10.00"
@@ -128,16 +130,18 @@ export function ItemForm({ supermarketId }) {
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
                   Item Type
                 </Typography>
-                <Input
-                  size="lg"
-                  type="text"
-                  placeholder="Electronics"
-                  className="w-full md:w-4/  !border-t-blue-gray-200 focus:!border-t-gray-900"
-                  labelProps={{
-                    className: "before:content-none after:content-none",
-                  }}
+                <select
+                  className="w-full md:w-4/5  !border-t-blue-gray-200 focus:!border-t-gray-900"
                   name="item_type"
-                />
+                >
+                  <option value="Groceries">Groceries</option>
+                  <option value="Bakery">Bakery</option>
+                  <option value="Pharmacy">Pharmacy</option>
+                  <option value="Fruits">Fruits</option>
+                  <option value="Vegetables">Vegetables</option>
+                  <option value="Electronics">Electronics</option>
+                  {/* Add more options as needed */}
+                </select>
               </div>
             </div>
           </div>

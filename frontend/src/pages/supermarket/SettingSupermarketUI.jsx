@@ -11,7 +11,9 @@ export default function ViewSupermarketsUI() {
   useEffect(() => {
     const fetchSupermarkets = async () => {
       try {
-        const response = await axios.get("http://localhost:8070/Supermarket/supermarkets");
+        const response = await axios.get(
+          "http://localhost:8070/Supermarket/supermarkets"
+        );
         setSupermarkets(response.data);
         setLoading(false);
       } catch (error) {
@@ -31,7 +33,12 @@ export default function ViewSupermarketsUI() {
   };
 
   if (loading) {
-    return <div> <Spinner/> </div>;
+    return (
+      <div>
+        {" "}
+        <Spinner />{" "}
+      </div>
+    );
   }
 
   return (
@@ -74,12 +81,12 @@ export default function ViewSupermarketsUI() {
                 <td className={classes}>{supermarket.sm_location}</td>
                 <td>
                   <Button onClick={() => handleViewItems(supermarket._id)}>
-                    View Items
+                    Add Items
                   </Button>
                 </td>
                 <td>
                   <Button onClick={() => handleViewPromotions(supermarket._id)}>
-                    View Promotions
+                    Add Promotions
                   </Button>
                 </td>
               </tr>

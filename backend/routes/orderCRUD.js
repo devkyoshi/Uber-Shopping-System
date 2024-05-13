@@ -14,15 +14,41 @@ const Customer = require("../models/customer/customer_register_schema");
 //Create new order
 router.post("/create-order", async (req, res) => {
   try {
-    const { customer_id, cart, purchase_amount } = req.body; // Extract customer_id and cart from request body
-    console.log("sfsfsdf", cart);
+    const { customer_id, cart, purchase_amount } = req.body;
+
     // Create a new order object with customer_id and cart details
     const newOrder = new Order({
       customer_id,
       purchase_amount,
-      items: cart, // Assign cart details to items field in the order
-      // You can add additional fields here if needed
+      items: cart,
     });
+
+    // Find delivery settings
+    const deliverySetting = await DeliveryData.findById(
+      "6642047e93506b8a703ecff0"
+    );
+    if (!deliverySetting) {
+      return res.status(404).json({ error: "Delivery settings not found" });
+    }
+
+    // Calculate total quantity of items in the cart
+    let totalQuantity = 0;
+    cart.forEach((item) => {
+      totalQuantity += item.quantity;
+    });
+
+    // Calculate delivery charges
+    let chargesDelivery = 0;
+    if (totalQuantity < deliverySetting.deliveryFree) {
+      chargesDelivery = deliverySetting.chargePrice;
+    } else {
+      chargesDelivery =
+        deliverySetting.chargePrice +
+        deliverySetting.chargePrice * deliverySetting.interest;
+    }
+
+    // Add delivery details to the order
+    newOrder.delivery.push({ charges: chargesDelivery, distance: 0 });
 
     // Save the new order to the database
     const savedOrder = await newOrder.save();
@@ -38,7 +64,7 @@ router.post("/create-order", async (req, res) => {
 //update order - additional notes
 router.put("/update/:orderId", async (req, res) => {
   const { orderId } = req.params;
-  const { additionalNotes } = req.body;
+  const { additionalNotes, totalAmount } = req.body;
 
   try {
     // Find the order by its ID
@@ -49,6 +75,7 @@ router.put("/update/:orderId", async (req, res) => {
 
     // Update additional notes
     order.additional_notes = additionalNotes;
+    order.total_amount = totalAmount;
 
     // Save the updated order
     await order.save();
@@ -146,77 +173,6 @@ router.get("/details/:OrderID", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// Add delivery details to order
-router.post("/add-delivery/:orderId", async (req, res) => {
-  try {
-    const orderId = req.params.orderId;
-
-    const order = await Order.findById(orderId);
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
-
-    const deliverySetting = await DeliveryData.findById(
-      "6642047e93506b8a703ecff0"
-    );
-    if (!deliverySetting) {
-      return res.status(404).json({ error: "Delivery settings not found" });
-    }
-
-    let totalQuantity = 0;
-    order.items.forEach((item) => {
-      totalQuantity += item.quantity;
-    });
-
-    let chargesDelivery = 0;
-
-    if (totalQuantity < deliverySetting.deliveryFree) {
-      chargesDelivery = deliverySetting.chargePrice;
-    } else {
-      chargesDelivery =
-        deliverySetting.chargePrice +
-        deliverySetting.chargePrice * deliverySetting.interest;
-    }
-
-    delivery.charges = chargesDelivery;
-    console.log("chargesDelivery", chargesDelivery);
-    await order.save();
-
-    res.json("Delivery details added to the order successfully");
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while adding details to the order" });
-  }
-});
-
-// Read a delivery detail by ID
-router.get("/:orderId/read_delivery", async (req, res) => {
-  try {
-    const { orderId } = req.params;
-
-    const order = await Order.findById(orderId);
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
-
-    const deliveryDetail = order.delivery;
-    if (!deliveryDetail) {
-      return res
-        .status(404)
-        .json({ error: "Delivery detail not found in the order" });
-    }
-
-    res.json(deliveryDetail);
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while fetching the delivery detail" });
   }
 });
 

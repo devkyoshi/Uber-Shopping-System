@@ -97,7 +97,7 @@ const customerRatingRouter = require("./routes/customer/customer.rating.routes.j
 app.use("/Rating", customerRatingRouter);
 
 const Delivery = require("./routes/deliveryCRUD.js");
-app.use("/Deliver", Delivery);
+app.use("/Delivery", Delivery);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

@@ -20,18 +20,6 @@ const ReportSchema = new mongoose.Schema({
         trim:true,
         
     },
-    sm_latitude: {
-        type: String,
-        required:true,
-        trim:true,
-       
-    },
-    sm_longitude: {
-        type: String,
-        required:true,
-        trim:true,
-        default: "n/a",
-    },
     item_name: {
         type: String,
         required:true,

@@ -178,6 +178,12 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
         ...prevFormData,
         [name]: value.toLowerCase(),
       }));
+    } else if (name === "account_number") {
+      const newValue = value.replace(/\D/g, "");
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: newValue,
+      }));
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -294,7 +300,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
             )
             .then(() => {
               console.log("Payment successful. Updating paymentMade...");
-              setPaymentMade(true); // Update paymentMade after successful payment
+              setPaymentMade(true);
             });
           setPaymentMade(true);
         } else if (paymentMethod === "cash") {
@@ -518,7 +524,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
                           color="blue-gray"
                           className="mb-2 font-medium"
                         >
-                          CVC
+                          CVV
                         </Typography>
                         <Input
                           maxLength={3}

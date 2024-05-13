@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {
+  Alert,
   Card,
   Input,
   Button,
@@ -28,7 +29,7 @@ export function PromotionForm({ supermarketId }) {
 
       if (name === "promotion_name" || name === "discount_rate") {
         // Regular expression to match alphanumeric characters and space
-        const regex = /^[a-zA-Z0-9 %]*$/;
+        const regex = /^[a-zA-Z0-9 . %]*$/;
 
         // If the input matches the regex, update state
         if (regex.test(value)) {
@@ -61,8 +62,13 @@ export function PromotionForm({ supermarketId }) {
     try {
       const response = await axios.post(
         `http://localhost:8070/Promotion/${supermarketId}/promotion-add`,
-        promotionData
+        {
+          ...promotionData,
+          // Include selected item types in the request body
+          Items: promotionData.Items.map((item) => ({ item_type: item })),
+        }
       );
+      alert("Promotion added to supermarket successfully!");
       console.log(response.data); // You can handle success response here
     } catch (error) {
       console.error(error); // You can handle error response here
@@ -86,6 +92,7 @@ export function PromotionForm({ supermarketId }) {
                 <Input
                   type="text"
                   size="lg"
+                  required
                   placeholder="name"
                   className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                   labelProps={{
@@ -99,7 +106,7 @@ export function PromotionForm({ supermarketId }) {
                   Discount Rate
                 </Typography>
                 <Input
-                  type="number"
+                  required
                   size="lg"
                   placeholder="0.00"
                   className="!border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -120,6 +127,7 @@ export function PromotionForm({ supermarketId }) {
                   Start Date
                 </Typography>
                 <Input
+                  required
                   type="date"
                   size="lg"
                   placeholder=""
@@ -135,6 +143,7 @@ export function PromotionForm({ supermarketId }) {
                   End Date
                 </Typography>
                 <Input
+                  required
                   type="date"
                   size="lg"
                   placeholder=""
@@ -306,6 +315,7 @@ export function PromotionForm({ supermarketId }) {
                   </ListItem>
                 </div>
               </div>
+                       
             </List>
           </div>
 

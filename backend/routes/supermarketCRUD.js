@@ -187,4 +187,26 @@ router.get("/items/:item_Id", async (req, res) => {
   }
 });
 
+//---------------Peiris T C L add the code---------------------using for the Report issue form
+
+// Route to fetch supermarket locations by name
+router.get('/supermarket/locations/:name', async (req, res) => {
+  const supermarketName = req.params.name;
+  console.log(supermarketName)
+  try {
+    // Query the database to find the supermarket by name
+    const supermarket = await Supermarket.findOne({ sm_name: supermarketName }).select('sm_location');
+
+    if (!supermarket) {
+      return res.status(404).json({ error: 'Supermarket not found' });
+    }
+
+    console.log(supermarket)
+    res.json({ locations: supermarket.sm_location });
+  } catch (error) {
+    console.error('Error fetching supermarket locations:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;

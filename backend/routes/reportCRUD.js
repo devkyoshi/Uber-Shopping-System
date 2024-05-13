@@ -14,8 +14,6 @@ router.post("/quality-report-add", async (req, res) => {
         driver_id,
         market_name,
         sm_location,
-        sm_latitude,
-        sm_longitude,
         item_name,
         issue_type,
         description
@@ -23,7 +21,7 @@ router.post("/quality-report-add", async (req, res) => {
 
     try {
         // Check if required fields are present
-        if (!driver_id || !market_name || !sm_location || !sm_latitude || !sm_longitude || !item_name ||  !issue_type || !description) {
+        if (!driver_id || !market_name || !sm_location || !item_name ||  !issue_type || !description) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -39,8 +37,6 @@ router.post("/quality-report-add", async (req, res) => {
             driver_id,
             market_name,
             sm_location,
-            sm_latitude,
-            sm_longitude,
             item_name,
             issue_type,
             description

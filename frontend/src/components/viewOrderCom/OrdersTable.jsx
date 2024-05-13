@@ -18,7 +18,6 @@ export function OrdersTable({ orderId }) {
   const [order, setOrder] = useState(null);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [deliveryInfo, setDeliveryData] = useState("");
   const navigate = useNavigate();
   console.log("OrderID: ", orderId);
 
@@ -34,11 +33,6 @@ export function OrdersTable({ orderId }) {
         );
         setOrder(response.data);
         console.log("Order Data: ", response.data);
-        const deliveryData = await axios.get(
-          `http://localhost:8070/Order/${orderId}/read_delivery`
-        );
-        setDeliveryData(deliveryData);
-        console.log("fsdfsddfs", deliveryData);
       } catch (error) {
         console.error("Error fetching order:", error);
       }
@@ -89,12 +83,26 @@ export function OrdersTable({ orderId }) {
     navigate("/");
   };
 
-  const makePayment = (orderId) => {
+  const makePayment = async (orderId) => {
     navigate(`/payment/${orderId}`);
+    try {
+      const response = await axios.put(
+        `http://localhost:8070/Order/update/${orderId}`,
+        {
+          total_Amount: totalAmount,
+        }
+      );
+      console.log(response.data); // Handle response from the server
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle error
+    }
   };
 
   const handleOpen = () => setOpen(!open);
   const purchaseAmount = order?.order_details?.purchase_amount;
+  const deliveryCharges = order?.order_details?.delivery[0]?.charges;
+  const totalAmount = purchaseAmount + deliveryCharges;
 
   return (
     <div className="w-full">
@@ -119,16 +127,16 @@ export function OrdersTable({ orderId }) {
         </div>
       </div>
 
-      {/* <div>
-        <Typography variant="h3" color="black" className="font-bold ml-10">
+      <div>
+        <Typography variant="h6" color="black" className="font-bold ml-10 mt-5">
           <span className="text-gray-500">Purchase Amount: </span>
-          <span className="text-gray-500">{purchaseAmount}</span>
+          <span className="text-gray-500  mr-24">{purchaseAmount}</span>
           <span className="text-gray-500">Delivery Charges: </span>
-          <span className="text-gray-500">{orderId}</span>
+          <span className="text-gray-500  mr-24">{deliveryCharges}</span>
           <span className="text-gray-500">Total Amount: </span>
-          <span className="text-gray-500">{orderId}</span>
+          <span className="text-gray-500  mr-24">{totalAmount}</span>
         </Typography>
-      </div> */}
+      </div>
 
       <Card className="mb-8">
         <div className="ml-10 mt-6 mb-10 mr-10">
