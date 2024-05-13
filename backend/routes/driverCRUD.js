@@ -135,6 +135,8 @@ router.put("/:branchID/driver-update/:driverID", async (req, res) => {
 //     });
 //   }
 // });
+
+//-------------------------------------------------------------previous method
 router.delete("/:branchID/driver-delete/:driverID", async (req, res) => {
   try {
     const { branchID, driverID } = req.params;
@@ -156,6 +158,38 @@ router.delete("/:branchID/driver-delete/:driverID", async (req, res) => {
     });
   }
 });
+
+
+// router.delete("branches/:branchId/driver-delete/:driverId", async (req, res) => {
+//   const { branchId, driverId } = req.params;
+
+//   try {
+//     // Find the branch by branch_ID
+//     const branch = await Branch.findOne({ branch_ID: branchId });
+
+//     if (!branch) {
+//       return res.status(404).json({ message: "Branch not found" });
+//     }
+
+//     // Find the index of the driver with driver_id in the drivers array
+//     const driverIndex = branch.drivers.findIndex(
+//       (driver) => String(driver.driver_id) === driverId
+//     );
+
+//     if (driverIndex === -1) {
+//       return res.status(404).json({ message: "Driver not found in this branch" });
+//     }
+
+//     // Remove the driver from the drivers array
+//     branch.drivers.splice(driverIndex, 1);
+//     await branch.save();
+
+//     res.json({ message: "Driver removed from branch successfully" });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
 
 // Route to get all drivers in a branch by branch_ID
 router.get("/drivers/:branchId", async (req, res) => {

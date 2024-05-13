@@ -10,6 +10,17 @@ import {
   Select,
 } from "@material-tailwind/react";
 
+
+
+// Define the validation function
+function validateVehicleNumber(vehicleNumber) {
+  var regex = /^[A-Z]{2,3}-\d{4}$/;
+ 
+  
+  return regex.test(vehicleNumber) ;
+}
+
+
 export function DriverForm({ branch_ID, district }) {
   const [driverDetails, setDriverDetails] = useState({
     branchID: branch_ID,
@@ -21,10 +32,19 @@ export function DriverForm({ branch_ID, district }) {
   });
 
   const [availableDrivers, setAvailableDrivers] = useState([]);
+  const [vehicleNumberError, setVehicleNumberError] = useState("");
 
+  
   useEffect(() => {
     fetchAvailableDrivers();
   }, []);
+
+
+  const checkInitialVehicleNumber = () => {
+    if (driverDetails.vehicle_number && !validateVehicleNumber(driverDetails.vehicle_number)) {
+      setVehicleNumberError("Please enter a valid vehicle number.");
+    }
+  };
 
   const fetchAvailableDrivers = async () => {
     try {
@@ -41,6 +61,15 @@ export function DriverForm({ branch_ID, district }) {
   const handleChange = (e) => {
     if (e.target && e.target.name) {
       const { name, value } = e.target;
+
+      if (name === "vehicle_number") {
+        if (!validateVehicleNumber(value)) {
+          setVehicleNumberError("Please enter a valid vehicle number.");
+        } else {
+          setVehicleNumberError("");
+        }
+      }
+      
       setDriverDetails({ ...driverDetails, [name]: value });
     }
   };
@@ -49,6 +78,13 @@ export function DriverForm({ branch_ID, district }) {
     console.log("handleselect passed: ", value, name);
     setDriverDetails({ ...driverDetails, [name]: value });
   };
+
+  const handleKeyPress = (e) => {
+    // If the pressed key is not a letter, digit, or '@', prevent the default action
+    if (!/[A-Z0-9.-]/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,13 +109,13 @@ export function DriverForm({ branch_ID, district }) {
         Add Driver
       </Typography>
 
-      <div className="ml-48 pl-10">
+      <div className="flex flex-row gap-8">
         <form
           onSubmit={handleSubmit}
-          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+          className="w-1/2 max-w-screen-md"
         >
-          <div className="mb-1 flex flex-col gap-6">
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
+          <div className="mb-1">
+            <Typography variant="h6" color="blue-gray" className="mb-5">
               Branch ID
             </Typography>
             <Input
@@ -92,7 +128,7 @@ export function DriverForm({ branch_ID, district }) {
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
 
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
+            <Typography variant="h6" color="blue-gray" className="mb-5 mt-6">
               Availability
             </Typography>
 
@@ -111,7 +147,7 @@ export function DriverForm({ branch_ID, district }) {
               onChange={handleChange}
             />
 
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
+            <Typography variant="h6" color="blue-gray" className="mb-5 mt-6">
               Current Hand Over Money
             </Typography>
             <Input
@@ -120,12 +156,20 @@ export function DriverForm({ branch_ID, district }) {
               name="current_handover_money"
               value={driverDetails.current_handover_money}
               onChange={handleChange}
+              onKeyPress={handleKeyPress}
               placeholder="Enter Current Hand Over Money"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
+          </div>
+        </form>
 
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Driver ID
+        <form
+          onSubmit={handleSubmit}
+          className="w-1/2 max-w-screen-md"
+        >
+          <div className="mb-1">
+            <Typography variant="h6" color="blue-gray" className="mb-5">
+              Driver Name
             </Typography>
             <Select
               name="driver_id"
@@ -140,7 +184,7 @@ export function DriverForm({ branch_ID, district }) {
               ))}
             </Select>
 
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
+            <Typography variant="h6" color="blue-gray" className="mb-5 mt-6">
               Available District
             </Typography>
             <Input
@@ -154,7 +198,7 @@ export function DriverForm({ branch_ID, district }) {
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
 
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
+            <Typography variant="h6" color="blue-gray" className="mb-5 mt-6">
               Vehicle Number
             </Typography>
             <Input
@@ -163,16 +207,23 @@ export function DriverForm({ branch_ID, district }) {
               name="vehicle_number"
               value={driverDetails.vehicle_number}
               onChange={handleChange}
+              onKeyPress={handleKeyPress}
               placeholder="Enter Vehicle Number"
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
             />
           </div>
+
+          {vehicleNumberError && (
+            <Typography variant="p" color="red" className="mt-1">
+              {vehicleNumberError}
+            </Typography>
+          )}
 
           <Button type="submit" className="mt-6" fullWidth>
             Add Driver
           </Button>
         </form>
       </div>
-    </Card>
-  );
+    </Card>
+  );
 }
