@@ -39,8 +39,6 @@ export default function DriverComplaintForm() {
     description: "",
   });
 
-
-
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -183,6 +181,7 @@ export default function DriverComplaintForm() {
                   onChange={handleChange}
                   className="w-full p-1"
                   required
+                  readOnly
                 />
               </div>
               

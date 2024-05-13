@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ComplaintAdmin from "../pages/Complaint/ComplaintAdmin";
 import Performance from "../pages/Performance"
+import Issue from "../components/report/Issue"
 import { MenuItem, Typography} from "@material-tailwind/react";
 
 export default function QualityAdminProfileDetail() {
@@ -33,7 +34,7 @@ export default function QualityAdminProfileDetail() {
         </MenuItem>
         <MenuItem
           className="flex items-center rounded-lg"
-          onClick={() => handleTabChange('Component2')}
+          onClick={() => handleTabChange('Component3')}
         >
           <Typography variant="h6">
           Performance
@@ -43,7 +44,7 @@ export default function QualityAdminProfileDetail() {
       
       <div className="mt-5">
         {activeTab === 'Component1' ? <ComplaintAdmin /> : null}
-        {activeTab === 'Component2' ? <Performance /> : null}
+        {activeTab === 'Component2' ? <Issue /> : null}
         {activeTab === 'Component3' ? <Performance /> : null}
       </div>
     </div>

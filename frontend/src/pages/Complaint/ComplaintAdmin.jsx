@@ -89,10 +89,10 @@ export default function ComplaintAdmin() {
 
       <div>
         <Typography variant="h5" color="blue-gray">
-          Recent Complaints
+        Recent Complaints
         </Typography>
         <Typography color="gray" className="mt-1 font-normal">
-          These are details about the last complaints
+        These are details about the last complaints
         </Typography>
         <br />
         <div className="grid grid-cols-1 gap-3">
