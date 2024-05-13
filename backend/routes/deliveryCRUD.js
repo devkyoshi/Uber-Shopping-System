@@ -27,18 +27,22 @@ router.post("/delivery-add", async (req, res) => {
 // READ operation - Get a single delivery by ID
 router.get("/delivery/:id", async (req, res) => {
   try {
-    const delivery = await Delivery.findById(req.params.id);
+    const deliveryId = req.params.id;
+    const delivery = await Delivery.findById(deliveryId);
     if (!delivery) {
-      return res.status(404).json({ message: "Delivery not found" });
+      return res.status(404).json({ error: "delivery not found" });
     }
     res.json(delivery);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching the Delivery" });
   }
 });
 
 // UPDATE operation - Update a delivery by ID
-router.put("/delivery/:id", async (req, res) => {
+router.put("/delivery-update/:id", async (req, res) => {
   try {
     const { chargePrice, deliveryFree, interest } = req.body;
     const updatedDelivery = await Delivery.findByIdAndUpdate(

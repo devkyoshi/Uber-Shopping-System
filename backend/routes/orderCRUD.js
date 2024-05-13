@@ -15,7 +15,7 @@ const Customer = require("../models/customer/customer_register_schema");
 router.post("/create-order", async (req, res) => {
   try {
     const { customer_id, cart, purchase_amount } = req.body; // Extract customer_id and cart from request body
-
+    console.log("sfsfsdf", cart);
     // Create a new order object with customer_id and cart details
     const newOrder = new Order({
       customer_id,
@@ -159,8 +159,10 @@ router.post("/add-delivery/:orderId", async (req, res) => {
       return res.status(404).json({ error: "Order not found" });
     }
 
-    const deliverySetting = await DeliveryData.findOne();
-    if (!delivery) {
+    const deliverySetting = await DeliveryData.findById(
+      "6642047e93506b8a703ecff0"
+    );
+    if (!deliverySetting) {
       return res.status(404).json({ error: "Delivery settings not found" });
     }
 
@@ -169,7 +171,7 @@ router.post("/add-delivery/:orderId", async (req, res) => {
       totalQuantity += item.quantity;
     });
 
-    const chargesDelivery = 0;
+    let chargesDelivery = 0;
 
     if (totalQuantity < deliverySetting.deliveryFree) {
       chargesDelivery = deliverySetting.chargePrice;
@@ -179,8 +181,8 @@ router.post("/add-delivery/:orderId", async (req, res) => {
         deliverySetting.chargePrice * deliverySetting.interest;
     }
 
-    deliver.charges = chargesDelivery;
-
+    delivery.charges = chargesDelivery;
+    console.log("chargesDelivery", chargesDelivery);
     await order.save();
 
     res.json("Delivery details added to the order successfully");

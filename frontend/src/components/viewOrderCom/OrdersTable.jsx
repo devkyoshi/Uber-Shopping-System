@@ -16,9 +16,9 @@ const TABLE_HEAD = ["Item Name", "Quantity", "Price", "SuperMarket Name"];
 
 export function OrdersTable({ orderId }) {
   const [order, setOrder] = useState(null);
-  const [delivery, setDelivery] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [deliveryInfo, setDeliveryData] = useState("");
   const navigate = useNavigate();
   console.log("OrderID: ", orderId);
 
@@ -34,10 +34,11 @@ export function OrdersTable({ orderId }) {
         );
         setOrder(response.data);
         console.log("Order Data: ", response.data);
-        const delivery = await axios.get(
-          `"http://localhost:8070/Order/${orderId}/read_delivery"`
+        const deliveryData = await axios.get(
+          `http://localhost:8070/Order/${orderId}/read_delivery`
         );
-        setDelivery(delivery.data);
+        setDeliveryData(deliveryData);
+        console.log("fsdfsddfs", deliveryData);
       } catch (error) {
         console.error("Error fetching order:", error);
       }
@@ -93,6 +94,7 @@ export function OrdersTable({ orderId }) {
   };
 
   const handleOpen = () => setOpen(!open);
+  const purchaseAmount = order?.order_details?.purchase_amount;
 
   return (
     <div className="w-full">
@@ -120,13 +122,11 @@ export function OrdersTable({ orderId }) {
       {/* <div>
         <Typography variant="h3" color="black" className="font-bold ml-10">
           <span className="text-gray-500">Purchase Amount: </span>
-          <span className="text-gray-500">{order.purchas_amount}</span>
+          <span className="text-gray-500">{purchaseAmount}</span>
           <span className="text-gray-500">Delivery Charges: </span>
-          <span className="text-gray-500">{delivery}</span>
+          <span className="text-gray-500">{orderId}</span>
           <span className="text-gray-500">Total Amount: </span>
-          <span className="text-gray-500">
-            {order.purchas_amount + delivery}
-          </span>
+          <span className="text-gray-500">{orderId}</span>
         </Typography>
       </div> */}
 
@@ -178,7 +178,7 @@ export function OrdersTable({ orderId }) {
           <tbody>
             {order &&
               order.items.map(
-                ({ item_name, quantity, price, sm_name }, index) => {
+                ({ item_name, quantity, unit, price, sm_name }, index) => {
                   const isLast = index === order.items.length - 1;
                   const classes = isLast
                     ? "p-4"
