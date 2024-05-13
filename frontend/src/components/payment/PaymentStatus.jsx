@@ -153,30 +153,14 @@ const PaymentStats = () => {
 
   return (
     <div className="inline-flex">
-      <Card className="mr-5 mb-5 w-96">
-        <CardHeader
-          floated={false}
-          shadow={false}
-          color="transparent"
-          className="flex flex-col gap-4 rounded-none md:flex-row md:items-center"
+      <Card className="mr-10 mb-5 w-96">
+        <Typography
+          variant="h6"
+          color="blue-gray"
+          className="text-center -mt-2"
         >
-          <div className="w-max rounded-lg bg-gray-900 p-5 text-white">
-            <CreditCardIcon className="h-6 w-6" />
-          </div>
-          <div>
-            <Typography variant="h6" color="blue-gray">
-              Payments Per Day
-            </Typography>
-            <Typography
-              variant="small"
-              color="gray"
-              className="max-w-sm font-normal"
-            >
-              A "Payments Per Day" chart shows how many payments are made each
-              day over a given time period.
-            </Typography>
-          </div>
-        </CardHeader>
+          Payments Per Day
+        </Typography>
         <CardBody className="px-2 pb-0">
           <Chart {...chartConfigPaymentPerDay} />
         </CardBody>
@@ -186,13 +170,13 @@ const PaymentStats = () => {
           <Card className="p-5 w-full">
             {stats ? (
               <div>
-                <Typography>
+                <Typography variant="h6">
                   Total Revenue : Rs.
                   {parseFloat(stats.totalCardAmount) +
                     parseFloat(stats.totalCashAmount)}
                   .00
                 </Typography>
-                <Typography>
+                <Typography variant="h6">
                   Total Payments :
                   {parseInt(stats.totalCardPayments) +
                     parseInt(stats.totalCashPayments)}
@@ -211,7 +195,7 @@ const PaymentStats = () => {
                   <div>
                     <List>
                       <ListItem>
-                        <Typography>
+                        <Typography variant="h6">
                           Total Card Payments : Rs.{stats.totalCardAmount}.00
                         </Typography>
                         <ListItemSuffix>
@@ -228,7 +212,7 @@ const PaymentStats = () => {
                         </ListItemSuffix>
                       </ListItem>
                       <ListItem>
-                        <Typography>
+                        <Typography variant="h6">
                           Total Cash Payments : Rs.{stats.totalCashAmount}.00
                         </Typography>
                         <ListItemSuffix>

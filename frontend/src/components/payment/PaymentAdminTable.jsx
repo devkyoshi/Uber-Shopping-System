@@ -42,11 +42,12 @@ export function PaymentAdminTable() {
 
   const filteredPayments = payments.filter((payment) => {
     const searchValue = searchInput.toLowerCase();
-    return (
-      payment.order_id.toLowerCase().includes(searchValue) ||
-      payment.payment_id.toLowerCase().includes(searchValue) ||
-      payment.email.toLowerCase().includes(searchValue)
+    // Convert each payment object to an array of its values
+    const paymentValues = Object.values(payment).map((value) =>
+      typeof value === "string" ? value.toLowerCase() : ""
     );
+    // Check if any of the values in the payment object contain the search input
+    return paymentValues.some((value) => value.includes(searchValue));
   });
 
   if (loading) {
