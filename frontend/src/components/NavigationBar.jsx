@@ -27,7 +27,7 @@ import {
   Bars3Icon,
   XMarkIcon,
   SquaresPlusIcon,
-  SunIcon,
+  StarIcon,
   TagIcon,
 } from "@heroicons/react/24/outline";
 import {
@@ -51,9 +51,10 @@ const navListMenuItems = [
     path: "/about",
   },
   {
-    title: "Services",
-    description: "Learn how we can help you achieve your goals.",
-    icon: SunIcon,
+    title: "Rate Employees",
+    description: "How was our employees? Rate them",
+    icon: StarIcon,
+    path: "/employeerate?tab=rating",
   },
   {
     title: "Complaint",
