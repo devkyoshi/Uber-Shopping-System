@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Typography, Input, Button } from "@material-tailwind/react"; // Assuming Input and Button components are imported from Material Tailwind
 import { SideBar } from "../SideBar";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const TABLE_HEAD = [
   "Order ID",
@@ -38,17 +40,86 @@ export function AllOrders({ customerId }) {
     fetchOrders();
   }, [customerId]);
 
+  // handling serch bar
   const handleSearch = () => {
-    // Implement search functionality based on searchInput
-    // Filter the orders array based on the searchInput
-    // Update the state with filtered orders
+    // Convert searchInput to lowercase for case-insensitive search
+    const searchTerm = searchInput.toLowerCase();
+  
+    // Filter orders based on searchInput
+    const filteredOrders = orders.filter((order) =>
+      order._id.toLowerCase().includes(searchTerm)
+    );
+  
+    // Update state with filtered orders
+    setOrders(filteredOrders);
   };
-
+  
+  
+  
   const handleDownloadReport = () => {
-    // Implement download report functionality
-    // Generate a report including all details
-    // Provide a downloadable link or initiate download action
+    // Create a new jsPDF instance
+    const doc = new jsPDF();
+  
+    // Set the title of the PDF
+    doc.setFontSize(18);
+    doc.text("Orders Report", 105, 10, { align: "center" });
+  
+    // Set up the table headers
+    const headers = TABLE_HEAD;
+  
+    // Set up the data rows
+    const rows = [];
+  
+    // Add order and item data
+    orders.forEach((order) => {
+      // Add order data
+      rows.push([["Order ID", order._id]]);
+      rows.push([["Purchase Amount", order.purchase_amount]]);
+      rows.push([["Order Status", order.order_status]]);
+      rows.push([["Order Date", order.order_date]]);
+      rows.push([["Payment Method", order.payment_method]]);
+      rows.push([["Payment Amount", order.payment_amount]]);
+  
+      // Add item data
+      order.items.forEach((item) => {
+        rows.push([
+          ["Item Name", item.item_name],
+          ["Quantity", item.quantity],
+          ["Price", item.price],
+          ["Supermarket Name", item.supermarket_name],
+        ]);
+      });
+  
+      // Add spacing between orders
+      rows.push([""]); // Empty row
+    });
+  
+    // Flatten the rows array
+    const flatRows = rows.flat();
+  
+    // Add table headers
+    doc.autoTable({
+      body: [headers],
+      startY: 20,
+    });
+  
+    // Add data rows
+    doc.autoTable({
+      body: flatRows,
+      startY: 30,
+      theme: "grid", // Add borders
+      columnStyles: {
+        0: { cellWidth: "auto" }, // Adjust column width to fit content
+      },
+    });
+  
+    // Save the PDF
+    doc.save("orders_report.pdf");
   };
+  
+
+
+  
 
   if (loading) {
     return <div>Loading...</div>;
