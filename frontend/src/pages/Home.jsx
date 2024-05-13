@@ -149,14 +149,14 @@ export default function Home() {
                   <Typography
                     variant="body"
                     color="blue-gray"
-                    className="text-center border-b-2 border-green-600 text-xl pb-1 mb-1"
+                    className="text-left font-bold  text-xl pb-3 mb-1"
                   >
                     Your Cart
                   </Typography>
                   {cart.map((item, index) => (
                     <div
                       key={index}
-                      className="flex justify-between items-center border-b"
+                      className="flex justify-between items-center border-b pb-5"
                     >
                       <div className="pr-10">
                         <Typography variant="body" color="blue-gray">
@@ -191,18 +191,18 @@ export default function Home() {
                   ))}
 
                   <div className=" flex items-center justify-between mt-2 px-9 py-2">
-                    <Typography variant="body" color="blue-gray">
+                    <Typography variant="body" color="blue-gray" className="font-semibold">
                       Total:
                     </Typography>
-                    <Typography variant="body" color="blue-gray">
+                    <Typography variant="body" color="blue-gray" className="font-semibold">
                       Rs. {getTotalPrice().toFixed(2).padStart(5, "0")}
                     </Typography>
                   </div>
                   <div className="gap-32 inline-flex border-t-2 pt-2 border-green-600">
-                    <Button color="red" onClick={() => setCart([])}>
+                    <Button color="white" onClick={() => setCart([])} className="text-red-500 hover:text-red-700">
                       Clear Cart
                     </Button>
-                    <Button color="green" onClick={makeOrder}>
+                    <Button color="green" onClick={makeOrder} className="border border-black">
                       Make Order
                     </Button>
                   </div>
