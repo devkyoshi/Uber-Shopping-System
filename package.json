@@ -6,6 +6,7 @@
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\""
   },
   "dependencies": {
+    "react-apexcharts": "^1.4.1",
     "react-pdf": "^8.0.2",
     "react-to-print": "^2.15.1"
   }
