@@ -157,82 +157,33 @@ export default function ComplaintForm() {
           Complaint Form
         </Typography>
 
-    return(
-        <div className='main-layout'>
-          <SideBar/>
-            <div className='inner-layout'>
-            <Typography variant="h3" style={{ color: 'var(--logo-green1)' }} className="ml-3">Complaint Form</Typography>
-
-                <div className=" container mx-auto mt-5 bg-gray-100 rounded-lg border border-gray-300 p-4">
-                <br/>
-                  <form onSubmit={handleSubmit} className=" max-w-720px mx-auto space-y-5 ">
-                    <div className="grid grid-cols-2 gap-10 mb-1">
-                      <div>
-                       <div className="mb-3">
-                        <Typography htmlFor="customerId" className="block mb-2 font-bold">Customer Name:</Typography>
-                        <Typography><input type="text" id="customerId" name="customer_id" value={formData.customer_id} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md" required readOnly /></Typography>
-                        </div>
-                        <div className="mb-3">
-                        <Typography htmlFor="orderId" className="block mb-2 font-bold">Order ID:</Typography>
-                        <Typography><input type="text" id="orderId" name="order_id" value={formData.order_id} onChange={handleChange} className="w-full p-1 bg-red-45 border border-gray-400 rounded-md" required /></Typography>
-                        </div>
-                        <div className="mb-3">
-                        <Typography htmlFor="paymentId" className="block mb-2 font-bold">Payment ID:</Typography>
-                        <Typography><input type="text" id="paymentId" name="payment_id" value={formData.payment_id} onChange={handleChange} className="w-full p-1 bg-red-45 border border-gray-400 rounded-md" required /></Typography>
-                        </div>
-                        <div className="mb-3">
-                        <Typography htmlFor="itemId" className="block mb-2 font-bold">Item ID:</Typography>
-                        <Typography><input type="text" id="itemId" name="item_id" value={formData.item_id} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md  " required /></Typography>
-                        </div>
-                        <div className="mb-3">
-                        <Typography htmlFor="quantity" className="block mb-2 font-bold">Quantity :</Typography>
-                        <Typography><input type="text" id="quantity" name="quantity" value={formData.quantity} onChange={handleChange} className="w-full p-1 border border-gray-400 rounded-md " required /></Typography>
-                        </div>
-                        <Typography>{errorMessage && <div className="text-red-800 mb-4">{errorMessage}</div>}</Typography>
-                        <Typography>{successMessage && <div className="text-green-500 mb-4">{successMessage}</div>}</Typography>
-                        {/* Button to submit the form */}
-                        <Button type="submit" disabled={uploading} className="bg-custom-gradient text-white py-2 px-4 w-30 mt-3 text-base border border-transparent rounded-md hover:bg-custom-gradient transition duration-300">
-                          {uploading ? 'Uploading...' : 'Submit'}
-                        </Button>
-                        <Button onClick={resetForm} className="bg-red-500 text-white py-2 px-4 w-30 mt-3 ml-3 text-base border border-transparent rounded-md hover:bg-red-600 transition duration-300">
-                           Reset
-                        </Button>
-                      </div>
-                    <div >
-                    <div className="mb-3">
-                       <Typography htmlFor="complaintType" className="block mb-2 font-bold">Complaint Type:</Typography>
-                       <Typography><select id="complaintType" name="complaint_type" value={formData.complaint_type} onChange={handleChange} className="w-full p-1 bg-white border border-gray-400 rounded-md" required>
-                         <option value="">---Select Complaint Type---</option>
-                         <option value="Expired">Item is expired</option>
-                         <option value="Damaged">Item is damaged</option>
-                         <option value="WrongItem">Not what I ordered</option>
-                       </select>
-                       </Typography>
-                    </div>
-                    <div className="mb-3">
-                       <Typography htmlFor="resolvingOption" className="block mb-2 font-bold">Resolving Option:</Typography>
-                       <Typography><select id="resolvingOption" name="resolving_option" value={formData.resolving_option} onChange={handleChange} className="w-full p-1 bg-white border border-gray-400 rounded-md" required>
-                         <option value="">---Select Resolving Option---</option>
-                         <option value="refund">Refund</option>
-                         <option value="replacement">Replacement</option>
-                       </select>
-                       </Typography>
-                    </div>
-                    <div className="mb-3">
-                       <Typography htmlFor="description" className="block mb-2 font-bold">Description :</Typography>
-                       <Typography><textarea type="text" id="description" name="description" value={formData.description} onChange={handleChange} className="w-full p-2 border border-gray-400 rounded-md" required /></Typography>
-                    </div>
-                    <div className="mb-3">
-                       <Typography htmlFor="complaint_img" id="complaintImgLabel" className="block mb-2 font-bold">Complaint Image :</Typography>
-                       <input type="file" id="complaint_img" name="complaint_img" onChange={handleFileChange} required aria-labelledby="complaintImgLabel" />
-                       {imagePreview && <img src={imagePreview} alt="Complaint Preview" style={{maxWidth: '50%', marginTop: '10px'}} />}
-                    </div>
-                    </div>
-                    </div>
-                   
-                    
-                  </form>
-                  <br/>
+        <div className=" container mx-auto mt-5 bg-gray-100 rounded-lg border border-gray-300 p-4">
+          <br />
+          <form
+            onSubmit={handleSubmit}
+            className=" max-w-720px mx-auto space-y-5 "
+          >
+            <div className="grid grid-cols-2 gap-10 mb-1">
+              <div>
+                <div className="mb-3">
+                  <Typography
+                    htmlFor="customerId"
+                    className="block mb-2 font-bold"
+                  >
+                    Customer Name:
+                  </Typography>
+                  <Typography>
+                    <input
+                      type="text"
+                      id="customerId"
+                      name="customer_id"
+                      value={formData.customer_id}
+                      onChange={handleChange}
+                      className="w-full p-1 border border-gray-400 rounded-md"
+                      required
+                      readOnly
+                    />
+                  </Typography>
                 </div>
                 <div className="mb-3">
                   <Typography
@@ -365,7 +316,7 @@ export default function ComplaintForm() {
                   </Typography>
                   <Typography>
                     <select
-                      id="resolving_option"
+                      id="resolvingOption"
                       name="resolving_option"
                       value={formData.resolving_option}
                       onChange={handleChange}
