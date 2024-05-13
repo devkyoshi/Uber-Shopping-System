@@ -10,12 +10,12 @@ export default function DriverComplaintForm() {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        driver_id: '',
-        market_name: '',
+        driver_id:'',
+        market_name: sm_name,
         sm_location: '',
         sm_latitude: '',
         sm_longitude: '',
-        item_name:'',
+        item_name:item_name,
         issue_type: '',
         description: ''
     });
@@ -23,6 +23,7 @@ export default function DriverComplaintForm() {
     const [uploading, setUploading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+   
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -41,7 +42,7 @@ export default function DriverComplaintForm() {
             );
 
             setSuccessMessage(response.data.message);
-            navigate('/complaint');
+            navigate('/Dashboard?tab=Employee_DeliveriesDone');
         } catch (error) {
             if (error.response) {
                 setErrorMessage(error.response.data.error);
