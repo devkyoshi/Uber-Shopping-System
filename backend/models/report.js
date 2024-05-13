@@ -14,17 +14,29 @@ const ReportSchema = new mongoose.Schema({
         trim:true,
         maxLength:100
     },
-    district:{
-        type:String,
+    sm_location: {
+        type: String,
         required:true,
         trim:true,
-        maxLength:100
+        
     },
-    branch:{
-        type:String,
+    sm_latitude: {
+        type: String,
         required:true,
         trim:true,
-        maxLength:50
+       
+    },
+    sm_longitude: {
+        type: String,
+        required:true,
+        trim:true,
+        default: "n/a",
+    },
+    item_name: {
+        type: String,
+        required:true,
+        trim:true,
+        default: "n/a",
     },
     issue_type:{
         type:String,

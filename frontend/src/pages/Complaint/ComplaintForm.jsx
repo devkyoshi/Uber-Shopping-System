@@ -194,7 +194,7 @@ export default function ComplaintForm(){
                     </div>
                     <div className="mb-3">
                        <Typography htmlFor="resolvingOption" className="block mb-2 font-bold">Resolving Option:</Typography>
-                       <Typography><select id="resolving_option" name="resolving_option" value={formData.resolving_option} onChange={handleChange} className="w-full p-1 bg-white border border-gray-400 rounded-md" required>
+                       <Typography><select id="resolvingOption" name="resolving_option" value={formData.resolving_option} onChange={handleChange} className="w-full p-1 bg-white border border-gray-400 rounded-md" required>
                          <option value="">---Select Resolving Option---</option>
                          <option value="refund">Refund</option>
                          <option value="replacement">Replacement</option>
