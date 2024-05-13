@@ -16,6 +16,7 @@ const TABLE_HEAD = ["Item Name", "Quantity", "Price", "SuperMarket Name"];
 
 export function OrdersTable({ orderId }) {
   const [order, setOrder] = useState(null);
+  const [delivery, setDelivery] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -33,6 +34,10 @@ export function OrdersTable({ orderId }) {
         );
         setOrder(response.data);
         console.log("Order Data: ", response.data);
+        const delivery = await axios.get(
+          `"http://localhost:8070/Order/${orderId}/read_delivery"`
+        );
+        setDelivery(delivery.data);
       } catch (error) {
         console.error("Error fetching order:", error);
       }
@@ -66,7 +71,7 @@ export function OrdersTable({ orderId }) {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this order?"
     );
-  
+
     if (confirmDelete) {
       try {
         await axios.delete(
@@ -82,7 +87,6 @@ export function OrdersTable({ orderId }) {
     setOpen(false); // Close the dialog after deletion
     navigate("/");
   };
-  
 
   const makePayment = (orderId) => {
     navigate(`/payment/${orderId}`);
@@ -112,6 +116,19 @@ export function OrdersTable({ orderId }) {
           </p>
         </div>
       </div>
+
+      {/* <div>
+        <Typography variant="h3" color="black" className="font-bold ml-10">
+          <span className="text-gray-500">Purchase Amount: </span>
+          <span className="text-gray-500">{order.purchas_amount}</span>
+          <span className="text-gray-500">Delivery Charges: </span>
+          <span className="text-gray-500">{delivery}</span>
+          <span className="text-gray-500">Total Amount: </span>
+          <span className="text-gray-500">
+            {order.purchas_amount + delivery}
+          </span>
+        </Typography>
+      </div> */}
 
       <Card className="mb-8">
         <div className="ml-10 mt-6 mb-10 mr-10">

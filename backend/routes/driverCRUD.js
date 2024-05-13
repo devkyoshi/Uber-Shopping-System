@@ -78,7 +78,6 @@ router.put("/:branchID/driver-update/:driverID", async (req, res) => {
     }
 
     const driverIndex = branch.drivers.findIndex((driver) => {
-      console.log("Driver object:", driver);
       return driver._id && driver._id.toString() === driverID;
     });
 
@@ -223,11 +222,8 @@ router.get("/drivers", async (req, res) => {
       },
     });
 
-    console.log("Branches:", branches);
-
     const driversData = branches.reduce((acc, branch) => {
       branch.drivers.forEach((driver) => {
-        console.log("Driver:", driver);
         if (driver.driver_id && driver.driver_id.Emp_Name) {
           acc.push({
             driver_id: driver.driver_id._id,
