@@ -7,6 +7,8 @@ router.get('/test', test);
 router.put('/update/:userId', verifyToken, updateUser);
 router.put('/lvlupdate/:userId', verifyToken, lvlupdateUser);
 router.delete('/delete/:userId', verifyToken, deleteUser);
+
+
 router.post('/signout', signout);
 router.get('/getusers', verifyToken, getUsers);
 

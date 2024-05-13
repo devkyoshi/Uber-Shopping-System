@@ -52,6 +52,7 @@ export default function Employee_level() {
       setUpdateUserError(error.message);
     }
   };
+  const totalAmount = ((currentUser.salary * currentUser.Avg_rating) / 100) + currentUser.salary;
 
   return (
     <div className="flex flex-row gap-8">
@@ -68,9 +69,9 @@ export default function Employee_level() {
                 <dd className="mt-1 text-sm text-gray-900">{currentUser.Emp_Level}</dd>
               </div>
               <div className="py-3">
-                <dt className="text-sm font-medium text-gray-500">Salary Details</dt>
+                <dt className="text-sm font-medium text-gray-500">{currentUser.salary},{currentUser.Avg_rating}</dt>
                 <dd className="mt-1 text-sm text-gray-900">
-                  Amount = LKR {currentUser.salary}/=
+                  Amount = LKR {totalAmount.toFixed(2)}/=
                   <br />
                 </dd>
               </div>
