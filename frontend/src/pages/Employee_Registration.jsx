@@ -83,6 +83,7 @@ export default function EmployeeRegistration() {
   onChange={handleChange}
   style={{ height: '40px', padding: '10px', width: '100%' }}
 >
+<option value='Select'>Select</option>
   <option value='Male'>Male</option>
   <option value='Female'>Female</option>
   <option value='Other'>Other</option>
@@ -106,6 +107,7 @@ export default function EmployeeRegistration() {
   onChange={handleChange}
   style={{ height: '40px', padding: '10px', width: '100%' }}
 >
+<option value='select'>select</option>
   <option value='Colombo'>Colombo</option>
   <option value='Gampaha'>Gampaha</option>
   <option value='Kalutara'>Kalutara</option>
@@ -122,6 +124,7 @@ export default function EmployeeRegistration() {
   onChange={handleChange}
   style={{ height: '40px', padding: '10px', width: '100%' }}
 >
+<option value='None'>None</option>
   <option value='Car'>Car</option>
   <option value='Van'>Van</option>
   <option value='Bike'>Bike</option>

@@ -93,7 +93,6 @@ router.post("/orders/:driverId", async (req, res) => {
 
     // Filter orders based on payment method
     const filteredOrders = orders.filter((order) => {
-      console.log("Checking order:", order);
       const isCash = order.cash_payment?.payment_method === "cash";
       const isCard = order.card_payment?.payment_method === "card";
       return isCash || isCard;
