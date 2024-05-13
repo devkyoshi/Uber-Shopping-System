@@ -5,7 +5,6 @@ import OrderForm from "./pages/OrderForm";
 import { Footer } from "./components/Footer";
 import Complaint from "./pages/Complaint/Complaint";
 import PaymentUI from "./pages/payment/PaymentUI";
-import TaskUI from "./pages/Task/TaskUI";
 import ItemUI from "./pages/item/ItemUI";
 import ViewOrder from "./pages/ViewOrder";
 import Refund from "./pages/Refund/RefundForm";
@@ -79,7 +78,6 @@ export default function App() {
         <Route path="/complaint" element={<Complaint />} />
         <Route path="/customer_register" element={<Register />} />
         <Route path="/payment/:orderId" element={<PaymentUI />} />
-        <Route path="/task" element={<TaskUI />} />
         <Route path="/items/:supermarketId" element={<ItemUI />} />
         <Route path="/refund/:complaintId/:orderId" element={<Refund />} />
         <Route path="/orders/:orderId" element={<ViewOrder />} />

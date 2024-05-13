@@ -120,6 +120,13 @@ const orderSchema = new mongoose.Schema({
       charges: {
         type: Number,
       },
+      distance: {
+        type: Number,
+      },
+      datetime: {
+        type: Date,
+        default: Date.now,
+      },
     },
   ],
 
