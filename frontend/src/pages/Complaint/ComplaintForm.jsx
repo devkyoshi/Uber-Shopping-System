@@ -316,7 +316,7 @@ export default function ComplaintForm() {
                   </Typography>
                   <Typography>
                     <select
-                      id="resolving_option"
+                      id="resolvingOption"
                       name="resolving_option"
                       value={formData.resolving_option}
                       onChange={handleChange}
