@@ -23,7 +23,7 @@ router.post("/quality-report-add", async (req, res) => {
 
     try {
         // Check if required fields are present
-      /*if (!driver_id || !market_name || !sm_location || !sm_latitude || !sm_longitude || !item_name ||  !issue_type || !description) {
+        if (!driver_id || !market_name || !sm_location || !sm_latitude || !sm_longitude || !item_name ||  !issue_type || !description) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -31,7 +31,7 @@ router.post("/quality-report-add", async (req, res) => {
   
           if (!existingemp) {
               return res.status(404).json({ message: 'User not found' });
-          }*/
+          }
 
     
         // Save refund to the database

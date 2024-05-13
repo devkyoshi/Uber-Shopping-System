@@ -4,13 +4,15 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Textarea, TextInput, Label } from 'flowbite-react';
 import DashSidebar from '../../components/DashSidebar';
+import { useSelector } from "react-redux";
 
 export default function DriverComplaintForm() {
+    const { currentUser } = useSelector((state) => state.user);
     const { item_name, sm_name } = useParams();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        driver_id:'',
+        driver_id:currentUser._id,
         market_name: sm_name,
         sm_location: '',
         sm_latitude: '',
@@ -23,6 +25,7 @@ export default function DriverComplaintForm() {
     const [uploading, setUploading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+   
    
 
     const handleChange = (e) => {
@@ -74,7 +77,7 @@ export default function DriverComplaintForm() {
                                     type="text"
                                     id="customerId"
                                     name="driver_id"
-                                    value={formData.driver_id}
+                                    value={currentUser.Emp_Name}
                                     onChange={handleChange}
                                     className="w-full p-1"
                                     required
