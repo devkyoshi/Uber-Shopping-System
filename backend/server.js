@@ -8,9 +8,9 @@ const app = express();
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
-const images = require('../backend/routes/multerConfig.js');
+const images = require("../backend/routes/multerConfig.js");
 // Serve static files from the 'uploads' directory
-app.use('/images', express.static('images'));
+app.use("/images", express.static("images"));
 
 //created a port
 const PORT = process.env.PORT || 8070;
@@ -74,36 +74,30 @@ app.use("/Branch", Branch);
 const Revenue = require("./routes/revenueCRUD.js");
 app.use("/Revenue", Revenue);
 
-
-
-
 //generate performance
-const qualityGenerateRoutes = require('./routes/quality_performance.routes.js');
-app.use('/Quality/Generate',qualityGenerateRoutes)
+const qualityGenerateRoutes = require("./routes/quality_performance.routes.js");
+app.use("/Quality/Generate", qualityGenerateRoutes);
 
 const customerfeedbackRouter = require("./routes/customer/customer.feedback.routes.js");
-app.use("/Feedback",customerfeedbackRouter)
+app.use("/Feedback", customerfeedbackRouter);
 
-
-
-
-
-//test connection 
-const userRoutes = require('./routes/user.route.js');
-app.use('/api/user', userRoutes);
+//test connection
+const userRoutes = require("./routes/user.route.js");
+app.use("/api/user", userRoutes);
 //register authentication
-const authroutes = require('./routes/Employee_authentication.route.js');
-app.use('/api/auth', authroutes);
+const authroutes = require("./routes/Employee_authentication.route.js");
+app.use("/api/auth", authroutes);
 //posting stuff
-const announcementroutes = require('./routes/announcement.route.js');
-app.use('/api/announcement', announcementroutes);
-//price comparison - adding supermarkets in to the list 
-const comparisonRouter = require('./routes/comparisonCRUD'); 
-app.use('/comparison', comparisonRouter);
+const announcementroutes = require("./routes/announcement.route.js");
+app.use("/api/announcement", announcementroutes);
+//price comparison - adding supermarkets in to the list
+const comparisonRouter = require("./routes/comparisonCRUD");
+app.use("/comparison", comparisonRouter);
 const customerRatingRouter = require("./routes/customer/customer.rating.routes.js");
-app.use("/Rating",customerRatingRouter)
+app.use("/Rating", customerRatingRouter);
 
-
+const Delivery = require("./routes/deliveryCRUD.js");
+app.use("/Deliver", Delivery);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

@@ -8,6 +8,8 @@ const router = express.Router();
 const Order = require("../models/order");
 const mongoose = require("mongoose");
 const Supermarket = require("../models/supermarkets");
+const DeliveryData = require("../models/delivery");
+const Customer = require("../models/customer/customer_register_schema");
 
 //Create new order
 router.post("/create-order", async (req, res) => {
@@ -147,75 +149,60 @@ router.get("/details/:OrderID", async (req, res) => {
   }
 });
 
-// // Add delivery details to order
-// router.post("/add-delivery/:orderId", async (req, res) => {
-//   try {
-//     const orderId = req.params.orderId;
-//     const { distance, costPerkm } = req.body;
-//     const charges = distance * costPerkm;
-
-//     const order = await Order.findById(orderId);
-//     if (!order) {
-//       return res.status(404).json({ error: "Order not found" });
-//     }
-
-//     order.delivery.push({ charges, distance, costPerkm });
-
-//     await order.save();
-
-//     res.json("Delivery details added to the order successfully");
-//   } catch (error) {
-//     console.error(error);
-//     res
-//       .status(500)
-//       .json({ error: "An error occurred while adding details to the order" });
-//   }
-// });
-
-// Update delivery details to order
-router.put("/:orderId/update-delivery/:deliveryId", async (req, res) => {
+// Add delivery details to order
+router.post("/add-delivery/:orderId", async (req, res) => {
   try {
     const orderId = req.params.orderId;
-    const deliveryId = req.params.deliveryId;
-    const { distance, costPerkm } = req.body;
-    const charges = distance * costPerkm;
 
     const order = await Order.findById(orderId);
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
 
-    const deliver = order.delivery.id(deliveryId);
-    if (!deliver) {
-      return res.status(404).json({ error: "Delivery not found in the order" });
+    const deliverySetting = await DeliveryData.findOne();
+    if (!delivery) {
+      return res.status(404).json({ error: "Delivery settings not found" });
     }
 
-    deliver.distance = distance;
-    deliver.costPerkm = costPerkm;
-    deliver.charges = charges;
+    let totalQuantity = 0;
+    order.items.forEach((item) => {
+      totalQuantity += item.quantity;
+    });
+
+    const chargesDelivery = 0;
+
+    if (totalQuantity < deliverySetting.deliveryFree) {
+      chargesDelivery = deliverySetting.chargePrice;
+    } else {
+      chargesDelivery =
+        deliverySetting.chargePrice +
+        deliverySetting.chargePrice * deliverySetting.interest;
+    }
+
+    deliver.charges = chargesDelivery;
 
     await order.save();
 
-    res.json("Delivery details updated in the order successfully");
+    res.json("Delivery details added to the order successfully");
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      error: "An error occurred while updating Delivery details in the order",
-    });
+    res
+      .status(500)
+      .json({ error: "An error occurred while adding details to the order" });
   }
 });
 
 // Read a delivery detail by ID
 router.get("/:orderId/read_delivery", async (req, res) => {
   try {
-    const { orderId, deliveryId } = req.params;
+    const { orderId } = req.params;
 
     const order = await Order.findById(orderId);
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
 
-    const deliveryDetail = order.delivery.id(deliveryId);
+    const deliveryDetail = order.delivery;
     if (!deliveryDetail) {
       return res
         .status(404)
@@ -228,32 +215,6 @@ router.get("/:orderId/read_delivery", async (req, res) => {
     res
       .status(500)
       .json({ error: "An error occurred while fetching the delivery detail" });
-  }
-});
-
-// Read all delivery details for an order
-router.get("/order/:orderId/delivery-details", async (req, res) => {
-  try {
-    const { orderId } = req.params;
-
-    const order = await Order.findById(orderId);
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
-
-    const deliveryDetails = order.delivery;
-    if (!deliveryDetails || deliveryDetails.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No delivery details found for the order" });
-    }
-
-    res.json(deliveryDetails);
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while fetching delivery details" });
   }
 });
 
@@ -308,21 +269,39 @@ router.get("/latest-order/:customer_id", async (req, res) => {
   }
 });
 
-// Route to get all orders of a certain customer
-router.get("/customer/:customerId/orders"),
-  async (req, res) => {
-    try {
-      const customerId = req.params.customerId;
+// Route to get all orders for a certain customer
+// router.get("/orders/:customerId", async (req, res) => {
+//   const customerId = req.params.customerId;
 
-      // Find all orders associated with the customer ID
-      const orders = await Order.find({ customer_id: customerId });
+//   try {
+//     // Fetch customer details
+//     const customer = await Customer.findById(customerId);
 
-      res.json(orders);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal server error" });
-    }
-  };
+//     if (!customer) {
+//       return res.status(404).json({ error: "Customer not found" });
+//     }
+
+//     // Fetch orders for the customer
+//     const orders = await Order.find({ customer_id: customerId });
+
+//     res.json({ customer, orders });
+//   } catch (error) {
+//     console.error("Error fetching orders:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+
+router.get("/orders/:customerId", async (req, res) => {
+  const customerId = req.params.customerId;
+
+  try {
+    const orders = await Order.find({ customer_id: customerId });
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // Read all orders
 router.get("/orders", async (req, res) => {

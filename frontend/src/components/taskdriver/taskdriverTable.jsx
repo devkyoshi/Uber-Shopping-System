@@ -174,17 +174,6 @@ const TaskTable = ({ user_id }) => {
               >
                 Task Details
               </Typography>
-              <Typography className="inline-flex gap-5 justify-between">
-                <div>
-                  <span>Task ID:</span> {taskDetails[0].task_id}
-                </div>
-                <div>
-                  <span>Branch:</span> {taskDetails[0].branch_id}
-                </div>
-                <div>
-                  <span>District:</span> {taskDetails[0].district}
-                </div>
-              </Typography>
             </Card>
           </div>
           <Typography

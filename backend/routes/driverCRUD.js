@@ -78,7 +78,6 @@ router.put("/:branchID/driver-update/:driverID", async (req, res) => {
     }
 
     const driverIndex = branch.drivers.findIndex((driver) => {
-      console.log("Driver object:", driver);
       return driver._id && driver._id.toString() === driverID;
     });
 
@@ -223,11 +222,8 @@ router.get("/drivers", async (req, res) => {
       },
     });
 
-    console.log("Branches:", branches);
-
     const driversData = branches.reduce((acc, branch) => {
       branch.drivers.forEach((driver) => {
-        console.log("Driver:", driver);
         if (driver.driver_id && driver.driver_id.Emp_Name) {
           acc.push({
             driver_id: driver.driver_id._id,
@@ -300,9 +296,16 @@ router.get("/tasks/:driverId", async (req, res) => {
           "items._id": item_Id,
         });
         if (!supermarket) {
-          return res
-            .status(404)
-            .json({ error: "Supermarket not found for item", item_Id });
+          itemsDetails.push({
+            item_name: "Unidentified",
+            price: "Unidentified",
+            sm_name: "Supermarket Removed",
+            quantity: orderItem.quantity,
+          });
+          continue; // Continue to the next iteration
+          // return res
+          //   .status(404)
+          //   .json({ error: "Supermarket not found for item", item_Id });
         }
 
         // Find the specific item within the supermarket
@@ -310,9 +313,16 @@ router.get("/tasks/:driverId", async (req, res) => {
           (item) => item._id.toString() === item_Id.toString()
         );
         if (!item) {
-          return res
-            .status(404)
-            .json({ error: "Item not found in the supermarket" });
+          itemsDetails.push({
+            item_name: "Unidentified",
+            price: "Unidentified",
+            sm_name: supermarket.sm_name,
+            quantity: orderItem.quantity,
+          });
+          continue; // Continue to the next iteration
+          // return res
+          //   .status(404)
+          //   .json({ error: "Item not found in the supermarket" });
         }
 
         // Push relevant item details along with quantity to itemsDetails array

@@ -42,20 +42,36 @@ export default function ManageEmp_salary() {
       pdf.save('Salary.pdf');
     });
   };
+  const usersWithTotalAmount = users.map(user => {
+    
+    const totalAmount = ((user.salary * user.Avg_rating) / 100) + user.salary;
+    return { ...user, totalAmount }; // Adding totalAmount to the user object
+  });
 
-  const totalSalary = users.reduce((total, user) => total + (user.salary || 0), 0);
-  const averageSalary = totalSalary / users.length;
-  const highestSalary = Math.max(...users.map(user => user.salary || 0), 0);
-  const lowestSalary = Math.min(...users.map(user => user.salary || Infinity), Infinity);
-  const totalUsers = users.length;
+const totalSalary = usersWithTotalAmount.reduce((total, user) => total + user.totalAmount, 0);
+const averageSalary = totalSalary / usersWithTotalAmount.length;
+const highestSalary = Math.max(...usersWithTotalAmount.map(user => user.totalAmount), 0);
+const lowestSalary = Math.min(...usersWithTotalAmount.map(user => user.totalAmount), Infinity);
+const totalUsers = usersWithTotalAmount.length; 
+
+const etfRate = 3.5; 
+const epfRate = 11;
+
+const etfContribution = (totalSalary * etfRate) / 100;
+const epfContribution = (totalSalary * epfRate) / 100;
+
+  // const totalSalary = users.reduce((total, user) => total + (user.salary || 0), 0);
+  // const averageSalary = totalSalary / users.length;
+  // const highestSalary = Math.max(...users.map(user => user.salary || 0), 0);
+  // const lowestSalary = Math.min(...users.map(user => user.salary || Infinity), Infinity);
+  // const totalUsers = users.length;
 
   // ETF and EPF rates (in percentage)
-  const etfRate = 3.5; 
-  const epfRate = 11; 
+  
 
-  // Calculate ETF and EPF contributions
-  const etfContribution = (totalSalary * etfRate) / 100;
-  const epfContribution = (totalSalary * epfRate) / 100;
+  // // Calculate ETF and EPF contributions
+  // const etfContribution = (totalSalary * etfRate) / 100;
+  // const epfContribution = (totalSalary * epfRate) / 100;
 
   return (
     <div style={{ width: '600px' }}>
@@ -92,11 +108,11 @@ export default function ManageEmp_salary() {
             <div style={{ flex: 1, padding: '10px', borderRight: '1px solid #000' }}>{lowestSalary === Infinity ? "N/A" : lowestSalary.toFixed(2)}</div>
           </div>
           <div style={{ display: 'flex' ,borderBottom: '1px solid #000' }}>
-            <div style={{ flex: 2, padding: '10px', borderRight: '1px solid #000' }}>ETF Contribution</div>
+            <div style={{ flex: 2, padding: '10px', borderRight: '1px solid #000' }}>Average ETF Contribution</div>
             <div style={{ flex: 1, padding: '10px', borderRight: '1px solid #000' }}>{etfContribution.toFixed(2)}</div>
           </div>
           <div style={{ display: 'flex' }}>
-            <div style={{ flex: 2, padding: '10px', borderRight: '1px solid #000' }}>EPF Contribution</div>
+            <div style={{ flex: 2, padding: '10px', borderRight: '1px solid #000' }}>Average EPF Contribution</div>
             <div style={{ flex: 1, padding: '10px', borderRight: '1px solid #000' }}>{epfContribution.toFixed(2)}</div>
           </div>
         </div>

@@ -211,20 +211,7 @@ export default function DashProfile() {
         >
           Update
         </Button>
-<div>
-   {currentUser.isAdmin && (
-          <Link to={"/Employee_Announcements"}>
-            <Button
-              gradientDuoTone="purpleToPink"
-              type="button"
-              className="w-auto h-auto mx-auto mt-2"
-              style={{ backgroundColor: "#00008B" }}
-            >
-              Publish an Announcement
-            </Button>
-          </Link>
-        )}
-</div>
+
        
       </form>
       <div className="text-red-500 flex justify-between mt-5">
