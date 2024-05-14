@@ -17,8 +17,7 @@ const ITEM_TABLE_HEAD = ["Item Name", "Quantity", "Price", "SuperMarket Name"];
 
 export function AllOrders({ customerId }) {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(true)
   const [searchInput, setSearchInput] = useState("");
 
   console.log("Customer ID:", customerId);
@@ -54,72 +53,65 @@ export function AllOrders({ customerId }) {
     setOrders(filteredOrders);
   };
   
-  
-  
-  const handleDownloadReport = () => {
-    // Create a new jsPDF instance
-    const doc = new jsPDF();
-  
-    // Set the title of the PDF
-    doc.setFontSize(18);
-    doc.text("Orders Report", 105, 10, { align: "center" });
-  
-    // Set up the table headers
-    const headers = TABLE_HEAD;
-  
-    // Set up the data rows
-    const rows = [];
-  
-    // Add order and item data
-    orders.forEach((order) => {
-      // Add order data
-      rows.push([["Order ID", order._id]]);
-      rows.push([["Purchase Amount", order.purchase_amount]]);
-      rows.push([["Order Status", order.order_status]]);
-      rows.push([["Order Date", order.order_date]]);
-      rows.push([["Payment Method", order.payment_method]]);
-      rows.push([["Payment Amount", order.payment_amount]]);
-  
-      // Add item data
-      order.items.forEach((item) => {
-        rows.push([
-          ["Item Name", item.item_name],
-          ["Quantity", item.quantity],
-          ["Price", item.price],
-          ["Supermarket Name", item.supermarket_name],
-        ]);
-      });
-  
-      // Add spacing between orders
-      rows.push([""]); // Empty row
-    });
-  
-    // Flatten the rows array
-    const flatRows = rows.flat();
-  
-    // Add table headers
-    doc.autoTable({
-      body: [headers],
-      startY: 20,
-    });
-  
-    // Add data rows
-    doc.autoTable({
-      body: flatRows,
-      startY: 30,
-      theme: "grid", // Add borders
-      columnStyles: {
-        0: { cellWidth: "auto" }, // Adjust column width to fit content
-      },
-    });
-  
-    // Save the PDF
-    doc.save("orders_report.pdf");
-  };
-  
 
+const handleDownloadReport = () => {
+  // Create a new jsPDF instance
+  const doc = new jsPDF();
 
-  
+  // Set the title of the PDF
+  doc.setFontSize(18);
+  doc.text("Orders Report", 105, 10, { align: "center" });
+
+  // Set up the table headers
+  const headers = "";
+
+  // Set up the data rows
+  const rows = [];
+
+  // Add order and item data
+  orders.forEach((order) => {
+    // Add order data
+    rows.push([["Order ID", order._id]]);
+    rows.push([["Purchase Amount", order.purchase_amount]]);
+    rows.push([["Order Status", order.order_status]]);
+    rows.push([["Order Date", order.order_date]]);
+    rows.push([["Payment Method", (order.cash_payment ? "Cash" : "Card")]]);
+    
+
+    // Add item data
+    order.items.forEach((item) => {
+      rows.push([
+        ["Item ID", item.item_id],
+        ["Quantity", item.quantity],
+      ]);
+    });
+
+    // Add spacing between orders
+    rows.push([""]); // Empty row
+  });
+
+  // Flatten the rows array
+  const flatRows = rows.flat();
+
+  // Add table headers
+  doc.autoTable({
+    body: [headers],
+    startY: 20,
+  });
+
+  // Add data rows
+  doc.autoTable({
+    body: flatRows,
+    startY: 30,
+    theme: "grid", // Add borders
+    columnStyles: {
+      0: { cellWidth: "auto" }, // Adjust column width to fit content
+    },
+  });
+
+  // Save the PDF
+  doc.save("orders_report.pdf");
+};
 
   if (loading) {
     return <div>Loading...</div>;
