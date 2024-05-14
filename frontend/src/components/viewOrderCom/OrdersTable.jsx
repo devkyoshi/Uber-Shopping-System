@@ -107,14 +107,14 @@ export function OrdersTable({ orderId }) {
   return (
     <div className="w-full">
       <div>
-        <Typography variant="h3" color="black" className="font-bold ml-10">
+        <Typography variant="h3" color="black" className="font-bold ml-10 ">
           My Order | <span className="text-gray-500">Order ID: </span>
           <span className="text-gray-500">{orderId}</span>
         </Typography>
 
         {/**notice about update and deletion */}
-        <div className="border border-black size-max ml-10 mt-6 text-gray-600 bg-gray-200 rounded-lg">
-          <p className="mt-3 ml-3 font-light">
+        <div className="border border-black size-max ml-24 mt-6 text-gray-600  bg-gray-200 rounded-lg">
+          <p className="mt-3 ml-3 font-light ">
             When <b className="font-semibold">deleting</b> an item, make sure to
             do it whithin <b className="font-semibold">30 minutes</b> to avoid
             any issues.And also,
@@ -128,13 +128,17 @@ export function OrdersTable({ orderId }) {
       </div>
 
       <div>
-        <Typography variant="h6" color="black" className="font-bold ml-10 mt-5">
+        <Typography
+          variant="h6"
+          color="black"
+          className="font-bold text-center mt-5 ml-5"
+        >
           <span className="text-gray-500">Purchase Amount: </span>
-          <span className="text-gray-500  mr-24">{purchaseAmount}</span>
+          <span className="text-gray-500  mr-10"> Rs. {purchaseAmount}.00</span>
           <span className="text-gray-500">Delivery Charges: </span>
-          <span className="text-gray-500  mr-24">{deliveryCharges}</span>
+          <span className="text-gray-500  mr-10">Rs. {deliveryCharges}.00</span>
           <span className="text-gray-500">Total Amount: </span>
-          <span className="text-gray-500  mr-24">{totalAmount}</span>
+          <span className="text-gray-500  mr-10">Rs. {totalAmount}.00</span>
         </Typography>
       </div>
 
