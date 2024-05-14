@@ -41,9 +41,9 @@ export default function Employee_Signin() {
     }
   };
   return (
-
+//https://i.gifer.com/EIG1.gif
 <div  className='min-h-screen ' style={{ 
-    backgroundImage: "url('https://i.gifer.com/EIG1.gif')",
+    backgroundImage: "url('https://jooinn.com/images/team-work-business-meeting-top-view-with-copyspace.jpg')",
     backgroundSize: 'cover',
     backgroundPosition: 'fill',
     width: 'auto',
@@ -51,7 +51,7 @@ export default function Employee_Signin() {
 }}>
   <div className='flex p-3 max-w-sm mx-auto flex-col md:flex-row md:items-center gap-2 '>
 
-     <div className='flex-1 mt-10 ' >
+     <div className='flex-1 mt-52 ' >
      <Link to='/' className='font-bold dark:text-white text-4xl'>
       <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white '>Uber Delivery</span>
     Login</Link>

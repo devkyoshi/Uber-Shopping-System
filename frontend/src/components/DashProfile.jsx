@@ -29,6 +29,19 @@ export default function DashProfile() {
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
+    const { id, value } = e.target;
+    let newValue = value.trim();
+    
+    
+    if (id === 'Emp_Age') {
+      const age = parseInt(newValue);
+      if (isNaN(age) || age < 18 || age > 60) {
+        setUpdateUserError("Please enter a valid age between 18 and 60.");
+        return;
+      } else {
+        setUpdateUserError(null);
+      }
+    }
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 

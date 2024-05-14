@@ -24,6 +24,17 @@ export default function ProfileDetail() {
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
+    const { id, value } = e.target;
+    let newValue = value.trim();
+    if (id === 'cus_age') {
+      const age = parseInt(newValue);
+      if (isNaN(age) || age < 18 || age > 60) {
+        setUpdateUserFailure("Please enter a valid age between 18 and 60.");
+        return;
+      } else {
+        setUpdateUserFailure(null);
+      }
+    }
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
   const handleSubmit = async (e) => {

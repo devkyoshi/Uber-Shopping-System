@@ -105,11 +105,11 @@ export default function DashPosts() {
   <div className='grid grid-cols-6 bg-gray-100 dark:bg-gray-800'>
     <div className='p-3'>Date updated</div>
     <div className='p-3'>Announcement title</div>
-    <div className='p-3'>Post image</div>
+    <div className='p-3'> image</div>
     
-    <div className='p-3'>Announcement Category</div>
-    <div className='p-3'>Delete Announcement</div>
-    <div className='p-3'>Edit Announcement</div>
+    <div className='p-3'> Category</div>
+    <div className='p-3'>Delete </div>
+    <div className='p-3'>Edit </div>
   </div>
   {userAnnouncements.map((announcements) => (
     <div key={announcements._id} className='divide-y grid grid-cols-6'>
@@ -156,12 +156,7 @@ export default function DashPosts() {
   ))}
 </div>
 
-        <button
-          onClick={handleShowMore}
-          className='w-full text-teal-500 self-center text-sm py-7'
-        >
-          Show more
-        </button> 
+        
       </>
     ) : (
     <p>You have no Announcments yet!</p>

@@ -10,6 +10,19 @@ export default function EmployeeRegistration() {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
+    const { id, value } = e.target;
+  let newValue = value.trim();
+  
+  
+  if (id === 'Emp_Age') {
+    const age = parseInt(newValue);
+    if (isNaN(age) || age < 18 || age > 60) {
+      setErrorMessage("Please enter a valid age between 18 and 60.");
+      return;
+    } else {
+      setErrorMessage(null);
+    }
+  }
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
 
@@ -54,11 +67,18 @@ export default function EmployeeRegistration() {
     const isNumber = /^[0-9]$/.test(keyPressed);
     const isBackspace = keyPressed === "Backspace";
     const isDelete = keyPressed === "Delete";
-
+  
+    // Check if the input is a valid number or a backspace or delete key
     if (!isNumber && !isBackspace && !isDelete) {
       event.preventDefault();
     }
-}
+  
+    // Check the length of the input value if it's not a backspace or delete key
+    if (!isBackspace && !isDelete && event.target.value.length >= 10) {
+      event.preventDefault();
+    }
+  }
+  
 
   return (
     <div className=' p-3 max-w-3xl mx-auto  md:items-start gap-2'>
@@ -75,11 +95,10 @@ export default function EmployeeRegistration() {
         <Label value='Name' />
         <TextInput type='name' placeholder='Eg: kamal' id='Emp_Name' onChange={handleChange}  onKeyDown={handleKeyPress} style={{ height: '40px', padding: '10px' }} />
         <Label value='Age' />
-        <TextInput type='age' placeholder='Eg: 30' id='Emp_Age' onChange={handleChange} style={{ height: '40px', padding: '10px' }} />
+        <TextInput type='Number' placeholder='Eg: 30' id='Emp_Age' onChange={handleChange} style={{ height: '40px', padding: '10px' }} />
         <Label value='Gender' />
 <select
   id='Emp_Gender'
-  
   onChange={handleChange}
   style={{ height: '40px', padding: '10px', width: '100%' }}
 >

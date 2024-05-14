@@ -9,9 +9,39 @@ export default function Register() {
   const [errorMessage, setErrorMesseage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
   const handleChange = (e) => {
+    const { id, value } = e.target;
+  let newValue = value.trim();
+  
+
+  if (id === 'cus_age') {
+    const age = parseInt(newValue);
+    if (isNaN(age) || age < 18 || age > 60) {
+      setErrorMesseage("Please enter a valid age between 18 and 60.");
+      return;
+    } else {
+      setErrorMesseage(null);
+    }
+  }
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
+  function handleKeyPress2(event) {
+    const keyPressed = event.key;
+    const isNumber = /^[0-9]$/.test(keyPressed);
+    const isBackspace = keyPressed === "Backspace";
+    const isDelete = keyPressed === "Delete";
+  
+    // Check if the input is a valid number or a backspace or delete key
+    if (!isNumber && !isBackspace && !isDelete) {
+      event.preventDefault();
+    }
+  
+    // Check the length of the input value if it's not a backspace or delete key
+    if (!isBackspace && !isDelete && event.target.value.length >= 10) {
+      event.preventDefault();
+    }
+  }
   function handleKeyPress(event) {
     const keyPressed = event.key;
     const isLetter = /^[a-zA-Z\s]$/.test(keyPressed);
@@ -141,6 +171,7 @@ export default function Register() {
                   type="number"
                   placeholder="+94xxxxxxxxx"
                   id="cus_cnumber"
+                  onKeyDown={handleKeyPress2}
                   onChange={handleChange}
                 />
               </div>
