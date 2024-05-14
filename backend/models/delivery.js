@@ -4,14 +4,17 @@ const deliverySchema = new mongoose.Schema({
   chargePrice: {
     type: Number,
     required: true,
+    default: 1,
   },
   deliveryFree: {
     type: Number,
     required: true,
+    default: 1,
   },
   interest: {
     type: Number,
     required: true,
+    default: 1,
   },
 });
 

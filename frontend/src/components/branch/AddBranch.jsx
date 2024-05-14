@@ -202,9 +202,11 @@ export function AddBranch() {
                 {errorMessage}
               </Typography>
             )}
-            <Button type="submit" className="mt-16" size="md" fullWidth>
-              Add Branch
-            </Button>
+            <div className="flex justify-center">
+              <Button type="submit" className="mt-16" size="lg">
+                Add Branch
+              </Button>
+            </div>
           </form>
         </div>
       </Card>
