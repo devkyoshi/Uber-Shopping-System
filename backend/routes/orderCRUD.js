@@ -24,9 +24,7 @@ router.post("/create-order", async (req, res) => {
     });
 
     // Find delivery settings
-    const deliverySetting = await DeliveryData.findById(
-      "6642047e93506b8a703ecff0"
-    );
+    const deliverySetting = await DeliveryData.findOne();
     if (!deliverySetting) {
       return res.status(404).json({ error: "Delivery settings not found" });
     }

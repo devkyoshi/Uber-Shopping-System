@@ -10,18 +10,19 @@ import { PlusCircleIcon, EyeIcon, CogIcon } from "@heroicons/react/24/solid";
 import { ManageTask } from "./ManageTask";
 import OrderTable from "./OrderTable";
 import DriverTable from "./DriverTable";
+import { Delivery } from "./Delivery";
 
-export function TaskTab({taskId}) {
+export function TaskTab({ taskId }) {
   const [activeTab, setactiveTab] = useState("manage");
 
   const tapMapping = {
     manage: <ManageTask />,
-    orders: <OrderTable/>,
-    drivers: <DriverTable/>
+    orders: <OrderTable />,
+    drivers: <DriverTable />,
+    delivery: <Delivery />,
   };
 
-  const data = [ 
-   
+  const data = [
     {
       label: "Manage Task",
       value: "manage",
@@ -35,6 +36,11 @@ export function TaskTab({taskId}) {
     {
       label: "Available Drivers",
       value: "drivers",
+      icon: PlusCircleIcon,
+    },
+    {
+      label: "Delivery Cost",
+      value: "delivery",
       icon: PlusCircleIcon,
     },
   ];

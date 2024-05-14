@@ -41,6 +41,19 @@ router.get("/delivery/:id", async (req, res) => {
   }
 });
 
+// READ operation - Get all deliveries
+router.get("/deliveries", async (req, res) => {
+  try {
+    const deliveries = await Delivery.find();
+    res.json(deliveries);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching deliveries" });
+  }
+});
+
 // UPDATE operation - Update a delivery by ID
 router.put("/delivery-update/:id", async (req, res) => {
   try {
