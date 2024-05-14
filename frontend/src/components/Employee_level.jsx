@@ -74,8 +74,8 @@ export default function Employee_level() {
   const EPF = currentUser.salary * 0.08; // Assuming EPF deduction is 8% of the salary
 
   return (
-    <div className="flex flex-row gap-8">
-      <div className="flex flex-col gap-4 max-w-lg">
+    <div className="flex flex-row gap-8 mx-auto mt-10">
+      <div className="flex flex-col gap-4 w-96">
         <div className="p-3 bg-gray-100 rounded-lg">
           <h3 className="text-lg font-bold text-center text-blue-gray-900">User Level</h3>
           <div className="bg-white shadow-md rounded-lg p-4">
@@ -105,7 +105,7 @@ export default function Employee_level() {
         </div>
       </div>
   
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 w-96">
         <div className="p-3 bg-gray-100 rounded-lg">
           <h3 className="text-lg font-bold text-blue-gray-800">Delivery Information</h3>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
