@@ -51,6 +51,14 @@ export default function ComplaintForm() {
     reader.readAsDataURL(file);
   };
 
+  //validating inputs
+  const handleKeyPress = (e) => {
+    // If the pressed key is not a letter, digit, or '@', prevent the default action
+    if (!/[a-zA-Z0-9]/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   // Function to handle form submission
   const handleSubmit = async (e) => {
     // Prevent default form submission behavior
@@ -179,6 +187,7 @@ export default function ComplaintForm() {
                       name="customer_id"
                       value={formData.customer_id}
                       onChange={handleChange}
+                      onKeyPress={handleKeyPress}
                       className="w-full p-1 border border-gray-400 rounded-md"
                       required
                       readOnly
@@ -197,6 +206,7 @@ export default function ComplaintForm() {
                       type="text"
                       id="orderId"
                       name="order_id"
+                      onKeyPress={handleKeyPress}
                       value={formData.order_id}
                       onChange={handleChange}
                       className="w-full p-1 bg-red-45 border border-gray-400 rounded-md"
@@ -216,6 +226,7 @@ export default function ComplaintForm() {
                       type="text"
                       id="paymentId"
                       name="payment_id"
+                      onKeyPress={handleKeyPress}
                       value={formData.payment_id}
                       onChange={handleChange}
                       className="w-full p-1 bg-red-45 border border-gray-400 rounded-md"
@@ -232,6 +243,7 @@ export default function ComplaintForm() {
                       type="text"
                       id="itemId"
                       name="item_id"
+                      onKeyPress={handleKeyPress}
                       value={formData.item_id}
                       onChange={handleChange}
                       className="w-full p-1 border border-gray-400 rounded-md  "
@@ -251,6 +263,7 @@ export default function ComplaintForm() {
                       type="text"
                       id="quantity"
                       name="quantity"
+                      onKeyPress={handleKeyPress}
                       value={formData.quantity}
                       onChange={handleChange}
                       className="w-full p-1 border border-gray-400 rounded-md "
@@ -341,6 +354,7 @@ export default function ComplaintForm() {
                       type="text"
                       id="description"
                       name="description"
+                      onKeyPress={handleKeyPress}
                       value={formData.description}
                       onChange={handleChange}
                       className="w-full p-2 border border-gray-400 rounded-md"

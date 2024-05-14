@@ -40,6 +40,13 @@ export default function DriverComplaintForm() {
     description: "",
   });
 
+  const handleKeyPress = (e) => {
+    // If the pressed key is not a letter, digit, or '@', prevent the default action
+    if (!/[a-zA-Z0-9]/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -147,6 +154,7 @@ export default function DriverComplaintForm() {
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
+                  onKeyPress={handleKeyPress}
                   className="w-full p-2"
                   required
                 />
