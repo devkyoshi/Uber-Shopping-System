@@ -59,6 +59,17 @@ export function ManageBranch() {
 
   const handleUpdate = async (updatedBranch) => {
     try {
+      // Check if any field is null
+      if (
+        updatedBranch.branch_ID === "" ||
+        updatedBranch.branch_name === "" ||
+        updatedBranch.branch_Location === "" ||
+        updatedBranch.district === ""
+      ) {
+        window.alert("Please fill in all fields.");
+        return;
+      }
+
       const response = await axios.put(
         `http://localhost:8070/Branch/branch-update/${updatedBranch._id}`,
         updatedBranch
