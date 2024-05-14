@@ -56,6 +56,7 @@ router.post("/orders/:driverId", async (req, res) => {
     for (const branch of branches) {
       const driver = branch.drivers.find(
         (driver) =>
+          driver.driver_id &&
           driver.driver_id.toString() === driverId &&
           driver.availability === "Available"
       );
@@ -71,6 +72,7 @@ router.post("/orders/:driverId", async (req, res) => {
         .status(404)
         .json({ message: "Driver not found or not available in any branch" });
     }
+
     console.log("driverId", driverId);
     const driverBranch = await Branch.findOne({
       "drivers.driver_id": driverId,
