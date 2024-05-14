@@ -117,8 +117,8 @@ export function AllOrders({ customerId }) {
 
   return (
     <div className="main-layout">
-      <SideBar />
-      <div className="w-full inner-layout ">
+     
+      <div className="inner-layout mr-5">
         <div className="flex justify-between mb-4 ">
           <Typography
             variant="h3"
