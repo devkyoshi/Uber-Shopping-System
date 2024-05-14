@@ -84,7 +84,8 @@ export default function DriverComplaintForm() {
       <div className="inner-layout mt-5 ml-2 mr-5">
         <Typography
           variant="h1"
-          className="mt-2 text-center font-semibold text-3xl mb-20"
+          className="mt-2 text-center font-semibold text-3xl mb-5"
+          color="blue-gray"
         >
           Report Issue
         </Typography>
@@ -210,7 +211,7 @@ export default function DriverComplaintForm() {
           <Button
             type="submit"
             disabled={uploading}
-            className="bg-custom-gradient w-40 h-10 mx-auto mt-5 text-white py-2 px-4 border border-transparent rounded-md hover:bg-custom-gradient transition duration-300"
+            className="bg-custom-gradient w-40 h-10 mx-auto  text-white py-2 px-4 border border-transparent rounded-md hover:bg-custom-gradient transition duration-300"
           >
             {uploading ? "Uploading..." : "Submit"}
           </Button>
