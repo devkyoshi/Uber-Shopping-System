@@ -9,19 +9,19 @@ export default function CustomerRateTab() {
   const [showMore,setShowMore] = useState(true);
   const [currentRating, setCurrentRating] = useState(0);
 
-  const handleShowMore = async () => {
-    const startIndex = employees.length;
-    try {
-        const res = await fetch(`/Rating/getemployees?startIndex=${startIndex}`);
-        const data =await res.json();
-        if(res.ok){
-            setEmployees((prev) => [...prev, ...data.employees]);
-            if(data.employees.length < 9){setShowMore(false);}
-        }
-    } catch (error) {
-        console.log(error.message);
-    }
-  };
+  // const handleShowMore = async () => {
+  //   const startIndex = employees.length;
+  //   try {
+  //       const res = await fetch(`/Rating/getemployees?startIndex=${startIndex}`);
+  //       const data =await res.json();
+  //       if(res.ok){
+  //           setEmployees((prev) => [...prev, ...data.employees]);
+  //           if(data.employees.length < 9){setShowMore(false);}
+  //       }
+  //   } catch (error) {
+  //       console.log(error.message);
+  //   }
+  // };
 
   useEffect(() => {
     const getemployeesAndRatings = async () => {
@@ -30,9 +30,9 @@ export default function CustomerRateTab() {
             const data = await res.json();
             if (res.ok) {
                 setEmployees(data.employees);
-                if (data.employees.length < 9) {
-                    setShowMore(false);
-                }
+                // if (data.employees.length < 9) {
+                //     setShowMore(false);
+                // }
                 const ratingsData = {};
                 for (const employee of data.employees) {
                     await getratings(employee._id, ratingsData);
@@ -76,9 +76,9 @@ export default function CustomerRateTab() {
             const data = await res.json();
             if (res.ok) {
                 setEmployees(data.employees);
-                if (data.employees.length < 9) {
-                    setShowMore(false);
-                }
+                // if (data.employees.length < 9) {
+                //     setShowMore(false);
+                // }
                 const ratingsData = {};
                 for (const employee of data.employees) {
                     await getratings(employee._id, ratingsData);
@@ -157,11 +157,11 @@ export default function CustomerRateTab() {
         )}
 
 
-      {
+      {/* {
             showMore && (
                 <button onClick={handleShowMore} className='w-full text-teal-500 self-center tect-sm py-7'>Show more</button>
             )
-      }
+      } */}
     </div>
   )
 }

@@ -7,7 +7,7 @@ const { errorHandler } = require("../../utils/error");
 const getEmployees = async(req,res, next) => {
     try {
         const startIndex = parseInt(req.query.startIndex) || 0;
-        const limit = parseInt(req.query.limit) || 9;
+        // const limit = parseInt(req.query.limit) || 9;
         const sortDirection = req.query.sort === 'asc' ? 1 : -1;
 
         let query = {};
@@ -18,7 +18,7 @@ const getEmployees = async(req,res, next) => {
             ];
         }
 
-        const employees = await Employee.find(query).sort({createdAt: sortDirection}).skip(startIndex).limit(limit);
+        const employees = await Employee.find(query).sort({createdAt: sortDirection}).skip(startIndex);
 
         res.status(200).json({employees});
     }catch(error){
