@@ -17,7 +17,7 @@ const ITEM_TABLE_HEAD = ["Item Name", "Quantity", "Price", "SuperMarket Name"];
 
 export function AllOrders({ customerId }) {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const [searchInput, setSearchInput] = useState("");
 
   console.log("Customer ID:", customerId);
@@ -43,75 +43,73 @@ export function AllOrders({ customerId }) {
   const handleSearch = () => {
     // Convert searchInput to lowercase for case-insensitive search
     const searchTerm = searchInput.toLowerCase();
-  
+
     // Filter orders based on searchInput
     const filteredOrders = orders.filter((order) =>
       order._id.toLowerCase().includes(searchTerm)
     );
-  
+
     // Update state with filtered orders
     setOrders(filteredOrders);
   };
-  
 
-const handleDownloadReport = () => {
-  // Create a new jsPDF instance
-  const doc = new jsPDF();
+  const handleDownloadReport = () => {
+    // Create a new jsPDF instance
+    const doc = new jsPDF();
 
-  // Set the title of the PDF
-  doc.setFontSize(18);
-  doc.text("Orders Report", 105, 10, { align: "center" });
+    // Set the title of the PDF
+    doc.setFontSize(18);
+    doc.text("Orders Report", 105, 10, { align: "center" });
 
-  // Set up the table headers
-  const headers = "";
+    // Set up the table headers
+    const headers = "";
 
-  // Set up the data rows
-  const rows = [];
+    // Set up the data rows
+    const rows = [];
 
-  // Add order and item data
-  orders.forEach((order) => {
-    // Add order data
-    rows.push([["Order ID", order._id]]);
-    rows.push([["Purchase Amount", order.purchase_amount]]);
-    rows.push([["Order Status", order.order_status]]);
-    rows.push([["Order Date", order.order_date]]);
-    rows.push([["Payment Method", (order.cash_payment ? "Cash" : "Card")]]);
-    
+    // Add order and item data
+    orders.forEach((order) => {
+      // Add order data
+      rows.push([["Order ID", order._id]]);
+      rows.push([["Purchase Amount", order.purchase_amount]]);
+      rows.push([["Order Status", order.order_status]]);
+      rows.push([["Order Date", order.order_date]]);
+      rows.push([["Payment Method", order.cash_payment ? "Cash" : "Card"]]);
 
-    // Add item data
-    order.items.forEach((item) => {
-      rows.push([
-        ["Item ID", item.item_id],
-        ["Quantity", item.quantity],
-      ]);
+      // Add item data
+      order.items.forEach((item) => {
+        rows.push([
+          ["Item ID", item.item_id],
+          ["Quantity", item.quantity],
+        ]);
+      });
+
+      // Add spacing between orders
+      rows.push([""]); // Empty row
     });
 
-    // Add spacing between orders
-    rows.push([""]); // Empty row
-  });
+    // Flatten the rows array
+    const flatRows = rows.flat();
 
-  // Flatten the rows array
-  const flatRows = rows.flat();
+    // Add table headers
+    doc.autoTable({
+      body: [headers],
+      startY: 20,
+    });
 
-  // Add table headers
-  doc.autoTable({
-    body: [headers],
-    startY: 20,
-  });
+    // Add data rows
+    doc.autoTable({
+      body: flatRows,
+      startY: 30,
+      theme: "grid", // Add borders
+      columnStyles: {
+        0: { cellWidth: "auto" }, // Adjust column width to fit content
+      },
+    });
 
-  // Add data rows
-  doc.autoTable({
-    body: flatRows,
-    startY: 30,
-    theme: "grid", // Add borders
-    columnStyles: {
-      0: { cellWidth: "auto" }, // Adjust column width to fit content
-    },
-  });
-
-  // Save the PDF
-  doc.save("orders_report.pdf");
-};
+    // Save the PDF
+    doc.save("orders_report.pdf");
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -210,19 +208,23 @@ const handleDownloadReport = () => {
                         </Typography>
                       </td>
                       <td className="p-4">
-                        <Typography
-                          as="a"
-                          href="#"
-                          variant="small"
-                          color="blue-gray"
-                          className="font-medium"
-                        >
-                          Rs.
-                          {order.cash_payment
-                            ? order.cash_payment.payment_amount
-                            : order.card_payment.payment_amount}{" "}
-                          .00
-                        </Typography>
+                        {order.cash_payment || order.card_payment ? (
+                          <Typography
+                            as="a"
+                            href="#"
+                            variant="small"
+                            color="blue-gray"
+                            className="font-medium"
+                          >
+                            Rs.
+                            {order.cash_payment
+                              ? order.cash_payment.payment_amount
+                              : order.card_payment.payment_amount}{" "}
+                            .00
+                          </Typography>
+                        ) : (
+                          <span>No payment information available</span>
+                        )}
                       </td>
                       <td className="p-4">
                         <Typography

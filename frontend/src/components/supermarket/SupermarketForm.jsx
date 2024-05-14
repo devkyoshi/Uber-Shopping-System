@@ -21,7 +21,7 @@ export function SupermarketForm() {
     const { name, value, checked } = e.target;
 
     // Regular expression to match alphanumeric characters and space
-    const regex = /^[a-zA-Z0-9\s]*$/;
+    const regex = /^[a-zA-Z0-9\s.]*$/;
 
     // If the input matches the regex, update state
     if (regex.test(value) || value === "") {
@@ -48,6 +48,7 @@ export function SupermarketForm() {
             sm_longitude: formData.sm_longitude,
           }
         );
+        alert("Supermarket added to supermarket successfully!");
         console.log("Supermarket registered successfully:", response.data);
         // Optionally, you can redirect the user to another page or show a success message
       }
