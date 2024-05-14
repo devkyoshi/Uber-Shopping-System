@@ -32,7 +32,7 @@ export function ItemForm({ supermarketId }) {
 
   const handleKeyPress = (e) => {
     // If the pressed key is not a letter, digit, or '@', prevent the default action
-    if (!/[a-zA-Z0-9@ ()]/.test(e.key)) {
+    if (!/[a-zA-Z0-9 ()]/.test(e.key)) {
       e.preventDefault();
     }
   };
