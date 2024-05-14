@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Typography } from "@material-tailwind/react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -18,10 +18,12 @@ export default function DriverComplaintForm() {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await axios.get(`http://localhost:8070/Supermarket/supermarket/locations/${formData.market_name}`);
-        setFormData({ ...formData, sm_location: response.data.locations});
+        const response = await axios.get(
+          `http://localhost:8070/Supermarket/supermarket/locations/${formData.market_name}`
+        );
+        setFormData({ ...formData, sm_location: response.data.locations });
       } catch (error) {
-        console.error('Error fetching supermarket locations:', error);
+        console.error("Error fetching supermarket locations:", error);
         // Handle error appropriately
       }
     };
@@ -29,17 +31,15 @@ export default function DriverComplaintForm() {
     fetchLocations();
   }, [sm_name]);
 
-
   const [formData, setFormData] = useState({
     driver_id: currentUser._id,
-    market_name: 'Family mart',
-    sm_location: '',
+    market_name: sm_name,
+    sm_location: "",
     item_name: item_name,
     issue_type: "",
     description: "",
   });
 
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -129,7 +129,9 @@ export default function DriverComplaintForm() {
                   <option value="">---Select Issue Type---</option>
                   <option value="unavilable">Item is unavilable</option>
                   <option value="Removed">Item is Removed</option>
-                  <option value="quantityNotFulfilling">Require quantity not fulfilling</option>
+                  <option value="quantityNotFulfilling">
+                    Require quantity not fulfilling
+                  </option>
                 </Select>
               </div>
               <div>
@@ -184,7 +186,6 @@ export default function DriverComplaintForm() {
                   readOnly
                 />
               </div>
-              
             </div>
           </div>
           <Typography>
