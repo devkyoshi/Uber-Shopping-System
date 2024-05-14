@@ -53,7 +53,12 @@ export function TaskDriverTab({ user_id }) {
     <Tabs value={activeTab}>
       <TabsHeader>
         {data.map(({ label, value, icon }) => (
-          <Tab key={value} value={value} onClick={() => handleTab(value)}>
+          <Tab
+            key={value}
+            value={value}
+            onClick={() => handleTab(value)}
+            disabled={value === "view"}
+          >
             <div className="flex items-center gap-2">
               {React.createElement(icon, { className: "w-5 h-5" })}
               {label}

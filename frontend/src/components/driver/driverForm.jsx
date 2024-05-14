@@ -94,6 +94,7 @@ export function DriverForm({ branch_ID, district }) {
         `http://localhost:8070/Driver/${branch_ID}/driver-add`,
         driverDetails
       );
+      alert("Driver added successfully!");
       console.log(response.data); // handle success message
     } catch (error) {
       console.error("Error adding driver:", error);
