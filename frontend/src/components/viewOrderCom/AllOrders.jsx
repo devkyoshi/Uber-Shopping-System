@@ -70,7 +70,7 @@ export function AllOrders({ customerId }) {
     // Add order and item data
     orders.forEach((order) => {
       // Add order data
-      rows.push([["Order ID", order._id]]);
+      //rows.push([["Order ID", order._id]]);
       rows.push([["Purchase Amount", order.purchase_amount]]);
       rows.push([["Order Status", order.order_status]]);
       rows.push([["Order Date", order.order_date]]);
@@ -117,8 +117,7 @@ export function AllOrders({ customerId }) {
 
   return (
     <div className="main-layout">
-     
-      <div className="inner-layout mr-5">
+      <div className="w-full inner-layout ">
         <div className="flex justify-between mb-4 ">
           <Typography
             variant="h3"
