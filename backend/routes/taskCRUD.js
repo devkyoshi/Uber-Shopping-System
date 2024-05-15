@@ -5,41 +5,8 @@ const Task = require("../models/task");
 const Order = require("../models/order");
 const Branch = require("../models/branch");
 const User = require("../models/user.model");
+const DeliveryData = require("../models/delivery");
 const mongoose = require("mongoose");
-
-// Add a new task(new) - Sarindu
-router.post("/add-task", async (req, res) => {
-  try {
-    const { driver_id, branch_id, district, orderIds } = req.body;
-    const task = new Task({ driver_id, branch_id, district });
-
-    // Push each orderId into the orders array
-    if (orderIds && Array.isArray(orderIds)) {
-      orderIds.forEach(async (orderId) => {
-        task.orders.push({ order_id: orderId });
-
-        // Update order status to "processing"
-        await Order.updateOne(
-          { _id: orderId },
-          { $set: { order_status: "Processing" } }
-        );
-      });
-    }
-
-    // Update driver's availability to "delivering"
-    // Ensure to use the correct field for branch identifier
-    const updateResult = await Branch.updateOne(
-      { branch_ID: branch_id, "drivers.driver_id": driver_id }, // Use branch_ID instead of _id
-      { $set: { "drivers.$.availability": "delivering" } }
-    );
-
-    await task.save();
-    res.json(task);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "An error occurred while adding the task" });
-  }
-});
 
 // Route to find a driver by their driver_id across all branches
 router.post("/orders/:driverId", async (req, res) => {
@@ -73,7 +40,6 @@ router.post("/orders/:driverId", async (req, res) => {
         .json({ message: "Driver not found or not available in any branch" });
     }
 
-    console.log("driverId", driverId);
     const driverBranch = await Branch.findOne({
       "drivers.driver_id": driverId,
     });
@@ -85,7 +51,6 @@ router.post("/orders/:driverId", async (req, res) => {
 
     const driverDistrict = driverBranch.district;
     const driverBranchID = branchId;
-    console.log("driverId", driverName);
 
     // Find orders where order_district matches driver's district and status is 'pending'
     const orders = await Order.find({
@@ -100,7 +65,9 @@ router.post("/orders/:driverId", async (req, res) => {
       return isCash || isCard;
     });
 
-    const limitedOrders = filteredOrders.slice(0, 5);
+    const deliveryData = await DeliveryData.findOne();
+    const orderCount = deliveryData.order_count;
+    const limitedOrders = filteredOrders.slice(0, orderCount);
     // If no matching orders are found
     if (limitedOrders.length === 0) {
       return res
@@ -696,46 +663,5 @@ router.get("/:taskId/get-order/:orderId", async (req, res) => {
       .json({ error: "An error occurred while fetching the order" });
   }
 });
-
-// using for task view - driver UI
-
-// router.get('/:taskId/details', async (req, res) => {
-//   try {
-//     const { taskId } = req.params;
-
-//     // Find the task by ID and populate the orders field
-//     const task = await Task.findById(taskId).populate({
-//       path: 'orders',
-//       populate: {
-//         path: 'order_id',
-//         populate: {
-//           path: 'customer_id',
-//         select: ' phone nearest_town', // Select only required fields
-//         },
-//         select: 'order_id status', // Select only required fields
-//       },
-//     });
-
-//     // Check if the task exists
-//     if (!task) {
-//       return res.status(404).json({ message: 'Task not found' });
-//     }
-
-//     // Extract customer details, nearest town, customer name, and order ID from the populated task
-//     const taskDetails = {
-//       customer: task.orders.map(order => ({
-//         //name: order.order_id.customer_id.name,
-//         phone: order.order_id.customer_id.phone,
-//         nearest_town: order.order_id.customer_id.nearest_town,
-//         orderId: order.order_id._id,
-//       })),
-//     };
-
-//     res.json(taskDetails);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: 'Server Error' });
-//   }
-// });
 
 module.exports = router;

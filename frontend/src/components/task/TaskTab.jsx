@@ -39,9 +39,9 @@ export function TaskTab({ taskId }) {
       icon: PlusCircleIcon,
     },
     {
-      label: "Delivery Cost",
+      label: "Settings",
       value: "delivery",
-      icon: PlusCircleIcon,
+      icon: CogIcon,
     },
   ];
 

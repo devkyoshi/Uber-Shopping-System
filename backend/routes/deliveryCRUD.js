@@ -4,12 +4,20 @@ const Delivery = require("../models/delivery");
 
 router.post("/delivery-add", async (req, res) => {
   try {
-    const { chargePrice, deliveryFree, interest } = req.body;
+    const {
+      chargePrice,
+      deliveryFree,
+      interest,
+      minOrder_count,
+      maxOrder_count,
+    } = req.body;
 
     const newDelivery = new Delivery({
       chargePrice,
       deliveryFree,
       interest,
+      minOrder_count,
+      maxOrder_count,
     });
 
     console.log(newDelivery);
@@ -57,10 +65,10 @@ router.get("/deliveries", async (req, res) => {
 // UPDATE operation - Update a delivery by ID
 router.put("/delivery-update/:id", async (req, res) => {
   try {
-    const { chargePrice, deliveryFree, interest } = req.body;
+    const { chargePrice, deliveryFree, interest, order_count } = req.body;
     const updatedDelivery = await Delivery.findByIdAndUpdate(
       req.params.id,
-      { chargePrice, deliveryFree, interest },
+      { chargePrice, deliveryFree, interest, order_count },
       { new: true }
     );
     res.json(updatedDelivery);

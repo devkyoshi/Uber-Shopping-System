@@ -90,6 +90,10 @@ const cardPaymentSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
+  order_ID: {
+    type: String,
+    required: true,
+  },
   customer_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,

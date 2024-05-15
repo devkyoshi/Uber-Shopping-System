@@ -155,7 +155,7 @@ export function Delivery() {
                   style={{ fontWeight: "bolder" }}
                   className="font-normal leading-none opacity-70 text-center"
                 >
-                  Normal delivery charge
+                  Normal Delivery Charge
                 </Typography>
               </th>
               <th className="border-b border-blue-gray-100 bg-blue-gray-50 pl-4">
@@ -176,6 +176,16 @@ export function Delivery() {
                   className="font-normal leading-none opacity-70 text-center"
                 >
                   Percentage
+                </Typography>
+              </th>
+              <th className="border-b border-blue-gray-100 bg-blue-gray-50 pl-4">
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  style={{ fontWeight: "bolder" }}
+                  className="font-normal leading-none opacity-70 text-center"
+                >
+                  Maximum Order Count
                 </Typography>
               </th>
 
@@ -227,7 +237,19 @@ export function Delivery() {
                     required
                   />
                 </td>
-                <td className="pl-20 pb-4 pt-4">
+                <td className="pl-6">
+                  <Input
+                    type="text"
+                    value={deliver.order_count}
+                    onChange={(e) =>
+                      handleNumericInputChange(e, deliver._id, "order_count")
+                    }
+                    disabled={!deliver.editMode}
+                    required
+                  />
+                </td>
+
+                <td className="pl-10 pb-4 pt-4">
                   {renderSaveOrEditButton(deliver._id)}
                 </td>
               </tr>
@@ -240,7 +262,7 @@ export function Delivery() {
           <div className="grid grid-cols-2 gap-8 ">
             <div className="flex flex-col gap-2">
               <Typography variant="h6" color="blue-gray" className="mb-2">
-                Charge Price
+                Normal Delivery Charge
               </Typography>
               <Input
                 size="lg"
@@ -257,10 +279,29 @@ export function Delivery() {
                 placeholder="Enter Charge Price "
                 className="mb-4"
               />
+              <Typography variant="h6" color="blue-gray" className="mb-2">
+                Percentage
+              </Typography>
+              <Input
+                type="text"
+                size="lg"
+                value={formData.interest}
+                onChange={(e) => {
+                  const { value } = e.target;
+                  const filteredValue = value.replace(/[^1-9]/g, "");
+                  setFormData({
+                    ...formData,
+                    interest: filteredValue,
+                  });
+                }}
+                name="interest"
+                placeholder="Enter Interest"
+                className="mb-4"
+              />
             </div>
             <div className="flex flex-col flex-1 gap-2">
               <Typography variant="h6" color="blue-gray" className="mb-2">
-                Delivery Free
+                Delivery Free Threshold
               </Typography>
               <Input
                 size="lg"
@@ -277,30 +318,32 @@ export function Delivery() {
                 placeholder="Enter Branch Name"
                 className="mb-4"
               />
-              <div className="mt-10">
-                <Typography variant="h6" color="blue-gray" className="mb-2">
-                  Interest
-                </Typography>
-                <Input
-                  type="text"
-                  size="lg"
-                  value={formData.interest}
-                  onChange={(e) => {
-                    const { value } = e.target;
-                    const filteredValue = value.replace(/[^1-9]/g, "");
-                    setFormData({
-                      ...formData,
-                      interest: filteredValue,
-                    });
-                  }}
-                  name="interest"
-                  placeholder="Enter Interest"
-                  className="mb-4"
-                />
-              </div>
+              <Typography variant="h6" color="blue-gray" className="mb-2">
+                Maximum Order Count
+              </Typography>
+              <Input
+                type="text"
+                size="lg"
+                value={formData.order_count}
+                onChange={(e) => {
+                  const { value } = e.target;
+                  const filteredValue = value.replace(/[^1-9]/g, "");
+                  setFormData({
+                    ...formData,
+                    order_count: filteredValue,
+                  });
+                }}
+                name="order_count"
+                placeholder="Enter Order Count"
+                className="mb-4"
+              />
             </div>
           </div>
-          <Button onClick={handleAddDelivery}>Add Delivery</Button>
+          <div className="flex justify-center">
+            <Button onClick={handleAddDelivery} className="mt-16" size="lg">
+              Add Delivery
+            </Button>
+          </div>
         </div>
       )}
       <div className="border border-black size-max mt-20 mb-20 ml-72 text-gray-600 bg-gray-200 rounded-lg">
@@ -325,11 +368,6 @@ export function Delivery() {
             <ul>
               <li>
                 <b className="font-semibold">
-                  The Normal delivery charge is applied.
-                </b>
-              </li>
-              <li>
-                <b className="font-semibold">
                   An additional charge, calculated as a percentage of the Normal
                   charge, is added.
                 </b>
@@ -349,6 +387,17 @@ export function Delivery() {
                 Total delivery cost = Normal charge + Additional charge
               </b>
             </li>
+            <ul>
+              <li>&nbsp;</li>
+            </ul>
+            <ul>
+              <li>
+                <b className="font-semibold">
+                  Order count refers to the maximum number of orders used to
+                  assign a task to a driver.
+                </b>
+              </li>
+            </ul>
           </ul>
         </p>
       </div>

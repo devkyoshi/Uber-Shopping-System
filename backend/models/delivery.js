@@ -16,6 +16,10 @@ const deliverySchema = new mongoose.Schema({
     required: true,
     default: 1,
   },
+  order_count: {
+    type: Number,
+    required: true,
+  },
 });
 
 const Delivery = mongoose.model("Delivery", deliverySchema);

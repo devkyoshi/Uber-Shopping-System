@@ -26,6 +26,10 @@ const taskSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Order",
       },
+      order_ID: {
+        type: String,
+        ref: "Order",
+      },
       status: {
         type: String,
       },
