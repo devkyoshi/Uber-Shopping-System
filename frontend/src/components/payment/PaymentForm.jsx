@@ -170,6 +170,13 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
     }
   };
 
+  const handleKeyPressName = (e) => {
+    // If the pressed key is not a letter, digit, or '@', prevent the default action
+    if (!/[a-zA-Z0-9]/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     // Convert email input value to lowercase before updating the state
@@ -453,7 +460,7 @@ export default function PaymentForm({ orderId, mode, total_payment }) {
                             type="text"
                             name="account_holder"
                             value={formData.account_holder}
-                            onKeyPress={handleKeyPress}
+                            onKeyPress={handleKeyPressName}
                             onChange={handleChange}
                             placeholder="Your Name"
                             className="!border-t-blue-gray-200 focus:!border-t-gray-900"

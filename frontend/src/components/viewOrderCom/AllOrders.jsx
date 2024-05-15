@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 const TABLE_HEAD = [
-  "Order ID",
+  // "Order ID",
   "Order Date",
   "District",
   "Purchase Amount",
@@ -117,7 +117,7 @@ export function AllOrders({ customerId }) {
 
   return (
     <div className="main-layout">
-      <div className="w-full inner-layout ">
+      <div className="inner-layout mr-5">
         <div className="flex justify-between mb-4 ">
           <Typography
             variant="h3"
@@ -179,7 +179,7 @@ export function AllOrders({ customerId }) {
                 <tbody>
                   {orders.map((order) => (
                     <tr key={order._id} className="even:bg-blue-gray-50/50">
-                      <td className="p-4">
+                      {/* <td className="p-4">
                         <Typography
                           variant="small"
                           color="blue-gray"
@@ -187,7 +187,7 @@ export function AllOrders({ customerId }) {
                         >
                           {order._id}
                         </Typography>
-                      </td>
+                      </td> */}
                       <td className="p-4">
                         <Typography
                           variant="small"

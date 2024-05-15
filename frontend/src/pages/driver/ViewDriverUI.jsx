@@ -73,21 +73,27 @@ export default function ViewDriversUI({ branch_ID }) {
 
   const handleDelete = async (driverId) => {
     try {
-      
       await axios.delete(
         `http://localhost:8070/Driver/${branch_ID}/driver-delete/${driverId}`
       );
       setDrivers((prevDrivers) =>
         prevDrivers.filter((driver) => driver._id !== driverId)
       );
-      console.log("Driver removed successfully. branch ID: ", branch_ID, "Driver ID: ", driverId);
+      console.log(
+        "Driver removed successfully. branch ID: ",
+        branch_ID,
+        "Driver ID: ",
+        driverId
+      );
     } catch (error) {
       console.error("Error deleting driver:", error);
     }
   };
 
   const handleSearchDriverId = () => {
-    const selectedDriver = drivers.find((driver) => driver._id === driverIdInput);
+    const selectedDriver = drivers.find(
+      (driver) => driver._id === driverIdInput
+    );
     if (selectedDriver) {
       setSelectedDriver(selectedDriver);
     } else {
@@ -95,12 +101,18 @@ export default function ViewDriversUI({ branch_ID }) {
     }
   };
 
-  const filteredDrivers = drivers.filter((driver) =>
-    driver._id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    driver.available_district.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    driver.current_handover_money.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-    driver.vehicle_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    driver.availability.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredDrivers = drivers.filter(
+    (driver) =>
+      driver._id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      driver.available_district
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      driver.current_handover_money
+        .toString()
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      driver.vehicle_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      driver.availability.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const generateReport = () => {
@@ -117,7 +129,16 @@ export default function ViewDriversUI({ branch_ID }) {
     ]);
 
     doc.autoTable({
-      head: [["#", "Driver ID", "Available District", "Current Handover Money", "Vehicle Number", "Availability"]],
+      head: [
+        [
+          "#",
+          "Driver ID",
+          "Available District",
+          "Current Handover Money",
+          "Vehicle Number",
+          "Availability",
+        ],
+      ],
       body: reportData,
     });
 
@@ -139,28 +160,47 @@ export default function ViewDriversUI({ branch_ID }) {
           />
         </div>
         <div className="ml-5">
-          <Button onClick={generateReport} className="bg-blue-500 hover:bg-blue-700">
+          <Button
+            onClick={generateReport}
+            className="bg-blue-500 hover:bg-blue-700"
+          >
             Generate PDF Report
           </Button>
         </div>
       </div>
-      
+
       <table className="w-full table-auto text-left mb-5 ">
         <thead>
           <tr>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Driver ID</th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Available District</th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Current Handover Money</th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Vehicle Number</th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Availability</th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Update</th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Delete</th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+              Driver ID
+            </th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+              Available District
+            </th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+              Current Handover Money
+            </th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+              Vehicle Number
+            </th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+              Availability
+            </th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+              Update
+            </th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+              Delete
+            </th>
           </tr>
         </thead>
         <tbody className="text-center">
           {filteredDrivers.map((driver) => (
             <tr key={driver._id}>
-              <td className="p-4 border-b border-blue-gray-50">{driver._id}</td>
+              <td className="p-4 border-b border-blue-gray-50">
+                Driver_{driver._id.toString().slice(0, 5)}
+              </td>
               <td className="p-4 border-b border-blue-gray-50">
                 {editableDriverId === driver._id ? (
                   <Input
@@ -177,7 +217,9 @@ export default function ViewDriversUI({ branch_ID }) {
                   <Input
                     type="text"
                     value={updatedDriverData.current_handover_money}
-                    onChange={(e) => handleInputChange(e, "current_handover_money")}
+                    onChange={(e) =>
+                      handleInputChange(e, "current_handover_money")
+                    }
                   />
                 ) : (
                   driver.current_handover_money

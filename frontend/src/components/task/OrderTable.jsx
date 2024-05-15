@@ -95,7 +95,7 @@ const OrderTable = () => {
                   color="blue-gray"
                   className="font-normal text-center"
                 >
-                  {order._id}
+                  Order_{order._id.toString().slice(0, 5)}
                 </Typography>
               </td>
               <td className="p-4 bg-blue-gray-50/50">

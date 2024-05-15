@@ -108,17 +108,21 @@ export default function ComplaintAdmin() {
                   <div className="flex flex-col items-center">
                     <img
                       src={`http://localhost:8070/${complaint.imageURL}`}
+                      // src="https://th.bing.com/th/id/OIP.qwH9Q8TNwyHmTxRPsyBoOwHaFS?rs=1&pid=ImgDetMain"
                       alt="Complaint Image"
                       className="rounded-lg w-64 h-auto"
                       onError={(e) =>
                         console.error("Error loading image:", e.nativeEvent)
                       } // Error handling for image loading
                     />
-                    <Typography color="gray">Complaint image</Typography>
+                    <Typography variant="h6" className="mt-3" color="gray">
+                      Complaint image
+                    </Typography>
                   </div>
                   {/* Rendering pickup image */}
                   <div className="flex flex-col items-center">
                     <img
+                      // src="https://5.imimg.com/data5/ANDROID/Default/2022/10/YG/QU/OA/123142063/product-jpeg-500x500.jpg"
                       src={`http://localhost:8070/${complaint.imageURL}`}
                       alt="Pickup Image"
                       className="rounded-lg w-64 h-auto"
@@ -126,11 +130,14 @@ export default function ComplaintAdmin() {
                         console.error("Error loading image:", e.nativeEvent)
                       } // Error handling for image loading
                     />
-                    <Typography color="gray">Pickup image</Typography>
+                    <Typography variant="h6" className="mt-3" color="gray">
+                      Pickup image
+                    </Typography>
                   </div>
                   {/* Rendering delivery image */}
                   <div className="flex flex-col items-center">
                     <img
+                      // src="https://5.imimg.com/data5/CM/JT/SN/ANDROID-23151151/1555509789452-jpg-500x500.jpg"
                       src={`http://localhost:8070/${complaint.imageURL}`}
                       alt="Delivery Image"
                       className="rounded-lg w-64 h-auto"
@@ -138,32 +145,49 @@ export default function ComplaintAdmin() {
                         console.error("Error loading image:", e.nativeEvent)
                       } // Error handling for image loading
                     />
-                    <Typography color="gray">Delivery image</Typography>
+                    <Typography variant="h6" className="mt-3" color="gray">
+                      Delivery image
+                    </Typography>
                   </div>
                 </div>
               </CardBody>
               <CardFooter className="pt-0">
                 {/* Rendering details for the complaint */}
-                <div className="grid grid-cols-2 gap-3 mb-3 justify-center">
-                  <div className="flex flex-col items-center">
-                    <Typography color="gray">
-                      Order ID: <scan>{complaint.order_id}</scan>
+                <div className="grid grid-cols-2 gap-3 mb-3 ">
+                  <div className="flex flex-col">
+                    <Typography variant="h6" color="gray">
+                      Order ID:{" "}
+                      <scan>
+                        Order_{complaint.order_id.toString().slice(0, 5)}
+                      </scan>
                     </Typography>
-                    <Typography color="gray">
-                      Item ID: <scan>{complaint.item_id}</scan>
+                    <Typography variant="h6" color="gray">
+                      Item ID:{" "}
+                      <scan>
+                        item_{complaint.item_id.toString().slice(0, 5)}
+                      </scan>
                     </Typography>
                   </div>
-                  <div className="flex flex-col items-center">
-                    <Typography color="gray">
-                      Customer ID: <scan>{complaint.customer_id}</scan>
+                  <div className="flex flex-col ">
+                    <Typography variant="h6" color="gray">
+                      Customer ID:
+                      <scan>
+                        Cust_
+                        {complaint.customer_id.toString().slice(0, 5)}
+                      </scan>
                     </Typography>
-                    <Typography color="gray">
-                      Payment ID: <scan>{complaint.payment_id}</scan>
+                    <Typography variant="h6" color="gray">
+                      Payment ID:{" "}
+                      <scan>
+                        payment_{complaint.payment_id.toString().slice(0, 5)}
+                      </scan>
                     </Typography>
                   </div>
                 </div>
                 <div className="flex flex-wrap justify-start mb-5 gap-10">
-                  <Typography color="gray">{complaint.description}</Typography>
+                  <Typography color="gray">
+                    " {complaint.description}"
+                  </Typography>
                 </div>
                 <div className="flex justify-end">
                   {/* Rendering buttons based on resolving_option */}

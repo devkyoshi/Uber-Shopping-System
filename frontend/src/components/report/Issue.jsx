@@ -68,7 +68,7 @@ export default function Issue() {
           These are details about the last report issues
         </Typography>
         <br />
-        
+
         <div className="flex justify-end mt-4 gap-2 ">
           {/* Search input */}
           <div className="flex w-full shrink-0 md:w-max bg-gray-100 rounded-xl shadow-md">
@@ -161,7 +161,7 @@ export default function Issue() {
                       Driver ID :{" "}
                     </Typography>
                     <Typography color="blue-gray" className="text-gray-400">
-                      {Issues.driver_id}
+                      driver_{Issues.driver_id.toString().slice(0, 5)}
                     </Typography>
                   </div>
                 </div>

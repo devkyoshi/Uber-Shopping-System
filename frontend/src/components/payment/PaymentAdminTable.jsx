@@ -176,8 +176,8 @@ export function TransactionsTable({
   searchInput,
 }) {
   const TABLE_HEAD = [
-    "Order ID",
-    "Payment ID",
+    // "Order ID",
+    // "Payment ID",
     "Total Payment",
     "Payment Method",
     "Status",
@@ -247,7 +247,7 @@ export function TransactionsTable({
                 district,
               }) => (
                 <tr key={_id}>
-                  <td className="p-4">
+                  {/* <td className="p-4">
                     <Typography
                       variant="small"
                       color="blue-gray"
@@ -255,8 +255,8 @@ export function TransactionsTable({
                     >
                       {order_id}
                     </Typography>
-                  </td>
-                  <td className="p-4">
+                  </td> */}
+                  {/* <td className="p-4">
                     <Typography
                       variant="small"
                       color="blue-gray"
@@ -264,7 +264,7 @@ export function TransactionsTable({
                     >
                       {payment_id}
                     </Typography>
-                  </td>
+                  </td> */}
                   <td className="p-4">
                     <Typography
                       variant="small"
