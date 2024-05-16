@@ -145,7 +145,7 @@ export default function CustomerRateTab() {
                         <img src="https://www.366icons.com/media/01/profile-avatar-account-icon-16699.png" alt={employee._id} style={{ borderRadius: '9999px', width: '40px', height: '50px', objectFit: 'cover', backgroundColor: '#D1D5DB' }} />
                         <div>
                           <p className='ml-5' style={{ fontWeight: 'bold', color: '#4B5563' }}>{employee.username}</p>
-                          <p className='ml-5'>Average rating: {employee.Avg_rating}</p>
+                          <p className='ml-5'>Average rating: {employee.Avg_rating.toFixed(2)}</p>
                         </div>
                       </td>
                       <td>
