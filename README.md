@@ -10,10 +10,8 @@ This project is developed as part of the second-year second-semester project for
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
 - [Usage](#usage)
-- [API Endpoints](#api-endpoints)
 - [Contributers](#contributers)
 - [License](#license)
-- [Contact](#contact)
 
 ## Features
 
@@ -78,7 +76,7 @@ This project is developed as part of the second-year second-semester project for
 - Manage existing items and update their details.
 - Handle and update delivery statuses.
 
-##Contributers
+## Contributers
 - Ashan Tharindu
 - Chanmi Linara
 - Sayun Hettige
@@ -87,6 +85,9 @@ This project is developed as part of the second-year second-semester project for
 - Sarindu Mathota
 - Chamindu Wijesooriya
 - Gimashi Ishara
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 
   
