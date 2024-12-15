@@ -1,0 +1,5 @@
+1. create and .env inside the backend root folder and add this to it.
+
+MONGODB_URL = mongodb+srv://deliveryManagementAdmin:Project0192@cluster0.shrarjx.mongodb.net/?retryWrites=true&w=majority
+
+JWT_SECRET = <<add-your-secred-key>>
